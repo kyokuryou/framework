@@ -1,8 +1,8 @@
-package org.core.utils;
+package org.smarty.core.utils;
 
 import org.apache.commons.io.FileUtils;
-import org.core.bean.TemplateConfig;
-import org.core.logger.RuntimeLogger;
+import org.smarty.core.bean.TemplateConfig;
+import org.smarty.core.logger.RuntimeLogger;
 import org.lilystudio.smarty4j.Context;
 import org.lilystudio.smarty4j.Engine;
 import org.lilystudio.smarty4j.Template;

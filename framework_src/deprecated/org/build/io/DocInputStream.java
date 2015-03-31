@@ -1,4 +1,4 @@
-package org.core.io;
+package org.smarty.core.io;
 
 import java.io.File;
 import java.io.FileInputStream;

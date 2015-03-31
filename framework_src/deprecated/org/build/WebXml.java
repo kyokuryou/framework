@@ -1,4 +1,4 @@
-package org.core.build;
+package org.smarty.core.build;
 
 /**
  * Created with Liang Qu

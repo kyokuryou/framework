@@ -1,4 +1,4 @@
-package org.core.bank.alipay;
+package org.smarty.core.bank.alipay;
 
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;

@@ -1,4 +1,4 @@
-package org.core.jdbc.reader;
+package org.smarty.core.jdbc.reader;
 
 /**
  * User: qul

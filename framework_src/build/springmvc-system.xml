@@ -12,12 +12,12 @@
     <bean id="freemarkerManager" class="org.apache.struts2.views.freemarker.FreemarkerManager"/>
 
     <!-- 生成静态页面 -->
-    <bean id="cacheHtml" class="org.core.support.GenerateHtml">
+    <bean id="cacheHtml" class="org.smarty.core.support.GenerateHtml">
         <property name="freemarkerManager" ref="freemarkerManager"/>
         <property name="htmlPath" value="${html.path}"/>
     </bean>
 
-    <bean id="captchaEngine" class="org.core.common.JCaptchaEngine"/>
+    <bean id="captchaEngine" class="org.smarty.core.common.JCaptchaEngine"/>
 
     <bean id="captchaService" class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService">
         <property name="captchaEngine" ref="captchaEngine"/>
@@ -25,7 +25,7 @@
         <property name="minGuarantedStorageDelayInSeconds" value="600"/>
     </bean>
     <!-- 模版配置 -->
-    <bean id="templateManager" class="org.core.support.TemplateManager">
+    <bean id="templateManager" class="org.smarty.core.support.TemplateManager">
         <property name="freemarkerManager" ref="freemarkerManager"/>
         <property name="configFileName" value="${template.config.path}"/>
         <property name="staticConfig" value="${template.config.static}"/>

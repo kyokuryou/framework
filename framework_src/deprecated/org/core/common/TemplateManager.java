@@ -1,4 +1,4 @@
-package org.core.support;
+package org.smarty.core.support;
 
 import freemarker.ext.beans.BeansWrapper;
 import freemarker.ext.beans.ResourceBundleModel;
@@ -7,9 +7,9 @@ import freemarker.template.Template;
 import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.views.freemarker.FreemarkerManager;
-import org.core.bean.TemplateConfig;
-import org.core.logger.RuntimeLogger;
-import org.core.utils.*;
+import org.smarty.core.bean.TemplateConfig;
+import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.utils.*;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;

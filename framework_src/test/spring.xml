@@ -37,7 +37,7 @@
     <tx:annotation-driven proxy-target-class="true" transaction-manager="shopTm"/>
     <!--对该dataSource增加注解事务管理 end-->
 
-    <bean name="adminRoleDao" class="org.core.dao.AdminRoleDao">
+    <bean name="adminRoleDao" class="org.smarty.core.dao.AdminRoleDao">
         <property name="shopSqlSession" ref="shopSqlSession"/>
     </bean>
 

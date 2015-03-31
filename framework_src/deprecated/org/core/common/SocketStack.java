@@ -1,6 +1,6 @@
-package org.core.common;
+package org.smarty.core.common;
 
-import org.core.logger.RuntimeLogger;
+import org.smarty.core.logger.RuntimeLogger;
 
 import java.io.IOException;
 import java.io.InputStreamReader;

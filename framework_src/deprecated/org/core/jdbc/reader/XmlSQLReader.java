@@ -1,9 +1,9 @@
-package org.core.jdbc.reader;
+package org.smarty.core.jdbc.reader;
 
-import org.core.jdbc.support.SQLTypeEnum;
-import org.core.logger.RuntimeLogger;
-import org.core.support.jdbc.reader.XmlSQLLink;
-import org.core.utils.LogicUtil;
+import org.smarty.core.jdbc.support.SQLTypeEnum;
+import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.support.jdbc.reader.XmlSQLLink;
+import org.smarty.core.utils.LogicUtil;
 
 import java.io.IOException;
 import java.util.Map;

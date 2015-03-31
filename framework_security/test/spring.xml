@@ -24,9 +24,9 @@
         <property name="dataSource" ref="secDataSource"/>
     </bean>
 
-    <bean name="jCaptchaFilter" class="org.core.common.JCaptchaFilter">
+    <bean name="jCaptchaFilter" class="org.smarty.core.common.JCaptchaFilter">
         <property name="captchaService" ref="captchaService"/>
     </bean>
 
-    <bean class="org.core.security.common.SecurityBoot" init-method="init" destroy-method="exit"/>
+    <bean class="org.smarty.core.security.common.SecurityBoot" init-method="init" destroy-method="exit"/>
 </beans>

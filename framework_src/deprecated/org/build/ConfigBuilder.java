@@ -1,10 +1,10 @@
-package org.core.build;
+package org.smarty.core.build;
 
-import org.core.exception.InvokeMethodException;
-import org.core.exception.NoSuchReflectException;
-import org.core.utils.BeanUtil;
-import org.core.utils.DocumentUtil;
-import org.core.utils.TemplateUtil;
+import org.smarty.core.exception.InvokeMethodException;
+import org.smarty.core.exception.NoSuchReflectException;
+import org.smarty.core.utils.BeanUtil;
+import org.smarty.core.utils.DocumentUtil;
+import org.smarty.core.utils.TemplateUtil;
 import org.dom4j.Document;
 
 import java.io.File;

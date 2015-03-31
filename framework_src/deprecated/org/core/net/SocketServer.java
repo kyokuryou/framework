@@ -1,7 +1,7 @@
-package org.core.net;
+package org.smarty.core.net;
 
-import org.core.logger.RuntimeLogger;
-import org.core.support.net.AbstractSocket;
+import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.support.net.AbstractSocket;
 
 import java.io.IOException;
 import java.net.ServerSocket;

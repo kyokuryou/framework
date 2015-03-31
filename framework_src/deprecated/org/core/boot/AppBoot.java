@@ -1,52 +1,58 @@
-package org.core.boot;
+package org.smarty.core.boot;
 
-import org.core.bean.SystemConfig;
-import org.core.support.ClassLoaderWrapper;
-import org.core.utils.SystemConfigUtil;
+import org.smarty.core.support.cache.CacheMessage;
+import org.smarty.core.launcher.ClassLoaderWrapper;
+import org.smarty.core.logger.RuntimeLogger;
+import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- *
+ * 应用程序启动器
  */
-public abstract class AppBoot {
-    // 默认的spring文件名
-    private static final String springFile = "spring.xml";
+public abstract class AppBoot implements ApplicationContextAware {
+    private boolean debugModel;
+    private Integer systemCatchSize;
+    private Integer temporaryCatchSize;
 
-    public static void main(String[] args) {
-        // 启动spring
-        ApplicationContext cpxac = initSpring();
-        // 加载配置文件并缓存
-        initSystemConfig();
+    private static RuntimeLogger logger = new RuntimeLogger(AppBoot.class);
+    protected ApplicationContext applicationContext;
 
-        // 获得当前程序实例
-        AppBoot ab = (AppBoot) cpxac.getBean(args[0]);
+    public final void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
+
+    /**
+     * 启动方法
+     */
+    public final void main() {
+        // 初始化缓存容器
+        initCache();
+        // 加入缓存
+        CacheMessage.putSystemCache("debugModel", debugModel);
         // 加入classloader
-        ClassLoaderWrapper.setClassLoaders(ab.getClassLoaders());
-        // 执行应用程序初始化
-        ab.init(args);
-        // 执行应用程序
-        ab.run();
-        // 执行应用程序销毁
-        ab.destroy();
+        ClassLoaderWrapper.setClassLoaders(getClassLoaders());
+        // 执行程序初始化
+        try {
+            init();
+        } catch (Exception e) {
+            logger.out("AppBoot 初始化失败");
+            exit();
+        }
     }
 
     /**
-     * 加载spring配置文件
-     *
-     * @return ApplicationContext
+     * 初始化缓存容器
      */
-    protected static ApplicationContext initSpring() {
-        return new ClassPathXmlApplicationContext(springFile);
-    }
-
-    /**
-     * 加载配置文件
-     *
-     * @return 配置信息
-     */
-    protected static SystemConfig initSystemConfig() {
-        return SystemConfigUtil.getSystemConfig();
+    public final void initCache() {
+        Map<String, Integer> caches = new HashMap<String, Integer>();
+        caches.put("system", systemCatchSize);
+        caches.put("temporary", temporaryCatchSize);
+        CacheMessage cm = new CacheMessage("q1w2e3r4t5");
+        cm.initCacheMap(caches);
     }
 
     /**
@@ -59,26 +65,28 @@ public abstract class AppBoot {
     }
 
     /**
-     * 初始化方法,总在run方法之前执行.
-     *
-     * @param args 参数
+     * 初始化方法
      */
-    public void init(String[] args) {
+    public void init() {
 
     }
 
     /**
-     * 执行
+     * 销毁;如需要重新设置,重写此方法;
      */
-    public abstract void run();
-
-    /**
-     * 销毁;在run方法之后执行;如需要重新设置,重写此方法;
-     * <p/>
-     * 注:当执行此方法的尾部时,也意味着.该应用程序结束.
-     * 如要维持当前程序,请在run方法里做,而不是在此方法内做文章.
-     */
-    public void destroy() {
+    public void exit() {
         System.gc();
+    }
+
+    public void setDebugModel(boolean debugModel) {
+        this.debugModel = debugModel;
+    }
+
+    public void setSystemCatchSize(Integer systemCatchSize) {
+        this.systemCatchSize = systemCatchSize;
+    }
+
+    public void setTemporaryCatchSize(Integer temporaryCatchSize) {
+        this.temporaryCatchSize = temporaryCatchSize;
     }
 }

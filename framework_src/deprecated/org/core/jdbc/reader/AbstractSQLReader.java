@@ -1,7 +1,7 @@
-package org.core.jdbc.reader;
+package org.smarty.core.jdbc.reader;
 
-import org.core.jdbc.support.SQLTypeEnum;
-import org.core.utils.RegexUtil;
+import org.smarty.core.jdbc.support.SQLTypeEnum;
+import org.smarty.core.utils.RegexUtil;
 
 import java.util.Map;
 

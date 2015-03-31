@@ -108,12 +108,12 @@
     <bean id="captchaFilter" class="org.smarty.web.captcha.JCaptchaFilter" abstract="true">
         <property name="captchaService" ref="captchaService"/>
     </bean>
+    <bean id="captchaEngine" class="org.smarty.web.captcha.JCaptchaEngine"/>
     <bean id="captchaService" class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService">
         <property name="captchaEngine" ref="captchaEngine"/>
         <!--验证码过期时间-->
         <property name="minGuarantedStorageDelayInSeconds" value="600"/>
     </bean>
-    <bean id="captchaEngine" class="org.smarty.web.captcha.JCaptchaEngine"/>
     <!-- 国际化 -->
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basenames">

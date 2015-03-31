@@ -39,7 +39,7 @@
         </javac>
     </target>
     <target name="config_run" >
-        <java classname="org.core.build.ConfigBuilder" fork="true">
+        <java classname="org.smarty.core.build.ConfigBuilder" fork="true">
             <classpath refid="config_compile.classpath"/>
             <classpath>
                 <pathelement location="${src.build.dirPath}"/>

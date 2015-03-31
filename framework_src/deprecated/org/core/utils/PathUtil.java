@@ -1,8 +1,8 @@
-package org.core.utils;
+package org.smarty.core.utils;
 
 import org.apache.struts2.ServletActionContext;
-import org.core.support.ClassLoaderWrapper;
-import org.core.logger.RuntimeLogger;
+import org.smarty.core.launcher.ClassLoaderWrapper;
+import org.smarty.core.logger.RuntimeLogger;
 
 import javax.servlet.ServletContext;
 import java.io.File;

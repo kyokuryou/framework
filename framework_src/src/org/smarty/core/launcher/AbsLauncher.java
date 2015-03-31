@@ -9,7 +9,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -23,7 +25,7 @@ public abstract class AbsLauncher implements ApplicationContextAware, Initializi
 
     }
 
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    public final void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         SpringUtil.setApplicationContext(applicationContext);
     }
 
@@ -34,12 +36,13 @@ public abstract class AbsLauncher implements ApplicationContextAware, Initializi
         // 初始化缓存容器
         initCache();
         // 加入classloader
-        LauncherWrapper.setClassLoaders(getClassLoaders());
+        LauncherWrapper lw = new LauncherWrapper();
+        lw.createClassLoader(getLauncher());
         // 执行程序初始化
         try {
             init();
         } catch (Exception e) {
-            logger.out("WebBoot 初始化失败");
+            logger.out("AbsLauncher 初始化失败");
             exit();
         }
     }
@@ -56,13 +59,8 @@ public abstract class AbsLauncher implements ApplicationContextAware, Initializi
         cm.initCacheMap(caches);
     }
 
-    /**
-     * 返回默认加载器,如需要重新设置,重写此方法
-     *
-     * @return 加载器
-     */
-    protected ClassLoader[] getClassLoaders() {
-        return new ClassLoader[]{};
+    protected Set<ClassLoader> getLauncher() {
+        return new HashSet<ClassLoader>(0);
     }
 
     /**

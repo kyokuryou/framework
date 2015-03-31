@@ -1,4 +1,4 @@
-package org.core.utils;
+package org.smarty.core.utils;
 
 import com.opensymphony.xwork2.config.Configuration;
 import com.opensymphony.xwork2.config.ConfigurationManager;

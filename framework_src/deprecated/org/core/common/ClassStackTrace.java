@@ -1,6 +1,6 @@
-package org.core.common;
+package org.smarty.core.common;
 
-import org.core.bean.ClassElement;
+import org.smarty.core.bean.ClassElement;
 
 /**
  * 运行堆栈

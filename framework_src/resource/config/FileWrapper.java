@@ -1,6 +1,6 @@
 package config;
 
-import org.core.build.CodeBook;
+import org.smarty.core.build.CodeBook;
 
 import java.io.File;
 import java.io.FileNotFoundException;

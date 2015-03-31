@@ -5,9 +5,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                      http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
-    <bean id="bankSubmit" class="org.core.bank.BankSubmit" abstract="true">
+    <bean id="bankSubmit" class="org.smarty.core.bank.BankSubmit" abstract="true">
         <property name="freemarkerManager" ref="freemarkerManager"/>
     </bean>
 
-    <bean id="bankNotify" class="org.core.bank.BankNotify" abstract="true"/>
+    <bean id="bankNotify" class="org.smarty.core.bank.BankNotify" abstract="true"/>
 </beans>
