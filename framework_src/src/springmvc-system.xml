@@ -12,28 +12,44 @@
     <import resource="classpath:spring-system.xml"/>
     <!-- spring mvc -->
     <mvc:annotation-driven/>
-    <!-- 配置JSP视图 -->
-    <bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-        <property name="prefix" value="${resources.jsp}"/>
-        <property name="suffix" value=".jsp"/>
-        <property name="contentType" value="text/html;charset=UTF-8"/>
-        <property name="order" value="1"/>
-    </bean>
-
     <!-- 配置FreeMark视图 -->
     <bean id="freeMarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
         <property name="contentType" value="text/html;charset=UTF-8"/>
-        <property name="prefix" ref="${resources.ftl}"/>
-        <property name="suffix" value=".ftl"/>
+        <property name="prefix" value="${resources.ftl}"/>
+        <property name="viewNames" value="${resources.ftl.names}"/>
         <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
         <property name="cache" value="true"/>
         <property name="exposeSessionAttributes" value="true"/>
         <property name="exposeRequestAttributes" value="true"/>
         <property name="exposeSpringMacroHelpers" value="true"/>
         <!-- 在页面中使用${rc.contextPath}就可获得contextPath -->
-        <property name="requestContextAttribute" value="rc"/>
+        <property name="requestContextAttribute" value="${context.path.name}"/>
         <property name="order" value="0"/>
+    </bean>
+    <!-- 配置JSP视图 -->
+    <bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="${resources.jsp}"/>
+        <property name="viewNames" value="${resources.jsp.names}"/>
+        <property name="contentType" value="text/html;charset=UTF-8"/>
+        <property name="order" value="1"/>
+    </bean>
+
+
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <!-- messageConverters属性的配置可以解决JSON返回中文为问号的问题 -->
+        <property name="messageConverters">
+            <list>
+                <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                    <property name="supportedMediaTypes">
+                        <list>
+                            <value>text/html;charset=utf-8</value>
+                            <value>text/plain;charset=UTF-8</value>
+                        </list>
+                    </property>
+                </bean>
+            </list>
+        </property>
     </bean>
 
     <!-- 文件上传配置注意:这里申明的id必须为multipartResolver -->
@@ -45,11 +61,34 @@
     <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
         <property name="exceptionMappings">
             <props>
-                <!-- 映射目录为/WEB-INF/jsp/error/upload_error.jsp -->
-                <prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">${page.error}</prop>
+                <prop key="org.springframework.web.bind.MissingServletRequestParameterException">
+                    ${page.error.required_parameter}
+                </prop>
+                <prop key="org.springframework.beans.TypeMismatchException">${page.error.mismatch_parameter}</prop>
+                <prop key="org.springframework.web.bind.ServletRequestBindingException">${page.error.bind_exception}
+                </prop>
+                <prop key="org.springframework.dao.DataIntegrityViolationException">${page.error.integrity_violation}
+                </prop>
             </props>
         </property>
     </bean>
+
+    <bean id="handlerMapping" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" abstract="true">
+        <property name="interceptors">
+            <list>
+                <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"/>
+                <bean class="org.core.support.web.TrimInterceptor"/>
+                <bean class="org.core.support.web.LoginVerifyInterceptor"/>
+            </list>
+        </property>
+        <property name="useDefaultSuffixPattern" value="false"/>
+        <property name="order" value="0"/>
+    </bean>
+
+    <mvc:interceptors>
+        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"/>
+        <!-- 当设置多个拦截器时，先按顺序调用preHandle方法，然后逆序调用每个拦截器的postHandle和afterCompletion方法 -->
+    </mvc:interceptors>
 
     <!-- 对静态资源文件的访问 -->
     <mvc:resources mapping="/images/**" location="${resources.images}" cache-period="${resources.cache_period}"/>
@@ -57,11 +96,10 @@
     <mvc:resources mapping="/css/**" location="${resources.css}" cache-period="${resources.cache_period}"/>
     <mvc:resources mapping="/upload/**" location="${resources.upload}" cache-period="${resources.cache_period}"/>
 
-
-    <bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>
     <!-- 配置freemarkerManager -->
+    <bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>
     <bean id="freemarkerConfigurer" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-        <property name="templateLoaderPath" value="/WEB-INF"/>
+        <property name="templateLoaderPath" value="${freemarker.template_load_path}"/>
         <property name="defaultEncoding" value="${freemarker.default_encoding}"/>
         <property name="freemarkerSettings">
             <props>
@@ -115,10 +153,11 @@
     </bean>
     <bean id="captchaEngine" class="org.core.support.captcha.JCaptchaEngine"/>
     <!-- 国际化 -->
-    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="cacheSeconds" value="-1"/>
         <property name="basenames">
             <list>
-                <value>i18n</value>
+                <value>${i18n.names}</value>
             </list>
         </property>
     </bean>
