@@ -14,15 +14,15 @@ import java.util.ResourceBundle;
 /**
  * spring mvc工具
  */
-public class SpringMVCUtil {
-    private static RuntimeLogger logger = new RuntimeLogger(SpringMVCUtil.class);
+public class SpringWebUtil {
+    private static RuntimeLogger logger = new RuntimeLogger(SpringWebUtil.class);
     private static ServletContext servletContext;
 
     public static void setServletContext(ServletContext servletContext) {
-        if (SpringMVCUtil.servletContext != null) {
+        if (SpringWebUtil.servletContext != null) {
             throw new IllegalStateException("ServletContextHolder already holded 'servletContext'.");
         }
-        SpringMVCUtil.servletContext = servletContext;
+        SpringWebUtil.servletContext = servletContext;
         logger.info("holded servletContext,displayName:" + servletContext.getServletContextName());
     }
 

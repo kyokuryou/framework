@@ -6,21 +6,23 @@ import org.smarty.web.utils.SpringMVCUtil;
 import org.springframework.web.context.ServletContextAware;
 
 import javax.servlet.ServletContext;
+import java.util.Set;
 
 /**
  * web启动器
  */
 public class WebLauncher extends AbsLauncher implements ServletContextAware {
     private static RuntimeLogger logger = new RuntimeLogger(WebLauncher.class);
+
     @Override
-    public void setServletContext(ServletContext servletContext) {
+    public final void setServletContext(ServletContext servletContext) {
         SpringMVCUtil.setServletContext(servletContext);
     }
 
     @Override
-    protected ClassLoader[] getClassLoaders() {
-        return new ClassLoader[]{
-                WebLauncher.class.getClassLoader()
-        };
+    protected Set<ClassLoader> getLauncher() {
+        Set<ClassLoader> cls = super.getLauncher();
+        cls.add(WebLauncher.class.getClassLoader());
+        return cls;
     }
 }
