@@ -14,7 +14,7 @@
     </sec:authentication-manager>
 
     <!-- 定义权限、资源关系 -->
-    <bean id="secFilter" class="org.core.security.common.SecurityFilter">
+    <bean id="secFilter" class="org.smarty.core.security.common.SecurityFilter">
         <property name="authenticationManager" ref="authenticationManager"/>
         <property name="accessDecisionManager" ref="secAccessDecision"/>
         <property name="securityMetadataSource" ref="secMetadata"/>
@@ -28,24 +28,24 @@
         <constructor-arg name="sessionRegistry" ref="sessionRegistry"/>
     </bean>
 
-    <bean id="secService" class="org.core.security.service.SecurityService">
+    <bean id="secService" class="org.smarty.core.security.service.SecurityService">
         <property name="securityDao">
-            <bean class="org.core.security.dao.SecurityDao">
+            <bean class="org.smarty.core.security.dao.SecurityDao">
                 <property name="sqlSession" ref="secSqlSession"/>
             </bean>
         </property>
     </bean>
 
-    <bean id="secMetadata" class="org.core.security.common.SecurityMetadata">
+    <bean id="secMetadata" class="org.smarty.core.security.common.SecurityMetadata">
         <property name="securityService" ref="secService"/>
     </bean>
 
-    <bean id="secAccessDecision" class="org.core.security.common.SecurityAccessDecision"/>
-    <bean id="secAuthentication" class="org.core.security.common.SecurityAuthentication">
+    <bean id="secAccessDecision" class="org.smarty.core.security.common.SecurityAccessDecision"/>
+    <bean id="secAuthentication" class="org.smarty.core.security.common.SecurityAuthentication">
         <property name="securityService" ref="secService"/>
     </bean>
 
-    <bean id="secListener" class="org.core.security.common.SecurityListener">
+    <bean id="secListener" class="org.smarty.core.security.common.SecurityListener">
         <property name="securityService" ref="secService"/>
     </bean>
     <bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl"/>

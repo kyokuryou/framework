@@ -1,6 +1,6 @@
-package org.core.security.bean;
+package org.smarty.core.security.bean;
 
-import org.core.Model;
+import org.smarty.core.Model;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

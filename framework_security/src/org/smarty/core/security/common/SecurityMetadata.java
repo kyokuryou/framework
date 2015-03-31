@@ -1,9 +1,9 @@
-package org.core.security.common;
+package org.smarty.core.security.common;
 
-import org.core.logger.RuntimeLogger;
-import org.core.security.service.SecurityService;
-import org.core.security.utils.SecurityUtil;
-import org.core.utils.LogicUtil;
+import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.security.service.SecurityService;
+import org.smarty.core.security.utils.SecurityUtil;
+import org.smarty.core.utils.LogicUtil;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;

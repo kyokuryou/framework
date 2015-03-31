@@ -1,8 +1,8 @@
-package org.core.security.service;
+package org.smarty.core.security.service;
 
-import org.core.logger.RuntimeLogger;
-import org.core.security.dao.SecurityDao;
-import org.core.utils.LogicUtil;
+import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.security.dao.SecurityDao;
+import org.smarty.core.utils.LogicUtil;
 
 import java.sql.SQLException;
 import java.util.List;

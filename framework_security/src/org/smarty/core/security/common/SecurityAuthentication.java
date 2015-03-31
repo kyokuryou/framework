@@ -1,11 +1,11 @@
-package org.core.security.common;
+package org.smarty.core.security.common;
 
-import org.core.bean.SystemConfig;
-import org.core.security.bean.UserSecurity;
-import org.core.security.service.SecurityService;
-import org.core.utils.DateUtil;
-import org.core.utils.LogicUtil;
-import org.core.utils.SystemConfigUtil;
+import org.smarty.core.bean.SystemConfig;
+import org.smarty.core.security.bean.UserSecurity;
+import org.smarty.core.security.service.SecurityService;
+import org.smarty.core.utils.DateUtil;
+import org.smarty.core.utils.LogicUtil;
+import org.smarty.core.utils.SystemConfigUtil;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

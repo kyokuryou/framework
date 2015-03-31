@@ -1,6 +1,6 @@
-package org.core.security.dao;
+package org.smarty.core.security.dao;
 
-import org.core.support.jdbc.SQLSession;
+import org.smarty.core.support.jdbc.SQLSession;
 
 import java.sql.SQLException;
 import java.util.HashMap;

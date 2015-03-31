@@ -1,8 +1,7 @@
-package org.core.security.common;
+package org.smarty.core.security.common;
 
-import org.core.common.JCaptchaEngine;
+import org.smarty.web.captcha.JCaptchaEngine;
 import com.octo.captcha.service.CaptchaService;
-import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
