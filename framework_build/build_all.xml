@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="all" name="framework_all">
+	<!--系统环境变量-->
+    <import file="./build_property.xml"/>
+    <!-- ant文件引入 -->
+    <import file="${src.ant.filePath}"/>
+    <import file="${lib.ant.filePath}"/>
+    <import file="${web.ant.filePath}"/>
+    <import file="${sec.ant.filePath}"/>
+    <!--<import file="${config.ant.filePath}"/>-->
+	<!--all重新编译和部署整个应用-->
+	<target name="all" depends="lib_all,src_all,web_all,sec_all"/>
+	<!--<target name="all" depends="lib_all,src_all,web_all"/>-->
+</project>

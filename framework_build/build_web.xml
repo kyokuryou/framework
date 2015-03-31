@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="web_all" name="framework_web">
+
+    <import file="./build_property.xml"/>
+
+    <target name="web_clean" description="Prepare for clean build">
+        <delete>
+            <fileset dir="${war.web.dirPath}">
+                <include name="core/css/**"/>
+                <include name="core/images/**"/>
+                <include name="core/js/**"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            <fileset dir="${war.web.dirPath}/WEB-INF">
+                <include name="core/inc/**"/>
+                <include name="core/error_page.ftl"/>
+                <include name="web.xml"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+        </delete>
+    </target>
+
+    <target name="web_dist" description="Create binary distribution">
+        <!-- web基础 -->
+        <mkdir dir="${war.web.dirPath}/core"/>
+        <mkdir dir="${war.web.dirPath}/core/css"/>
+        <mkdir dir="${war.web.dirPath}/core/js"/>
+        <mkdir dir="${war.web.dirPath}/core/images"/>
+        <copy todir="${war.web.dirPath}/core" overwrite="true" includeEmptyDirs="no">
+            <fileset dir="${web.dirPath}/core">
+                <include name="css/**"/>
+                <include name="js/**"/>
+                <include name="images/**"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+        </copy>
+        <!-- WEB-INF 基础结构 -->
+        <mkdir dir="${war.web.dirPath}/WEB-INF/core"/>
+        <mkdir dir="${war.web.dirPath}/WEB-INF/core/inc"/>
+        <copy todir="${war.web.dirPath}/WEB-INF/core" overwrite="true" includeEmptyDirs="no">
+            <fileset dir="${web.dirPath}/WEB-INF/core">
+                <include name="inc/**"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${war.web.dirPath}/WEB-INF" overwrite="true">
+            <fileset dir="${web.meta.dirPath}/config">
+                <!--<include name="web.xml"/>-->
+                <!-- 权限 -->
+                <include name="web-security.xml"/>
+            </fileset>
+        </copy>
+
+        <move file="${war.web.dirPath}/WEB-INF/web-security.xml" tofile="${war.web.dirPath}/WEB-INF/web.xml"/>
+        <!-- Flex支持 -->
+        <!--
+        <mkdir dir="${war.webInfo.dirPath}/flex"/>
+        <copy todir="${war.webInfo.dirPath}/flex" overwrite="true" includeEmptyDirs="no">
+            <fileset dir="${web.webInfo.dirPath}/flex">
+                <patternset refid="ignored.files"/>
+            </fileset>
+        </copy>
+        -->
+    </target>
+
+    <target name="web_all" depends="web_clean,web_dist"/>
+</project>

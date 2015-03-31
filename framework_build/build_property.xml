@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="framework">
+    <!--发布路径-->
+    <property name="war.dirPath" value="/opt/space/framework/iwork/out_build"/>
+    <property name="war.src.dirPath" value="/opt/space/iwork/framework/out_build/src"/>
+    <property name="war.web.dirPath" value="/opt/space/iwork/framework/out_build/web"/>
+
+    <!--工程路径 -->
+    <property name="project.src.dirPath" value="/opt/space/iwork/framework/framework_src"/>
+    <property name="project.lib.dirPath" value="/opt/space/iwork/framework/framework_lib"/>
+    <property name="project.web.dirPath" value="/opt/space/iwork/framework/framework_web"/>
+    <property name="project.flex.dirPath" value="/opt/space/iwork/framework/framework_flex"/>
+    <property name="project.security.dirPath" value="/opt/space/iwork/framework/framework_security"/>
+    <property name="project.bank.dirPath" value="/opt/space/iwork/framework/framework_bank"/>
+    <!--<property name="project.war.dirPath" value="/opt/space/iwork/framework/framework_war"/>-->
+    <!--ant文件-->
+    <property name="src.ant.filePath" value="./build_src.xml"/>
+    <property name="lib.ant.filePath" value="./build_lib.xml"/>
+    <property name="web.ant.filePath" value="./build_web.xml"/>
+    <property name="sec.ant.filePath" value="./build_security.xml"/>
+    <property name="config.ant.filePath" value="./build_config.xml"/>
+    <!-- 打包信息 -->
+    <property name="src.jar.name" value="org"/>
+    <property name="sec.jar.name" value="org_sec"/>
+    <property name="bank.jar.name" value="org_bank"/>
+    <property name="component.name" value="Framework Core"/>
+    <property name="component.Version" value="v1.5.2"/>
+    <property name="component.Vendor" value="K"/>
+    <!-- 编译环境 -->
+    <property name="target.java.home" value="/opt/lib/java/jdk1.6.0_45"/>
+    <property name="target.java.locales" value="en_US"/>
+    <property name="target.encode" value="UTF-8"/>
+    <property name="target.java.version" value="1.6"/>
+    <!-- 源码路径-->
+    <property name="src.dirPath" value="${project.src.dirPath}/src"/>
+    <property name="src.build.dirPath" value="${project.src.dirPath}/build"/>
+    <property name="src.mata.dirPath" value="${project.src.dirPath}/META-INF"/>
+    <!-- security路径-->
+    <property name="sec.dirPath" value="${project.security.dirPath}/src"/>
+    <property name="sec.meta.dirPath" value="${project.security.dirPath}/META-INF"/>
+    <property name="sec.build.dirPath" value="${project.security.dirPath}/build"/>
+    <!-- bank路径-->
+    <property name="bank.dirPath" value="${project.bank.dirPath}/src"/>
+    <property name="bank.build.dirPath" value="${project.bank.dirPath}/build"/>
+
+    <!-- 依赖jar包路径-->
+    <property name="lib.dirPath" value="${project.lib.dirPath}/lib"/>
+    <property name="lib.database.dirPath" value="${project.lib.dirPath}/database"/>
+    <property name="lib.database.db2.dirPath" value="${project.lib.dirPath}/database/db2"/>
+    <property name="lib.database.mysql.dirPath" value="${project.lib.dirPath}/database/mysql"/>
+    <property name="lib.extend.dirPath" value="${project.lib.dirPath}/extend"/>
+    <property name="lib.extend.commons.dirPath" value="${lib.extend.dirPath}/commons"/>
+    <property name="lib.extend.jcaptcha.dirPath" value="${lib.extend.dirPath}/jcaptcha"/>
+    <property name="lib.extend.compressor.dirPath" value="${lib.extend.dirPath}/compressor"/>
+    <property name="lib.extend.flex.dirPath" value="${lib.extend.dirPath}/flex"/>
+    <property name="lib.extend.image.dirPath" value="${lib.extend.dirPath}/image"/>
+    <property name="lib.extend.poi.dirPath" value="${lib.extend.dirPath}/poi"/>
+    <property name="lib.extend.security.dirPath" value="${lib.extend.dirPath}/security"/>
+    <property name="lib.extend.struts2.dirPath" value="${lib.extend.dirPath}/struts2"/>
+    <property name="lib.extend.xfire.dirPath" value="${lib.extend.dirPath}/xfire"/>
+    <property name="lib.global.j2ee.dirPath" value="${project.lib.dirPath}/global/J2EE6"/>
+    <property name="lib.global.junit.dirPath" value="${project.lib.dirPath}/global/JUNIT"/>
+    <!-- web路径-->
+    <property name="web.dirPath" value="${project.web.dirPath}/web"/>
+    <property name="web.meta.dirPath" value="${project.web.dirPath}/META-INF"/>
+    <!-- 忽略文件列表 -->
+    <patternset id="ignored.files">
+        <exclude name="**/CVS/**"/>
+        <exclude name="**/SCCS/**"/>
+        <exclude name="**/RCS/**"/>
+        <exclude name="**/rcs/**"/>
+        <exclude name="**/.DS_Store/**"/>
+        <exclude name="**/.svn/**"/>
+        <exclude name="**/.pyc/**"/>
+        <exclude name="**/.pyo/**"/>
+        <exclude name="**/*.pyc/**"/>
+        <exclude name="**/*.pyo/**"/>
+        <exclude name="**/.git/**"/>
+        <exclude name="**/*.hprof/**"/>
+        <exclude name="**/_svn/**"/>
+        <exclude name="**/.hg/**"/>
+        <exclude name="**/*.lib/**"/>
+        <exclude name="**/*~/**"/>
+        <exclude name="**/__pycache__/**"/>
+        <exclude name="**/.bundle/**"/>
+        <exclude name="**/*.rbc/**"/>
+        <exclude name="**/vssver.scc/**"/>
+        <exclude name="**/vssver2.scc/**"/>
+        <exclude name="**/test/**"/>
+        <exclude name="**/META-INF/**"/>
+        <exclude name="**/build_lib.xml"/>
+        <exclude name="**/build_src.xml"/>
+        <exclude name="**/build_web.xml"/>
+        <exclude name="**/build_flex.xml"/>
+        <exclude name="**/build_all.xml"/>
+        <exclude name="**/build_property.xml"/>
+        <exclude name="**/*.imi"/>
+        <exclude name="**/.idea/**"/>
+        <exclude name="**/.actionScriptProperties/**"/>
+        <exclude name="**/.classpath/**"/>
+        <exclude name="**/.flexProperties/**"/>
+        <exclude name="**/.mymetadata/**"/>
+        <exclude name="**/.myumldata/**"/>
+        <exclude name="**/.project/**"/>
+        <exclude name="**/build.xml/**"/>
+        <exclude name="**/.myeclipse/**"/>
+        <exclude name="**/.settings/**"/>
+        <exclude name="**/.apt_src/**"/>
+        <exclude name="**/.externalToolBuilders/**"/>
+    </patternset>
+    <!-- 包含文件列表 -->
+    <patternset id="resource.files">
+        <include name="**/*.conf"/>
+        <include name="**/*.config"/>
+        <include name="**/*.template"/>
+        <include name="**/*.properties"/>
+        <include name="**/*.xml"/>
+    </patternset>
+
+    <path id="jar.files">
+        <!-- 主要 -->
+        <fileset dir="${lib.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        <!-- 主要(commons)-->
+        <fileset dir="${lib.extend.commons.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        <!-- j2ee依赖包(主要)-->
+        <fileset dir="${lib.global.j2ee.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        <!-- juint依赖包(主要)-->
+        <fileset dir="${lib.global.junit.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        <!-- 连接池(可选)-->
+        <fileset dir="${lib.database.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        <!-- 数据库驱动(选择)-->
+        <fileset dir="${lib.database.db2.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        <!--  mail,el依赖(可选) -->
+        <fileset dir="${lib.extend.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        <!-- 验证码(可选) -->
+        <fileset dir="${lib.extend.jcaptcha.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        <!-- html,xml,js压缩依赖(可选) -->
+        <fileset dir="${lib.extend.compressor.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        <!-- flex依赖(可选) -->
+        <fileset dir="${lib.extend.flex.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        <!-- image依赖(可选) -->
+        <fileset dir="${lib.extend.image.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        <!-- poi依赖(可选) -->
+        <fileset dir="${lib.extend.poi.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        <!-- struts2依赖(可选) -->
+        <!--
+        <fileset dir="${lib.extend.struts2.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        -->
+        <!-- xfire依赖(可选) -->
+        <fileset dir="${lib.extend.xfire.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+</project>

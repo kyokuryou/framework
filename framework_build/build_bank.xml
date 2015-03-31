@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="bank_all" name="framework_bank">
+	<!--系统环境变量-->
+
+    <import file="./build_property.xml"/>
+
+	<!--编译的类路径设定-->
+	<path id="bank_compile.classpath">
+        <!-- 源码(主要)-->
+        <fileset dir="${src.build.dirPath}">
+            <include name="${java.jar.name}.jar"/>
+        </fileset>
+        <!-- 主要 -->
+        <fileset dir="${lib.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        <!-- j2ee依赖包(主要)-->
+        <fileset dir="${lib.global.j2ee.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        <!-- juint依赖包(主要)-->
+        <fileset dir="${lib.global.junit.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        <!-- 连接池(可选)-->
+        <fileset dir="${lib.database.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        <!-- 数据库驱动(选择)-->
+        <fileset dir="${lib.database.db2.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        <!--  mail,el依赖(可选) -->
+        <fileset dir="${lib.extend.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        <!-- 验证码(可选) -->
+        <fileset dir="${lib.extend.jcaptcha.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        <!-- html,xml,js压缩依赖(可选) -->
+        <fileset dir="${lib.extend.compressor.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        <!-- flex依赖(可选) -->
+        <fileset dir="${lib.extend.flex.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        <!-- image依赖(可选) -->
+        <fileset dir="${lib.extend.image.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        <!-- poi依赖(可选) -->
+        <fileset dir="${lib.extend.poi.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        <!-- struts2依赖(可选) -->
+        <fileset dir="${lib.extend.struts2.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+
+	</path>
+
+    <!-- 文件过滤器 -->
+    <patternset id="files_filter">
+        <patternset refid="ignored.files"/>
+        <patternset refid="resource.files"/>
+    </patternset>
+	<!-- resources用于实现对资源文件和配置文件的部署 -->
+	<target name="bank_resources">
+		<copy todir="${bank.build.dirPath}" overwrite="true">
+			<fileset dir="${bank.dirPath}">
+				<patternset refid="files_filter"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<!--compile编译所有java文件-->
+	<target name="bank_compile" depends="bank_prepare,bank_resources">
+        <mkdir dir="${bank.build.dirPath}"/>
+		<javac fork="true" srcdir="${bank.dirPath}" executable="${target.java.home}/bin/javac"
+               target="${target.java.version}" destdir="${bank.build.dirPath}"
+               debug="true" debuglevel="source,lines,vars" >
+			<compilerarg line="-encoding ${target.encode}"/>
+			<compilerarg value="-Xlint:unchecked"/>
+			<compilerarg value="-Xlint:deprecation"/>
+			<classpath refid="bank_compile.classpath"/>
+		</javac>
+	</target>
+
+    <target name="bank_prepare">
+        <tstamp />
+    </target>
+
+	<!--clean清除已经编译的目标文件和已经部署的文件-->
+	<target name="bank_clean" description="Prepare for clean build">
+		<delete dir="${bank.build.dirPath}"/>
+		<delete dir="${war.web.dirPath}/WEB-INF/lib/${bank.jar.name}.jar"/>
+	</target>
+
+	<!--dist完成项目部署-->
+	<target name="bank_dist" description="Create binary distribution">
+        <jar jarfile="${bank.build.dirPath}/${bank.jar.name}.jar" basedir="${bank.build.dirPath}">
+            <exclude name="**/*.jar"/>
+            <exclude name="**/*.zip"/>
+            <exclude name="**/*.ftl"/>
+            <exclude name="**/*.sql"/>
+            <manifest>
+                <attribute name="Specification-Title" value="${component.name}"/>
+                <attribute name="Specification-Version" value="${component.Version}"/>
+                <attribute name="Specification-Vendor" value="${component.Vendor}"/>
+                <attribute name="Implementation-Title" value="${component.name}"/>
+                <attribute name="Implementation-Version" value="${component.Version}"/>
+                <attribute name="X-Compile-Target-JDK" value="${target.java.version}"/>
+                <attribute name="X-Compile-Source-JDK" value="${target.java.version}"/>
+            </manifest>
+        </jar>
+	</target>
+    <!-- 制作源码包 -->
+    <target name="bank_zip_dist" description="Create Source distribution">
+        <zip destfile="${bank.build.dirPath}/${bank.jar.name}.zip">
+            <fileset dir="${bank.dirPath}">
+                <include name="**/*.java"/>
+                <patternset refid="resource.files"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+        </zip>
+    </target>
+
+    <target name="bank_copy">
+        <copy todir="${war.web.dirPath}/WEB-INF/lib" overwrite="true">
+            <fileset dir="${bank.build.dirPath}">
+                <include name="${bank.jar.name}.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${war.web.dirPath}/WEB-INF" overwrite="true">
+            <fileset dir="${bank.dirPath}">
+                <include name="alipay_form.ftl"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="bank_project" depends="bank_clean,bank_prepare,bank_compile"/>
+	<!--all重新编译和部署整个应用-->
+	<target name="bank_all" depends="bank_project,bank_dist,bank_zip_dist,bank_copy"/>
+</project>

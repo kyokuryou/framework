@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="config_all" name="framework_config">
+    <!--系统环境变量-->
+    <import file="./build_property.xml"/>
+    <!--编译的类路径设定-->
+    <path id="config_compile.classpath">
+        <fileset dir="${war.web.dirPath}/WEB-INF/lib">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+    <!-- 文件过滤器 -->
+    <patternset id="files_filter">
+        <patternset refid="resource.files"/>
+        <patternset refid="ignored.files"/>
+    </patternset>
+    <!-- resources用于实现对资源文件和配置文件的部署 -->
+    <target name="config_resources">
+        <copy todir="${src.build.dirPath}" overwrite="true">
+            <fileset dir="${project.src.dirPath}/resource">
+                <patternset refid="files_filter"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <!--clean清除已经编译的目标文件和已经部署的文件-->
+    <target name="config_clean" description="Prepare for clean build">
+        <delete dir="${src.build.dirPath}"/>
+    </target>
+    <!--compile编译所有java文件-->
+    <target name="config_compile" depends="config_prepare,config_resources">
+        <mkdir dir="${src.build.dirPath}"/>
+        <javac fork="true" srcdir="${project.src.dirPath}/resource" executable="${target.java.home}/bin/javac"
+               target="${target.java.version}" destdir="${src.build.dirPath}"
+               debug="true" debuglevel="source,lines,vars">
+            <compilerarg line="-encoding ${target.encode}"/>
+            <compilerarg value="-Xlint:unchecked"/>
+            <compilerarg value="-Xlint:deprecation"/>
+            <classpath refid="config_compile.classpath"/>
+        </javac>
+    </target>
+    <target name="config_run" >
+        <java classname="org.core.build.ConfigBuilder" fork="true">
+            <classpath refid="config_compile.classpath"/>
+            <classpath>
+                <pathelement location="${src.build.dirPath}"/>
+            </classpath>
+            <jvmarg value="-Dfile.encoding=UTF-8"/>
+            <arg value="true"/>
+            <arg value="${war.dirPath}"/>
+            <arg value="${war.src.dirPath}"/>
+            <arg value="${war.web.dirPath}"/>
+            <arg value="V2_4"/>
+            <arg value="struts2,xfire,jCaptcha"/>
+            <!--<arg value="struts2,flex"/>-->
+            <arg value="test>jdbc"/>
+            <arg value="org.test"/>
+        </java>
+    </target>
+
+    <target name="config_prepare">
+        <tstamp/>
+    </target>
+    <target name="config_project" depends="config_clean,config_prepare,config_compile,config_run"/>
+    <!--all重新编译和部署整个应用-->
+    <target name="config_all" depends="config_project"/>
+</project>

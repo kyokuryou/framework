@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4"
+         xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+    <!-- 定义Spring配置文件位置 -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:spring.xml</param-value>
+    </context-param>
+
+    <!-- 编码处理过滤器 -->
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>utf-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+
+    <!-- 验证码图片生成 -->
+    <filter>
+        <filter-name>jCaptchaFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <init-param>
+            <param-name>targetFilterLifecycle</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+
+    <!-- 管理员登录验证码校验 -->
+    <filter>
+        <filter-name>adminLoginJCaptchaFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <init-param>
+            <param-name>targetFilterLifecycle</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <!-- Spring Security过滤器 -->
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+
+    <!-- Struts2过滤器 -->
+    <filter>
+        <filter-name>struts</filter-name>
+        <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+    </filter>
+
+    <!-- mapping start -->
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>jCaptchaFilter</filter-name>
+        <url-pattern>/captcha.jpg</url-pattern>
+    </filter-mapping>
+    <!-- 后台登录验证码表单处理URL.必须放在springSecurityFilter的filter-mapping之前 -->
+    <filter-mapping>
+        <filter-name>adminLoginJCaptchaFilter</filter-name>
+        <url-pattern>/admin/loginVerify</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/admin/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>struts</filter-name>
+        <url-pattern>*.action</url-pattern>
+    </filter-mapping>
+    <!-- mapping end -->
+
+    <!-- JSPSupportServlet配置 -->
+    <servlet>
+        <servlet-name>JSPSupportServlet</servlet-name>
+        <servlet-class>org.apache.struts2.views.JspSupportServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <!-- 对Spring容器进行实例化 -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <!-- Spring刷新Introspector防止内存泄露 -->
+    <listener>
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+    </listener>
+
+    <!-- Session超时定义,单位为分钟 -->
+    <session-config>
+        <session-timeout>60</session-timeout>
+    </session-config>
+
+    <!-- 定义默认访问页 -->
+    <welcome-file-list>
+        <welcome-file>index.action</welcome-file>
+    </welcome-file-list>
+</web-app>

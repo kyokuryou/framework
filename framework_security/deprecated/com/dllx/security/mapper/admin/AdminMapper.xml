@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+    <findByUserName>
+        select
+        pk_id,createDate,modifyDate,
+        department,email,
+        loginDate,loginIp,
+        name,password,username
+        from t_admin
+        where username=:username
+    </findByUserName>
+</sqls>

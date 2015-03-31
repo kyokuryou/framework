@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="lib_all" name="framework_lib">
+
+    <import file="./build_property.xml"/>
+
+    <target name="lib_clean" description="Prepare for clean build">
+        <mkdir dir="${war.web.dirPath}/WEB-INF/lib"/>
+        <delete>
+            <fileset dir="${war.web.dirPath}/WEB-INF/lib">
+                <exclude name="${src.jar.name}.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+        </delete>
+    </target>
+
+    <target name="lib_dist" description="Create binary distribution">
+        <copy todir="${war.web.dirPath}/WEB-INF/lib" overwrite="true" includeEmptyDirs="no">
+            <!-- 主要 -->
+            <fileset dir="${lib.dirPath}">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            <!-- 主要(commons)-->
+            <fileset dir="${lib.extend.commons.dirPath}">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            <!-- spring权限-->
+            <fileset dir="${lib.extend.security.dirPath}">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            <!-- 数据库连接池 -->
+            <fileset dir="${lib.database.dirPath}">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            <!-- DB2数据库驱动包 -->
+            <!--
+            <fileset dir="${lib.database.db2.dirPath}">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            -->
+            <!-- mysql数据库驱动包 -->
+            <fileset dir="${lib.database.mysql.dirPath}">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            <!-- mail,el依赖-->
+            <fileset dir="${lib.extend.dirPath}">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            <!-- jcaptcha依赖 -->
+            <fileset dir="${lib.extend.jcaptcha.dirPath}">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            <!-- html,xml,js压缩依赖包 -->
+            <fileset dir="${lib.extend.compressor.dirPath}">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            <!-- flex依赖包 -->
+            <!--
+            <fileset dir="${lib.extend.flex.dirPath}">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            -->
+            <!-- image 依赖包 -->
+            <fileset dir="${lib.extend.image.dirPath}">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            <!-- poi依赖包 -->
+            <fileset dir="${lib.extend.poi.dirPath}">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            <!-- struts2依赖包-->
+            <!--
+            <fileset dir="${lib.extend.struts2.dirPath}">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            -->
+            <!-- xfire依赖包-->
+            <fileset dir="${lib.extend.xfire.dirPath}">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="lib_all" depends="lib_clean,lib_dist"/>
+</project>

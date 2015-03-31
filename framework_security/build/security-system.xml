@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:sec="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/security
+       http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+    <sec:authentication-manager alias="authenticationManager">
+        <sec:authentication-provider user-service-ref="secAuthentication">
+            <sec:password-encoder hash="md5"/>
+        </sec:authentication-provider>
+    </sec:authentication-manager>
+
+    <!-- 定义权限、资源关系 -->
+    <bean id="secFilter" class="org.core.security.common.SecurityFilter">
+        <property name="authenticationManager" ref="authenticationManager"/>
+        <property name="accessDecisionManager" ref="secAccessDecision"/>
+        <property name="securityMetadataSource" ref="secMetadata"/>
+    </bean>
+
+    <!-- 定义权限、资源关系 -->
+    <bean id="secSessionControlStrategy"
+          class="org.springframework.security.web.authentication.session.ConcurrentSessionControlStrategy">
+        <property name="maximumSessions" value="1"/>
+        <property name="exceptionIfMaximumExceeded" value="false"/>
+        <constructor-arg name="sessionRegistry" ref="sessionRegistry"/>
+    </bean>
+
+    <bean id="secService" class="org.core.security.service.SecurityService">
+        <property name="securityDao">
+            <bean class="org.core.security.dao.SecurityDao">
+                <property name="sqlSession" ref="secSqlSession"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="secMetadata" class="org.core.security.common.SecurityMetadata">
+        <property name="securityService" ref="secService"/>
+    </bean>
+
+    <bean id="secAccessDecision" class="org.core.security.common.SecurityAccessDecision"/>
+    <bean id="secAuthentication" class="org.core.security.common.SecurityAuthentication">
+        <property name="securityService" ref="secService"/>
+    </bean>
+
+    <bean id="secListener" class="org.core.security.common.SecurityListener">
+        <property name="securityService" ref="secService"/>
+    </bean>
+    <bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl"/>
+</beans>

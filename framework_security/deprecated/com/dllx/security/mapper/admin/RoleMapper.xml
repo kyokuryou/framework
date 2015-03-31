@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+    <findRoleListByAdmin>
+        SELECT
+            R.pk_id,
+            R.createDate,
+            R.modifyDate,
+            R.description,
+            R.isSystem,
+            R.`name`,
+            R.`value`
+        FROM
+            t_role AS R
+        LEFT JOIN t_admin_role AS AR ON R.pk_id = AR.role_id
+        WHERE AR.admin_id=:adminId
+    </findRoleListByAdmin>
+    <findRoleListByResource>
+        SELECT
+            R.pk_id,
+            R.createDate,
+            R.modifyDate,
+            R.description,
+            R.isSystem,
+            R.`name`,
+            R.`value`
+        FROM
+            t_role AS R
+        LEFT JOIN t_role_resource AS RR ON R.pk_id = RR.role_id
+        WHERE RR.resource_id=:resourceId
+    </findRoleListByResource>
+</sqls>

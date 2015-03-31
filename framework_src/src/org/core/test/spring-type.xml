@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="dateFormat" class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+        <property name="customEditors">
+            <map>
+                <entry key="java.util.Date">
+                    <bean class="org.core.test.TypePropertyEditor">
+                        <property name="type" value="DATE"/>
+                    </bean>
+                </entry>
+
+                <entry key="java.sql.Timestamp">
+                    <bean class="org.core.test.TypePropertyEditor">
+                        <property name="type" value="TIMESTAMP"/>
+                    </bean>
+                </entry>
+
+                <entry key="java.sql.Time">
+                    <bean class="org.core.test.TypePropertyEditor">
+                        <property name="type" value="TIME"/>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+</beans>

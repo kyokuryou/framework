@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                    http://www.springframework.org/schema/mvc
+                    http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
+
+    <!-- 主配置引入-->
+    <import resource="classpath:spring-system.xml"/>
+    <!-- spring mvc -->
+    <mvc:annotation-driven/>
+    <!-- 配置JSP视图 -->
+    <bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="${resources.jsp}"/>
+        <property name="suffix" value=".jsp"/>
+        <property name="contentType" value="text/html;charset=UTF-8"/>
+        <property name="order" value="1"/>
+    </bean>
+
+    <!-- 配置FreeMark视图 -->
+    <bean id="freeMarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <property name="contentType" value="text/html;charset=UTF-8"/>
+        <property name="prefix" ref="${resources.ftl}"/>
+        <property name="suffix" value=".ftl"/>
+        <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
+        <property name="cache" value="true"/>
+        <property name="exposeSessionAttributes" value="true"/>
+        <property name="exposeRequestAttributes" value="true"/>
+        <property name="exposeSpringMacroHelpers" value="true"/>
+        <!-- 在页面中使用${rc.contextPath}就可获得contextPath -->
+        <property name="requestContextAttribute" value="rc"/>
+        <property name="order" value="0"/>
+    </bean>
+
+    <!-- 文件上传配置注意:这里申明的id必须为multipartResolver -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="${upload.max_size}"/>
+    </bean>
+
+    <!-- 简单的异常处理 -->
+    <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <!-- 映射目录为/WEB-INF/jsp/error/upload_error.jsp -->
+                <prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">${page.error}</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- 对静态资源文件的访问 -->
+    <mvc:resources mapping="/images/**" location="${resources.images}" cache-period="${resources.cache_period}"/>
+    <mvc:resources mapping="/js/**" location="${resources.js}" cache-period="${resources.cache_period}"/>
+    <mvc:resources mapping="/css/**" location="${resources.css}" cache-period="${resources.cache_period}"/>
+    <mvc:resources mapping="/upload/**" location="${resources.upload}" cache-period="${resources.cache_period}"/>
+
+
+    <bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>
+    <!-- 配置freemarkerManager -->
+    <bean id="freemarkerConfigurer" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPath" value="/WEB-INF"/>
+        <property name="defaultEncoding" value="${freemarker.default_encoding}"/>
+        <property name="freemarkerSettings">
+            <props>
+                <prop key="template_update_delay">${freemarker.template_update_delay}</prop>
+                <prop key="default_encoding">${freemarker.default_encoding}</prop>
+                <prop key="locale">${freemarker.locale}</prop>
+                <prop key="classic_compatible">${freemarker.classic_compatible}</prop>
+                <prop key="whitespace_stripping">${freemarker.whitespace_stripping}</prop>
+                <prop key="url_escaping_charset">${freemarker.url_escaping_charset}</prop>
+                <prop key="date_format">${freemarker.date_format}</prop>
+                <prop key="time_format">${freemarker.time_format}</prop>
+                <prop key="datetime_format">${freemarker.datetime_format}</prop>
+                <prop key="number_format">${freemarker.number_format}</prop>
+                <prop key="boolean_format">${freemarker.boolean_format}</prop>
+                <prop key="tag_syntax">${freemarker.tag_syntax}</prop>
+                <prop key="auto_import">${freemarker.auto_import}</prop>
+            </props>
+        </property>
+        <property name="freemarkerVariables">
+            <map>
+                <entry key="xml_escape" value-ref="fmXmlEscape"/>
+            </map>
+        </property>
+    </bean>
+
+    <!-- 模版配置 -->
+    <bean id="freemarkerManager" class="org.core.support.FreemarkerManager">
+        <property name="freeMarkerConfigurer" ref="freemarkerConfigurer"/>
+    </bean>
+
+    <!-- 生成静态页面 -->
+    <bean id="generateHtml" class="org.core.support.GenerateHtml">
+        <property name="freemarkerManager" ref="freemarkerManager"/>
+        <property name="cachePath" value="${resources.static_html}"/>
+    </bean>
+    <!-- 邮件管理器 -->
+    <bean id="mailManager" class="org.core.support.MailManager">
+        <property name="freemarkerManager" ref="freemarkerManager"/>
+        <property name="javaMailSender" ref="javaMailSender"/>
+        <property name="taskExecutor" ref="taskExecutor"/>
+    </bean>
+
+    <!-- 验证码 -->
+    <bean id="captchaFilter" class="org.core.support.captcha.JCaptchaFilter" abstract="true">
+        <property name="captchaService" ref="captchaService"/>
+    </bean>
+    <bean id="captchaService" class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService">
+        <property name="captchaEngine" ref="captchaEngine"/>
+        <!--验证码过期时间-->
+        <property name="minGuarantedStorageDelayInSeconds" value="600"/>
+    </bean>
+    <bean id="captchaEngine" class="org.core.support.captcha.JCaptchaEngine"/>
+    <!-- 国际化 -->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>i18n</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+        <property name="cookieName" value="${i18n.cookie_name}"/>
+        <property name="cookieMaxAge" value="${i18n.cookie_max_age}"/>
+        <property name="defaultLocale" value="${i18n.default_locale}"/>
+    </bean>
+    <!-- 过滤器定义-->
+    <!--js 国际化 -->
+    <bean id="jsLocaleFilter" class="org.core.support.filter.JsLocaleFilter">
+        <property name="freemarkerManager" ref="freemarkerManager"/>
+        <property name="jsFtl" value="${template.jsFtl}"/>
+    </bean>
+</beans>

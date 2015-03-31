@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+    <findResourceListAll>
+        SELECT
+            R.pk_id,
+            R.createDate,
+            R.modifyDate,
+            R.description,
+            R.isSystem,
+            R.`name`,
+            R.`value`,
+            R.orderList
+        FROM
+            t_resource AS R
+    </findResourceListAll>
+</sqls>

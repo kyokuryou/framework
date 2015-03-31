@@ -1,0 +1,73 @@
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+    <title>JS加密混淆工具 - HTA</title>
+    <hta:application applicationname="" icon="" singleInstance="yes" caption="yes" contextmenu="no" innerborder="no"
+                     border="thin" borderstyle="normal" maximizebutton="no" showintaskbar="yes" sysmenu="yes"
+                     windowstate="normal"/>
+    <link rel="stylesheet" type="text/css" href="script/hta.css"/>
+    <script type="text/javascript" src="../lib/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="script/hta.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var $div = $("#hta_div");
+            $.encryption({
+                panelWidth: 430,
+                panelHeight: 320
+            });
+        });
+
+    </script>
+</head>
+<body>
+<div id="hta_div">
+    <table class="hta_tab" border="0">
+        <!--
+        <tr>
+            <td class="hta_tt">范围：</td>
+            <td><input type="radio" class="encryption_scope" name="scope" id="chkFile" value="1" checked><label
+                    for="chkFile">文件</label></td>
+            <td><input type="radio" class="encryption_scope" name="scope" id="chkFolder" value="2"><label
+                    for="chkFolder">所在的文件夹</label></td>
+        </tr>
+        -->
+        <tr>
+            <td class="hta_tt">位置：</td>
+            <td colspan="2"><input type="file" class="encryption_path"></td>
+        </tr>
+        <tr>
+            <td class="hta_tt">生成：</td>
+            <td colspan="2"><input type="text" class="encryption_builder"></td>
+        </tr>
+        <tr>
+            <td class="hta_tt">方式：</td>
+            <td colspan="2">
+                <select class="encryption_type">
+                    <option value="base">base</option>
+                    <option value="base64">base64</option>
+                    <option value="md5">md5</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <input type="button" class="encryption_encode" value="开始加密">
+                <input type="button" class="encryption_decode" value="开始解密">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <div class="encryption_console" title="双击清空记录"></div>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+

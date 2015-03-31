@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <!--++++++++++++++++++++++++开发状态++++++++++++++++++++++++-->
+    <!-- 是否显示详细错误信息 -->
+    <constant name="struts.devMode" value="true"/>
+    <!-- 是否自动加载国际化资源文件  -->
+    <constant name="struts.i18n.reload" value="false"/>
+    <!-- convention类重新加载 -->
+    <constant name="struts.convention.classes.reload" value="true"/>
+    <!--++++++++++++++++++++++++开发状态++++++++++++++++++++++++-->
+
+    <include file="struts-system.xml"/>
+
+    <package name="admin" extends="basePackage" namespace="/admin/">
+        <global-results>
+            <result name="error" type="freemarker">/WEB-INF/template/admin/error.ftl</result>
+            <result name="success" type="freemarker">/WEB-INF/template/admin/success.ftl</result>
+        </global-results>
+
+        <action name="index">
+            <result type="redirect">admin!main.action</result>
+        </action>
+
+    </package>
+</struts>

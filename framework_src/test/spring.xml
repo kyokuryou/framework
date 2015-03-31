@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd                      http://www.springframework.org/schema/context                      http://www.springframework.org/schema/context/spring-context-3.1.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!-- 开启注解处理器 -->
+    <context:annotation-config/>
+    <!-- 设置需要进行Spring注解扫描的类包 -->
+    <context:component-scan base-package="com.fukang.shop" use-default-filters="false">
+        <!--  扫描符合@Service @Repository @Controller的类 -->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
+    </context:component-scan>
+    <!-- 主要配置(必须) -->
+    <import resource="classpath:spring-system.xml"/>
+
+    <!--jdbc配置 start-->
+    <bean id="shopDataSource" parent="dataSource">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/fkshop"/>
+        <property name="user" value="root"/>
+        <property name="password" value="quliang"/>
+    </bean>
+    <!--jdbc配置 end-->
+    <bean id="shopSqlSession" parent="sqlSession">
+        <property name="dataSource" ref="shopDataSource"/>
+    </bean>
+    <!--对该dataSource增加注解事务管理 start-->
+    <bean name="shopTm" parent="transactionManager">
+        <property name="dataSource" ref="shopDataSource"/>
+    </bean>
+    <tx:annotation-driven proxy-target-class="true" transaction-manager="shopTm"/>
+    <!--对该dataSource增加注解事务管理 end-->
+
+    <bean name="adminRoleDao" class="org.core.dao.AdminRoleDao">
+        <property name="shopSqlSession" ref="shopSqlSession"/>
+    </bean>
+
+</beans>

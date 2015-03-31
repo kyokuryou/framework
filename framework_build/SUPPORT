@@ -1,0 +1,14 @@
+WebLogic Server 9.1 now fully supports the Java 2 Enterprise Edition (J2EE) 1.4 specification including support for the following J2EE APIs:
+
+    * J2EE 1.4, including:
+          o Enterprise JavaBeans (EJB) 2.1
+          o Servlet 2.4
+          o Java ServerPages (JSP) 2.0
+          o Java Database Connectivity (JDBC) 3.0
+          o Java Connector Architecture (JCA) 1.5
+          o Java Messaging Service (JMS) 1.1
+          o Java Management Extensions (JMX) 1.2
+    * Struts
+    * Beehive (Apache)
+    * Spring
+    * JSR-181 (Web Services)
