@@ -1,17 +1,16 @@
-package org.core.support.web;
+package org.smarty.web;
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
-import org.apache.struts2.ServletActionContext;
-import org.core.bean.Pager;
-import org.core.bean.SystemConfig;
-import org.core.logger.RuntimeLogger;
-import org.core.utils.JsonUtil;
-import org.core.utils.SystemConfigUtil;
+import org.smarty.core.bean.Pager;
+import org.smarty.core.bean.SystemConfig;
+import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.utils.JsonUtil;
+import org.smarty.core.utils.SystemConfigUtil;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -23,7 +22,7 @@ import java.util.Map;
 /**
  * Action基类
  */
-public class BaseAction extends ActionSupport {
+public abstract class BaseAction {
     private static RuntimeLogger logger = new RuntimeLogger(BaseAction.class);
     private static final long serialVersionUID = 6718838822334455667L;
 
@@ -36,18 +35,27 @@ public class BaseAction extends ActionSupport {
     public static final String MESSAGE = "message";
     public static final String CONTENT = "content";
 
+    protected HttpServletRequest request;
+    protected HttpServletResponse response;
+    protected HttpSession session;
     protected String id;
     protected String[] ids;
     protected Pager pager;
-    protected String redirectionUrl;// 操作提示后的跳转URL,为null则返回前一页
     public Theme useTheme;
 
     public enum Theme {
         defPlan, planA, planB, planC, planD, planE, planF, planG
     }
 
+    @ModelAttribute
+    public void setHttpServlet(HttpServletRequest request, HttpServletResponse response) {
+        this.request = request;
+        this.response = response;
+        this.session = request.getSession();
+    }
+
     public String getBase() {
-        return getRequest().getContextPath();
+        return request.getContextPath();
     }
 
     /**
@@ -87,110 +95,8 @@ public class BaseAction extends ActionSupport {
      * @param country  大写的两字母 ISO-3166 代码
      */
     public void chooseLanguage(String language, String country) {
-        ActionContext ac = ActionContext.getContext();
-        ac.setLocale(new Locale(language, country));
-    }
-
-    /**
-     * 获取Attribute
-     *
-     * @return object
-     */
-    public Object getAttribute(String name) {
-        return ServletActionContext.getRequest().getAttribute(name);
-    }
-
-    /**
-     * 设置Attribute
-     *
-     * @param name  key
-     * @param value value
-     */
-    public void setAttribute(String name, Object value) {
-        ServletActionContext.getRequest().setAttribute(name, value);
-    }
-
-    /**
-     * 获取Parameter
-     *
-     * @param name key
-     * @return value
-     */
-    public String getParameter(String name) {
-        return getRequest().getParameter(name);
-    }
-
-    /**
-     * 获取Parameter数组
-     *
-     * @param name key
-     * @return String数组
-     */
-    public String[] getParameterValues(String name) {
-        return getRequest().getParameterValues(name);
-    }
-
-    /**
-     * 获取Session
-     *
-     * @param name key
-     * @return value
-     */
-    public Object getSession(String name) {
-        ActionContext actionContext = ActionContext.getContext();
-        Map<String, Object> session = actionContext.getSession();
-        return session.get(name);
-    }
-
-    /**
-     * 获取Session
-     *
-     * @return Map
-     */
-    public Map<String, Object> getSession() {
-        ActionContext actionContext = ActionContext.getContext();
-        return actionContext.getSession();
-    }
-
-    /**
-     * 获取Session
-     *
-     * @param name  key
-     * @param value value
-     */
-    public void setSession(String name, Object value) {
-        ActionContext actionContext = ActionContext.getContext();
-        Map<String, Object> session = actionContext.getSession();
-        session.put(name, value);
-    }
-
-    /**
-     * 获取request
-     *
-     * @return HttpServletRequest
-     */
-    public HttpServletRequest getRequest() {
-        return ServletActionContext.getRequest();
-    }
-
-    /**
-     * 获取Response
-     *
-     * @return HttpServletResponse
-     */
-
-    public HttpServletResponse getResponse() {
-        return ServletActionContext.getResponse();
-    }
-
-    /**
-     * 获取ServletContext
-     *
-     * @return ServletContext
-     */
-
-    public ServletContext getServletContext() {
-        return ServletActionContext.getServletContext();
+        Locale locale = new Locale(language, country);
+        session.setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, locale);
     }
 
     /**
@@ -202,7 +108,6 @@ public class BaseAction extends ActionSupport {
      */
     public String ajax(String content, String type) {
         try {
-            HttpServletResponse response = getResponse();
             response.setContentType(type + ";charset=UTF-8");
             response.setHeader("Pragma", "No-cache");
             response.setHeader("Cache-Control", "no-cache");
@@ -353,21 +258,20 @@ public class BaseAction extends ActionSupport {
      * 设置页面不缓存
      */
     public void setResponseNoCache() {
-        getResponse().setHeader("progma", "no-cache");
-        getResponse().setHeader("Cache-Control", "no-cache");
-        getResponse().setHeader("Cache-Control", "no-store");
-        getResponse().setDateHeader("Expires", 0);
+        response.setHeader("progma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setHeader("Cache-Control", "no-store");
+        response.setDateHeader("Expires", 0);
     }
 
     public OutputStream getOutputStream(String fileName) throws IOException {
-        HttpServletResponse response = getResponse();
         response.setContentType("application/octet-stream;charset=UTF-8");
         response.addHeader("Content-Disposition", "attachment;filename=" + convertEncode(fileName));
         return response.getOutputStream();
     }
 
     public String convertEncode(String str) throws UnsupportedEncodingException {
-        if (getRequest().getHeader("User-Agent").toUpperCase().indexOf("MSIE") > 0) {
+        if (request.getHeader("User-Agent").toUpperCase().indexOf("MSIE") > 0) {
             return URLEncoder.encode(str, "UTF-8");
         }
         return new String(str.getBytes("UTF-8"), "ISO8859-1");
@@ -395,13 +299,5 @@ public class BaseAction extends ActionSupport {
 
     public void setPager(Pager pager) {
         this.pager = pager;
-    }
-
-    public String getRedirectionUrl() {
-        return redirectionUrl;
-    }
-
-    public void setRedirectionUrl(String redirectionUrl) {
-        this.redirectionUrl = redirectionUrl;
     }
 }

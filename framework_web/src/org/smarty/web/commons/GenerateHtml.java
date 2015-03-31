@@ -1,8 +1,8 @@
-package org.core.support;
+package org.smarty.web.commons;
 
-import org.core.logger.RuntimeLogger;
-import org.core.utils.ConvertUtil;
-import org.core.utils.PathUtil;
+import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.utils.ConvertUtil;
+import org.smarty.web.utils.WebPathUtil;
 import org.springframework.beans.factory.InitializingBean;
 
 import java.io.File;
@@ -31,7 +31,7 @@ public class GenerateHtml implements InitializingBean {
      */
     public void buildHtml(String tn, Map<String, Object> data) {
         String hf = ConvertUtil.reFileSuffix(cachePath + tn, "html");
-        File htmlFile = PathUtil.getServletAsFile(hf);
+        File htmlFile = WebPathUtil.getServletAsFile(hf);
         try {
             OutputStream os = new FileOutputStream(htmlFile);
             freemarkerManager.outputTemplate(tn, data, os);

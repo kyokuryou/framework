@@ -88,24 +88,24 @@
     </bean>
 
     <!-- 模版配置 -->
-    <bean id="freemarkerManager" class="org.core.support.FreemarkerManager">
+    <bean id="freemarkerManager" class="org.smarty.web.commons.FreemarkerManager">
         <property name="freeMarkerConfigurer" ref="freemarkerConfigurer"/>
     </bean>
 
     <!-- 生成静态页面 -->
-    <bean id="generateHtml" class="org.core.support.GenerateHtml">
+    <bean id="generateHtml" class="org.smarty.web.commons.GenerateHtml">
         <property name="freemarkerManager" ref="freemarkerManager"/>
         <property name="cachePath" value="${resources.static_html}"/>
     </bean>
     <!-- 邮件管理器 -->
-    <bean id="mailManager" class="org.core.support.MailManager">
+    <bean id="mailManager" class="org.smarty.web.commons.MailManager">
         <property name="freemarkerManager" ref="freemarkerManager"/>
         <property name="javaMailSender" ref="javaMailSender"/>
         <property name="taskExecutor" ref="taskExecutor"/>
     </bean>
 
     <!-- 验证码 -->
-    <bean id="captchaFilter" class="org.core.support.captcha.JCaptchaFilter" abstract="true">
+    <bean id="captchaFilter" class="org.smarty.web.captcha.JCaptchaFilter" abstract="true">
         <property name="captchaService" ref="captchaService"/>
     </bean>
     <bean id="captchaService" class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService">
@@ -113,7 +113,7 @@
         <!--验证码过期时间-->
         <property name="minGuarantedStorageDelayInSeconds" value="600"/>
     </bean>
-    <bean id="captchaEngine" class="org.core.support.captcha.JCaptchaEngine"/>
+    <bean id="captchaEngine" class="org.smarty.web.captcha.JCaptchaEngine"/>
     <!-- 国际化 -->
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basenames">
@@ -129,7 +129,7 @@
     </bean>
     <!-- 过滤器定义-->
     <!--js 国际化 -->
-    <bean id="jsLocaleFilter" class="org.core.support.filter.JsLocaleFilter">
+    <bean id="jsLocaleFilter" class="org.smarty.web.filter.JsLocaleFilter">
         <property name="freemarkerManager" ref="freemarkerManager"/>
         <property name="jsFtl" value="${template.jsFtl}"/>
     </bean>

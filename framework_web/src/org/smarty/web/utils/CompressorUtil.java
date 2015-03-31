@@ -1,4 +1,4 @@
-package org.core.utils;
+package org.smarty.web.utils;
 
 import com.google.javascript.jscomp.CompilationLevel;
 import com.googlecode.htmlcompressor.compressor.ClosureJavaScriptCompressor;

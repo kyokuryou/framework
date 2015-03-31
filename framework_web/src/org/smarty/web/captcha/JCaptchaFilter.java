@@ -1,8 +1,8 @@
-package org.core.support.captcha;
+package org.smarty.web.captcha;
 
 import com.octo.captcha.service.CaptchaService;
 import com.octo.captcha.service.CaptchaServiceException;
-import org.core.logger.RuntimeLogger;
+import org.smarty.core.logger.RuntimeLogger;
 
 import javax.imageio.ImageIO;
 import javax.servlet.Filter;

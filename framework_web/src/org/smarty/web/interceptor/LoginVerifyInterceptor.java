@@ -1,11 +1,11 @@
-package org.core.common;
+package org.smarty.web.interceptor;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 import org.apache.struts2.StrutsStatics;
-import org.core.bean.SystemConfig;
-import org.core.utils.SystemConfigUtil;
+import org.smarty.core.bean.SystemConfig;
+import org.smarty.core.utils.SystemConfigUtil;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

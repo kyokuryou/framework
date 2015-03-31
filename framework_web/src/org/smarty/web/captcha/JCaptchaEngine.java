@@ -1,4 +1,4 @@
-package org.core.support.captcha;
+package org.smarty.web.captcha;
 
 import com.octo.captcha.component.image.backgroundgenerator.BackgroundGenerator;
 import com.octo.captcha.component.image.color.RandomListColorGenerator;

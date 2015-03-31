@@ -1,15 +1,14 @@
-package org.core.support;
+package org.smarty.web.commons;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import org.core.logger.RuntimeLogger;
-import org.core.utils.LogicUtil;
-import org.core.utils.SpringUtil;
+import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.utils.LogicUtil;
+import org.smarty.core.utils.SpringUtil;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
-import javax.servlet.ServletContext;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;

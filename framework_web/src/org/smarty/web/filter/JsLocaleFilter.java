@@ -1,8 +1,8 @@
-package org.core.support.filter;
+package org.smarty.web.filter;
 
-import org.core.logger.RuntimeLogger;
-import org.core.support.FreemarkerManager;
-import org.core.utils.DateUtil;
+import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.web.commons.FreemarkerManager;
+import org.smarty.core.utils.DateUtil;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;

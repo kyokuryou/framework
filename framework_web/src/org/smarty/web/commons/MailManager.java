@@ -1,9 +1,9 @@
-package org.core.support;
+package org.smarty.web.commons;
 
-import org.core.bean.SystemConfig;
-import org.core.logger.RuntimeLogger;
-import org.core.utils.LogicUtil;
-import org.core.utils.SystemConfigUtil;
+import org.smarty.core.bean.SystemConfig;
+import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.utils.LogicUtil;
+import org.smarty.core.utils.SystemConfigUtil;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.mail.javamail.JavaMailSender;

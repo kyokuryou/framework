@@ -1,4 +1,4 @@
-package org.core.common;
+package org.smarty.web.interceptor;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;

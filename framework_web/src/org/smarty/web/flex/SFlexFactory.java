@@ -1,4 +1,4 @@
-package org.core.support.flex;
+package org.smarty.web.flex;
 
 import flex.messaging.FactoryInstance;
 import flex.messaging.FlexFactory;
