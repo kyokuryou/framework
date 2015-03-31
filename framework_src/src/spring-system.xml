@@ -17,7 +17,7 @@
     <!-- 开启注解处理器 -->
     <context:annotation-config/>
     <!-- 设置需要进行Spring注解扫描的类包 -->
-    <context:component-scan base-package="org.core" use-default-filters="false">
+    <context:component-scan base-package="org.smarty.core" use-default-filters="false">
         <!-- 扫描符合@Service的类 -->
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
     </context:component-scan>
@@ -29,7 +29,7 @@
     <task:annotation-driven/>
     <!-- 自定义定时任务-->
     <bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"/>
-    <bean id="scheduleManager" class="org.core.support.ScheduleManager">
+    <bean id="scheduleManager" class="org.smarty.core.support.ScheduleManager">
         <property name="scheduler" ref="schedulerFactory"/>
     </bean>
 
@@ -60,7 +60,7 @@
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
           abstract="true"/>
     <!-- SQLSession -->
-    <bean id="sqlSession" class="org.core.support.jdbc.SQLSession" abstract="true">
+    <bean id="sqlSession" class="org.smarty.core.support.jdbc.SQLSession" abstract="true">
         <property name="sqlType" value="${default.db}"/>
     </bean>
 
@@ -89,6 +89,4 @@
         <!-- 线程池维护线程所允许的空闲时间 -->
         <property name="keepAliveSeconds" value="60"/>
     </bean>
-    <!-- 启动插件bean -->
-    <bean name="springUtil" class="org.core.utils.SpringUtil"/>
 </beans>
