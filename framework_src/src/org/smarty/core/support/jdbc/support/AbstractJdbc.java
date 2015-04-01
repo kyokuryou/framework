@@ -59,8 +59,8 @@ public abstract class AbstractJdbc {
                     rs = ps.executeQuery();
                     return JdbcUtil.processSingleRow(rs, rmh);
                 } finally {
-                    JdbcUtil.closeStatement(ps);
                     JdbcUtil.closeResultSet(rs);
+                    JdbcUtil.closeStatement(ps);
                 }
             }
         });
@@ -91,8 +91,8 @@ public abstract class AbstractJdbc {
                     rs = ps.executeQuery();
                     return JdbcUtil.processMultipleRow(rs, rmh);
                 } finally {
-                    JdbcUtil.closeStatement(ps);
                     JdbcUtil.closeResultSet(rs);
+                    JdbcUtil.closeStatement(ps);
                 }
             }
         });
