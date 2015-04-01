@@ -1,7 +1,6 @@
-package org.smarty.web.filter;
+package org.smarty.web.commons;
 
 import org.smarty.core.logger.RuntimeLogger;
-import org.smarty.web.commons.FreemarkerManager;
 import org.smarty.core.utils.DateUtil;
 
 import javax.servlet.Filter;

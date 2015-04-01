@@ -1,7 +1,7 @@
-package org.core.support.web;
+package org.smarty.web.commons;
 
-import org.core.bean.SystemConfig;
-import org.core.utils.SystemConfigUtil;
+import org.smarty.core.bean.SystemConfig;
+import org.smarty.core.utils.SystemConfigUtil;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.Cookie;

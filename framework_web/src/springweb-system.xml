@@ -77,8 +77,8 @@
         <property name="interceptors">
             <list>
                 <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"/>
-                <bean class="org.core.support.web.TrimInterceptor"/>
-                <bean class="org.core.support.web.LoginVerifyInterceptor"/>
+                <bean class="org.smarty.web.commons.TrimInterceptor"/>
+                <bean class="org.smarty.web.commons.LoginVerifyInterceptor"/>
             </list>
         </property>
         <property name="useDefaultSuffixPattern" value="false"/>
@@ -168,7 +168,7 @@
     </bean>
     <!-- 过滤器定义-->
     <!--js 国际化 -->
-    <bean id="jsLocaleFilter" class="org.smarty.web.filter.JsLocaleFilter">
+    <bean id="jsLocaleFilter" class="org.smarty.web.commons.JsLocaleFilter">
         <property name="freemarkerManager" ref="freemarkerManager"/>
         <property name="jsFtl" value="${template.jsFtl}"/>
     </bean>

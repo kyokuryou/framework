@@ -1,4 +1,4 @@
-package org.core.support.web;
+package org.smarty.web.commons;
 
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.support.RequestContextUtils;

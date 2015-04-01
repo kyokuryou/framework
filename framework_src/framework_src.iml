@@ -24,7 +24,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="framework" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="J2EE6" level="application" />
+    <orderEntry type="library" name="framework_src" level="project" />
   </component>
 </module>
