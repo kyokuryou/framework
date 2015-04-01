@@ -35,6 +35,7 @@
 
     <!-- JDBC参数配置 -->
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" lazy-init="true">
+        <property name="order" value="0" />
         <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
         <property name="ignoreResourceNotFound" value="true"/>
         <property name="locations">

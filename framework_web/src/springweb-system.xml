@@ -12,6 +12,18 @@
     <import resource="classpath:spring-system.xml"/>
     <!-- spring mvc -->
     <mvc:annotation-driven/>
+    <!-- spring mvc 配置-->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" lazy-init="true">
+        <property name="order" value="1" />
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="locations">
+            <list>
+                <value>classpath:/web.local.properties</value>
+            </list>
+        </property>
+    </bean>
+
     <!-- 配置FreeMark视图 -->
     <bean id="freeMarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
         <property name="contentType" value="text/html;charset=UTF-8"/>
