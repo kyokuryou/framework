@@ -188,27 +188,19 @@ public class RegexUtil {
      */
     public static String parseHtmlToText(String inputString) {
         String htmlStr = inputString;
-        String textStr = "";
-        Pattern p_script;
-        Matcher m_script;
-        Pattern p_style;
-        Matcher m_style;
-        Pattern p_html;
-        Matcher m_html;
         try {
-            p_script = Pattern.compile(regScript, Pattern.CASE_INSENSITIVE);
-            m_script = p_script.matcher(htmlStr);
+            Pattern  p_script = Pattern.compile(regScript, Pattern.CASE_INSENSITIVE);
+            Matcher m_script = p_script.matcher(htmlStr);
             htmlStr = m_script.replaceAll(""); // 过滤script标签
-            p_style = Pattern.compile(regStyle, Pattern.CASE_INSENSITIVE);
-            m_style = p_style.matcher(htmlStr);
+            Pattern p_style = Pattern.compile(regStyle, Pattern.CASE_INSENSITIVE);
+            Matcher m_style = p_style.matcher(htmlStr);
             htmlStr = m_style.replaceAll(""); // 过滤style标签
-            p_html = Pattern.compile(regEx_html, Pattern.CASE_INSENSITIVE);
-            m_html = p_html.matcher(htmlStr);
-            htmlStr = m_html.replaceAll(""); // 过滤html标签
-            textStr = htmlStr;
+            Pattern p_html = Pattern.compile(regEx_html, Pattern.CASE_INSENSITIVE);
+            Matcher m_html = p_html.matcher(htmlStr);
+            return m_html.replaceAll(""); // 过滤html标签
         } catch (Exception e) {
             logger.out(e);
         }
-        return textStr;
+        return "";
     }
 }

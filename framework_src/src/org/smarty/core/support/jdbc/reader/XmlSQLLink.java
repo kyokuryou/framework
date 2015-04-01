@@ -8,7 +8,7 @@ import org.smarty.core.utils.DocumentUtil;
 import org.smarty.core.utils.LogicUtil;
 import org.smarty.core.utils.PathUtil;
 import org.smarty.core.utils.RegexUtil;
-import org.smarty.core.utils.SmartyUtil;
+import org.smarty.core.utils.LilystudioUtil;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
@@ -71,7 +71,7 @@ public class XmlSQLLink implements ISQLLink {
      * @return SQL
      */
     public String getResultSql(Map<String, Object> data) {
-        return SmartyUtil.render(getSQL(), data);
+        return LilystudioUtil.render(getSQL(), data);
     }
 
     /**

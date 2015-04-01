@@ -14,12 +14,12 @@ import java.util.Properties;
 /**
  * 工具类 - 模板配置
  */
-public class SmartyUtil {
-    private static RuntimeLogger logger = new RuntimeLogger(SmartyUtil.class);
+public class LilystudioUtil {
+    private static RuntimeLogger logger = new RuntimeLogger(LilystudioUtil.class);
 
     private static Engine engine;
 
-    private SmartyUtil() {
+    private LilystudioUtil() {
     }
 
     static {
@@ -67,7 +67,7 @@ public class SmartyUtil {
     public static void render(TemplateConfig tc, Map<String, Object> model) {
         Template template;
         try {
-            template = engine.getTemplate(tc.getTemplateFilePath());
+            template = engine.getTemplate(tc.getSrcFile());
         } catch (Exception e) {
             logger.out(e);
             return;
@@ -75,7 +75,7 @@ public class SmartyUtil {
         Context context = new Context();
         context.putAll(model);
         try {
-            template.merge(context, PathUtil.getResourceAsOutStream(tc.getHtmlFilePath()));
+            template.merge(context, PathUtil.getResourceAsOutStream(tc.getDescFile()));
         } catch (Exception e) {
             logger.out(e);
         }
