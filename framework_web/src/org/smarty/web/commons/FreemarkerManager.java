@@ -6,6 +6,7 @@ import freemarker.template.TemplateException;
 import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.utils.LogicUtil;
 import org.smarty.core.utils.SpringUtil;
+import org.smarty.web.utils.SpringWebUtil;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
@@ -44,7 +45,7 @@ public class  FreemarkerManager implements InitializingBean {
         try {
             OutputStreamWriter sw = new OutputStreamWriter(os);
             Template template = configuration.getTemplate(name);
-            template.process(SpringUtil.getCommonData(data), sw);
+            template.process(SpringWebUtil.getCommonData(data), sw);
             sw.flush();
         } catch (TemplateException e) {
             logger.out(e);

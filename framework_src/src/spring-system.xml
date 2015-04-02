@@ -21,7 +21,6 @@
         <!-- 扫描符合@Service的类 -->
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
     </context:component-scan>
-
     <!-- 使用AspectJ方式配置AOP -->
     <aop:aspectj-autoproxy proxy-target-class="true"/>
     <aop:config proxy-target-class="true"/>
@@ -38,11 +37,7 @@
         <property name="order" value="0" />
         <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
         <property name="ignoreResourceNotFound" value="true"/>
-        <property name="locations">
-            <list>
-                <value>classpath:/config.local.properties</value>
-            </list>
-        </property>
+        <property name="locations" ref="configList"/>
     </bean>
 
     <!-- 数据源 -->
@@ -90,4 +85,18 @@
         <!-- 线程池维护线程所允许的空闲时间 -->
         <property name="keepAliveSeconds" value="60"/>
     </bean>
+    <!-- 验证码 -->
+    <bean id="captchaService" class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService">
+        <property name="captchaEngine">
+            <bean class="org.smarty.core.support.captcha.CaptchaEngine"/>
+        </property>
+        <!--验证码过期时间-->
+        <property name="minGuarantedStorageDelayInSeconds" value="600"/>
+    </bean>
+    <!-- 邮件管理器 -->
+    <bean id="mailManager" class="org.smarty.core.support.MailManager">
+        <property name="javaMailSender" ref="javaMailSender"/>
+        <property name="taskExecutor" ref="taskExecutor"/>
+    </bean>
+    <bean class="org.smarty.core.utils.SpringUtil"/>
 </beans>

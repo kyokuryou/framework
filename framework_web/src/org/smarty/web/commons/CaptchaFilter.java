@@ -1,4 +1,4 @@
-package org.smarty.web.captcha;
+package org.smarty.web.commons;
 
 import com.octo.captcha.service.CaptchaService;
 import com.octo.captcha.service.CaptchaServiceException;
@@ -20,8 +20,8 @@ import java.io.IOException;
 /**
  * 生成验证码图片
  */
-public class JCaptchaFilter implements Filter {
-    private static RuntimeLogger logger = new RuntimeLogger(JCaptchaFilter.class);
+public class CaptchaFilter implements Filter {
+    private static RuntimeLogger logger = new RuntimeLogger(CaptchaFilter.class);
 
     private CaptchaService captchaService;
 
@@ -29,7 +29,7 @@ public class JCaptchaFilter implements Filter {
         this.captchaService = captchaService;
     }
 
-    public void init(FilterConfig fConfig) throws ServletException {
+    public void init(FilterConfig config) throws ServletException {
     }
 
     public void destroy() {

@@ -17,8 +17,18 @@
         <!--  扫描符合@Service @Repository @Controller的类 -->
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
     </context:component-scan>
+
+    <bean name="configList" class="java.util.ArrayList">
+        <constructor-arg>
+            <list>
+                <value>classpath:/config.local.properties</value>
+                <value>classpath:/web.local.properties</value>
+            </list>
+        </constructor-arg>
+    </bean>
     <!-- 主要配置(必须) -->
     <import resource="classpath:spring-system.xml"/>
 
@@ -40,8 +50,9 @@
     </bean>
     <tx:annotation-driven proxy-target-class="true" transaction-manager="shopTm"/>
     <!--对该dataSource增加注解事务管理 end-->
-    <bean class="org.test.commons.TestLauncher" init-method="main" destroy-method="exit">
+    <bean class="org.test.commons.TestWebLauncher" init-method="main" destroy-method="exit">
         <property name="systemCatchSize" value="${cache.system.size}"/>
         <property name="temporaryCatchSize" value="${cache.temporary.size}"/>
     </bean>
+    <bean name="jCaptchaFilter" parent="captchaFilter"/>
 </beans>

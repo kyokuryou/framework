@@ -1,4 +1,4 @@
-package org.smarty.web;
+package org.smarty.web.controller;
 
 import org.smarty.core.bean.Pager;
 import org.smarty.core.bean.SystemConfig;
@@ -22,8 +22,8 @@ import java.util.Map;
 /**
  * Action基类
  */
-public abstract class BaseAction {
-    private static RuntimeLogger logger = new RuntimeLogger(BaseAction.class);
+public abstract class BaseController {
+    private static RuntimeLogger logger = new RuntimeLogger(BaseController.class);
     private static final long serialVersionUID = 6718838822334455667L;
 
     public static final String VIEW = "view";

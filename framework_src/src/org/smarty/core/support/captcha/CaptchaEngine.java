@@ -1,4 +1,4 @@
-package org.smarty.web.captcha;
+package org.smarty.core.support.captcha;
 
 import com.octo.captcha.component.image.backgroundgenerator.BackgroundGenerator;
 import com.octo.captcha.component.image.color.RandomListColorGenerator;
@@ -21,7 +21,7 @@ import java.util.Random;
 /**
  * 生成验证码图片
  */
-public class JCaptchaEngine extends ListImageCaptchaEngine {
+public class CaptchaEngine extends ListImageCaptchaEngine {
 
     public static final String IMAGE_CAPTCHA_KEY = "imageCaptcha";// ImageCaptcha对象存放在Session中的key
     public static final String CAPTCHA_INPUT_NAME = "j_captcha";// 验证码输入表单名称

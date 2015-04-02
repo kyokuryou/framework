@@ -1,76 +1,58 @@
 package org.smarty.core.bean;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+
 /**
  * 模板
  */
 public class TemplateConfig {
     /**
-     * 错误页
-     */
-    public static final String ERROR_PAGE = "errorPage";
-    /**
-     * 错误页500
-     */
-    public static final String ERROR_PAGE_500 = "errorPage500";
-    /**
-     * 错误页404
-     */
-    public static final String ERROR_PAGE_404 = "errorPage404";
-    /**
-     * 错误页403
-     */
-    public static final String ERROR_PAGE_403 = "errorPage403";
-    /**
-     * 错误页权限不足
-     */
-    public static final String ERROR_PAGE_ACCESS = "errorPageAccess";
-
-    /**
      * 模版名称
      */
-    private String templateName;
+    private String name;
     /**
      * 模版描述
      */
-    private String templateDescription;
+    private String description;
     /**
      * 模版路径
      */
-    private String templateFilePath;
+    private InputStream src;
     /**
-     * 输出html路径
+     * 输出路径
      */
-    private String htmlFilePath;
+    private OutputStream target;
 
-    public String getTemplateName() {
-        return templateName;
+    public String getName() {
+        return name;
     }
 
-    public void setTemplateName(String templateName) {
-        this.templateName = templateName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getTemplateDescription() {
-        return templateDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setTemplateDescription(String templateDescription) {
-        this.templateDescription = templateDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getTemplateFilePath() {
-        return templateFilePath;
+    public InputStream getSrc() {
+        return src;
     }
 
-    public void setTemplateFilePath(String templateFilePath) {
-        this.templateFilePath = templateFilePath;
+    public void setSrc(InputStream src) {
+        this.src = src;
     }
 
-    public String getHtmlFilePath() {
-        return htmlFilePath;
+    public OutputStream getTarget() {
+        return target;
     }
 
-    public void setHtmlFilePath(String htmlFilePath) {
-        this.htmlFilePath = htmlFilePath;
+    public void setTarget(OutputStream target) {
+        this.target = target;
     }
 }

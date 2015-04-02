@@ -1,7 +1,9 @@
-package org.smarty.web.commons;
+package org.smarty.core.support;
 
 import org.smarty.core.bean.SystemConfig;
+import org.smarty.core.bean.TemplateConfig;
 import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.utils.LilystudioUtil;
 import org.smarty.core.utils.LogicUtil;
 import org.smarty.core.utils.SystemConfigUtil;
 import org.springframework.beans.factory.InitializingBean;
@@ -12,6 +14,12 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 /**
@@ -19,7 +27,6 @@ import java.util.Map;
  */
 public class MailManager implements InitializingBean {
     private static RuntimeLogger logger = new RuntimeLogger(MailManager.class);
-    private FreemarkerManager freemarkerManager;
     private JavaMailSender javaMailSender;
     private TaskExecutor taskExecutor;
 
@@ -37,25 +44,16 @@ public class MailManager implements InitializingBean {
         return boo;
     }
 
-    public void sendMail(String subject, String templateFilePath, Map<String, Object> data, String[] toMail) {
+    public void sendMail(String subject, String context, String[] toMail) {
         try {
             SystemConfig systemConfig = getSystemConfig();
-
-            JavaMailSenderImpl javaMailSenderImpl = (JavaMailSenderImpl) javaMailSender;
-            javaMailSenderImpl.setHost(systemConfig.getSmtpHost());
-            javaMailSenderImpl.setPort(systemConfig.getSmtpPort());
-            javaMailSenderImpl.setUsername(systemConfig.getSmtpUsername());
-            javaMailSenderImpl.setPassword(systemConfig.getSmtpPassword());
-            MimeMessage mimeMessage = javaMailSenderImpl.createMimeMessage();
-
-            String text = freemarkerManager.getTemplateString(templateFilePath, data);
-
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "utf-8");
+            MimeMessage mm = createMailSender();
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mm, false, "utf-8");
             mimeMessageHelper.setFrom(MimeUtility.encodeWord(systemConfig.getSystemName()) + " <" + systemConfig.getSmtpFromMail() + ">");
             mimeMessageHelper.setTo(toMail);
             mimeMessageHelper.setSubject(subject);
-            mimeMessageHelper.setText(text, true);
-            addSendMailTask(mimeMessage);
+            mimeMessageHelper.setText(context, true);
+            addSendMailTask(mm);
         } catch (Exception e) {
             logger.out(e);
         }
@@ -74,12 +72,29 @@ public class MailManager implements InitializingBean {
         }
     }
 
-    private SystemConfig getSystemConfig() {
-        return SystemConfigUtil.getSystemConfig();
+    public MimeMessage createMailSender() {
+        SystemConfig systemConfig = getSystemConfig();
+        JavaMailSenderImpl javaMailSenderImpl = (JavaMailSenderImpl) javaMailSender;
+        javaMailSenderImpl.setHost(systemConfig.getSmtpHost());
+        javaMailSenderImpl.setPort(systemConfig.getSmtpPort());
+        javaMailSenderImpl.setUsername(systemConfig.getSmtpUsername());
+        javaMailSenderImpl.setPassword(systemConfig.getSmtpPassword());
+        return javaMailSenderImpl.createMimeMessage();
     }
 
-    public void setFreemarkerManager(FreemarkerManager freemarkerManager) {
-        this.freemarkerManager = freemarkerManager;
+    public String createMailContext(String file, Map<String, Object> data) throws IOException {
+        InputStream is = new FileInputStream(file);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        TemplateConfig config = new TemplateConfig();
+        config.setSrc(is);
+        config.setTarget(baos);
+        LilystudioUtil.render(config, data);
+        is.close();
+        return baos.toString();
+    }
+
+    private SystemConfig getSystemConfig() {
+        return SystemConfigUtil.getSystemConfig();
     }
 
     public void setJavaMailSender(JavaMailSender javaMailSender) {

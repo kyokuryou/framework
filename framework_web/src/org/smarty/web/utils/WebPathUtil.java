@@ -3,6 +3,7 @@ package org.smarty.web.utils;
 import org.smarty.core.logger.RuntimeLogger;
 
 import javax.servlet.ServletContext;
+import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -34,7 +35,7 @@ public class WebPathUtil {
      * @return 资源
      */
     public static File getServletAsFile(String resource) {
-        ServletContext servletContext = SpringMVCUtil.getServletContext();
+        ServletContext servletContext = SpringWebUtil.getServletContext();
         File htmlFile = new File(servletContext.getRealPath(resource));
         File fileDirectory = htmlFile.getParentFile();
         if (!fileDirectory.exists()) {

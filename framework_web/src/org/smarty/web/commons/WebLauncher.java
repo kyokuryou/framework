@@ -2,7 +2,7 @@ package org.smarty.web.commons;
 
 import org.smarty.core.launcher.AbsLauncher;
 import org.smarty.core.logger.RuntimeLogger;
-import org.smarty.web.utils.SpringMVCUtil;
+import org.smarty.web.utils.SpringWebUtil;
 import org.springframework.web.context.ServletContextAware;
 
 import javax.servlet.ServletContext;
@@ -16,7 +16,7 @@ public class WebLauncher extends AbsLauncher implements ServletContextAware {
 
     @Override
     public final void setServletContext(ServletContext servletContext) {
-        SpringMVCUtil.setServletContext(servletContext);
+        SpringWebUtil.setServletContext(servletContext);
     }
 
     @Override

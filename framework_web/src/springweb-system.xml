@@ -2,28 +2,24 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
 
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
                     http://www.springframework.org/schema/mvc
-                    http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
+                    http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+                    http://www.springframework.org/schema/context
+                    http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!-- 主配置引入-->
-    <import resource="classpath:spring-system.xml"/>
-    <!-- spring mvc -->
+    <!-- 开启注解处理器 -->
+    <context:annotation-config/>
+    <!-- 设置需要进行Spring注解扫描的类包 -->
+    <context:component-scan base-package="org.smarty.web" use-default-filters="false">
+        <!-- 扫描符合@Service的类 -->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
+    </context:component-scan>
+    <!-- 开启MVC注解处理器 -->
     <mvc:annotation-driven/>
-    <!-- spring mvc 配置-->
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" lazy-init="true">
-        <property name="order" value="1" />
-        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
-        <property name="ignoreResourceNotFound" value="true"/>
-        <property name="locations">
-            <list>
-                <value>classpath:/web.local.properties</value>
-            </list>
-        </property>
-    </bean>
-
     <!-- 配置FreeMark视图 -->
     <bean id="freeMarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
         <property name="contentType" value="text/html;charset=UTF-8"/>
@@ -46,7 +42,6 @@
         <property name="contentType" value="text/html;charset=UTF-8"/>
         <property name="order" value="1"/>
     </bean>
-
 
     <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
         <!-- messageConverters属性的配置可以解决JSON返回中文为问号的问题 -->
@@ -147,23 +142,6 @@
         <property name="freemarkerManager" ref="freemarkerManager"/>
         <property name="cachePath" value="${resources.static_html}"/>
     </bean>
-    <!-- 邮件管理器 -->
-    <bean id="mailManager" class="org.smarty.web.commons.MailManager">
-        <property name="freemarkerManager" ref="freemarkerManager"/>
-        <property name="javaMailSender" ref="javaMailSender"/>
-        <property name="taskExecutor" ref="taskExecutor"/>
-    </bean>
-
-    <!-- 验证码 -->
-    <bean id="captchaFilter" class="org.smarty.web.captcha.JCaptchaFilter" abstract="true">
-        <property name="captchaService" ref="captchaService"/>
-    </bean>
-    <bean id="captchaEngine" class="org.smarty.web.captcha.JCaptchaEngine"/>
-    <bean id="captchaService" class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService">
-        <property name="captchaEngine" ref="captchaEngine"/>
-        <!--验证码过期时间-->
-        <property name="minGuarantedStorageDelayInSeconds" value="600"/>
-    </bean>
     <!-- 国际化 -->
     <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
         <property name="cacheSeconds" value="-1"/>
@@ -184,4 +162,5 @@
         <property name="freemarkerManager" ref="freemarkerManager"/>
         <property name="jsFtl" value="${template.jsFtl}"/>
     </bean>
+    <bean class="org.smarty.web.utils.SpringWebUtil"/>
 </beans>
