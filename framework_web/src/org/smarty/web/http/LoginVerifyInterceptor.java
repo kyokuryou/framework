@@ -1,4 +1,4 @@
-package org.smarty.web.commons;
+package org.smarty.web.http;
 
 import org.smarty.core.bean.SystemConfig;
 import org.smarty.core.utils.SystemConfigUtil;
@@ -25,7 +25,7 @@ public class LoginVerifyInterceptor extends HandlerInterceptorAdapter {
             cookie.setPath(request.getContextPath());
             cookie.setMaxAge(0);
             response.addCookie(cookie);
-            response.sendRedirect("account/login");
+            response.sendRedirect("/login.do");
             return false;
         }
         return true;

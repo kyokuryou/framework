@@ -18,13 +18,15 @@
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
     </context:component-scan>
-
-    <bean name="webConfig" class="java.lang.String">
-        <constructor-arg value="classpath:/web.local.properties"/>
+    <bean name="webConfigFiles" class="java.util.ArrayList">
+        <constructor-arg >
+            <list>
+                <value>classpath:/web.local.properties</value>
+            </list>
+        </constructor-arg>
     </bean>
     <!-- web主配置(必须) -->
     <import resource="classpath:springweb-system.xml"/>
-    <bean name="/jslocale.js" parent="jsLocaleServlet"/>
-    <bean name="/captcha.jpg" parent="captchaService"/>
-
+    <bean name="mJSLocaleFilter" parent="jsLocaleFilter"/>
+    <bean name="mCaptchaFilter" parent="captchaFilter"/>
 </beans>

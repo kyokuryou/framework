@@ -1,4 +1,4 @@
-package org.smarty.web.servlet;
+package org.smarty.web.http;
 
 import com.octo.captcha.service.CaptchaService;
 import com.octo.captcha.service.CaptchaServiceException;
@@ -6,9 +6,13 @@ import org.smarty.core.logger.RuntimeLogger;
 import org.springframework.beans.factory.InitializingBean;
 
 import javax.imageio.ImageIO;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServlet;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
@@ -20,8 +24,8 @@ import java.io.IOException;
  * @author kyokuryou
  * @version 1.0
  */
-public class CaptchaServlet extends HttpServlet implements InitializingBean {
-    private static RuntimeLogger logger = new RuntimeLogger(CaptchaServlet.class);
+public class CaptchaFilter implements Filter, InitializingBean {
+    private static RuntimeLogger logger = new RuntimeLogger(CaptchaFilter.class);
     private CaptchaService captchaService;
 
     public void afterPropertiesSet() throws Exception {
@@ -33,11 +37,15 @@ public class CaptchaServlet extends HttpServlet implements InitializingBean {
     }
 
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response);
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
         ServletOutputStream out = getHttpHeader(response);
         try {
             String captchaId = request.getSession(true).getId();
@@ -49,6 +57,11 @@ public class CaptchaServlet extends HttpServlet implements InitializingBean {
         } finally {
             out.close();
         }
+    }
+
+    @Override
+    public void destroy() {
+
     }
 
     private ServletOutputStream getHttpHeader(HttpServletResponse response) throws IOException {

@@ -7,7 +7,7 @@
     <!-- 定义Spring配置文件位置 -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:/spring.xml</param-value>
+        <param-value>classpath:/spring.xml,classpath:spring-web.xml</param-value>
     </context-param>
     <!-- 编码处理过滤器 -->
     <filter>
@@ -25,6 +25,19 @@
     <filter-mapping>
         <filter-name>encodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!-- 验证码 -->
+    <filter>
+        <filter-name>mCaptchaFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <init-param>
+            <param-name>targetFilterLifecycle</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>mCaptchaFilter</filter-name>
+        <url-pattern>/captcha.jpg</url-pattern>
     </filter-mapping>
     <!-- 对Spring容器进行实例化 -->
     <listener>

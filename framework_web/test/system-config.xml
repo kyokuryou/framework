@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<system>
+    <description>系统配置文件</description>
+    <systemConfig>
+        <systemName>XXX</systemName>
+        <systemVersion>V0.1</systemVersion>
+        <systemCopyright>福康</systemCopyright>
+        <systemDescription>XXX描述</systemDescription>
+        <systemUrl>http://www.test.com</systemUrl>
+        <metaKeywords>XXX</metaKeywords>
+        <metaDescription>XXX描述</metaDescription>
+        <mathScale>2</mathScale>
+
+        <uploadLimit>1024</uploadLimit>
+        <loginFailureLockCount>5</loginFailureLockCount>
+        <loginFailureLockTime>5</loginFailureLockTime>
+        <loginSessionId>loginMemberId</loginSessionId>
+        <loginCookieName>loginMemberUsername</loginCookieName>
+        <loginRedirectionUrl>loginMemberUsername</loginRedirectionUrl>
+        <passwordRecoverKey>_</passwordRecoverKey>
+        <passwordRecoverPeriod>1008</passwordRecoverPeriod>
+
+        <smtpFromMail>test@shopxx.net</smtpFromMail>
+        <smtpHost>smtp.shopxx.net</smtpHost>
+        <smtpPort>25</smtpPort>
+        <smtpUsername>test</smtpUsername>
+        <smtpPassword>test</smtpPassword>
+    </systemConfig>
+</system>

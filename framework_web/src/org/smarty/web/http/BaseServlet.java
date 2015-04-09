@@ -1,4 +1,4 @@
-package org.smarty.web.servlet;
+package org.smarty.web.http;
 
 import org.smarty.core.bean.Pager;
 import org.smarty.core.bean.SystemConfig;

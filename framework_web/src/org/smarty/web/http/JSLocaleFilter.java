@@ -1,14 +1,17 @@
-package org.smarty.web.servlet;
+package org.smarty.web.http;
 
 import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.utils.DateUtil;
 import org.smarty.web.commons.FreemarkerManager;
 import org.springframework.beans.factory.InitializingBean;
 
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
@@ -19,8 +22,8 @@ import java.util.Date;
  * @author kyokuryou
  * @version 1.0
  */
-public class JSLocaleServlet extends HttpServlet implements InitializingBean {
-    private static RuntimeLogger logger = new RuntimeLogger(JSLocaleServlet.class);
+public class JSLocaleFilter  implements Filter, InitializingBean {
+    private static RuntimeLogger logger = new RuntimeLogger(JSLocaleFilter.class);
     private FreemarkerManager freemarkerManager;
     private String jsFtl;
 
@@ -36,11 +39,15 @@ public class JSLocaleServlet extends HttpServlet implements InitializingBean {
         this.jsFtl = jsFtl;
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response);
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
         ServletOutputStream osw = getHttpHeader(response);
         try {
             freemarkerManager.outputTemplate(jsFtl, null, osw);
@@ -49,6 +56,11 @@ public class JSLocaleServlet extends HttpServlet implements InitializingBean {
         } finally {
             osw.close();
         }
+    }
+
+    @Override
+    public void destroy() {
+
     }
 
     private ServletOutputStream getHttpHeader(HttpServletResponse response) throws IOException {
