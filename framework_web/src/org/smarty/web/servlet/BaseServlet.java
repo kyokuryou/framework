@@ -51,15 +51,15 @@ public abstract class BaseServlet {
         defPlan, planA, planB, planC, planD, planE, planF, planG
     }
 
+    public String getBase() {
+        return request.getContextPath();
+    }
+
     @ModelAttribute
     public void setHttpServlet(HttpServletRequest request, HttpServletResponse response) {
         this.request = request;
         this.response = response;
         this.session = request.getSession();
-    }
-
-    public String getBase() {
-        return request.getContextPath();
     }
 
     /**

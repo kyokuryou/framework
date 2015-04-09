@@ -9,14 +9,6 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath:/spring.xml</param-value>
     </context-param>
-    <!-- 对Spring容器进行实例化 -->
-    <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
-    <!-- Spring刷新Introspector防止内存泄露 -->
-    <listener>
-        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
-    </listener>
     <!-- 编码处理过滤器 -->
     <filter>
         <filter-name>encodingFilter</filter-name>
@@ -30,6 +22,18 @@
             <param-value>true</param-value>
         </init-param>
     </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!-- 对Spring容器进行实例化 -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <!-- Spring刷新Introspector防止内存泄露 -->
+    <listener>
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+    </listener>
     <!-- 验证码图片生成 -->
 
     <!-- 定义Spring配置文件位置 -->
@@ -42,29 +46,14 @@
         </init-param>
         <load-on-startup>0</load-on-startup>
     </servlet>
-
-    <filter>
-        <filter-name>jCaptchaServlet</filter-name>
-        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-        <init-param>
-            <param-name>targetFilterLifecycle</param-name>
-            <param-value>true</param-value>
-        </init-param>
-    </filter>
-    <!-- mapping start -->
-    <filter-mapping>
-        <filter-name>encodingFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>jCaptchaServlet</filter-name>
-        <url-pattern>/captcha.jpg</url-pattern>
-    </filter-mapping>
     <servlet-mapping>
         <servlet-name>springmvc</servlet-name>
         <url-pattern>*.do</url-pattern>
     </servlet-mapping>
     <!-- mapping end -->
+    <listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
     <!-- Session超时定义,单位为分钟 -->
     <session-config>
         <session-timeout>60</session-timeout>

@@ -20,6 +20,13 @@
     </context:component-scan>
     <!-- 开启MVC注解处理器 -->
     <mvc:annotation-driven/>
+    <!-- web 配置 -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" lazy-init="true">
+        <property name="order" value="0"/>
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="location" ref="webConfig"/>
+    </bean>
     <!-- 配置FreeMark视图 -->
     <bean id="freeMarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
         <property name="contentType" value="text/html;charset=UTF-8"/>
@@ -36,7 +43,7 @@
     </bean>
     <!-- 配置JSP视图 -->
     <bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="viewClass" value="org.springframework.web.servlet.view.InternalResourceView"/>
         <property name="prefix" value="${resources.jsp}"/>
         <property name="viewNames" value="${resources.jsp.names}"/>
         <property name="contentType" value="text/html;charset=UTF-8"/>
@@ -152,7 +159,7 @@
         </property>
     </bean>
     <!--js 国际化 -->
-    <bean id="jsLocaleServlet" class="org.smarty.web.servlet.JSLocaleServlet">
+    <bean id="jsLocaleServlet" class="org.smarty.web.servlet.JSLocaleServlet" abstract="true">
         <property name="freemarkerManager" ref="freemarkerManager"/>
         <property name="jsFtl" value="${template.jsFtl}"/>
     </bean>
@@ -172,7 +179,7 @@
         <!--验证码过期时间-->
         <property name="minGuarantedStorageDelayInSeconds" value="600"/>
     </bean>
-    <bean id="captchaServlet" class="org.smarty.web.servlet.CaptchaServlet">
+    <bean id="captchaServlet" class="org.smarty.web.servlet.CaptchaServlet" abstract="true">
         <property name="captchaService" ref="captchaService"/>
     </bean>
 </beans>

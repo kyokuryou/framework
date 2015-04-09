@@ -85,13 +85,11 @@ public class MailManager implements InitializingBean {
     }
 
     public String createMailContext(String file, Map<String, Object> data) throws IOException {
-        InputStream is = new FileInputStream(file);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         TemplateConfig config = new TemplateConfig();
-        config.setSrc(is);
+        config.setSrc(file);
         config.setTarget(baos);
         LilystudioUtil.render(config, data);
-        is.close();
         return baos.toString();
     }
 

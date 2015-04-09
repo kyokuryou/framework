@@ -21,14 +21,10 @@
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
     </context:component-scan>
 
-    <bean name="configList" class="java.util.ArrayList">
-        <constructor-arg>
-            <list>
-                <value>classpath:/config.local.properties</value>
-                <value>classpath:/web.local.properties</value>
-            </list>
-        </constructor-arg>
+    <bean name="config" class="java.lang.String">
+        <constructor-arg value="classpath:/config.local.properties"/>
     </bean>
+
     <!-- 主要配置(必须) -->
     <import resource="classpath:spring-system.xml"/>
 
@@ -54,5 +50,4 @@
         <property name="systemCatchSize" value="${cache.system.size}"/>
         <property name="temporaryCatchSize" value="${cache.temporary.size}"/>
     </bean>
-    <bean name="jCaptchaFilter" parent="captchaFilter"/>
 </beans>
