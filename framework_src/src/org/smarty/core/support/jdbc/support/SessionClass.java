@@ -3,7 +3,10 @@ package org.smarty.core.support.jdbc.support;
 import org.smarty.core.bean.ClassElement;
 
 /**
+ * Created Date 2015/04/09
  *
+ * @author quliang
+ * @version 1.0
  */
 public class SessionClass {
 

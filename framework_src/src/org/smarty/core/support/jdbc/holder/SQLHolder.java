@@ -2,11 +2,11 @@ package org.smarty.core.support.jdbc.holder;
 
 import org.smarty.core.Model;
 import org.smarty.core.bean.Pager;
+import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.support.jdbc.reader.ISQLLink;
 import org.smarty.core.support.jdbc.reader.XmlSQLLink;
 import org.smarty.core.support.jdbc.support.DBType;
 import org.smarty.core.support.jdbc.support.SessionClass;
-import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.utils.LogicUtil;
 import org.smarty.core.utils.RegexUtil;
 
@@ -16,10 +16,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * SQL创建
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
+ */
 public abstract class SQLHolder {
     private static RuntimeLogger logger = new RuntimeLogger(SQLHolder.class);
-    private ISQLLink sqlLink;
     protected String baseSQL;
+    private ISQLLink sqlLink;
 
     public void initSQLHolder(String sql) {
         baseSQL = RegexUtil.convertSQL(sql);
@@ -49,7 +56,6 @@ public abstract class SQLHolder {
      * @param bean xml参数
      * @return map
      */
-    @SuppressWarnings("unchecked")
     private Map<String, Object> getBeanMap(Model bean) {
         if (bean == null) {
             return new HashMap<String, Object>();
@@ -76,7 +82,7 @@ public abstract class SQLHolder {
      */
     @SuppressWarnings("unchecked")
     public final String getSQLString() {
-       return getSQLString(new HashMap<String, Object>());
+        return getSQLString(new HashMap<String, Object>());
     }
 
     /**

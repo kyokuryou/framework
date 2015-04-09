@@ -1,17 +1,12 @@
 package org.smarty.core.support.jdbc.reader;
 
-import org.smarty.core.exception.CacheNameNotExistException;
-import org.smarty.core.logger.RuntimeLogger;
-import org.smarty.core.support.cache.CacheMessage;
-import org.smarty.core.utils.CommonUtil;
-import org.smarty.core.utils.DocumentUtil;
-import org.smarty.core.utils.LogicUtil;
-import org.smarty.core.utils.PathUtil;
-import org.smarty.core.utils.RegexUtil;
-import org.smarty.core.utils.LilystudioUtil;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
+import org.smarty.core.exception.CacheNameNotExistException;
+import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.support.cache.CacheMessage;
+import org.smarty.core.utils.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,6 +15,10 @@ import java.util.Map;
 
 /**
  * 读取sql模板文件, 处理动态变量, 解析表达式和命令, 返回处理后的sql
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class XmlSQLLink implements ISQLLink {
     private final RuntimeLogger logger = new RuntimeLogger(XmlSQLLink.class);

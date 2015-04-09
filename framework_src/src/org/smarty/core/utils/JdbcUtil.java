@@ -1,17 +1,9 @@
 package org.smarty.core.utils;
 
-import org.smarty.core.support.jdbc.mapper.RowMapperHandler;
 import org.smarty.core.logger.RuntimeLogger;
-import org.springframework.jdbc.core.CallableStatementCreator;
-import org.springframework.jdbc.core.CallableStatementCreatorFactory;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
-import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterUtils;
-import org.springframework.jdbc.core.namedparam.ParsedSql;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.smarty.core.support.jdbc.mapper.RowMapperHandler;
+import org.springframework.jdbc.core.*;
+import org.springframework.jdbc.core.namedparam.*;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -22,6 +14,10 @@ import java.util.Map;
 
 /**
  * JDBC工具
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public abstract class JdbcUtil {
     private static RuntimeLogger logger = new RuntimeLogger(JdbcUtil.class);

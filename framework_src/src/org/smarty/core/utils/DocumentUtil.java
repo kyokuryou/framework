@@ -1,10 +1,6 @@
 package org.smarty.core.utils;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.Node;
+import org.dom4j.*;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
@@ -24,6 +20,10 @@ import java.util.Random;
 
 /**
  * xml工具
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class DocumentUtil {
     private static RuntimeLogger logger = new RuntimeLogger(DocumentUtil.class);

@@ -1,17 +1,17 @@
 package org.smarty.core.support.jdbc;
 
+import org.dom4j.Element;
 import org.smarty.core.Model;
 import org.smarty.core.bean.Pager;
+import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.support.jdbc.holder.SQLHolder;
 import org.smarty.core.support.jdbc.mapper.BeanMapperHandler;
 import org.smarty.core.support.jdbc.mapper.ElementMapperHandler;
 import org.smarty.core.support.jdbc.mapper.MapMapperHandler;
 import org.smarty.core.support.jdbc.mapper.SingleMapperHandler;
 import org.smarty.core.support.jdbc.support.AbstractJdbc;
-import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.utils.CommonUtil;
 import org.smarty.core.utils.LogicUtil;
-import org.dom4j.Element;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
@@ -40,7 +40,7 @@ abstract class JdbcSupport extends AbstractJdbc {
         String hsql = sqlHolder.getSQLString();
         logger.out(sqlHolder.getSQLType() + ":" + hsql);
         Object ro = queryForSingle(hsql, new MapSqlParameterSource(), new SingleMapperHandler());
-            return ro != null ? (Number) ro : 0;
+        return ro != null ? (Number) ro : 0;
     }
 
     /**

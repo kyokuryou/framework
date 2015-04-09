@@ -4,14 +4,17 @@ import org.smarty.core.utils.DateUtil;
 
 import java.beans.PropertyEditorSupport;
 
+/**
+ * ÀàÐÍ×ª»»
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
+ */
 public class TypePropertyEditor extends PropertyEditorSupport {
 
     private String format = DateUtil.DEFAULT_FORMAT;
     private DateType type = DateType.DATE;
-
-    public enum DateType {
-        DATE, TIMESTAMP, TIME
-    }
 
     public void setAsText(String text) throws IllegalArgumentException {
         Object value = null;
@@ -35,5 +38,9 @@ public class TypePropertyEditor extends PropertyEditorSupport {
 
     public void setType(DateType type) {
         this.type = type;
+    }
+
+    public enum DateType {
+        DATE, TIMESTAMP, TIME
     }
 }

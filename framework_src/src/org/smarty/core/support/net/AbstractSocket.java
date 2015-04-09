@@ -4,41 +4,31 @@ import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.utils.CommonUtil;
 import org.smarty.core.utils.LogicUtil;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
 /**
- * 网络驱动堆
+ * 网络适配器
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public abstract class AbstractSocket {
     private static RuntimeLogger logger = new RuntimeLogger(AbstractSocket.class);
-
-    private final int maxSize = 1024;
     // 当前线程变量
     protected final ThreadLocal<InetAddress> tl = new ThreadLocal<InetAddress>() {
-        @Override
         public synchronized InetAddress get() {
             return super.get();
         }
 
-        @Override
         public synchronized void set(InetAddress value) {
             super.set(value);
         }
     };
+    private final int maxSize = 1024;
 
 
     /**

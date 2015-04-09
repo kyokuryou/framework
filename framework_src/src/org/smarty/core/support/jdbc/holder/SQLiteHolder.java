@@ -6,15 +6,17 @@ import org.smarty.core.utils.LogicUtil;
 
 /**
  * SQLite实现
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class SQLiteHolder extends SQLHolder {
 
-    @Override
     public DBType getSQLType() {
         return DBType.SQLite;
     }
 
-    @Override
     public String convertLimitSQL(Pager pager) {
         StringBuilder sb = new StringBuilder(baseSQL);
 

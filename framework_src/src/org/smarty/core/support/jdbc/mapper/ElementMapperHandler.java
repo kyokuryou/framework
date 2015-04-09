@@ -1,13 +1,13 @@
 package org.smarty.core.support.jdbc.mapper;
 
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import org.smarty.core.exception.NoSuchReflectException;
 import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.utils.BeanUtil;
 import org.smarty.core.utils.CommonUtil;
 import org.smarty.core.utils.ConvertUtil;
 import org.smarty.core.utils.JdbcUtil;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
 
 import java.lang.reflect.Array;
 import java.sql.ResultSet;
@@ -16,6 +16,10 @@ import java.sql.SQLException;
 
 /**
  * 映射一行数据,以Spring bean形式创建
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class ElementMapperHandler implements RowMapperHandler<Element> {
     private static RuntimeLogger logger = new RuntimeLogger(ElementMapperHandler.class);

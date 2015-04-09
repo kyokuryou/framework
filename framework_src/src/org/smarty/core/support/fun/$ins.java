@@ -1,13 +1,13 @@
 package org.smarty.core.support.fun;
 
+import org.lilystudio.smarty4j.Context;
+import org.lilystudio.smarty4j.statement.LineFunction;
+import org.lilystudio.smarty4j.statement.ParameterCharacter;
 import org.smarty.core.exception.InvokeMethodException;
 import org.smarty.core.exception.NoSuchReflectException;
 import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.utils.BeanUtil;
 import org.smarty.core.utils.LogicUtil;
-import org.lilystudio.smarty4j.Context;
-import org.lilystudio.smarty4j.statement.LineFunction;
-import org.lilystudio.smarty4j.statement.ParameterCharacter;
 
 import java.io.Writer;
 import java.util.List;
@@ -38,7 +38,6 @@ import java.util.Map;
 public class $ins extends LineFunction {
     private static final RuntimeLogger logger = new RuntimeLogger($ins.class);
 
-    @Override
     public void execute(Context context, Writer writer, Object[] objects) throws Exception {
         List value = (List) objects[0];
         String itemName = "";

@@ -1,10 +1,13 @@
 package org.smarty.core.bean;
 
-import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
  * 模板
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class TemplateConfig {
     /**
@@ -18,7 +21,7 @@ public class TemplateConfig {
     /**
      * 模版路径
      */
-    private InputStream src;
+    private String src;
     /**
      * 输出路径
      */
@@ -40,11 +43,11 @@ public class TemplateConfig {
         this.description = description;
     }
 
-    public InputStream getSrc() {
+    public String getSrc() {
         return src;
     }
 
-    public void setSrc(InputStream src) {
+    public void setSrc(String src) {
         this.src = src;
     }
 

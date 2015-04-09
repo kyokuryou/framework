@@ -14,6 +14,10 @@ import java.util.TimeZone;
 
 /**
  * 时间工具
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class DateUtil {
     private static RuntimeLogger logger = new RuntimeLogger(DateUtil.class);
@@ -49,8 +53,8 @@ public class DateUtil {
      * @param date1 第一个
      * @param date2 第二个
      * @return 如果date1 的时间与date2 的时间等于，则返回 0 值；
-     *         如果date1 的时间在date2 的时间之前，则返回小于 0 的值；
-     *         如果date1 的时间在date2 的时间之后，则返回大于 0 的值。
+     * 如果date1 的时间在date2 的时间之前，则返回小于 0 的值；
+     * 如果date1 的时间在date2 的时间之后，则返回大于 0 的值。
      */
     public static int compare(Date date1, Date date2) {
         return getCalendar(date1).compareTo(getCalendar(date2));

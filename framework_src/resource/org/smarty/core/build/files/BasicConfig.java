@@ -12,7 +12,6 @@ import java.util.Properties;
  * Update Date: 2013/12/13
  */
 public class BasicConfig extends FileConfig {
-    @Override
     public void buildFile(Properties ps) throws IOException {
         // TODO
     }
@@ -21,12 +20,10 @@ public class BasicConfig extends FileConfig {
         // TODO
     }
 
-    @Override
     protected File getFile(String fileName) throws IOException {
         throw outException("该方法basic不支持",new UnsupportedOperationException());
     }
 
-    @Override
     public String getString() throws IOException {
         throw outException("该方法basic不支持",new UnsupportedOperationException());
     }

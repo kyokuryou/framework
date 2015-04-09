@@ -19,7 +19,6 @@ import java.util.Properties;
 public class Struts2Config extends FileConfig {
     private String struts2String;
 
-    @Override
     public void buildFile(Properties ps) throws IOException {
         Boolean ew = Boolean.valueOf(ps.getProperty(CodeBook.ENABLED_WEB));
         String com = ps.getProperty(CodeBook.COMPONENT);
@@ -34,7 +33,6 @@ public class Struts2Config extends FileConfig {
         }
     }
 
-    @Override
     protected File getFile(String fileName) throws IOException {
         try {
             return FileWrapper.getSrcFile(fileName);
@@ -43,7 +41,6 @@ public class Struts2Config extends FileConfig {
         }
     }
 
-    @Override
     public String getString() throws IOException {
         if (struts2String == null || "".equals(struts2String)) {
             return struts2String = getFileString(CodeBook.SRC_STRUTS2);

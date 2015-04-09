@@ -7,6 +7,10 @@ import java.util.regex.Pattern;
 
 /**
  * 正则表达式工具
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class RegexUtil {
     private static RuntimeLogger logger = new RuntimeLogger(RegexUtil.class);
@@ -47,6 +51,7 @@ public class RegexUtil {
      * 电子邮箱
      */
     private static final String email = "^\\w+((-\\w+)|(\\.\\w+))*\\@[A-Za-z0-9]+((\\.|-)[A-Za-z0-9]+)*\\.[A-Za-z0-9]+$";
+
     /**
      * 验证固定电话格式
      *
@@ -82,6 +87,7 @@ public class RegexUtil {
         Matcher matcher = pattern.matcher(emailString);
         return matcher.find();
     }
+
     /**
      * 清除掉所有特殊字符 包括空格
      */
@@ -189,7 +195,7 @@ public class RegexUtil {
     public static String parseHtmlToText(String inputString) {
         String htmlStr = inputString;
         try {
-            Pattern  p_script = Pattern.compile(regScript, Pattern.CASE_INSENSITIVE);
+            Pattern p_script = Pattern.compile(regScript, Pattern.CASE_INSENSITIVE);
             Matcher m_script = p_script.matcher(htmlStr);
             htmlStr = m_script.replaceAll(""); // 过滤script标签
             Pattern p_style = Pattern.compile(regStyle, Pattern.CASE_INSENSITIVE);

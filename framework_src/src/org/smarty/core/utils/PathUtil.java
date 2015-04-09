@@ -3,16 +3,7 @@ package org.smarty.core.utils;
 import org.smarty.core.launcher.LauncherWrapper;
 import org.smarty.core.logger.RuntimeLogger;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
@@ -20,6 +11,10 @@ import java.util.Properties;
 
 /**
  * 通过ClassLoader,对资源的简单的访问
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class PathUtil {
     private static RuntimeLogger logger = new RuntimeLogger(PathUtil.class);

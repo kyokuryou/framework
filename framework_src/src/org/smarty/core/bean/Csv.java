@@ -4,11 +4,10 @@ import java.util.List;
 
 /**
  * CSV定义
- * Created with Liang Qu
- * Create User: Liang Qu
- * Update User: Liang Qu
- * Create Date: 2013/11/12
- * Update Date: 2013/11/12
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class Csv {
     /**

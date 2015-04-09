@@ -9,11 +9,16 @@ import java.util.LinkedList;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * 网络驱动堆
+ * 网络适配器(服务端)
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class SocketServer extends AbstractSocket {
+    // 链接容器内最大链接数量
+    private static final int maxConnection = 5;
     private static RuntimeLogger logger = new RuntimeLogger(SocketServer.class);
-
     // 线程组
     private final ThreadGroup tg = new ThreadGroup("1");
     // 互斥锁
@@ -22,8 +27,6 @@ public class SocketServer extends AbstractSocket {
     private boolean isClosed = false;
     // 链接
     private LinkedList<Socket> socketQueue;
-    // 链接容器内最大链接数量
-    private static final int maxConnection = 5;
 
 
     /**
@@ -41,7 +44,6 @@ public class SocketServer extends AbstractSocket {
         //设置是否守护线程池
         tg.setDaemon(true);
         socketQueue = new LinkedList<Socket>() {
-            @Override
             public int size() {
                 for (int i = 0, len = super.size(); i < len; ) {
                     Socket so = get(i);
@@ -179,7 +181,6 @@ public class SocketServer extends AbstractSocket {
             }
         }
 
-        @Override
         public void interrupt() {
             try {
                 if (!ss.isClosed()) {

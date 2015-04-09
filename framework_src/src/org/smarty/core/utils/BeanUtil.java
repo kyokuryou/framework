@@ -6,12 +6,7 @@ import org.smarty.core.exception.InvokeMethodException;
 import org.smarty.core.exception.NoSuchReflectException;
 import org.smarty.core.logger.RuntimeLogger;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.NotSerializableException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -22,8 +17,10 @@ import java.util.List;
 
 /**
  * 反射工具
+ * Created Date 2015/04/09
  *
  * @author quliang
+ * @version 1.0
  */
 public class BeanUtil {
     private static RuntimeLogger logger = new RuntimeLogger(BeanUtil.class);
@@ -271,7 +268,7 @@ public class BeanUtil {
      * @param methodName 方法名所表示的字符串
      * @return method对象
      * @deprecated 在重载时, 可能会发生, 无法估计的错误
-     *             查找clzss中,methodName所表示的方法名称
+     * 查找clzss中,methodName所表示的方法名称
      */
     @Deprecated
     public static Method findMethod(Class<?> clzss, String methodName) {
@@ -323,7 +320,6 @@ public class BeanUtil {
      * @param params 参数
      * @return 方法的结果, void返回null
      * @throws NoSuchReflectException,java.lang.reflect.InvocationTargetException
-     *
      */
     public static Object invoke(Object target, String method, Object... params) throws NoSuchReflectException, InvokeMethodException {
         Method m = getMethod(target, method, params);
@@ -343,7 +339,7 @@ public class BeanUtil {
      *
      * @param obj 要测试的对象
      * @return 如果obj不为null, 并且如果obj是Number类型则>=0, 并且obj是String类型长度>0 则返回true;
-     *         否则返回false;
+     * 否则返回false;
      */
     public static boolean isValid(Object obj) {
         boolean r = false;

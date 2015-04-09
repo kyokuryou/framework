@@ -22,7 +22,6 @@ import java.util.Properties;
 public class SpringConfig extends FileConfig {
     private String springString;
 
-    @Override
     public void buildFile(Properties ps) throws IOException {
         Map<String, Object> params = new HashMap<String, Object>(0);
         params.put(CodeBook.PACKAGE_INFO, ps.get(CodeBook.PACKAGE_INFO));
@@ -76,7 +75,6 @@ public class SpringConfig extends FileConfig {
         }
     }
 
-    @Override
     protected File getFile(String fileName) throws IOException {
         try {
             return FileWrapper.getSrcFile(fileName);
@@ -85,7 +83,6 @@ public class SpringConfig extends FileConfig {
         }
     }
 
-    @Override
     public String getString() throws IOException {
         if (springString == null || "".equals(springString)) {
             return springString = getFileString(CodeBook.SRC_SPRING);

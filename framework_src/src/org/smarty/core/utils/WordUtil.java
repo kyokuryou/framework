@@ -5,14 +5,14 @@ import org.apache.poi.hwpf.usermodel.Paragraph;
 import org.apache.poi.hwpf.usermodel.Range;
 import org.smarty.core.logger.RuntimeLogger;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 /**
  * Microsoft Word工具(未完待续)
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class WordUtil {
     private static RuntimeLogger logger = new RuntimeLogger(WordUtil.class);

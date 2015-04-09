@@ -1,26 +1,22 @@
 package org.smarty.core.utils;
 
 import org.smarty.core.bean.Csv;
+import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.support.csvreader.CsvReader;
 import org.smarty.core.support.csvreader.CsvWriter;
 import org.smarty.core.support.csvreader.Letters;
-import org.smarty.core.logger.RuntimeLogger;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created with Liang Qu
- * Create User: Liang Qu
- * Update User: Liang Qu
- * Create Date: 2013/11/12
- * Update Date: 2013/11/12
+ * CSV工具
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class CsvUtil {
     private static RuntimeLogger logger = new RuntimeLogger(CsvUtil.class);

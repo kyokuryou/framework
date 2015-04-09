@@ -1,10 +1,10 @@
 package org.smarty.core.utils;
 
 import org.smarty.core.Model;
+import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.support.json.JSONArray;
 import org.smarty.core.support.json.JSONException;
 import org.smarty.core.support.json.JSONObject;
-import org.smarty.core.logger.RuntimeLogger;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -15,6 +15,10 @@ import java.util.Set;
 
 /**
  * json工具
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class JsonUtil {
     private static RuntimeLogger logger = new RuntimeLogger(JsonUtil.class);

@@ -60,7 +60,6 @@ public interface CodeBook {
     public enum WebVersion {
         V2_4, V2_5, V3_0;
 
-        @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
             char[] chs = name().toCharArray();

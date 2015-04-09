@@ -1,7 +1,8 @@
-package org.smarty.core.support.net;
+package org.smarty.core.net;
 
-import org.smarty.core.test.AbsTestCase;
 import org.junit.Test;
+import org.smarty.core.support.net.SocketClient;
+import org.smarty.core.test.AbsTestCase;
 
 import java.io.FileInputStream;
 import java.io.IOException;

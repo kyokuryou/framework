@@ -5,10 +5,13 @@ import org.smarty.core.support.jdbc.support.DBType;
 
 /**
  * Access工具箱(未实现)
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class AccessHolder extends SQLHolder {
 
-    @Override
     public DBType getSQLType() {
         return DBType.Access;
     }

@@ -8,15 +8,15 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
 import javax.sql.DataSource;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 /**
  * JDBC扩展
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public abstract class AbstractJdbc {
     protected final JdbcTemplate jdbcLocal = new JdbcTemplate();
@@ -26,11 +26,11 @@ public abstract class AbstractJdbc {
         jdbcLocal.setQueryTimeout(1200);
     }
 
-    protected void setDataSource(DataSource dataSource){
+    protected void setDataSource(DataSource dataSource) {
         jdbcLocal.setDataSource(dataSource);
     }
 
-    protected DataSource getDataSource(){
+    protected DataSource getDataSource() {
         return jdbcLocal.getDataSource();
     }
 

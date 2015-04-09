@@ -1,14 +1,18 @@
 package org.smarty.core.test;
 
-import org.smarty.core.utils.SpringUtil;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.smarty.core.utils.SpringUtil;
 
 import javax.sql.DataSource;
 import java.io.PrintStream;
 
 /**
  * junit自定义扩展接口定义.所有要实现junit的类必须继承.
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public abstract class AbsTestCase {
     protected static PrintStream out = System.out;

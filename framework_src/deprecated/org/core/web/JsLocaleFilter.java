@@ -31,11 +31,9 @@ public class JsLocaleFilter implements Filter {
         this.jsFtl = jsFtl;
     }
 
-    @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
 
-    @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         OutputStream osw = getCacheOutput(servletResponse);
         try {
@@ -47,21 +45,8 @@ public class JsLocaleFilter implements Filter {
         }
     }
 
-    private OutputStream getCacheOutput(ServletResponse servletResponse) throws IOException {
-        Date now = DateUtil.getToday();
-        Date ex = DateUtil.addMinute(now, 10);
 
-        HttpServletResponse response = (HttpServletResponse) servletResponse;
-        response.setHeader("Cache-Control", "public");
-        response.setHeader("Pragma", "Pragma");
-        response.setHeader("Last-Modified", now.toString());
-        response.setHeader("Expires", ex.toString());
-        response.setContentType("text/javascript");
-        response.setCharacterEncoding("UTF-8");
-        return response.getOutputStream();
-    }
 
-    @Override
     public void destroy() {
     }
 }

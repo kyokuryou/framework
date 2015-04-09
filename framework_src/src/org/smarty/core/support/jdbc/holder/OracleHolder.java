@@ -6,10 +6,13 @@ import org.smarty.core.utils.LogicUtil;
 
 /**
  * Oracle工具箱
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class OracleHolder extends SQLHolder {
 
-    @Override
     public DBType getSQLType() {
         return DBType.Oracle;
     }

@@ -11,6 +11,10 @@ import java.util.Map;
 
 /**
  * 映射一行数据,以Map形式创建
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class MapMapperHandler implements RowMapperHandler<Map<String, Object>> {
     private static RuntimeLogger logger = new RuntimeLogger(MapMapperHandler.class);

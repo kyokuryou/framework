@@ -13,14 +13,15 @@ import java.util.Properties;
 
 /**
  * 工具类 - 模板配置
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class LilystudioUtil {
     private static RuntimeLogger logger = new RuntimeLogger(LilystudioUtil.class);
 
     private static Engine engine;
-
-    private LilystudioUtil() {
-    }
 
     static {
         Properties prop = new Properties();
@@ -32,6 +33,9 @@ public class LilystudioUtil {
         prop.put("package.function", "org.smarty.core.support.fun");
         // prop.put("package.modifier", "");
         engine = new Engine(prop);
+    }
+
+    private LilystudioUtil() {
     }
 
     /**
@@ -67,7 +71,7 @@ public class LilystudioUtil {
     public static void render(TemplateConfig tc, Map<String, Object> model) {
         Template template;
         try {
-            template = engine.getTemplate(tc.getSrcFile());
+            template = engine.getTemplate(tc.getSrc());
         } catch (Exception e) {
             logger.out(e);
             return;
@@ -75,7 +79,7 @@ public class LilystudioUtil {
         Context context = new Context();
         context.putAll(model);
         try {
-            template.merge(context, PathUtil.getResourceAsOutStream(tc.getDescFile()));
+            template.merge(context, tc.getTarget());
         } catch (Exception e) {
             logger.out(e);
         }

@@ -32,7 +32,7 @@ public final class Letters {
 
     public static final char ALERT = '\u0007';
 
-    private Letters(){
+    private Letters() {
 
     }
 }

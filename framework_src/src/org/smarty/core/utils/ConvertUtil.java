@@ -6,6 +6,10 @@ import java.util.Date;
 
 /**
  * 转换工具
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class ConvertUtil {
     private static RuntimeLogger logger = new RuntimeLogger(ConvertUtil.class);
@@ -83,8 +87,9 @@ public class ConvertUtil {
 
     /**
      * 转换文件后缀名
+     *
      * @param fileName 原文件名
-     * @param suffix 新后缀
+     * @param suffix   新后缀
      * @return
      */
     public static String reFileSuffix(String fileName, String suffix) {

@@ -1,20 +1,23 @@
 package org.smarty.core.support;
 
+import org.quartz.*;
 import org.smarty.core.bean.ScheduleJob;
 import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.utils.LogicUtil;
-import org.quartz.CronTrigger;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.Trigger;
 import org.springframework.beans.factory.InitializingBean;
 
 import java.text.ParseException;
 
+/**
+ * 定时器管理
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
+ */
 public class ScheduleManager implements InitializingBean {
     private static RuntimeLogger logger = new RuntimeLogger(ScheduleManager.class);
-    // 调度器
+
     private Scheduler scheduler;
 
     public void afterPropertiesSet() throws Exception {

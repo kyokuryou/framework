@@ -6,6 +6,10 @@ import java.util.Map;
 
 /**
  * 读取的文件中可以有变量,命令; 命令参数中用表达式
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public interface ISQLLink {
 
@@ -26,8 +30,7 @@ public interface ISQLLink {
      * 返回拼装好的sql,其中的变量使用set()提前设置好
      * <b>如果变量没有改变, 不要频繁调用该方法, 而是缓存结果</b>
      *
-     * @throws java.security.AccessControlException
-     *          - 如果文件校验错误抛出改异常
+     * @throws java.security.AccessControlException - 如果文件校验错误抛出改异常
      */
     public String getResultSql(Map<String, Object> data) throws AccessControlException;
 

@@ -23,7 +23,6 @@ import java.util.Properties;
 public class WebConfig extends FileConfig {
     private String webString;
 
-    @Override
     public void buildFile(Properties ps) throws IOException {
         Boolean ew = Boolean.valueOf(ps.getProperty(CodeBook.ENABLED_WEB));
         if (ew) {
@@ -42,7 +41,6 @@ public class WebConfig extends FileConfig {
         }
     }
 
-    @Override
     protected File getFile(String fileName) throws IOException {
         try {
             return FileWrapper.getWebFile(fileName);
@@ -51,7 +49,6 @@ public class WebConfig extends FileConfig {
         }
     }
 
-    @Override
     public String getString() throws IOException {
         if (webString == null || "".equals(webString)) {
             return webString = getFileString(CodeBook.WEB_XML);

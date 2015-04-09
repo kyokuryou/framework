@@ -1,14 +1,14 @@
 package org.smarty.core.test;
 
-import org.smarty.core.Model;
-import org.smarty.core.support.jdbc.SQLSession;
-import org.smarty.core.support.jdbc.support.DBType;
-import org.smarty.core.utils.PathUtil;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.XMLWriter;
+import org.smarty.core.Model;
+import org.smarty.core.support.jdbc.SQLSession;
+import org.smarty.core.support.jdbc.support.DBType;
+import org.smarty.core.utils.PathUtil;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
@@ -20,6 +20,10 @@ import java.util.Map;
 
 /**
  * 创建SpringBean文件
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class SpringBuilder {
     private SQLSession sqlSession;
@@ -31,19 +35,20 @@ public class SpringBuilder {
      * @param dataSource 数据库连接
      */
     public SpringBuilder(DataSource dataSource, String outPath) {
-		this(dataSource, DBType.DB2, outPath);
+        this(dataSource, DBType.DB2, outPath);
     }
+
     /**
      * 初始化并初始化初始化数据库连接
      *
      * @param dataSource 数据库连接
      */
-    public SpringBuilder(DataSource dataSource,DBType sqlType, String outPath) {
-    	if (dataSource != null) {
-    		sqlSession = new SQLSession(dataSource, sqlType);
-    		
-    	}
-    	this.outPath = outPath;
+    public SpringBuilder(DataSource dataSource, DBType sqlType, String outPath) {
+        if (dataSource != null) {
+            sqlSession = new SQLSession(dataSource, sqlType);
+
+        }
+        this.outPath = outPath;
     }
 
     /**

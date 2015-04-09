@@ -14,7 +14,11 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * 启动器
+ * Created Date 2015/04/09
  *
+ * @author quliang
+ * @version 1.0
  */
 public abstract class AbsLauncher implements ApplicationContextAware, InitializingBean {
     private static RuntimeLogger logger = new RuntimeLogger(AbsLauncher.class);

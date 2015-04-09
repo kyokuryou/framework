@@ -7,6 +7,10 @@ import java.util.Map;
 
 /**
  * 模型基类
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class Model implements Serializable {
     // 主键

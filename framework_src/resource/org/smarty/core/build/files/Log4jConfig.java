@@ -18,7 +18,6 @@ import java.util.Properties;
 public class Log4jConfig extends FileConfig {
     private String log4jString;
 
-    @Override
     public void buildFile(Properties ps) throws IOException {
         File sf = createFile(ps.getProperty(CodeBook.TARGET_SRC), CodeBook.LOG4J_FILE);
         FileOutputStream fos = new FileOutputStream(sf);
@@ -33,7 +32,6 @@ public class Log4jConfig extends FileConfig {
         }
     }
 
-    @Override
     protected File getFile(String fileName) throws IOException {
         try {
             return FileWrapper.getSrcFile(fileName);
@@ -42,7 +40,6 @@ public class Log4jConfig extends FileConfig {
         }
     }
 
-    @Override
     public String getString() throws IOException {
         if (log4jString == null || "".equals(log4jString)) {
             return log4jString = getFileString(CodeBook.SRC_LOG4J);

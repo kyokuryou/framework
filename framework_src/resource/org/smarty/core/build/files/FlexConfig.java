@@ -17,7 +17,6 @@ import java.util.Properties;
  * Update Date: 2013/12/12
  */
 public class FlexConfig extends FileConfig {
-    @Override
     public void buildFile(Properties ps) throws IOException {
         Boolean ew = Boolean.valueOf(ps.getProperty(CodeBook.ENABLED_WEB));
         String com = ps.getProperty(CodeBook.COMPONENT);
@@ -62,7 +61,6 @@ public class FlexConfig extends FileConfig {
         }
     }
 
-    @Override
     protected File getFile(String fileName) throws IOException {
         try {
             return FileWrapper.getWebFile(fileName);
@@ -71,7 +69,6 @@ public class FlexConfig extends FileConfig {
         }
     }
 
-    @Override
     public String getString() throws IOException {
         throw outException("该方法flex不支持",new UnsupportedOperationException());
     }

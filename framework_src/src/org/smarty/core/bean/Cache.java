@@ -1,14 +1,14 @@
 package org.smarty.core.bean;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.util.Date;
 
 /**
  * 缓存数据容器
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class Cache implements Serializable {
     private static final long serialVersionUID = 468L;

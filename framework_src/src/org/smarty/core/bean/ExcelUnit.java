@@ -6,10 +6,14 @@ import org.apache.poi.ss.usermodel.Hyperlink;
 
 /**
  * Excel单元格
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class ExcelUnit {
     /**
-     *  sheet名
+     * sheet名
      */
     private String sheetName;
     /**

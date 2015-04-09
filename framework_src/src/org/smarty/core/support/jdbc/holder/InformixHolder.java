@@ -5,9 +5,12 @@ import org.smarty.core.support.jdbc.support.DBType;
 
 /**
  * Informix工具箱(未实现)
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class InformixHolder extends SQLHolder {
-    @Override
     public DBType getSQLType() {
         return DBType.Informix;
     }

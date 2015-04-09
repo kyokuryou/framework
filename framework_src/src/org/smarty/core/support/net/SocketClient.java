@@ -4,7 +4,11 @@ import java.io.IOException;
 import java.net.Socket;
 
 /**
- * 网络驱动堆
+ * 网络适配器(客户端)
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class SocketClient extends AbstractSocket {
 

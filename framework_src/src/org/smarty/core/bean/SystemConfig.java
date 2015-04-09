@@ -4,6 +4,10 @@ import org.smarty.core.Model;
 
 /**
  * 系统配置
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class SystemConfig extends Model {
     /**
@@ -33,7 +37,7 @@ public class SystemConfig extends Model {
      */
     private String metaKeywords;
     /**
-     *  首页页面描述
+     * 首页页面描述
      */
     private String metaDescription;
 
@@ -76,7 +80,7 @@ public class SystemConfig extends Model {
      */
     private String smtpFromMail;
     /**
-     *  SMTP服务器地址
+     * SMTP服务器地址
      */
     private String smtpHost;
     /**
@@ -88,19 +92,20 @@ public class SystemConfig extends Model {
      */
     private String smtpUsername;
     /**
-     *  SMTP密码
+     * SMTP密码
      */
     private String smtpPassword;
 
     /**
      * 默认构造
      */
-    public SystemConfig (){
+    public SystemConfig() {
 
     }
 
     /**
      * 创建与参数值一致的对象
+     *
      * @param systemConfig SystemConfig对象
      */
     public SystemConfig(SystemConfig systemConfig) {

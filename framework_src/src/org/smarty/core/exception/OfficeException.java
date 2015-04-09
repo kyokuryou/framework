@@ -2,6 +2,10 @@ package org.smarty.core.exception;
 
 /**
  * Office输出/入或流错误时发生异常
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class OfficeException extends Exception {
     public OfficeException() {

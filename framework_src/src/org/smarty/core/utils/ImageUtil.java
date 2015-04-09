@@ -4,9 +4,7 @@ import com.mortennobel.imagescaling.ResampleOp;
 import org.smarty.core.logger.RuntimeLogger;
 
 import javax.imageio.ImageIO;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.CropImageFilter;
 import java.awt.image.FilteredImageSource;
@@ -17,6 +15,10 @@ import java.io.IOException;
 
 /**
  * 图片处理工具类(该类对图片的处理基于imagescaling第三方组件)
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class ImageUtil {
     private static RuntimeLogger logger = new RuntimeLogger(ImageUtil.class);

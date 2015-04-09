@@ -1,11 +1,15 @@
 package org.smarty.core.support.jdbc.holder;
 
+import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.support.jdbc.support.DBType;
 import org.smarty.core.support.jdbc.support.SessionClass;
-import org.smarty.core.logger.RuntimeLogger;
 
 /**
  * 工具箱工厂
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class HolderFactory {
     private static RuntimeLogger logger = new RuntimeLogger(HolderFactory.class);

@@ -4,6 +4,10 @@ import java.lang.annotation.Annotation;
 
 /**
  * 运行堆栈信息
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class ClassElement {
     /**

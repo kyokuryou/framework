@@ -15,6 +15,10 @@ import java.sql.Connection;
 
 /**
  * 事务管理
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 final class Transaction {
     private int timeout = 120;
@@ -35,7 +39,7 @@ final class Transaction {
             dataSourceProxy = new TransactionAwareDataSourceProxy(targetDataSource);
             transactionManager = new DataSourceTransactionManager(dataSourceProxy);
             return dataSourceProxy;
-        }else{
+        } else {
             return targetDataSource;
         }
     }

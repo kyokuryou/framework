@@ -100,7 +100,6 @@ public class MergeJars {
         }
         final List<File> fList = new ArrayList<File>();
         File[] fs = file.listFiles(new FileFilter() {
-            @Override
             public boolean accept(File pathname) {
                 if (pathname.isDirectory()) {
                     fList.addAll(getJars(pathname.getPath()));

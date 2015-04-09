@@ -7,6 +7,10 @@ import java.util.Set;
 
 /**
  * Class加载器
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class LauncherWrapper {
     private static Set<ClassLoader> classLoaders = new HashSet<ClassLoader>();
@@ -17,7 +21,7 @@ public class LauncherWrapper {
      *
      * @param loaders ClassLoader
      */
-    public void createClassLoader(Set<ClassLoader> loaders){
+    public void createClassLoader(Set<ClassLoader> loaders) {
         classLoaders.clear();
         // 系统级别
         classLoaders.add(ClassLoader.getSystemClassLoader());
@@ -28,6 +32,7 @@ public class LauncherWrapper {
             classLoaders.addAll(loaders);
         }
     }
+
     /**
      * 返回加载器
      *

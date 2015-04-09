@@ -21,7 +21,6 @@ import java.util.Properties;
 public class LocalConfig extends FileConfig {
     private String localString;
 
-    @Override
     public void buildFile(Properties ps) throws IOException {
         Map<String, Object> params = new HashMap<String, Object>(0);
         File sf = createFile(ps.getProperty(CodeBook.TARGET_SRC), CodeBook.LOCAL_FILE);
@@ -53,7 +52,6 @@ public class LocalConfig extends FileConfig {
         }
     }
 
-    @Override
     protected File getFile(String fileName) throws IOException {
         try {
             return FileWrapper.getSrcFile(fileName);
@@ -62,7 +60,6 @@ public class LocalConfig extends FileConfig {
         }
     }
 
-    @Override
     public String getString() throws IOException {
         if (localString == null || "".equals(localString)) {
             return localString = getFileString(CodeBook.SRC_CONFIG);

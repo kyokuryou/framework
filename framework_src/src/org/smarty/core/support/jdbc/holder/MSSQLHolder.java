@@ -8,10 +8,13 @@ import java.util.List;
 
 /**
  * SQLServer工具箱
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class MSSQLHolder extends SQLHolder {
 
-    @Override
     public DBType getSQLType() {
         return DBType.MSSQL;
     }
@@ -41,11 +44,9 @@ public class MSSQLHolder extends SQLHolder {
     /**
      * 重写!!支持2000数据库
      *
-     *
      * @param pager pager
      * @return pager
      */
-    @Override
     public <E> Pager convertLimitList(Pager pager, List<E> eList) {
         if (pager == null) {
             return new Pager();

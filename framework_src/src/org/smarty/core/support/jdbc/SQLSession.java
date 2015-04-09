@@ -1,12 +1,12 @@
 package org.smarty.core.support.jdbc;
 
+import org.dom4j.Element;
 import org.smarty.core.Model;
 import org.smarty.core.bean.Pager;
 import org.smarty.core.support.jdbc.holder.HolderFactory;
 import org.smarty.core.support.jdbc.holder.SQLHolder;
 import org.smarty.core.support.jdbc.support.DBType;
 import org.smarty.core.support.jdbc.support.SessionClass;
-import org.dom4j.Element;
 import org.springframework.beans.factory.InitializingBean;
 
 import javax.sql.DataSource;
@@ -32,7 +32,6 @@ public final class SQLSession extends JdbcSupport implements DynamicSQL, StaticS
         this.sqlType = sqlType;
     }
 
-    @Override
     public void setDataSource(DataSource dataSource) {
         super.setDataSource(dataSource);
     }
@@ -42,7 +41,6 @@ public final class SQLSession extends JdbcSupport implements DynamicSQL, StaticS
      *
      * @return SQLHolder
      */
-    @Override
     protected SQLHolder getDynamicHolder() {
         SessionClass classInfo = SessionClass.getInstance(4);
         return HolderFactory.getHolderInstance(sqlType, classInfo);
@@ -54,7 +52,6 @@ public final class SQLSession extends JdbcSupport implements DynamicSQL, StaticS
      * @param sql sql
      * @return SQLHolder
      */
-    @Override
     protected SQLHolder getStaticHolder(String sql) {
         return HolderFactory.getHolderInstanceBySQL(sql, sqlType);
     }

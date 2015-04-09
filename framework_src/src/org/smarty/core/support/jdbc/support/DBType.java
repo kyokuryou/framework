@@ -2,6 +2,10 @@ package org.smarty.core.support.jdbc.support;
 
 /**
  * DB类型定义
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public enum DBType {
     /**

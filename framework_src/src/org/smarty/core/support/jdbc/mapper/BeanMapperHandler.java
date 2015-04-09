@@ -15,6 +15,10 @@ import java.sql.SQLException;
 
 /**
  * 映射一行数据,放入标准javaBean中
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class BeanMapperHandler<T extends Model> implements RowMapperHandler<T> {
     private static RuntimeLogger logger = new RuntimeLogger(BeanMapperHandler.class);

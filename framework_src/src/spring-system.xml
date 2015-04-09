@@ -34,7 +34,7 @@
 
     <!-- JDBC参数配置 -->
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" lazy-init="true">
-        <property name="order" value="0" />
+        <property name="order" value="0"/>
         <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
         <property name="ignoreResourceNotFound" value="true"/>
         <property name="locations" ref="configList"/>
@@ -54,14 +54,14 @@
     <bean id="jndi" class="org.springframework.jndi.JndiObjectFactoryBean" abstract="true"/>
     <!-- 事务管理器 -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
-          abstract="true"/>
+          abstract="true" lazy-init="true"/>
     <!-- SQLSession -->
     <bean id="sqlSession" class="org.smarty.core.support.jdbc.SQLSession" abstract="true">
         <property name="sqlType" value="${default.db}"/>
     </bean>
 
     <!-- SMTP邮件服务配置 -->
-    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" lazy-init="true">
         <property name="javaMailProperties">
             <props>
                 <prop key="mail.smtp.auth">true</prop>
@@ -74,8 +74,13 @@
             </props>
         </property>
     </bean>
+    <!-- 邮件管理器 -->
+    <bean id="mailManager" class="org.smarty.core.support.MailManager" lazy-init="true">
+        <property name="javaMailSender" ref="javaMailSender"/>
+        <property name="taskExecutor" ref="taskExecutor"/>
+    </bean>
     <!-- SMTP邮件异步发送 -->
-    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor" lazy-init="true">
         <!-- 核心线程数 -->
         <property name="corePoolSize" value="10"/>
         <!-- 最大线程数 -->
@@ -86,17 +91,13 @@
         <property name="keepAliveSeconds" value="60"/>
     </bean>
     <!-- 验证码 -->
-    <bean id="captchaService" class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService">
+    <bean id="captchaService" class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService"
+          lazy-init="true">
         <property name="captchaEngine">
             <bean class="org.smarty.core.support.captcha.CaptchaEngine"/>
         </property>
         <!--验证码过期时间-->
         <property name="minGuarantedStorageDelayInSeconds" value="600"/>
     </bean>
-    <!-- 邮件管理器 -->
-    <bean id="mailManager" class="org.smarty.core.support.MailManager">
-        <property name="javaMailSender" ref="javaMailSender"/>
-        <property name="taskExecutor" ref="taskExecutor"/>
-    </bean>
-    <bean class="org.smarty.core.utils.SpringUtil"/>
+
 </beans>

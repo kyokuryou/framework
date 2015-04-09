@@ -10,8 +10,11 @@ import java.net.URLEncoder;
 
 /**
  * 各种格式的编码加码工具类.
+ * <p/>
+ * Created Date 2015/04/09
  *
- * @author taiqichao
+ * @author quliang
+ * @version 1.0
  */
 public class EncodeUtil {
     private static RuntimeLogger logger = new RuntimeLogger(EncodeUtil.class);

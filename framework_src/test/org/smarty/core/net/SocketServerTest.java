@@ -1,5 +1,6 @@
-package org.smarty.core.support.net;
+package org.smarty.core.net;
 
+import org.smarty.core.support.net.SocketServer;
 import org.smarty.core.test.AbsTestCase;
 import org.junit.Test;
 
@@ -87,7 +88,6 @@ public class SocketServerTest extends AbsTestCase {
             Socket s = ss.next();
             // 以匿名形式实例化ServerThread
             new ServerThread(s) {
-                @Override
                 public void runSocket(Socket socket) {
                     try {
                         // 接收文本
@@ -122,7 +122,6 @@ public class SocketServerTest extends AbsTestCase {
             Socket s = ss.next();
             // 以匿名形式实例化ServerThread
             new ServerThread(s) {
-                @Override
                 public void runSocket(Socket socket) {
                     try {
                         // 打开文件
@@ -145,7 +144,6 @@ public class SocketServerTest extends AbsTestCase {
             this.socket = socket;
         }
 
-        @Override
         public void run() {
             runSocket(socket);
         }

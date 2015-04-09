@@ -6,6 +6,10 @@ import java.util.Map;
 
 /**
  * 逻辑工具
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class LogicUtil {
     private LogicUtil() {

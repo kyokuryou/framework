@@ -1,16 +1,20 @@
 package org.smarty.core.utils;
 
-import org.smarty.core.bean.SystemConfig;
-import org.smarty.core.support.cache.CacheMessage;
-import org.smarty.core.exception.CacheNameNotExistException;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
+import org.smarty.core.bean.SystemConfig;
+import org.smarty.core.exception.CacheNameNotExistException;
+import org.smarty.core.support.cache.CacheMessage;
 
 import java.lang.reflect.Field;
 
 /**
  * 系统配置(无Log日志)
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class SystemConfigUtil {
     public static String CONFIG_FILE_NAME = "system-config.xml";// 系统配置文件名称

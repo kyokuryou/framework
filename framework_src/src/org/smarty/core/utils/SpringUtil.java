@@ -8,6 +8,10 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * Spring工具
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class SpringUtil {
     private static RuntimeLogger logger = new RuntimeLogger(SpringUtil.class);
