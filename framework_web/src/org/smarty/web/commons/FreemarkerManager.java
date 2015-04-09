@@ -5,7 +5,6 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.utils.LogicUtil;
-import org.smarty.core.utils.SpringUtil;
 import org.smarty.web.utils.SpringWebUtil;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
@@ -17,16 +16,19 @@ import java.io.OutputStreamWriter;
 import java.util.Map;
 
 /**
+ * Freemarkerπ‹¿Ì
+ * Created Date 2015/04/09
  *
+ * @author quliang
+ * @version 1.0
  */
-public class  FreemarkerManager implements InitializingBean {
+public class FreemarkerManager implements InitializingBean {
     private static RuntimeLogger logger = new RuntimeLogger(FreemarkerManager.class);
     private Configuration configuration;
 
     public FreemarkerManager() {
     }
 
-    @Override
     public void afterPropertiesSet() throws Exception {
 
     }

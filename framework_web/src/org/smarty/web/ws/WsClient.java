@@ -4,15 +4,19 @@ import org.apache.commons.httpclient.params.HttpClientParams;
 import org.codehaus.xfire.client.Client;
 import org.codehaus.xfire.handler.Handler;
 import org.codehaus.xfire.transport.http.CommonsHttpMessageSender;
-import org.smarty.core.utils.PathUtil;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
+import org.smarty.core.utils.PathUtil;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
  * webService 子端实现
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class WsClient {
     private URL wsdlUrl;

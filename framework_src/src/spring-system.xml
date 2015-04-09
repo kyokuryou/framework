@@ -90,14 +90,5 @@
         <!-- 线程池维护线程所允许的空闲时间 -->
         <property name="keepAliveSeconds" value="60"/>
     </bean>
-    <!-- 验证码 -->
-    <bean id="captchaService" class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService"
-          lazy-init="true">
-        <property name="captchaEngine">
-            <bean class="org.smarty.core.support.captcha.CaptchaEngine"/>
-        </property>
-        <!--验证码过期时间-->
-        <property name="minGuarantedStorageDelayInSeconds" value="600"/>
-    </bean>
 
 </beans>

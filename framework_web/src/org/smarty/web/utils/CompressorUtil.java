@@ -7,6 +7,10 @@ import com.googlecode.htmlcompressor.compressor.XmlCompressor;
 
 /**
  * xml,html,css,js压缩工具
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class CompressorUtil {
     private CompressorUtil() {

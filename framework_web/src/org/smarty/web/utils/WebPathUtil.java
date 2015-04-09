@@ -3,21 +3,14 @@ package org.smarty.web.utils;
 import org.smarty.core.logger.RuntimeLogger;
 
 import javax.servlet.ServletContext;
-import javax.swing.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
 import java.nio.charset.Charset;
 
 /**
- * Created by kyokuryou on 15-3-31.
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class WebPathUtil {
     private static RuntimeLogger logger = new RuntimeLogger(WebPathUtil.class);

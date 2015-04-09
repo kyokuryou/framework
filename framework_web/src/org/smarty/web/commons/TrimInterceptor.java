@@ -11,12 +11,15 @@ import java.util.Set;
 
 /**
  * 去除页面参数字符串两端的空格
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class TrimInterceptor extends HandlerInterceptorAdapter {
 
-    @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        RequestContextUtils.getLocaleResolver(request).setLocale(request,response, Locale.CHINESE);
+        RequestContextUtils.getLocaleResolver(request).setLocale(request, response, Locale.CHINESE);
         Map<String, String[]> parameters = request.getParameterMap();
         Set<Map.Entry<String, String[]>> params = parameters.entrySet();
         for (Map.Entry<String, String[]> param : params) {

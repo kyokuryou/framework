@@ -13,6 +13,10 @@ import java.util.ResourceBundle;
 
 /**
  * spring mvc工具
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class SpringWebUtil {
     private static RuntimeLogger logger = new RuntimeLogger(SpringWebUtil.class);

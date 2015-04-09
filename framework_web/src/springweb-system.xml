@@ -151,16 +151,28 @@
             </list>
         </property>
     </bean>
+    <!--js 国际化 -->
+    <bean id="jsLocaleFilter" class="org.smarty.web.servlet.JSLocaleServlet">
+        <property name="freemarkerManager" ref="freemarkerManager"/>
+        <property name="jsFtl" value="${template.jsFtl}"/>
+    </bean>
+
     <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
         <property name="cookieName" value="${i18n.cookie_name}"/>
         <property name="cookieMaxAge" value="${i18n.cookie_max_age}"/>
         <property name="defaultLocale" value="${i18n.default_locale}"/>
     </bean>
     <!-- 过滤器定义-->
-    <!--js 国际化 -->
-    <bean id="jsLocaleFilter" class="org.smarty.web.commons.JsLocaleFilter">
-        <property name="freemarkerManager" ref="freemarkerManager"/>
-        <property name="jsFtl" value="${template.jsFtl}"/>
+    <!-- 验证码 -->
+    <bean id="captchaService" class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService"
+          lazy-init="true">
+        <property name="captchaEngine">
+            <bean class="org.smarty.web.commons.CaptchaEngine"/>
+        </property>
+        <!--验证码过期时间-->
+        <property name="minGuarantedStorageDelayInSeconds" value="600"/>
     </bean>
-    <bean class="org.smarty.web.utils.SpringWebUtil"/>
+    <bean id="captchaServlet" class="org.smarty.web.servlet.CaptchaServlet">
+        <property name="captchaService" ref="captchaService"/>
+    </bean>
 </beans>

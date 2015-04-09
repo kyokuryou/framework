@@ -13,6 +13,10 @@ import java.util.Map;
 
 /**
  * 生成HTML
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class GenerateHtml implements InitializingBean {
     private static RuntimeLogger logger = new RuntimeLogger(GenerateHtml.class);

@@ -1,4 +1,4 @@
-package org.smarty.core.support.captcha;
+package org.smarty.web.commons;
 
 import com.octo.captcha.component.image.backgroundgenerator.BackgroundGenerator;
 import com.octo.captcha.component.image.color.RandomListColorGenerator;
@@ -20,6 +20,10 @@ import java.util.Random;
 
 /**
  * 生成验证码图片
+ * Created Date 2015/04/09
+ *
+ * @author quliang
+ * @version 1.0
  */
 public class CaptchaEngine extends ListImageCaptchaEngine {
 
