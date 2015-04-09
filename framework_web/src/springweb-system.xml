@@ -152,7 +152,7 @@
         </property>
     </bean>
     <!--js 国际化 -->
-    <bean id="jsLocaleFilter" class="org.smarty.web.servlet.JSLocaleServlet">
+    <bean id="jsLocaleServlet" class="org.smarty.web.servlet.JSLocaleServlet">
         <property name="freemarkerManager" ref="freemarkerManager"/>
         <property name="jsFtl" value="${template.jsFtl}"/>
     </bean>
