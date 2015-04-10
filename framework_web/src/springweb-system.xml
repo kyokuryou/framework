@@ -18,19 +18,80 @@
         <!-- 扫描符合@Service的类 -->
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
     </context:component-scan>
-    <!-- 开启MVC注解处理器 -->
-    <mvc:annotation-driven/>
-
-    <!-- web 配置 -->
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" lazy-init="true">
-        <property name="order" value="0"/>
-        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
-        <property name="ignoreResourceNotFound" value="true"/>
-        <property name="locations" ref="webConfigFiles"/>
+    <!-- 对静态资源文件的访问 -->
+    <mvc:resources mapping="/images/**" location="${resources.images}" cache-period="${resources.cache_period}"/>
+    <mvc:resources mapping="/js/**" location="${resources.js}" cache-period="${resources.cache_period}"/>
+    <mvc:resources mapping="/css/**" location="${resources.css}" cache-period="${resources.cache_period}"/>
+    <mvc:resources mapping="/upload/**" location="${resources.upload}" cache-period="${resources.cache_period}"/>
+    <!-- ======================================== -->
+    <!-- 拦截器定义 -->
+    <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+        <property name="paramName" value="lang"/>
     </bean>
-
-    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
-
+    <bean id="trimInterceptor" class="org.smarty.web.http.TrimInterceptor"/>
+    <bean id="loginVerifyInterceptor" class="org.smarty.web.http.LoginVerifyInterceptor"/>
+    <mvc:interceptors>
+        <ref bean="localeChangeInterceptor"/>
+        <ref bean="trimInterceptor"/>
+        <mvc:interceptor>
+            <mvc:mapping path="/number.do"/>
+            <ref bean="loginVerifyInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+    <!-- mapping -->
+    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+        <property name="interceptors" ref="localeChangeInterceptor"/>
+        <property name="order" value="0"/>
+    </bean>
+    <!-- view resolver-->
+    <bean id="beanNameViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
+        <property name="order" value="0"/>
+    </bean>
+    <bean id="freeMarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
+        <property name="contentType" value="text/html;charset=UTF-8"/>
+        <property name="requestContextAttribute" value="${context.path.name}"/>
+        <property name="prefix" value="${resources.ftl}"/>
+        <property name="viewNames" value="${resources.ftl.names}"/>
+        <property name="exposeSessionAttributes" value="true"/>
+        <property name="exposeRequestAttributes" value="true"/>
+        <property name="exposeSpringMacroHelpers" value="true"/>
+        <property name="cache" value="true"/>
+        <property name="order" value="1"/>
+    </bean>
+    <bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="contentType" value="text/html;charset=UTF-8"/>
+        <property name="prefix" value="${resources.jsp}"/>
+        <property name="viewNames" value="${resources.jsp.names}"/>
+        <property name="cache" value="false"/>
+        <property name="order" value="2"/>
+    </bean>
+    <!-- resolver-->
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+        <property name="cookieName" value="${i18n.cookie_name}"/>
+        <property name="cookieMaxAge" value="${i18n.cookie_max_age}"/>
+        <property name="defaultLocale" value="${i18n.default_locale}"/>
+    </bean>
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="${upload.max_size}"/>
+        <property name="maxInMemorySize" value="${upload.max_size}"/>
+    </bean>
+    <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="org.springframework.web.bind.MissingServletRequestParameterException">
+                    ${page.error.required_parameter}
+                </prop>
+                <prop key="org.springframework.beans.TypeMismatchException">${page.error.mismatch_parameter}</prop>
+                <prop key="org.springframework.web.bind.ServletRequestBindingException">${page.error.bind_exception}
+                </prop>
+                <prop key="org.springframework.dao.DataIntegrityViolationException">${page.error.integrity_violation}
+                </prop>
+            </props>
+        </property>
+    </bean>
+    <!-- method handler adapter -->
     <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
         <!-- messageConverters属性的配置可以解决JSON返回中文为问号的问题 -->
         <property name="messageConverters">
@@ -46,68 +107,16 @@
             </list>
         </property>
     </bean>
-    <!-- 配置FreeMark视图 -->
-    <bean id="freeMarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
-        <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
-        <property name="contentType" value="text/html;charset=UTF-8"/>
-        <property name="requestContextAttribute" value="${context.path.name}"/>
-        <property name="prefix" value="${resources.ftl}"/>
-        <property name="viewNames" value="${resources.ftl.names}"/>
-        <property name="exposeSessionAttributes" value="true"/>
-        <property name="exposeRequestAttributes" value="true"/>
-        <property name="exposeSpringMacroHelpers" value="true"/>
-        <property name="cache" value="true"/>
-        <property name="order" value="0"/>
-    </bean>
-    <!-- 配置JSP视图 -->
-    <bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="viewClass" value="org.springframework.web.servlet.view.InternalResourceView"/>
-        <property name="contentType" value="text/html;charset=UTF-8"/>
-        <property name="prefix" value="${resources.jsp}"/>
-        <property name="viewNames" value="${resources.jsp.names}"/>
-        <property name="cache" value="false"/>
-        <property name="order" value="1"/>
-    </bean>
-
-    <!-- 文件上传配置注意:这里申明的id必须为multipartResolver -->
-    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="maxUploadSize" value="${upload.max_size}"/>
-    </bean>
-
-    <!-- 简单的异常处理 -->
-    <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-        <property name="exceptionMappings">
-            <props>
-                <prop key="org.springframework.web.bind.MissingServletRequestParameterException">
-                    ${page.error.required_parameter}
-                </prop>
-                <prop key="org.springframework.beans.TypeMismatchException">${page.error.mismatch_parameter}</prop>
-                <prop key="org.springframework.web.bind.ServletRequestBindingException">${page.error.bind_exception}
-                </prop>
-                <prop key="org.springframework.dao.DataIntegrityViolationException">${page.error.integrity_violation}
-                </prop>
-            </props>
+    <!-- 国际化 -->
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="cacheSeconds" value="-1"/>
+        <property name="basenames">
+            <list>
+                <value>${i18n.names}</value>
+            </list>
         </property>
     </bean>
-
-    <!-- 当设置多个拦截器时，先按顺序调用preHandle方法，然后逆序调用每个拦截器的postHandle和afterCompletion方法 -->
-    <mvc:interceptors>
-        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"/>
-        <bean class="org.smarty.web.http.TrimInterceptor"/>
-        <mvc:interceptor>
-            <mvc:mapping path="/number.do"/>
-            <bean class="org.smarty.web.http.LoginVerifyInterceptor"/>
-        </mvc:interceptor>
-    </mvc:interceptors>
-
-    <!-- 对静态资源文件的访问 -->
-    <mvc:resources mapping="/images/**" location="${resources.images}" cache-period="${resources.cache_period}"/>
-    <mvc:resources mapping="/js/**" location="${resources.js}" cache-period="${resources.cache_period}"/>
-    <mvc:resources mapping="/css/**" location="${resources.css}" cache-period="${resources.cache_period}"/>
-    <mvc:resources mapping="/upload/**" location="${resources.upload}" cache-period="${resources.cache_period}"/>
-
-    <!-- 配置freemarkerManager -->
-    <bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>
+    <!-- freemarker configurer-->
     <bean id="freemarkerConfigurer" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
         <property name="templateLoaderPath" value="${freemarker.template_load_path}"/>
         <property name="defaultEncoding" value="${freemarker.default_encoding}"/>
@@ -130,11 +139,21 @@
         </property>
         <property name="freemarkerVariables">
             <map>
-                <entry key="xml_escape" value-ref="fmXmlEscape"/>
+                <entry key="xml_escape">
+                    <bean class="freemarker.template.utility.XmlEscape"/>
+                </entry>
             </map>
         </property>
     </bean>
-
+    <!-- 过滤器定义-->
+    <bean id="captchaFilter" class="org.smarty.web.http.CaptchaFilter" abstract="true">
+        <property name="captchaService" ref="captchaService"/>
+    </bean>
+    <bean id="jsLocaleFilter" class="org.smarty.web.http.JSLocaleFilter" abstract="true">
+        <property name="freemarkerManager" ref="freemarkerManager"/>
+        <property name="jsFtl" value="${template.jsFtl}"/>
+    </bean>
+    <!-- 扩展定义 -->
     <!-- 模版配置 -->
     <bean id="freemarkerManager" class="org.smarty.web.commons.FreemarkerManager">
         <property name="freeMarkerConfigurer" ref="freemarkerConfigurer"/>
@@ -145,23 +164,7 @@
         <property name="freemarkerManager" ref="freemarkerManager"/>
         <property name="cachePath" value="${resources.static_html}"/>
     </bean>
-    <!-- 国际化 -->
-    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-        <property name="cacheSeconds" value="-1"/>
-        <property name="basenames">
-            <list>
-                <value>${i18n.names}</value>
-            </list>
-        </property>
-    </bean>
-    <!--js 国际化 -->
-    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
-        <property name="cookieName" value="${i18n.cookie_name}"/>
-        <property name="cookieMaxAge" value="${i18n.cookie_max_age}"/>
-        <property name="defaultLocale" value="${i18n.default_locale}"/>
-    </bean>
-    <!-- 过滤器定义-->
-    <!-- 验证码 -->
+
     <bean id="captchaService" class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService"
           lazy-init="true">
         <property name="captchaEngine">
@@ -169,13 +172,5 @@
         </property>
         <!--验证码过期时间-->
         <property name="minGuarantedStorageDelayInSeconds" value="600"/>
-    </bean>
-    <!-- 过滤器定义-->
-    <bean id="captchaFilter" class="org.smarty.web.http.CaptchaFilter" abstract="true">
-        <property name="captchaService" ref="captchaService"/>
-    </bean>
-    <bean id="jsLocaleFilter" class="org.smarty.web.http.JSLocaleFilter" abstract="true">
-        <property name="freemarkerManager" ref="freemarkerManager"/>
-        <property name="jsFtl" value="${template.jsFtl}"/>
     </bean>
 </beans>

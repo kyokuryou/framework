@@ -6,7 +6,10 @@ import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.utils.JsonUtil;
 import org.smarty.core.utils.SystemConfigUtil;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+import org.springframework.web.servlet.view.InternalResourceView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,6 +63,16 @@ public abstract class BaseServlet {
         this.request = request;
         this.response = response;
         this.session = request.getSession();
+    }
+
+    protected View redirect(String url) {
+        return new RedirectView(url);
+    }
+
+    protected View forward(String url) {
+        InternalResourceView irv = new InternalResourceView(url);
+        irv.setPreventDispatchLoop(true);
+        return irv;
     }
 
     /**

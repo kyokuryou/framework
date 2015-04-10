@@ -7,8 +7,17 @@
     <!-- 定义Spring配置文件位置 -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:/spring.xml,classpath:spring-web.xml</param-value>
+        <param-value>classpath:/spring.xml</param-value>
     </context-param>
+    <!-- 对Spring容器进行实例化 -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <!-- Spring刷新Introspector防止内存泄露 -->
+    <listener>
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+    </listener>
+
     <!-- 编码处理过滤器 -->
     <filter>
         <filter-name>encodingFilter</filter-name>
@@ -26,6 +35,11 @@
         <filter-name>encodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
+    <!-- spring mvc start -->
+    <listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
     <!-- 验证码 -->
     <filter>
         <filter-name>mCaptchaFilter</filter-name>
@@ -39,17 +53,6 @@
         <filter-name>mCaptchaFilter</filter-name>
         <url-pattern>/captcha.jpg</url-pattern>
     </filter-mapping>
-    <!-- 对Spring容器进行实例化 -->
-    <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
-    <!-- Spring刷新Introspector防止内存泄露 -->
-    <listener>
-        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
-    </listener>
-    <!-- 验证码图片生成 -->
-
-    <!-- 定义Spring配置文件位置 -->
     <servlet>
         <servlet-name>springmvc</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -63,10 +66,7 @@
         <servlet-name>springmvc</servlet-name>
         <url-pattern>*.do</url-pattern>
     </servlet-mapping>
-    <!-- mapping end -->
-    <listener>
-        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
-    </listener>
+    <!--  spring mvc end -->
     <!-- Session超时定义,单位为分钟 -->
     <session-config>
         <session-timeout>60</session-timeout>

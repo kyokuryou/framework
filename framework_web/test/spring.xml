@@ -31,6 +31,7 @@
     </bean>
     <!-- 主要配置(必须) -->
     <import resource="classpath:spring-system.xml"/>
+    <import resource="classpath:springweb-system.xml"/>
 
     <!--jdbc配置 start-->
     <bean id="testDataSource" parent="dataSource">
@@ -49,9 +50,15 @@
         <property name="dataSource" ref="testDataSource"/>
     </bean>
     <tx:annotation-driven proxy-target-class="true" transaction-manager="shopTm"/>
+
+    <bean name="mJSLocaleFilter" parent="jsLocaleFilter"/>
+    <bean name="mCaptchaFilter" parent="captchaFilter"/>
+
     <!--对该dataSource增加注解事务管理 end-->
     <bean class="org.test.commons.TestWebLauncher" init-method="main" destroy-method="exit">
         <property name="systemCatchSize" value="${cache.system.size}"/>
         <property name="temporaryCatchSize" value="${cache.temporary.size}"/>
     </bean>
+
+
 </beans>

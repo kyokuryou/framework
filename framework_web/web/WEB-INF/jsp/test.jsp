@@ -12,5 +12,6 @@
 </head>
 <body>
 测试页面.jsp
+${flashScope.ok} =====
 </body>
 </html>
