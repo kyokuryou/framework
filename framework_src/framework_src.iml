@@ -3,14 +3,10 @@
   <component name="FacetManager">
     <facet type="Spring" name="Spring">
       <configuration>
-        <fileset id="fileset" name="framework_spring" removed="false">
+        <fileset id="fileset" name="framework_src" removed="false">
           <file>file://$MODULE_DIR$/src/spring-system.xml</file>
-          <file>file://$MODULE_DIR$/src/ws_system.xml</file>
-          <file>file://$MODULE_DIR$/src/org/core/test/spring-type.xml</file>
           <file>jar://$MODULE_DIR$/../framework_lib/extend/xfire/xfire-all-1.2.6.jar!/org/codehaus/xfire/spring/xfire.xml</file>
           <file>file://$MODULE_DIR$/deprecated/flex_system.xml</file>
-          <file>file://$MODULE_DIR$/src/springmvc-system.xml</file>
-          <file>file://$MODULE_DIR$/src/springmvc-system.xml</file>
         </fileset>
       </configuration>
     </facet>

@@ -26,6 +26,11 @@
           <file>file://$MODULE_DIR$/src/springweb-system.xml</file>
           <file>file://$MODULE_DIR$/src/ws_system.xml</file>
         </fileset>
+        <fileset id="fileset2" name="web_test" removed="false">
+          <dependency>fileset</dependency>
+          <file>file://$MODULE_DIR$/test/spring.xml</file>
+          <file>file://$MODULE_DIR$/test/spring-web.xml</file>
+        </fileset>
       </configuration>
     </facet>
   </component>

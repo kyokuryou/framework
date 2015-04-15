@@ -23,24 +23,22 @@
     <mvc:resources mapping="/js/**" location="${resources.js}" cache-period="${resources.cache_period}"/>
     <mvc:resources mapping="/css/**" location="${resources.css}" cache-period="${resources.cache_period}"/>
     <mvc:resources mapping="/upload/**" location="${resources.upload}" cache-period="${resources.cache_period}"/>
+
     <!-- ======================================== -->
     <!-- 拦截器定义 -->
-    <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-        <property name="paramName" value="lang"/>
-    </bean>
-    <bean id="trimInterceptor" class="org.smarty.web.http.TrimInterceptor"/>
     <bean id="loginVerifyInterceptor" class="org.smarty.web.http.LoginVerifyInterceptor"/>
     <mvc:interceptors>
-        <ref bean="localeChangeInterceptor"/>
-        <ref bean="trimInterceptor"/>
-        <mvc:interceptor>
-            <mvc:mapping path="/number.do"/>
-            <ref bean="loginVerifyInterceptor"/>
-        </mvc:interceptor>
+        <bean class="org.springframework.web.servlet.handler.ConversionServiceExposingInterceptor">
+            <constructor-arg ref="conversionService"/>
+        </bean>
+        <bean class="org.smarty.web.http.ServletInterceptor"/>
+        <bean class="org.smarty.web.http.TrimInterceptor"/>
+        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+            <property name="paramName" value="lang"/>
+        </bean>
     </mvc:interceptors>
     <!-- mapping -->
     <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
-        <property name="interceptors" ref="localeChangeInterceptor"/>
         <property name="order" value="0"/>
     </bean>
     <!-- view resolver-->
@@ -52,7 +50,7 @@
         <property name="contentType" value="text/html;charset=UTF-8"/>
         <property name="requestContextAttribute" value="${context.path.name}"/>
         <property name="prefix" value="${resources.ftl}"/>
-        <property name="viewNames" value="${resources.ftl.names}"/>
+        <property name="viewNames" value="*.ftl"/>
         <property name="exposeSessionAttributes" value="true"/>
         <property name="exposeRequestAttributes" value="true"/>
         <property name="exposeSpringMacroHelpers" value="true"/>
@@ -63,7 +61,7 @@
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
         <property name="contentType" value="text/html;charset=UTF-8"/>
         <property name="prefix" value="${resources.jsp}"/>
-        <property name="viewNames" value="${resources.jsp.names}"/>
+        <property name="viewNames" value="*.jsp,*.do"/>
         <property name="cache" value="false"/>
         <property name="order" value="2"/>
     </bean>
@@ -78,6 +76,7 @@
         <property name="maxInMemorySize" value="${upload.max_size}"/>
     </bean>
     <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="order" value="0"/>
         <property name="exceptionMappings">
             <props>
                 <prop key="org.springframework.web.bind.MissingServletRequestParameterException">
@@ -90,6 +89,14 @@
                 </prop>
             </props>
         </property>
+    </bean>
+    <bean name="responseStatusExceptionResolver"
+          class="org.springframework.web.servlet.mvc.annotation.ResponseStatusExceptionResolver">
+        <property name="order" value="1"/>
+    </bean>
+    <bean name="defaultExceptionResolver"
+          class="org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver">
+        <property name="order" value="2"/>
     </bean>
     <!-- method handler adapter -->
     <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">

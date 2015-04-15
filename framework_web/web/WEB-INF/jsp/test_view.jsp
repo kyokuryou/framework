@@ -12,6 +12,6 @@
 </head>
 <body>
 测试页面.jsp
-${flashScope.ok} =====
+${userName}==${password} =====
 </body>
 </html>

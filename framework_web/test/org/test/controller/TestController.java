@@ -4,8 +4,6 @@ import org.smarty.web.http.BaseServlet;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
@@ -15,12 +13,10 @@ import java.util.Map;
 public class TestController extends BaseServlet {
 
     @RequestMapping(value = "/login")
-    public View login(RedirectAttributes attributes) {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("userName", "qul");
-        params.put("password", "quliang");
-        attributes.addFlashAttribute("ok", "成功");
-        return forward("test.jsp");
+    public String login() {
+        request.setAttribute("userName", "qul");
+        request.setAttribute("password","quliang");
+        return VIEW;
     }
 
     @RequestMapping(value = "/test")
@@ -28,7 +24,7 @@ public class TestController extends BaseServlet {
 
         Object map = modelMap.get("ok");
         System.out.println(map);
-        return "test.jsp";
+        return "test_view.jsp";
 
     }
 }

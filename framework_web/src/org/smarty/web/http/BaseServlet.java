@@ -6,10 +6,7 @@ import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.utils.JsonUtil;
 import org.smarty.core.utils.SystemConfigUtil;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
-import org.springframework.web.servlet.view.InternalResourceView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,14 +30,17 @@ public abstract class BaseServlet {
     private static RuntimeLogger logger = new RuntimeLogger(BaseServlet.class);
     private static final long serialVersionUID = 6718838822334455667L;
 
-    public static final String VIEW = "view";
-    public static final String LIST = "list";
+    public static final String VIEW = "view.jsp";
+    public static final String LIST = "list.ftl";
+    public static final String INPUT = "input.ftl";
     public static final String STATUS = "status";
     public static final String WARN = "warn";
     public static final String SUCCESS = "success";
     public static final String ERROR = "error";
     public static final String MESSAGE = "message";
-    public static final String CONTENT = "content";
+
+
+    public Theme useTheme;
 
     protected HttpServletRequest request;
     protected HttpServletResponse response;
@@ -48,7 +48,6 @@ public abstract class BaseServlet {
     protected String id;
     protected String[] ids;
     protected Pager pager;
-    public Theme useTheme;
 
     public enum Theme {
         defPlan, planA, planB, planC, planD, planE, planF, planG
@@ -63,16 +62,6 @@ public abstract class BaseServlet {
         this.request = request;
         this.response = response;
         this.session = request.getSession();
-    }
-
-    protected View redirect(String url) {
-        return new RedirectView(url);
-    }
-
-    protected View forward(String url) {
-        InternalResourceView irv = new InternalResourceView(url);
-        irv.setPreventDispatchLoop(true);
-        return irv;
     }
 
     /**

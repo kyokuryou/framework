@@ -91,4 +91,6 @@
         <property name="keepAliveSeconds" value="60"/>
     </bean>
 
+    <bean id="conversionService" class="org.springframework.format.support.DefaultFormattingConversionService"/>
+
 </beans>
