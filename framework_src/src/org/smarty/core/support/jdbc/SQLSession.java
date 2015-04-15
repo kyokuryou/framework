@@ -43,7 +43,7 @@ public final class SQLSession extends JdbcSupport implements DynamicSQL, StaticS
      */
     protected SQLHolder getDynamicHolder() {
         SessionClass classInfo = SessionClass.getInstance(4);
-        return HolderFactory.getHolderInstance(sqlType, classInfo);
+        return HolderFactory.getHolder(classInfo, sqlType);
     }
 
     /**
@@ -53,7 +53,7 @@ public final class SQLSession extends JdbcSupport implements DynamicSQL, StaticS
      * @return SQLHolder
      */
     protected SQLHolder getStaticHolder(String sql) {
-        return HolderFactory.getHolderInstanceBySQL(sql, sqlType);
+        return HolderFactory.getHolder(sql, sqlType);
     }
 
     public void afterPropertiesSet() throws Exception {

@@ -20,10 +20,10 @@ public class HolderFactory {
      * @param sqlType 类型
      * @return SQL工具
      */
-    public static SQLHolder getHolderInstance(DBType sqlType, SessionClass classInfo) {
+    public static SQLHolder getHolder(SessionClass classInfo, DBType sqlType) {
         SQLHolder sh = chooseHolder(sqlType);
         if (sh != null) {
-            sh.initReaderBuilder(classInfo, sqlType);
+            sh.initReaderBuilder(classInfo);
             return sh;
         }
         return null;
@@ -36,10 +36,10 @@ public class HolderFactory {
      * @param sqlType 类型
      * @return SQL工具
      */
-    public static SQLHolder getHolderInstanceBySQL(String sql, DBType sqlType) {
+    public static SQLHolder getHolder(String sql, DBType sqlType) {
         SQLHolder sh = chooseHolder(sqlType);
         if (sh != null) {
-            sh.initSQLHolder(sql);
+            sh.initSQLBuilder(sql);
             return sh;
         }
         return null;

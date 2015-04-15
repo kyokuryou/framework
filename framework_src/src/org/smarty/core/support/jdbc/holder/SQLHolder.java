@@ -28,7 +28,7 @@ public abstract class SQLHolder {
     protected String baseSQL;
     private ISQLLink sqlLink;
 
-    public void initSQLHolder(String sql) {
+    public void initSQLBuilder(String sql) {
         baseSQL = RegexUtil.convertSQL(sql);
     }
 
@@ -36,15 +36,12 @@ public abstract class SQLHolder {
      * 初始化ReaderBuilder
      *
      * @param sqlClass sqlClass
-     * @param sqlType  类型
      */
-    public void initReaderBuilder(SessionClass sqlClass, DBType sqlType) {
+    public void initReaderBuilder(SessionClass sqlClass) {
         try {
             sqlLink = new XmlSQLLink(sqlClass.getXMLFile());
             sqlLink.set("sn", sqlClass.getClassElement().getMethodName());
-            if (sqlType != null) {
-                sqlLink.set("st", sqlType.name());
-            }
+            sqlLink.set("st", getSQLType().name());
         } catch (IOException e) {
             logger.out(sqlClass.getXMLFile() + "未找到");
         }
