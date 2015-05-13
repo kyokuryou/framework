@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">人人通学生端</string>
+    <string name="title_activity_main">飞Young人人通</string>
+    <string name="dialog_info_title">提示</string>
+    <string name="dialog_progress_title">正在加载...</string>
+    <string name="dialog_finish_title">完成</string>
+    <string name="dialog_error_title">错误</string>
+    <string name="dialog_choice_title">请选择</string>
+    <string name="dialog_login_title">登录</string>
+    <string name="dialog_register_title">注册</string>
+    <string name="dialog_register_login_title">注册成功,正在登录</string>
+
+    <string name="dialog_progress_loading">正在加载，请稍后...</string>
+
+    <string name="dialog_ok_button">确定</string>
+    <string name="dialog_cancel_button">取消</string>
+    <string name="dialog_ignore_button">忽略</string>
+
+</resources>

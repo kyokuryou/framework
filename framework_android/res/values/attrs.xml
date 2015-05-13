@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Theme.images">
+        <!-- logo -->
+        <attr name="logo_image" format="reference"/>
+        <!-- 顶部背景-->
+        <attr name="top_backgroud" format="reference"/>
+        <!-- 应用背景 -->
+        <attr name="app_backgroud" format="reference"/>
+        <!-- 底部背景 -->
+        <attr name="dock_backgroud" format="reference"/>
+        <!-- 同步课堂 -->
+        <attr name="tbkt_image" format="reference"/>
+        <!-- 绿色上网 -->
+        <attr name="lssw_image" format="reference"/>
+        <!-- 天天练 -->
+        <attr name="ttl_image" format="reference"/>
+        <!-- 同步学 -->
+        <attr name="tbx_image" format="reference"/>
+        <!-- 名师讲 -->
+        <attr name="msj_image" format="reference"/>
+        <!-- 我的 -->
+        <attr name="wd_image" format="reference"/>
+        <!-- 电话 -->
+        <attr name="dh_image" format="reference"/>
+        <!-- 联系人 -->
+        <attr name="lxr_image" format="reference"/>
+        <!-- 信息 -->
+        <attr name="xx_image" format="reference"/>
+        <!-- 家长管理 -->
+        <attr name="jzgl_image" format="reference"/>
+        <!-- 问作业 -->
+        <attr name="wzy_image" format="reference"/>
+        <!-- 作业帮 -->
+        <attr name="zyb_image" format="reference"/>
+        <!-- 有道词典 -->
+        <attr name="ydcd_image" format="reference"/>
+        <!-- 英语流利说 -->
+        <attr name="yylls_image" format="reference"/>
+        <!-- 有道云笔记 -->
+        <attr name="ydybj_image" format="reference"/>
+        <!-- 相机 -->
+        <attr name="xj_image" format="reference"/>
+        <!-- 主题 -->
+        <attr name="zt_image" format="reference"/>
+        <!-- 相册 -->
+        <attr name="xc_image" format="reference"/>
+        <!-- 设置 -->
+        <attr name="sz_image" format="reference"/>
+        <!-- 闹钟 -->
+        <attr name="nz_image" format="reference"/>
+    </declare-styleable>
+    <declare-styleable name="App">
+        <attr name="name" format="string"/>
+        <attr name="package_name" format="string"/>
+        <attr name="class_name" format="string"/>
+        <attr name="drawable_icon" format="reference"/>
+    </declare-styleable>
+</resources>
