@@ -30,9 +30,9 @@ public abstract class BaseServlet {
     private static RuntimeLogger logger = new RuntimeLogger(BaseServlet.class);
     private static final long serialVersionUID = 6718838822334455667L;
 
-    public static final String VIEW = "view.jsp";
-    public static final String LIST = "list.ftl";
-    public static final String INPUT = "input.ftl";
+    public static final String VIEW = "view";
+    public static final String LIST = "list";
+    public static final String INPUT = "input";
     public static final String STATUS = "status";
     public static final String WARN = "warn";
     public static final String SUCCESS = "success";
@@ -62,6 +62,20 @@ public abstract class BaseServlet {
         this.request = request;
         this.response = response;
         this.session = request.getSession();
+    }
+
+    public String redirectAction(String action, String name) {
+        StringBuilder url = new StringBuilder("redirect:/");
+        url.append(action).append("/");
+        url.append(name).append(".do");
+        return url.toString();
+    }
+
+    public String forwardView(String prefix, String name) {
+        StringBuilder url = new StringBuilder();
+        url.append(prefix).append("_");
+        url.append(name).append(".jsp");
+        return url.toString();
     }
 
     /**

@@ -79,7 +79,12 @@
         <property name="javaMailSender" ref="javaMailSender"/>
         <property name="taskExecutor" ref="taskExecutor"/>
     </bean>
-    <!-- SMTP邮件异步发送 -->
+    <!-- 网络适配器(服务器) -->
+    <bean id="socketServer" class="org.smarty.core.support.net.SocketServer" lazy-init="true">
+        <property name="taskExecutor" ref="taskExecutor"/>
+    </bean>
+
+    <!-- 线程池 -->
     <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor" lazy-init="true">
         <!-- 核心线程数 -->
         <property name="corePoolSize" value="10"/>

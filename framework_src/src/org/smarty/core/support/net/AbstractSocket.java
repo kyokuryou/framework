@@ -4,10 +4,19 @@ import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.utils.CommonUtil;
 import org.smarty.core.utils.LogicUtil;
 
-import java.io.*;
-import java.net.InetAddress;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 /**
  * 网络适配器
@@ -18,42 +27,7 @@ import java.net.UnknownHostException;
  */
 public abstract class AbstractSocket {
     private static RuntimeLogger logger = new RuntimeLogger(AbstractSocket.class);
-    // 当前线程变量
-    protected final ThreadLocal<InetAddress> tl = new ThreadLocal<InetAddress>() {
-        public synchronized InetAddress get() {
-            return super.get();
-        }
-
-        public synchronized void set(InetAddress value) {
-            super.set(value);
-        }
-    };
     private final int maxSize = 1024;
-
-
-    /**
-     * 初始化本地连接嵌套字
-     */
-    protected AbstractSocket() {
-        try {
-            tl.set(InetAddress.getLocalHost());
-        } catch (UnknownHostException e) {
-            logger.out(e);
-        }
-    }
-
-    /**
-     * 初始化指定连接嵌套字
-     *
-     * @param host 嵌套字
-     */
-    protected AbstractSocket(String host) {
-        try {
-            tl.set(InetAddress.getByName(host));
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * 发送一段文本
