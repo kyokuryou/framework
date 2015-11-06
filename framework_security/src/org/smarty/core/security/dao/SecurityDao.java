@@ -23,9 +23,32 @@ public class SecurityDao {
      * @throws SQLException
      */
     public Map<String, Object> findAdmByUn(String username) throws SQLException {
+        StringBuffer sql = new StringBuffer();
+        sql.append("SELECT ");
+        sql.append("pk_id,");
+        sql.append("create_date,");
+        sql.append("modify_date,");
+        sql.append("is_enabled,");
+        sql.append("is_expired,");
+        sql.append("is_locked,");
+        sql.append("is_credentials_expired,");
+
+        sql.append("locked_date,");
+        sql.append("login_date,");
+        sql.append("login_failure_count,");
+        sql.append("login_ip,");
+
+        sql.append("password,");
+        sql.append("username ");
+        sql.append("FROM ");
+        sql.append("sec_admin ");
+        sql.append("WHERE ");
+        sql.append("is_delete=0 ");
+        sql.append("AND username=:username");
+
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("username", username);
-        return sqlSession.queryForMap(getAdmByUnSQL(), params);
+        return sqlSession.queryForMap(sql.toString(), params);
     }
 
     /**
@@ -34,7 +57,17 @@ public class SecurityDao {
      * @param params admin
      */
     public int updateAdm(Map<String, Object> params) throws SQLException {
-        return sqlSession.executeUpdate(updateAdmSQL(),params);
+        StringBuffer sql = new StringBuffer();
+        sql.append("UPDATE sec_admin SET ");
+        sql.append("modify_date=NOW(),");
+        sql.append("is_locked=:is_locked,");
+        sql.append("locked_date=:locked_date,");
+        sql.append("login_date=:login_date,");
+        sql.append("login_failure_count=:login_failure_count,");
+        sql.append("login_ip=:login_ip ");
+        sql.append("WHERE ");
+        sql.append("pk_id=:pk_id");
+        return sqlSession.executeUpdate(sql.toString(), params);
     }
 
     /**
@@ -44,7 +77,18 @@ public class SecurityDao {
      * @throws SQLException
      */
     public List<Map<String, Object>> queryRes() throws SQLException {
-        return sqlSession.queryForMapList(queryResSQL());
+        StringBuffer sql = new StringBuffer();
+        sql.append("SELECT ");
+        sql.append("pk_id,");
+        sql.append("create_date,");
+        sql.append("modify_date,");
+        sql.append("name,");
+        sql.append("value ");
+        sql.append("FROM ");
+        sql.append("sec_resource ");
+        sql.append("WHERE ");
+        sql.append("is_delete=0");
+        return sqlSession.queryForMapList(sql.toString());
     }
 
     /**
@@ -55,9 +99,27 @@ public class SecurityDao {
      * @throws SQLException
      */
     public List<Map<String, Object>> queryRolByAdm(String adminId) throws SQLException {
+        StringBuffer sql = new StringBuffer();
+        sql.append("SELECT ");
+        sql.append("R.pk_id,");
+        sql.append("R.create_date,");
+        sql.append("R.modify_date,");
+        sql.append("R.name,");
+        sql.append("R.value ");
+        sql.append("FROM ");
+        sql.append("sec_role AS R ");
+        sql.append("LEFT JOIN ");
+        sql.append("sec_admin_role AS AR ");
+        sql.append("ON ");
+        sql.append("R.pk_id = AR.role_id ");
+        sql.append("WHERE ");
+        sql.append("R.is_delete=0 ");
+        sql.append("AND AR.is_delete=0 ");
+        sql.append("AND AR.admin_id=:admin_id");
+
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("admin_id", adminId);
-        return sqlSession.queryForMapList(queryRolByAdmSQL(), params);
+        return sqlSession.queryForMapList(sql.toString(), params);
     }
 
     /**
@@ -68,105 +130,26 @@ public class SecurityDao {
      * @throws SQLException
      */
     public List<Map<String, Object>> queryRolByRes(String resourceId) throws SQLException {
+        StringBuffer sql = new StringBuffer();
+        sql.append("SELECT ");
+        sql.append("R.pk_id,");
+        sql.append("R.create_date,");
+        sql.append("R.modify_date,");
+        sql.append("R.name,");
+        sql.append("R.value ");
+        sql.append("FROM ");
+        sql.append("sec_role AS R ");
+        sql.append("LEFT JOIN ");
+        sql.append("sec_role_resource AS RR ");
+        sql.append("ON ");
+        sql.append("R.pk_id = RR.role_id ");
+        sql.append("WHERE ");
+        sql.append("R.is_delete=0 ");
+        sql.append("AND RR.is_delete=0 ");
+        sql.append("AND RR.resource_id=:resource_id");
+
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("resource_id", resourceId);
-        return sqlSession.queryForMapList(queryRolByResSQL(), params);
-    }
-
-    private String getAdmByUnSQL() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("SELECT ");
-        sb.append("pk_id,");
-        sb.append("create_date,");
-        sb.append("modify_date,");
-        sb.append("is_enabled,");
-        sb.append("is_expired,");
-        sb.append("is_locked,");
-        sb.append("is_credentials_expired,");
-
-        sb.append("locked_date,");
-        sb.append("login_date,");
-        sb.append("login_failure_count,");
-        sb.append("login_ip,");
-
-        sb.append("password,");
-        sb.append("username ");
-        sb.append("FROM ");
-        sb.append("sec_admin ");
-        sb.append("WHERE ");
-        sb.append("is_delete=0 ");
-        sb.append("AND username=:username");
-        return sb.toString();
-    }
-
-    private String updateAdmSQL() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("UPDATE sec_admin SET ");
-        sb.append("modify_date=NOW(),");
-        sb.append("is_locked=:is_locked,");
-        sb.append("locked_date=:locked_date,");
-        sb.append("login_date=:login_date,");
-        sb.append("login_failure_count=:login_failure_count,");
-        sb.append("login_ip=:login_ip ");
-        sb.append("WHERE ");
-        sb.append("pk_id=:pk_id");
-        return sb.toString();
-    }
-
-    private String queryResSQL() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("SELECT ");
-        sb.append("pk_id,");
-        sb.append("create_date,");
-        sb.append("modify_date,");
-        sb.append("name,");
-        sb.append("value ");
-        sb.append("FROM ");
-        sb.append("sec_resource ");
-        sb.append("WHERE ");
-        sb.append("is_delete=0");
-        return sb.toString();
-    }
-
-    private String queryRolByAdmSQL() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("SELECT ");
-        sb.append("R.pk_id,");
-        sb.append("R.create_date,");
-        sb.append("R.modify_date,");
-        sb.append("R.name,");
-        sb.append("R.value ");
-        sb.append("FROM ");
-        sb.append("sec_role AS R ");
-        sb.append("LEFT JOIN ");
-        sb.append("sec_admin_role AS AR ");
-        sb.append("ON ");
-        sb.append("R.pk_id = AR.role_id ");
-        sb.append("WHERE ");
-        sb.append("R.is_delete=0 ");
-        sb.append("AND AR.is_delete=0 ");
-        sb.append("AND AR.admin_id=:admin_id");
-        return sb.toString();
-    }
-
-    private String queryRolByResSQL() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("SELECT ");
-        sb.append("R.pk_id,");
-        sb.append("R.create_date,");
-        sb.append("R.modify_date,");
-        sb.append("R.name,");
-        sb.append("R.value ");
-        sb.append("FROM ");
-        sb.append("sec_role AS R ");
-        sb.append("LEFT JOIN ");
-        sb.append("sec_role_resource AS RR ");
-        sb.append("ON ");
-        sb.append("R.pk_id = RR.role_id ");
-        sb.append("WHERE ");
-        sb.append("R.is_delete=0 ");
-        sb.append("AND RR.is_delete=0 ");
-        sb.append("AND RR.resource_id=:resource_id");
-        return sb.toString();
+        return sqlSession.queryForMapList(sql.toString(), params);
     }
 }
