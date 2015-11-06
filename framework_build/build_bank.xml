@@ -8,7 +8,7 @@
 	<path id="bank_compile.classpath">
         <!-- 源码(主要)-->
         <fileset dir="${src.build.dirPath}">
-            <include name="${java.jar.name}.jar"/>
+            <include name="${src.jar.name}.jar"/>
         </fileset>
         <!-- 主要 -->
         <fileset dir="${lib.dirPath}">

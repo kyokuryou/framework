@@ -3,11 +3,9 @@
     <!--系统环境变量-->
     <import file="./build_property.xml"/>
     <!--编译的类路径设定-->
-    <path id="config_compile.classpath">
-        <fileset dir="${war.web.dirPath}/WEB-INF/lib">
-            <include name="*.jar"/>
-        </fileset>
-    </path>
+    <patternset id="config_compile.classpath">
+        <include name="${war.web.dirPath}/WEB-INF/lib/*.jar"/>
+    </patternset>
     <!-- 文件过滤器 -->
     <patternset id="files_filter">
         <patternset refid="resource.files"/>

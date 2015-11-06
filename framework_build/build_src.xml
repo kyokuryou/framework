@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project basedir="." default="src_all" name="framework_src">
-	<!--系统环境变量-->
+    <!--系统环境变量-->
 
     <import file="./build_property.xml"/>
 
-	<!--编译的类路径设定-->
-	<path id="src_compile.classpath"  refid="jar.files"/>
+    <!--编译的类路径设定-->
+    <path id="src_compile.classpath" refid="jar.files"/>
 
     <!-- 文件过滤器 -->
     <patternset id="files_filter">
         <patternset refid="ignored.files"/>
         <patternset refid="resource.files"/>
     </patternset>
-	<!-- resources用于实现对资源文件和配置文件的部署 -->
-	<target name="src_resources">
-		<copy todir="${src.build.dirPath}" overwrite="true">
-			<fileset dir="${src.dirPath}">
-				<patternset refid="files_filter"/>
-			</fileset>
-		</copy>
-	</target>
-
-	<!--compile编译所有java文件-->
-	<target name="src_compile" depends="src_prepare,src_resources">
-        <mkdir dir="${src.build.dirPath}"/>
-		<javac fork="true" srcdir="${src.dirPath}" executable="${target.java.home}/bin/javac"
-               target="${target.java.version}" destdir="${src.build.dirPath}"
-               debug="true" debuglevel="source,lines,vars" >
-			<compilerarg line="-encoding ${target.encode}"/>
-			<compilerarg value="-Xlint:unchecked"/>
-			<compilerarg value="-Xlint:deprecation"/>
-			<classpath refid="src_compile.classpath"/>
-		</javac>
-	</target>
-
-    <target name="src_prepare">
-        <tstamp />
+    <!-- resources用于实现对资源文件和配置文件的部署 -->
+    <target name="src_resources">
+        <copy todir="${src.build.dirPath}" overwrite="true">
+            <fileset dir="${src.dirPath}">
+                <patternset refid="files_filter"/>
+            </fileset>
+        </copy>
     </target>
 
-	<!--clean清除已经编译的目标文件和已经部署的文件-->
-	<target name="src_clean" description="Prepare for clean build">
-		<delete dir="${src.build.dirPath}"/>
-		<delete dir="${war.web.dirPath}/WEB-INF/lib/${src.jar.name}.jar"/>
-	</target>
+    <!--compile编译所有java文件-->
+    <target name="src_compile" depends="src_prepare,src_resources">
+        <mkdir dir="${src.build.dirPath}"/>
+        <javac fork="true" includeAntRuntime="false" srcdir="${src.dirPath}" executable="${target.java.home}/bin/javac"
+               target="${target.java.version}" destdir="${src.build.dirPath}"
+               debug="true" debuglevel="source,lines,vars">
+            <compilerarg line="-encoding ${target.encode}"/>
+            <compilerarg value="-Xlint:unchecked"/>
+            <compilerarg value="-Xlint:deprecation"/>
+            <classpath refid="src_compile.classpath"/>
+        </javac>
+    </target>
 
-	<!--dist完成项目部署-->
-	<target name="src_dist" description="Create binary distribution">
+    <target name="src_prepare">
+        <tstamp/>
+    </target>
+
+    <!--clean清除已经编译的目标文件和已经部署的文件-->
+    <target name="src_clean" description="Prepare for clean build">
+        <delete dir="${src.build.dirPath}"/>
+        <delete dir="${war.web.dirPath}/WEB-INF/lib/${src.jar.name}.jar"/>
+    </target>
+
+    <!--dist完成项目部署-->
+    <target name="src_dist" description="Create binary distribution">
         <jar jarfile="${src.build.dirPath}/${src.jar.name}.jar" basedir="${src.build.dirPath}">
             <exclude name="**/*.jar"/>
             <exclude name="**/*.zip"/>
@@ -59,7 +59,7 @@
                 <attribute name="X-Compile-Source-JDK" value="${target.java.version}"/>
             </manifest>
         </jar>
-	</target>
+    </target>
     <!-- 制作源码包 -->
     <target name="src_zip_dist" description="Create Source distribution">
         <zip destfile="${src.build.dirPath}/${src.jar.name}.zip">
@@ -81,16 +81,17 @@
         <copy todir="${war.src.dirPath}" overwrite="true">
             <fileset dir="${src.mata.dirPath}/config">
                 <include name="config.local.properties"/>
-                <include name="freemarker.properties"/>
+                <!--<include name="freemarker.properties"/>-->
                 <include name="log4j.properties"/>
-                <include name="spring_ws.xml"/>
-                <include name="struts.xml"/>
+                <!--<include name="spring_ws.xml"/>-->
+                <!--<include name="struts.xml"/>-->
+                <include name="spring.xml"/>
                 <include name="system-config.xml"/>
             </fileset>
         </copy>
     </target>
 
     <target name="src_project" depends="src_clean,src_prepare,src_compile"/>
-	<!--all重新编译和部署整个应用-->
-	<target name="src_all" depends="src_project,src_dist,src_zip_dist,src_copy"/>
+    <!--all重新编译和部署整个应用-->
+    <target name="src_all" depends="src_project,src_dist,src_zip_dist,src_copy"/>
 </project>

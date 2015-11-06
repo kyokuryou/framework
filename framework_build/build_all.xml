@@ -6,9 +6,9 @@
     <import file="${src.ant.filePath}"/>
     <import file="${lib.ant.filePath}"/>
     <import file="${web.ant.filePath}"/>
-    <import file="${sec.ant.filePath}"/>
+    <!--<import file="${sec.ant.filePath}"/>-->
     <!--<import file="${config.ant.filePath}"/>-->
 	<!--all重新编译和部署整个应用-->
-	<target name="all" depends="lib_all,src_all,web_all,sec_all"/>
-	<!--<target name="all" depends="lib_all,src_all,web_all"/>-->
+	<!--<target name="all" depends="lib_all,src_all,web_all,sec_all"/>-->
+	<target name="all" depends="lib_all,src_all,web_all"/>
 </project>

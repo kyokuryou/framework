@@ -1,118 +1,59 @@
 
-lib_clean:
-    [mkdir] Created dir: /opt/space/iwork/framework/out_build/web/WEB-INF/lib
-
-lib_dist:
-     [copy] Copying 82 files to /opt/space/iwork/framework/out_build/web/WEB-INF/lib
-
-lib_all:
-
 src_clean:
-   [delete] Deleting directory /opt/space/iwork/framework/framework_src/build
+   [delete] Deleting directory D:\iwork\java\framework\framework_src\build
 
 src_prepare:
 
 src_resources:
-     [copy] Copying 3 files to /opt/space/iwork/framework/framework_src/build
+     [copy] Copying 2 files to D:\iwork\java\framework\framework_src\build
 
 src_compile:
-    [javac] /opt/space/iwork/framework/framework_build/build_src.xml:86: warning: 'includeantruntime' was not set, defaulting to build.sysclasspath=last; set to false for repeatable builds
-    [javac] Compiling 100 source files to /opt/space/iwork/framework/framework_src/build
-    [javac] /opt/space/iwork/framework/framework_src/src/org/core/csvreader/CsvReader.java:446: 警告：[unchecked] 对作为普通类型 java.util.HashMap 的成员的 put(K,V) 的调用未经检查
-    [javac] 			headersHolder.IndexByName.put(headers[i], new Integer(i));
-    [javac] 			                             ^
-    [javac] /opt/space/iwork/framework/framework_src/src/org/core/csvreader/CsvReader.java:1177: 警告：[unchecked] 对作为普通类型 java.util.HashMap 的成员的 put(K,V) 的调用未经检查
-    [javac] 			headersHolder.IndexByName.put(columnValue, new Integer(i));
-    [javac] 			                             ^
-    [javac] /opt/space/iwork/framework/framework_src/src/org/core/json/JSONArray.java:89: 警告：[unchecked] 对作为普通类型 java.util.ArrayList 的成员的 add(E) 的调用未经检查
+    [javac] Compiling 84 source files to D:\iwork\java\framework\framework_src\build
+    [javac] D:\iwork\java\framework\framework_src\src\org\smarty\core\support\csvreader\CsvReader.java:422: ���棺[unchecked] ����Ϊ��ͨ���� java.util.HashMap �ĳ�Ա�� put(K,V) �ĵ���δ�����
+    [javac]             headersHolder.IndexByName.put(headers[i], new Integer(i));
+    [javac]                                          ^
+    [javac] D:\iwork\java\framework\framework_src\src\org\smarty\core\support\csvreader\CsvReader.java:1145: ���棺[unchecked] ����Ϊ��ͨ���� java.util.HashMap �ĳ�Ա�� put(K,V) �ĵ���δ�����
+    [javac]             headersHolder.IndexByName.put(columnValue, new Integer(i));
+    [javac]                                          ^
+    [javac] D:\iwork\java\framework\framework_src\src\org\smarty\core\support\json\JSONArray.java:90: ���棺[unchecked] ����Ϊ��ͨ���� java.util.ArrayList �ĳ�Ա�� add(E) �ĵ���δ�����
     [javac]                     this.myArrayList.add(JSONObject.NULL);
     [javac]                                         ^
-    [javac] /opt/space/iwork/framework/framework_src/src/org/core/json/JSONArray.java:92: 警告：[unchecked] 对作为普通类型 java.util.ArrayList 的成员的 add(E) 的调用未经检查
+    [javac] D:\iwork\java\framework\framework_src\src\org\smarty\core\support\json\JSONArray.java:93: ���棺[unchecked] ����Ϊ��ͨ���� java.util.ArrayList �ĳ�Ա�� add(E) �ĵ���δ�����
     [javac]                     this.myArrayList.add(x.nextValue());
     [javac]                                         ^
-    [javac] /opt/space/iwork/framework/framework_src/src/org/core/json/JSONArray.java:133: 警告：[unchecked] 对作为普通类型 java.util.ArrayList 的成员的 add(E) 的调用未经检查
+    [javac] D:\iwork\java\framework\framework_src\src\org\smarty\core\support\json\JSONArray.java:136: ���棺[unchecked] ����Ϊ��ͨ���� java.util.ArrayList �ĳ�Ա�� add(E) �ĵ���δ�����
     [javac]                 this.myArrayList.add(JSONObject.wrap(iter.next()));
     [javac]                                     ^
-    [javac] /opt/space/iwork/framework/framework_src/src/org/core/json/JSONArray.java:617: 警告：[unchecked] 对作为普通类型 java.util.ArrayList 的成员的 add(E) 的调用未经检查
+    [javac] D:\iwork\java\framework\framework_src\src\org\smarty\core\support\json\JSONArray.java:633: ���棺[unchecked] ����Ϊ��ͨ���� java.util.ArrayList �ĳ�Ա�� add(E) �ĵ���δ�����
     [javac]         this.myArrayList.add(value);
     [javac]                             ^
-    [javac] /opt/space/iwork/framework/framework_src/src/org/core/json/JSONArray.java:731: 警告：[unchecked] 对作为普通类型 java.util.ArrayList 的成员的 set(int,E) 的调用未经检查
+    [javac] D:\iwork\java\framework\framework_src\src\org\smarty\core\support\json\JSONArray.java:754: ���棺[unchecked] ����Ϊ��ͨ���� java.util.ArrayList �ĳ�Ա�� set(int,E) �ĵ���δ�����
     [javac]             this.myArrayList.set(index, value);
     [javac]                                 ^
-    [javac] /opt/space/iwork/framework/framework_src/src/org/core/json/JSONObject.java:248: 警告：[unchecked] 对作为普通类型 java.util.Map 的成员的 put(K,V) 的调用未经检查
+    [javac] D:\iwork\java\framework\framework_src\src\org\smarty\core\support\json\JSONObject.java:247: ���棺[unchecked] ����Ϊ��ͨ���� java.util.Map �ĳ�Ա�� put(K,V) �ĵ���δ�����
     [javac]                     this.map.put(e.getKey(), wrap(value));
     [javac]                                 ^
-    [javac] /opt/space/iwork/framework/framework_src/src/org/core/json/JSONObject.java:996: 警告：[unchecked] 对作为普通类型 java.util.Map 的成员的 put(K,V) 的调用未经检查
+    [javac] D:\iwork\java\framework\framework_src\src\org\smarty\core\support\json\JSONObject.java:1007: ���棺[unchecked] ����Ϊ��ͨ���� java.util.Map �ĳ�Ա�� put(K,V) �ĵ���δ�����
     [javac]                             this.map.put(key, wrap(result));
     [javac]                                         ^
-    [javac] /opt/space/iwork/framework/framework_src/src/org/core/json/JSONObject.java:1107: 警告：[unchecked] 对作为普通类型 java.util.Map 的成员的 put(K,V) 的调用未经检查
+    [javac] D:\iwork\java\framework\framework_src\src\org\smarty\core\support\json\JSONObject.java:1121: ���棺[unchecked] ����Ϊ��ͨ���� java.util.Map �ĳ�Ա�� put(K,V) �ĵ���δ�����
     [javac]             this.map.put(key, value);
     [javac]                         ^
-    [javac] /opt/space/iwork/framework/framework_src/src/org/core/utils/BeanUtil.java:514: 警告：[unchecked] 未经检查的类型使用
-    [javac] 找到： java.lang.Object
-    [javac] 需要： E
-    [javac]             return (E) oi.readObject();
-    [javac]                                     ^
-    [javac] 11 警告
+    [javac] 10 ����
 
 src_project:
 
 src_dist:
-      [jar] Building jar: /opt/space/iwork/framework/framework_src/build/org.jar
+      [jar] Building jar: D:\iwork\java\framework\framework_src\build\org.jar
 
 src_zip_dist:
-      [zip] Building zip: /opt/space/iwork/framework/framework_src/build/org.zip
+      [zip] Building zip: D:\iwork\java\framework\framework_src\build\org.zip
 
 src_copy:
-     [copy] Copying 1 file to /opt/space/iwork/framework/out_build/web/WEB-INF/lib
-     [copy] Copying 6 files to /opt/space/iwork/framework/out_build/src
+     [copy] Copying 1 file to D:\iwork\java\framework\out_build\web\WEB-INF\lib
+     [copy] Copying 4 files to D:\iwork\java\framework\out_build\src
 
 src_all:
 
-web_clean:
-
-web_dist:
-    [mkdir] Created dir: /opt/space/iwork/framework/out_build/web/core
-    [mkdir] Created dir: /opt/space/iwork/framework/out_build/web/core/css
-    [mkdir] Created dir: /opt/space/iwork/framework/out_build/web/core/js
-    [mkdir] Created dir: /opt/space/iwork/framework/out_build/web/core/images
-     [copy] Copying 2 files to /opt/space/iwork/framework/out_build/web/core
-    [mkdir] Created dir: /opt/space/iwork/framework/out_build/web/WEB-INF/core
-    [mkdir] Created dir: /opt/space/iwork/framework/out_build/web/WEB-INF/core/inc
-     [copy] Copying 1 file to /opt/space/iwork/framework/out_build/web/WEB-INF/core
-     [copy] Copying 1 file to /opt/space/iwork/framework/out_build/web/WEB-INF
-     [move] Moving 1 file to /opt/space/iwork/framework/out_build/web/WEB-INF
-
-web_all:
-
-sec_clean:
-   [delete] Deleting directory /opt/space/iwork/framework/framework_security/build
-
-sec_prepare:
-
-sec_resources:
-     [copy] Copying 1 file to /opt/space/iwork/framework/framework_security/build
-
-sec_compile:
-    [javac] /opt/space/iwork/framework/framework_build/build_security.xml:95: warning: 'includeantruntime' was not set, defaulting to build.sysclasspath=last; set to false for repeatable builds
-    [javac] Compiling 12 source files to /opt/space/iwork/framework/framework_security/build
-
-sec_project:
-
-sec_dist:
-      [jar] Building jar: /opt/space/iwork/framework/framework_security/build/org_sec.jar
-
-sec_zip_dist:
-      [zip] Building zip: /opt/space/iwork/framework/framework_security/build/org_sec.zip
-
-sec_copy:
-     [copy] Copying 1 file to /opt/space/iwork/framework/out_build/web/WEB-INF/lib
-     [copy] Copying 1 file to /opt/space/iwork/framework/out_build/web/WEB-INF
-     [copy] Copying 2 files to /opt/space/iwork/framework/out_build/src
-
-sec_all:
-
-all:
-
 BUILD SUCCESSFUL
-Total time: 6 seconds
+Total time: 2 seconds
