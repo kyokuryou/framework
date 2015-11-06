@@ -4,6 +4,8 @@ import org.smarty.core.bean.Pager;
 import org.smarty.core.support.jdbc.support.DBType;
 import org.smarty.core.utils.LogicUtil;
 
+import java.util.Map;
+
 /**
  * DB2工具箱
  * Created Date 2015/04/09
@@ -18,9 +20,10 @@ public class DB2Holder extends SQLHolder {
     }
 
     public String convertLimitSQL(Pager pager) {
+        String sql = getSQLString(pager.getParams());
         StringBuilder sb = new StringBuilder("SELECT * FROM (SELECT ROW_.*,ROWNUMBER() OVER(");
         sb.append(") AS ROWID FROM ( ");
-        sb.append(baseSQL);
+        sb.append(sql);
 
         // 计算总页数
         Long pageCount = 0L;

@@ -18,8 +18,9 @@ public class OracleHolder extends SQLHolder {
     }
 
     public String convertLimitSQL(Pager pager) {
+        String sql = getSQLString(pager.getParams());
         StringBuilder sb = new StringBuilder("SELECT * FROM ( SELECT row_.*, ROWNUM rownum_ FROM ( ");
-        sb.append(baseSQL);
+        sb.append(sql);
 
         // 计算总页数
         Long pageCount = 0L;

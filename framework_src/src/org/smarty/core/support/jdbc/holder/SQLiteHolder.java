@@ -18,7 +18,8 @@ public class SQLiteHolder extends SQLHolder {
     }
 
     public String convertLimitSQL(Pager pager) {
-        StringBuilder sb = new StringBuilder(baseSQL);
+        String sql = getSQLString(pager.getParams());
+        StringBuilder sb = new StringBuilder(sql);
 
         // 计算总页数
         Long pageCount = 0L;

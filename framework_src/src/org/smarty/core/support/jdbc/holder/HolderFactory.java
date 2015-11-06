@@ -2,7 +2,6 @@ package org.smarty.core.support.jdbc.holder;
 
 import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.support.jdbc.support.DBType;
-import org.smarty.core.support.jdbc.support.SessionClass;
 
 /**
  * 工具箱工厂
@@ -14,20 +13,6 @@ import org.smarty.core.support.jdbc.support.SessionClass;
 public class HolderFactory {
     private static RuntimeLogger logger = new RuntimeLogger(HolderFactory.class);
 
-    /**
-     * 根据SQL类型初始化SQL工具
-     *
-     * @param sqlType 类型
-     * @return SQL工具
-     */
-    public static SQLHolder getHolder(SessionClass classInfo, DBType sqlType) {
-        SQLHolder sh = chooseHolder(sqlType);
-        if (sh != null) {
-            sh.initReaderBuilder(classInfo);
-            return sh;
-        }
-        return null;
-    }
 
     /**
      * 根据类型初始化SQL工具
@@ -37,19 +22,18 @@ public class HolderFactory {
      * @return SQL工具
      */
     public static SQLHolder getHolder(String sql, DBType sqlType) {
-        SQLHolder sh = chooseHolder(sqlType);
-        if (sh != null) {
-            sh.initSQLBuilder(sql);
-            return sh;
+        SQLHolder holder = chooseHolder(sqlType);
+        if (holder != null) {
+            holder.setSql(sql);
         }
-        return null;
+        return holder;
     }
 
     /**
-     * 选择合适的工具
+     * 根据类型初始化SQL工具
      *
      * @param sqlType 类型
-     * @return 工具
+     * @return SQL工具
      */
     private static SQLHolder chooseHolder(DBType sqlType) {
         switch (sqlType) {

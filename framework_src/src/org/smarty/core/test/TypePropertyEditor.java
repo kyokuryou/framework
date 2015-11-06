@@ -5,7 +5,7 @@ import org.smarty.core.utils.DateUtil;
 import java.beans.PropertyEditorSupport;
 
 /**
- * ÀàĞÍ×ª»»
+ * ç±»å‹è½¬æ¢
  * Created Date 2015/04/09
  *
  * @author quliang

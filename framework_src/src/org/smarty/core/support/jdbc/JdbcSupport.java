@@ -25,10 +25,6 @@ import java.util.Map;
 abstract class JdbcSupport extends AbstractJdbc {
     private static RuntimeLogger logger = new RuntimeLogger(JdbcSupport.class);
 
-    protected abstract SQLHolder getDynamicHolder();
-
-    protected abstract SQLHolder getStaticHolder(String sql);
-
     /**
      * 查询(返回结果int)
      *
@@ -295,7 +291,6 @@ abstract class JdbcSupport extends AbstractJdbc {
      */
     protected <E extends Model> Pager __query_pager(SQLHolder sqlHolder, Pager pager, Class<E> klass) throws SQLException {
         Map<String, Object> paramMap = pager.getParams();
-        sqlHolder.getSQLString(paramMap);
         // 获得总记录数
         String countSql = sqlHolder.convertCountSQL();
         logger.out(sqlHolder.getSQLType() + ":" + countSql);

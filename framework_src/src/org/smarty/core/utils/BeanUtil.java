@@ -11,9 +11,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * 反射工具
@@ -264,27 +262,6 @@ public class BeanUtil {
     }
 
     /**
-     * @param clzss      class对象
-     * @param methodName 方法名所表示的字符串
-     * @return method对象
-     * @deprecated 在重载时, 可能会发生, 无法估计的错误
-     * 查找clzss中,methodName所表示的方法名称
-     */
-    @Deprecated
-    public static Method findMethod(Class<?> clzss, String methodName) {
-        if (LogicUtil.isEmpty(methodName)) {
-            return null;
-        }
-        Method[] methods = clzss.getMethods();
-        for (Method m : methods) {
-            if (methodName.equals(m.getName())) {
-                return m;
-            }
-        }
-        return null;
-    }
-
-    /**
      * 调用target实例中,由字段名对应的set方法
      *
      * @param target    实例
@@ -393,22 +370,19 @@ public class BeanUtil {
      * @return 属性的值
      */
     public static Object getFieldValue(Object bean, String fieldname) throws NoSuchReflectException, InvokeMethodException {
-
-        if (fieldname != null) {
-            String fieldGetMethod = getGetterName(fieldname);
-            if (fieldGetMethod != null) {
-                try {
-                    return invoke(bean, fieldGetMethod);
-                } catch (NoSuchReflectException e) {
-                    logger.out(e);
-                    throw new NoSuchReflectException(e);
-                } catch (InvokeMethodException e) {
-                    logger.out(e);
-                    throw e;
-                }
-            }
+        if (fieldname == null) {
+            return null;
         }
-        return null;
+        String fieldGetMethod = getGetterName(fieldname);
+        try {
+            return invoke(bean, fieldGetMethod);
+        } catch (NoSuchReflectException e) {
+            logger.out(e);
+            throw new NoSuchReflectException(e);
+        } catch (InvokeMethodException e) {
+            logger.out(e);
+            throw e;
+        }
     }
 
     /**
@@ -448,6 +422,26 @@ public class BeanUtil {
         } else {
             return fieldType.cast(value);
         }
+    }
+
+    public static <T extends Model> Map<String, Object> copyToMap(T t) {
+        if (t == null) {
+            return null;
+        }
+        Map<String, Object> param = new HashMap<String, Object>();
+
+        Field[] fields = getFields(t.getClass());
+        for (Field field : fields) {
+            String name = field.getName();
+            try {
+                param.put(name, getFieldValue(t, name));
+            } catch (NoSuchReflectException e) {
+                logger.out(e);
+            } catch (InvokeMethodException e) {
+                logger.out(e);
+            }
+        }
+        return param;
     }
 
     /**
@@ -496,6 +490,7 @@ public class BeanUtil {
      * @return 克隆对象
      * @throws Exception
      */
+    @SuppressWarnings("unchecked")
     private static <E extends Model> E cloneBean(E src) throws Exception {
         if (!Serializable.class.isInstance(src)) {
             throw new NotSerializableException();
