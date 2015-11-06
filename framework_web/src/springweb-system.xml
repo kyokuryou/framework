@@ -32,7 +32,7 @@
             <constructor-arg ref="conversionService"/>
         </bean>
         <bean class="org.smarty.web.http.ServletInterceptor"/>
-        <bean class="org.smarty.web.http.TrimInterceptor"/>
+        <!--<bean class="org.smarty.web.http.TrimInterceptor"/>-->
         <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
             <property name="paramName" value="lang"/>
         </bean>

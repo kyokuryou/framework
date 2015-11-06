@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -119,159 +120,17 @@ public abstract class BaseServlet {
         session.setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, locale);
     }
 
-    /**
-     * AJAX输出
-     *
-     * @param content 内容
-     * @param type    类型(如:"text/plain","text/html","text/xml"等)
-     * @return null
-     */
-    public String ajax(String content, String type) {
+    protected PrintWriter getPrintWrite(String type) {
+        response.setContentType(type + ";charset=UTF-8");
+        response.setHeader("Pragma", "No-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
         try {
-            response.setContentType(type + ";charset=UTF-8");
-            response.setHeader("Pragma", "No-cache");
-            response.setHeader("Cache-Control", "no-cache");
-            response.setDateHeader("Expires", 0);
-            response.getWriter().write(content);
-            response.getWriter().flush();
+            return response.getWriter();
         } catch (IOException e) {
             logger.out(e);
         }
         return null;
-    }
-
-    /**
-     * AJAX输出文本
-     * 等价于:
-     * <code>
-     * ajax(text,"text/plain");
-     * </code>
-     *
-     * @param text 内容
-     * @return null
-     */
-    public String ajaxText(String text) {
-        return ajax(text, "text/plain");
-    }
-
-    /**
-     * AJAX输出HTML
-     * 等价于:
-     * <code>
-     * ajax(html,"text/html");
-     * </code>
-     *
-     * @param html 内容
-     * @return null
-     */
-    public String ajaxHtml(String html) {
-        return ajax(html, "text/html");
-    }
-
-    /**
-     * AJAX输出XML
-     * 等价于:
-     * <code>
-     * ajax(xml,"text/xml");
-     * </code>
-     *
-     * @param xml 内容
-     * @return null
-     */
-    public String ajaxXml(String xml) {
-        return ajax(xml, "text/xml");
-    }
-
-    /**
-     * 根据字符串输出JSON
-     * 等价于:
-     * <code>
-     * ajax(jsonString,"text/html");
-     * </code>
-     *
-     * @param jsonString 内容
-     * @return null
-     */
-    public String ajaxJson(String jsonString) {
-        return ajax(jsonString, "text/html");
-    }
-
-    /**
-     * 根据Map输出JSON
-     * 等价于:
-     * <code>
-     * String json = JsonUtil.JsonEncode(jsonMap)
-     * ajax(json,"text/html");
-     * </code>
-     *
-     * @param jsonMap 数据
-     * @return null
-     */
-    public String ajaxJson(Map<String, String> jsonMap) {
-        return ajax(JsonUtil.JsonEncode(jsonMap), "text/html");
-    }
-
-    /**
-     * 输出JSON警告消息
-     * 等价于:
-     * <code>
-     * Map<String, String> jsonMap = new HashMap<String, String>();
-     * jsonMap.put(STATUS, WARN);
-     * jsonMap.put(MESSAGE, message);
-     * String json = JsonUtil.JsonEncode(jsonMap)
-     * ajax(json,"text/html");
-     * </code>
-     *
-     * @param message 内容
-     * @return null
-     */
-    public String ajaxJsonWarnMessage(String message) {
-        Map<String, String> jsonMap = new HashMap<String, String>();
-        jsonMap.put(STATUS, WARN);
-        jsonMap.put(MESSAGE, message);
-        return ajax(JsonUtil.JsonEncode(jsonMap), "text/html");
-    }
-
-    /**
-     * 输出JSON成功消息
-     * 等价于:
-     * <code>
-     * Map<String, String> jsonMap = new HashMap<String, String>();
-     * jsonMap.put(STATUS, SUCCESS);
-     * jsonMap.put(MESSAGE, message);
-     * String json = JsonUtil.JsonEncode(jsonMap)
-     * ajax(json,"text/html");
-     * </code>
-     *
-     * @param message 内容
-     * @return null
-     */
-    public String ajaxJsonSuccessMessage(String message) {
-        Map<String, String> jsonMap = new HashMap<String, String>();
-        jsonMap.put(STATUS, SUCCESS);
-        jsonMap.put(MESSAGE, message);
-        return ajax(JsonUtil.JsonEncode(jsonMap), "text/html");
-    }
-
-    /**
-     * 输出JSON错误消息
-     * 等价于:
-     * <code>
-     * Map<String, String> jsonMap = new HashMap<String, String>();
-     * jsonMap.put(STATUS, ERROR);
-     * jsonMap.put(MESSAGE, message);
-     * String json = JsonUtil.JsonEncode(jsonMap)
-     * ajax(json,"text/html");
-     * </code>
-     *
-     * @param message 内容
-     * @return null
-     */
-    public String ajaxJsonErrorMessage(String message) {
-        Map<String, String> jsonMap = new HashMap<String, String>();
-        jsonMap.put(STATUS, ERROR);
-        jsonMap.put(MESSAGE, message);
-        return ajax(JsonUtil.JsonEncode(jsonMap), "text/html");
     }
 
     /**
