@@ -21,7 +21,9 @@
         <!-- 扫描符合@Service的类 -->
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
     </context:component-scan>
-
+    <!-- 使用AspectJ方式配置AOP -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <aop:config proxy-target-class="true"/>
     <!-- 定时器任务 -->
     <task:annotation-driven/>
     <!-- 自定义定时任务-->
@@ -31,15 +33,11 @@
     </bean>
 
     <!-- JDBC参数配置 -->
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
-          lazy-init="true">
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" lazy-init="true">
+        <property name="order" value="0"/>
         <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
         <property name="ignoreResourceNotFound" value="true"/>
-        <property name="locations">
-            <list>
-                <value>classpath:/config.local.properties</value>
-            </list>
-        </property>
+        <property name="locations" ref="configFiles"/>
     </bean>
 
     <!-- 数据源 -->
@@ -56,18 +54,14 @@
     <bean id="jndi" class="org.springframework.jndi.JndiObjectFactoryBean" abstract="true"/>
     <!-- 事务管理器 -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
-          abstract="true"/>
+          abstract="true" lazy-init="true"/>
     <!-- SQLSession -->
     <bean id="sqlSession" class="org.smarty.core.support.jdbc.SQLSession" abstract="true">
         <property name="sqlType" value="${default.db}"/>
     </bean>
 
-    <!-- 使用AspectJ方式配置AOP -->
-    <aop:aspectj-autoproxy proxy-target-class="true"/>
-    <aop:config proxy-target-class="true"/>
-
     <!-- SMTP邮件服务配置 -->
-    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" lazy-init="true">
         <property name="javaMailProperties">
             <props>
                 <prop key="mail.smtp.auth">true</prop>
@@ -80,8 +74,18 @@
             </props>
         </property>
     </bean>
-    <!-- SMTP邮件异步发送 -->
-    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+    <!-- 邮件管理器 -->
+    <bean id="mailManager" class="org.smarty.core.support.MailManager" lazy-init="true">
+        <property name="javaMailSender" ref="javaMailSender"/>
+        <property name="taskExecutor" ref="taskExecutor"/>
+    </bean>
+    <!-- 网络适配器(服务器) -->
+    <bean id="socketServer" class="org.smarty.core.support.net.SocketServer" lazy-init="true">
+        <property name="taskExecutor" ref="taskExecutor"/>
+    </bean>
+
+    <!-- 线程池 -->
+    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor" lazy-init="true">
         <!-- 核心线程数 -->
         <property name="corePoolSize" value="10"/>
         <!-- 最大线程数 -->
@@ -91,12 +95,7 @@
         <!-- 线程池维护线程所允许的空闲时间 -->
         <property name="keepAliveSeconds" value="60"/>
     </bean>
-    <!-- 邮件管理器 -->
-    <bean id="mailManager" class="org.smarty.core.support.MailManager">
-        <property name="freemarkerManager" ref="freemarkerManager"/>
-        <property name="javaMailSender" ref="javaMailSender"/>
-        <property name="taskExecutor" ref="taskExecutor"/>
-    </bean>
-    <!-- 启动插件bean -->
-    <bean name="springUtil" class="org.smarty.core.utils.SpringUtil"/>
+
+    <bean id="conversionService" class="org.springframework.format.support.DefaultFormattingConversionService"/>
+
 </beans>
