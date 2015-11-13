@@ -1,17 +1,16 @@
 package org.smarty.core.utils;
 
-import org.smarty.core.Model;
+import com.google.gson.*;
 import org.smarty.core.logger.RuntimeLogger;
-import org.smarty.core.support.json.JSONArray;
-import org.smarty.core.support.json.JSONException;
-import org.smarty.core.support.json.JSONObject;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.io.Serializable;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * json工具
@@ -20,92 +19,128 @@ import java.util.Set;
  * @author quliang
  * @version 1.0
  */
-public class JsonUtil {
+public final class JsonUtil {
     private static RuntimeLogger logger = new RuntimeLogger(JsonUtil.class);
 
     private JsonUtil() {
     }
 
-    /**
-     * 转换json字符串
-     *
-     * @param bean 标准javabean
-     * @return json字符串
-     */
-    public static String JsonEncode(Model bean) {
-        JSONObject jsonObject = new JSONObject(bean);
-        return jsonObject.toString();
+    private static Gson getGson() {
+        GsonBuilder gb = new GsonBuilder();
+        // 不导出实体中没有用@Expose注解的属性
+        // gb.excludeFieldsWithoutExposeAnnotation();
+        // 支持Map的key为复杂对象的形式
+        gb.enableComplexMapKeySerialization();
+        // 时间转化为特定格式
+        gb.serializeNulls().setDateFormat(DateUtil.DEFAULT_FORMAT);
+        // 会把字段首字母大写
+        // gb.setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE);
+        // 对json结果格式化.
+        // gb.setPrettyPrinting();
+        // 版本号来选择是否要序列化.
+        gb.setVersion(1.0);
+        return gb.create();
     }
 
-    /**
-     * 转换json字符串
-     *
-     * @param list 原子为标准javabean或允许toString对象
-     * @return json字符串
-     */
-    public static String JsonEncode(List<?> list) {
-        JSONArray jsonArray = new JSONArray();
-        for (Object bean : list) {
-            if (bean instanceof Model) {
-                jsonArray.put(new JSONObject(bean));
-            } else {
-                jsonArray.put(bean);
-            }
-        }
-        return jsonArray.toString();
+    public static String encode(Map<String, ?> src) {
+        StringWriter sw = new StringWriter();
+        toJsonWriter(src, sw);
+        String json = sw.toString();
+        logger.out(json);
+        return json;
     }
 
-    /**
-     * 转换json字符串
-     *
-     * @param map 原子为标准javabean或允许toString对象
-     * @return json字符串
-     */
-    public static String JsonEncode(Map<String, ?> map) {
-        Map<String, Object> jsonMap = new HashMap<String, Object>();
-        Set<String> keys = map.keySet();
-        for (String key : keys) {
-            Object obj = map.get(key);
-            if (obj instanceof Model) {
-                jsonMap.put(key, new JSONObject(obj));
-            } else {
-                jsonMap.put(key, obj);
-            }
-        }
-        JSONObject jsonObject = new JSONObject(jsonMap);
-        return jsonObject.toString();
+    public static String encode(Serializable src) {
+        StringWriter sw = new StringWriter();
+        toJsonWriter(src, sw);
+        String json = sw.toString();
+        logger.out(json);
+        return json;
     }
 
-    /**
-     * 解析json字符串
-     *
-     * @param source    json字符串
-     * @param beanClass 与json字符串描述一致的标准javabean
-     * @return 标准javabean
-     * @throws JSONException 在json字符串中未发现该key
-     */
-    public static Object JsonDecode(String source, Class beanClass) throws JSONException {
-        Object bean = null;
-        try {
-            bean = beanClass.newInstance();
-        } catch (Exception e1) {
-            source = null;
-            logger.out(e1);
-        }
-        if (LogicUtil.isEmpty(source))
+    public static Map decode(String json) {
+        JsonParser parser = new JsonParser();
+        JsonElement element = parser.parse(json);
+        logger.out(json);
+        return decode(element, HashMap.class);
+    }
+
+    public static <T extends Serializable> T decode(String json, Class<T> clzss) {
+        JsonParser parser = new JsonParser();
+        JsonElement element = parser.parse(json);
+        logger.out(json);
+        return decode(element, clzss);
+    }
+
+    public static <T extends Serializable> T decodeByKey(String json, Class<T> clzss) {
+        JsonParser parser = new JsonParser();
+        JsonElement element = parser.parse(json);
+        logger.out(json);
+        return decodeByKey(element, clzss);
+    }
+
+    public static <T extends Serializable> List<?> decodeArray(String json, Class<T> clzss) {
+        JsonParser parser = new JsonParser();
+        JsonElement element = parser.parse(json);
+        logger.out(json);
+        return decodeArray(element, clzss);
+    }
+
+    public static <T extends Serializable> T decode(JsonElement element, Class<T> clzss) {
+        Gson gson = getGson();
+        return gson.fromJson(element, clzss);
+    }
+
+    public static <T extends Serializable> T decodeByKey(JsonElement element, Class<T> clzss) {
+        Gson gson = getGson();
+        return gson.fromJson(element, clzss);
+    }
+
+    public static <T extends Serializable> List<?> decodeArray(JsonElement element, Class<T> clzss) {
+        if (element == null || !element.isJsonArray()) {
             return null;
-
-        JSONObject jsonObj = new JSONObject(source);
-        Method[] setMethods = BeanUtil.getSetterMethods(beanClass);
-
-        for (Method setMethod : setMethods) {
-            try {
-                Field field = BeanUtil.getMethodTargetField(setMethod);
-                setMethod.invoke(bean, new Object[]{jsonObj.get(field.getName())});
-            } catch (Exception e) {
-                logger.out(e);
-            }
         }
-        return bean;
+        Gson gson = getGson();
+        return gson.fromJson(element, getListType(element, clzss));
+    }
+
+    private static Type getListType(JsonElement element, Class clzss) {
+        JsonArray arr = element.getAsJsonArray();
+        JsonElement ele = arr.get(0);
+        ListToken token = new ListToken();
+        if (!ele.isJsonArray()) {
+            token.addType(clzss);
+            return token;
+        }
+        token.addType(getListType(ele, clzss));
+        return token;
+    }
+
+    private static void toJsonWriter(Object src, Writer writer) {
+        Gson gson = getGson();
+        gson.toJson(src, writer);
+    }
+
+    private static final class ListToken implements ParameterizedType {
+        private Type type;
+
+        public void addType(Type type) {
+            this.type = type;
+        }
+
+        @Override
+        public Type[] getActualTypeArguments() {
+            return new Type[]{type};
+        }
+
+        @Override
+        public Type getRawType() {
+            return List.class;
+        }
+
+        @Override
+        public Type getOwnerType() {
+            return null;
+        }
     }
 }

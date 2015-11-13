@@ -33,11 +33,17 @@
     </bean>
 
     <!-- JDBC参数配置 -->
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" lazy-init="true">
-        <property name="order" value="0"/>
-        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
+    <bean id="configurer" class="org.springframework.beans.factory.config.PropertiesFactoryBean" lazy-init="true">
+        <property name="fileEncoding" value="UTF-8"/>
         <property name="ignoreResourceNotFound" value="true"/>
-        <property name="locations" ref="configFiles"/>
+        <property name="locations">
+            <list>
+                <value>classpath:conf/*.properties</value>
+            </list>
+        </property>
+    </bean>
+    <bean class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+        <property name="properties" ref="configurer"/>
     </bean>
 
     <!-- 数据源 -->

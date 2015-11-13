@@ -1,6 +1,7 @@
 package org.smarty.core.support.jdbc.holder;
 
 import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.support.jdbc.sql.SQL;
 import org.smarty.core.support.jdbc.support.DBType;
 
 /**
@@ -21,10 +22,10 @@ public class HolderFactory {
      * @param sqlType 类型
      * @return SQL工具
      */
-    public static SQLHolder getHolder(String sql, DBType sqlType) {
+    public static SQLHolder getHolder(SQL sql, DBType sqlType) {
         SQLHolder holder = chooseHolder(sqlType);
         if (holder != null) {
-            holder.setSql(sql);
+            holder.setSql(sql.toString());
         }
         return holder;
     }
