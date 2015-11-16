@@ -38,7 +38,7 @@
     <bean name="shopTm" parent="transactionManager">
         <property name="dataSource" ref="testDataSource"/>
     </bean>
-    <tx:annotation-driven proxy-target-class="true" transaction-manager="shopTm"/>
+    <tx:annotation-driven transaction-manager="shopTm"/>
     <!--对该dataSource增加注解事务管理 end-->
     <bean class="org.test.commons.TestLauncher" init-method="main" destroy-method="exit">
         <property name="systemCatchSize" value="${cache.system.size}"/>

@@ -1,7 +1,10 @@
 package org.test.dao;
 
+import org.smarty.core.support.jdbc.InsertSQL;
 import org.smarty.core.support.jdbc.SQLSession;
+import org.smarty.core.support.jdbc.SelectSQL;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.sql.SQLException;
@@ -15,10 +18,25 @@ public class TestDao {
     private SQLSession testSqlSession;
 
     public int getTestCountSql() throws SQLException {
-        return testSqlSession.queryForInt("SELECT COUNT(1)");
+        SelectSQL.SELECT("COUNT(1)");
+        return testSqlSession.queryForInt(SelectSQL.SQL());
     }
 
-    public int getTestCountFile() throws SQLException{
-        return testSqlSession.queryForInt();
+    public int getTestCountFile() throws SQLException {
+        return testSqlSession.queryForInt(null);
+    }
+
+    public Object getTestInsert1() throws SQLException {
+        InsertSQL.BEGIN();
+        InsertSQL.INSERT("t_z");
+        InsertSQL.VALUES("`code`", "'abc'");
+        return testSqlSession.executeUpdate(InsertSQL.SQL());
+    }
+
+    public Object getTestInsert2() throws SQLException {
+        InsertSQL.BEGIN();
+        InsertSQL.INSERT("t_z1");
+        InsertSQL.VALUES("`code`", "'abc'");
+        return testSqlSession.executeUpdate(InsertSQL.SQL());
     }
 }

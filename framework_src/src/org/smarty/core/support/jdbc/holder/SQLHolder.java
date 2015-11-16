@@ -1,13 +1,12 @@
 package org.smarty.core.support.jdbc.holder;
 
-import org.smarty.core.Model;
+import org.smarty.core.support.jdbc.parameter.ModelSerializable;
 import org.smarty.core.bean.Pager;
 import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.support.jdbc.support.DBType;
 import org.smarty.core.utils.BeanUtil;
 import org.smarty.core.utils.LilystudioUtil;
 import org.smarty.core.utils.LogicUtil;
-import org.smarty.core.utils.RegexUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +24,7 @@ public abstract class SQLHolder {
     private String sql;
 
     public void setSql(String sql) {
-        this.sql = RegexUtil.convertSQL(sql);
+        this.sql = sql;
     }
 
     /**
@@ -43,7 +42,7 @@ public abstract class SQLHolder {
      * @param bean velocity参数
      * @return SQL
      */
-    public final String getSQLString(Model bean) {
+    public final <T extends ModelSerializable> String getSQLString(T bean) {
         Map<String, Object> params = BeanUtil.copyToMap(bean);
         return getSQLString(params);
     }

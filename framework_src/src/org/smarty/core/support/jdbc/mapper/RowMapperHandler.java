@@ -11,5 +11,5 @@ import java.sql.SQLException;
  */
 public interface RowMapperHandler<T> {
 
-    public T rowMapper(ResultSet rs) throws SQLException;
+    T rowMapper(ResultSet rs) throws SQLException;
 }

@@ -1,9 +1,9 @@
 package org.smarty.core.support.jdbc.mapper;
 
-import org.smarty.core.Model;
 import org.smarty.core.exception.InstanceClassException;
 import org.smarty.core.exception.InvokeMethodException;
 import org.smarty.core.exception.NoSuchReflectException;
+import org.smarty.core.support.jdbc.parameter.ModelSerializable;
 import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.utils.BeanUtil;
 import org.smarty.core.utils.CommonUtil;
@@ -20,13 +20,13 @@ import java.sql.SQLException;
  * @author quliang
  * @version 1.0
  */
-public class BeanMapperHandler<T extends Model> implements RowMapperHandler<T> {
+public class BeanMapperHandler<T extends ModelSerializable> implements RowMapperHandler<T> {
     private static RuntimeLogger logger = new RuntimeLogger(BeanMapperHandler.class);
 
-    private Class<T> mappedClass;
+    private Class superClass;
 
-    public BeanMapperHandler(Class<T> mappedClass) {
-        this.mappedClass = mappedClass;
+    public BeanMapperHandler(Class superClass) {
+        this.superClass = superClass;
     }
 
     /**
@@ -41,7 +41,7 @@ public class BeanMapperHandler<T extends Model> implements RowMapperHandler<T> {
     public T rowMapper(ResultSet rs) throws SQLException {
         T obj;
         try {
-            obj = BeanUtil.instanceClass(mappedClass);
+            obj = (T) BeanUtil.instanceClass(superClass);
         } catch (InstanceClassException e) {
             logger.out(e);
             return null;
@@ -58,7 +58,7 @@ public class BeanMapperHandler<T extends Model> implements RowMapperHandler<T> {
     private void setObject(ResultSet rs, String cn, int index, T obj) throws SQLException {
         String fn = CommonUtil.toJavaField(cn);
         try {
-            Class fc = BeanUtil.getFieldClass(mappedClass, fn);
+            Class fc = BeanUtil.getFieldClass(superClass, fn);
             Object value = JdbcUtil.getResultSetValue(rs, index, fc);
             BeanUtil.invokeSetterMethod(obj, fn, value);
         } catch (NoSuchReflectException e) {

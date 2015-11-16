@@ -5,7 +5,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.XMLWriter;
-import org.smarty.core.Model;
+import org.smarty.core.support.jdbc.parameter.ModelSerializable;
 import org.smarty.core.support.jdbc.SQLSession;
 import org.smarty.core.support.jdbc.sql.SQL;
 import org.smarty.core.support.jdbc.support.DBType;
@@ -64,7 +64,7 @@ public class SpringBuilder {
 
     }
 
-    public <E extends Model> void outSpringXml(SQL sql, Map<String, Object> param, Class<E> klass) throws SQLException {
+    public <E extends ModelSerializable> void outSpringXml(SQL sql, Map<String, Object> param, Class<E> klass) throws SQLException {
         List<Element> eList = sqlSession.queryForElement(sql, param, klass);
         String pn = klass.getPackage().getName();
         String name = klass.getSimpleName();

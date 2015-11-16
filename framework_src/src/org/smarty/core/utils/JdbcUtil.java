@@ -44,6 +44,28 @@ public abstract class JdbcUtil {
     }
 
     /**
+     * 创建preparedStatement
+     *
+     * @param sql             sql
+     * @param parameterSource parameterSource
+     *                        MapSqlParameterSource (org.springframework.jdbc.core.namedparam)
+     *                        BeanPropertySqlParameterSource (org.springframework.jdbc.core.namedparam)
+     * @return PreparedStatement
+     * @throws java.sql.SQLException SQLException
+     */
+    public static PreparedStatementCreator getIncrementStatementCreator(String sql, SqlParameterSource parameterSource) throws SQLException {
+        ParsedSql parsedSql = NamedParameterUtils.parseSqlStatement(sql);
+        List<SqlParameter> declaredParams = NamedParameterUtils.buildSqlParameterList(parsedSql, parameterSource);
+
+        String sqlToUse = NamedParameterUtils.substituteNamedParameters(parsedSql, parameterSource);
+        Object[] params = NamedParameterUtils.buildValueArray(parsedSql, parameterSource, declaredParams);
+
+        PreparedStatementCreatorFactory pscf = new PreparedStatementCreatorFactory(sqlToUse, declaredParams);
+        pscf.setReturnGeneratedKeys(true);
+        return pscf.newPreparedStatementCreator(params);
+    }
+
+    /**
      * 创建callableStatement
      *
      * @param sql             sql
@@ -226,7 +248,7 @@ public abstract class JdbcUtil {
         } else {
             value = getResultSetValue(rs, index);
         }
-        if (wasNullCheck && value != null && rs.wasNull()) {
+        if (wasNullCheck && rs.wasNull()) {
             value = null;
         }
         return value;

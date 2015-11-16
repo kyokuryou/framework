@@ -23,10 +23,10 @@ import java.sql.SQLException;
  */
 public class ElementMapperHandler implements RowMapperHandler<Element> {
     private static RuntimeLogger logger = new RuntimeLogger(ElementMapperHandler.class);
-    private Class tClass;
+    private Class superClass;
 
-    public ElementMapperHandler(Class tClass) {
-        this.tClass = tClass;
+    public ElementMapperHandler(Class superClass) {
+        this.superClass = superClass;
     }
 
     /**
@@ -37,7 +37,7 @@ public class ElementMapperHandler implements RowMapperHandler<Element> {
      * @throws java.sql.SQLException
      */
     public Element rowMapper(ResultSet rs) throws SQLException {
-        Element bean = getBeanElement(tClass, rs.getRow());
+        Element bean = getBeanElement(superClass, rs.getRow());
 
         ResultSetMetaData rsm = rs.getMetaData();
         int cc = rsm.getColumnCount();
@@ -51,7 +51,7 @@ public class ElementMapperHandler implements RowMapperHandler<Element> {
     private void setObject(ResultSet rs, String cn, int index, Element bean) throws SQLException {
         String key = CommonUtil.toJavaField(cn);
         try {
-            Class keyType = BeanUtil.getFieldClass(tClass, key);
+            Class keyType = BeanUtil.getFieldClass(superClass, key);
             Object value = JdbcUtil.getResultSetValue(rs, index, String.class);
             if (value == null) return;
             Element proEl = getBeanProperty(key, value, keyType);

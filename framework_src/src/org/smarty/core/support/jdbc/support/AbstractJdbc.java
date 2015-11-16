@@ -1,6 +1,7 @@
 package org.smarty.core.support.jdbc.support;
 
 import org.smarty.core.support.jdbc.mapper.RowMapperHandler;
+import org.smarty.core.support.jdbc.mapper.SingleMapperHandler;
 import org.smarty.core.utils.JdbcUtil;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ConnectionCallback;
@@ -8,7 +9,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -108,13 +113,15 @@ public abstract class AbstractJdbc {
      * @return 执行结果
      * @throws java.sql.SQLException SQLException
      */
-    protected final Integer executeForUpdate(final String sql, final SqlParameterSource sps) throws SQLException {
-        return jdbcLocal.execute(new ConnectionCallback<Integer>() {
-            public Integer doInConnection(Connection connection) throws SQLException, DataAccessException {
+    protected final Object executeForUpdate(final String sql, final SqlParameterSource sps) throws SQLException {
+        return jdbcLocal.execute(new ConnectionCallback<Object>() {
+            public Object doInConnection(Connection connection) throws SQLException, DataAccessException {
                 PreparedStatement ps = null;
                 try {
-                    ps = JdbcUtil.getStatementCreator(sql, sps).createPreparedStatement(connection);
-                    return ps.executeUpdate();
+                    ps = JdbcUtil.getIncrementStatementCreator(sql, sps).createPreparedStatement(connection);
+                    ps.executeUpdate();
+                    ResultSet rs = ps.getGeneratedKeys();
+                    return JdbcUtil.processSingleRow(rs, new SingleMapperHandler());
                 } finally {
                     JdbcUtil.closeStatement(ps);
                 }

@@ -1,6 +1,5 @@
 package org.smarty.core;
 
-import junit.framework.Assert;
 import org.junit.Test;
 import org.smarty.core.test.AbsTestCase;
 import org.smarty.core.utils.SpringUtil;
@@ -14,8 +13,7 @@ public class TestFramework extends AbsTestCase {
     public void testFramework() {
         setUpSpring("classpath:/spring.xml");
         TestService ts = SpringUtil.getBean("testService", TestService.class);
-        Assert.assertEquals(ts.getCount(), 1);
-        Assert.assertEquals(ts.getCountMapper(), 1);
+        System.out.println(ts.insert1() + "==================");
     }
 
 }

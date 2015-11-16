@@ -6,12 +6,21 @@ import org.smarty.core.exception.InvokeMethodException;
 import org.smarty.core.exception.NoSuchReflectException;
 import org.smarty.core.logger.RuntimeLogger;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 反射工具
@@ -424,7 +433,7 @@ public class BeanUtil {
         }
     }
 
-    public static <T extends Model> Map<String, Object> copyToMap(T t) {
+    public static <T extends Serializable> Map<String, Object> copyToMap(T t) {
         if (t == null) {
             return null;
         }
