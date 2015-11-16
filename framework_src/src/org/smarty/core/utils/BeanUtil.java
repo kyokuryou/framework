@@ -1,6 +1,5 @@
 package org.smarty.core.utils;
 
-import org.smarty.core.Model;
 import org.smarty.core.exception.InstanceClassException;
 import org.smarty.core.exception.InvokeMethodException;
 import org.smarty.core.exception.NoSuchReflectException;
@@ -462,7 +461,7 @@ public class BeanUtil {
      * @throws Exception
      */
     @SuppressWarnings("unchecked")
-    public static <E extends Model> E copy(E src) throws Exception {
+    public static <E extends Serializable> E copy(E src) throws Exception {
         Class<E> ct = (Class<E>) src.getClass();
         return copy(src, ct);
     }
@@ -476,7 +475,7 @@ public class BeanUtil {
      * @return 新对象
      * @throws Exception
      */
-    public static <E extends Model, T extends Model> T copy(E src, Class<T> target) throws Exception {
+    public static <E extends Serializable, T extends Serializable> T copy(E src, Class<T> target) throws Exception {
         Object srcObj = cloneBean(src);
         Class<?> srcCls = src.getClass();
         T targetObj = target.newInstance();
@@ -500,7 +499,7 @@ public class BeanUtil {
      * @throws Exception
      */
     @SuppressWarnings("unchecked")
-    private static <E extends Model> E cloneBean(E src) throws Exception {
+    private static <E extends Serializable> E cloneBean(E src) throws Exception {
         if (!Serializable.class.isInstance(src)) {
             throw new NotSerializableException();
         }
