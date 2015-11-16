@@ -15,7 +15,7 @@ public class UpdateSQL {
     }
 
     public static void RESET() {
-        localSQL.set(new SQL(StatementType.INSERT));
+        localSQL.set(new SQL(StatementType.UPDATE));
     }
 
 
