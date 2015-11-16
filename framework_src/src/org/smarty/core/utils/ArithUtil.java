@@ -205,23 +205,4 @@ public class ArithUtil {
         }
     }
 
-    /**
-     * 获取货币格式字符串
-     */
-    public static String getCurrencyFormat() {
-        Integer priceScale = SystemConfigUtil.getSystemConfig().getMathScale();
-        if (priceScale == 0) {
-            return "#0";
-        } else if (priceScale == 1) {
-            return "#0.0";
-        } else if (priceScale == 2) {
-            return "#0.00";
-        } else if (priceScale == 3) {
-            return "#0.000";
-        } else if (priceScale == 4) {
-            return "#0.0000";
-        } else {
-            return "#0.00000";
-        }
-    }
 }

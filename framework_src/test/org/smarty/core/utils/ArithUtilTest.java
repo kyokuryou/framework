@@ -30,7 +30,7 @@ public class ArithUtilTest extends AbsTestCase {
         Assert.assertEquals(ArithUtil.compareTo(num1, num2), 1);
         Assert.assertEquals(ArithUtil.getDecimals(num1), 4);
         Assert.assertEquals(ArithUtil.getDecimals(num3), 2);
-        Assert.assertEquals(ArithUtil.getCurrencyFormat(), "#0.00");
+        //Assert.assertEquals(ArithUtil.getCurrencyFormat(), "#0.00");
     }
 
 }
