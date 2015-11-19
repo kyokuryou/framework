@@ -12,6 +12,7 @@ import java.awt.image.ImageFilter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * 图片处理工具类(该类对图片的处理基于imagescaling第三方组件)
@@ -35,10 +36,10 @@ public class ImageUtil {
     public static String bytesToHexString(byte[] src) {
         StringBuilder stringBuilder = new StringBuilder();
         if (src == null || src.length <= 0) {
-            return null;
+            return "";
         }
-        for (int i = 0; i < src.length; i++) {
-            int v = src[i] & 0xFF;
+        for (byte s : src) {
+            int v = s & 0xFF;
             String hv = Integer.toHexString(v);
             if (hv.length() < 2) {
                 stringBuilder.append(0);
@@ -56,9 +57,39 @@ public class ImageUtil {
      */
     public static String getImageRealType(File image) {
         byte[] b = new byte[4];
+        FileInputStream is = null;
         try {
-            FileInputStream is = new FileInputStream(image);
+            is = new FileInputStream(image);
             is.read(b, 0, b.length);
+            is.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String type = bytesToHexString(b).toUpperCase();
+        if (type.contains("FFD8FF")) {
+            return "jpg";
+        } else if (type.contains("89504E47")) {
+            return "png";
+        } else if (type.contains("47494638")) {
+            return "gif";
+        } else if (type.contains("49492A00")) {
+            return "tif";
+        } else if (type.contains("424D")) {
+            return "bmp";
+        }
+        return type;
+    }
+
+    /**
+     * 根据文件流读取图片文件真实类型
+     *
+     * @param in
+     * @return
+     */
+    public static String getImageRealType(InputStream in) {
+        byte[] b = new byte[4];
+        try {
+            in.read(b, 0, b.length);
         } catch (IOException e) {
             e.printStackTrace();
         }

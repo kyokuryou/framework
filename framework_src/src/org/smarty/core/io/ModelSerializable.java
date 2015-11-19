@@ -1,4 +1,4 @@
-package org.smarty.core.support.jdbc.parameter;
+package org.smarty.core.io;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;

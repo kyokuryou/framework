@@ -1,6 +1,10 @@
 package org.smarty.core.utils;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import org.smarty.core.logger.RuntimeLogger;
 
 import java.io.Serializable;
@@ -28,11 +32,13 @@ public final class JsonUtil {
     private static Gson getGson() {
         GsonBuilder gb = new GsonBuilder();
         // 不导出实体中没有用@Expose注解的属性
-        // gb.excludeFieldsWithoutExposeAnnotation();
+        gb.excludeFieldsWithoutExposeAnnotation();
         // 支持Map的key为复杂对象的形式
         gb.enableComplexMapKeySerialization();
         // 时间转化为特定格式
-        gb.serializeNulls().setDateFormat(DateUtil.DEFAULT_FORMAT);
+        gb.setDateFormat(DateUtil.DEFAULT_FORMAT);
+        // 序列化null字段
+        gb.serializeNulls();
         // 会把字段首字母大写
         // gb.setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE);
         // 对json结果格式化.

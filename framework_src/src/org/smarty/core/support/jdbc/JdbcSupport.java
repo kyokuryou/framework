@@ -8,7 +8,7 @@ import org.smarty.core.support.jdbc.mapper.BeanMapperHandler;
 import org.smarty.core.support.jdbc.mapper.ElementMapperHandler;
 import org.smarty.core.support.jdbc.mapper.MapMapperHandler;
 import org.smarty.core.support.jdbc.mapper.SingleMapperHandler;
-import org.smarty.core.support.jdbc.parameter.ModelSerializable;
+import org.smarty.core.io.ModelSerializable;
 import org.smarty.core.support.jdbc.support.AbstractJdbc;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;

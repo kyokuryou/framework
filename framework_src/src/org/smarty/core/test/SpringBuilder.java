@@ -5,7 +5,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.XMLWriter;
-import org.smarty.core.support.jdbc.parameter.ModelSerializable;
+import org.smarty.core.io.ModelSerializable;
 import org.smarty.core.support.jdbc.SQLSession;
 import org.smarty.core.support.jdbc.sql.SQL;
 import org.smarty.core.support.jdbc.support.DBType;

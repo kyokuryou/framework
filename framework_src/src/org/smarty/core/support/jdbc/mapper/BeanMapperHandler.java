@@ -1,14 +1,14 @@
 package org.smarty.core.support.jdbc.mapper;
 
 import org.smarty.core.exception.InstanceClassException;
-import org.smarty.core.exception.InvokeMethodException;
 import org.smarty.core.exception.NoSuchReflectException;
-import org.smarty.core.support.jdbc.parameter.ModelSerializable;
+import org.smarty.core.io.ModelSerializable;
 import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.utils.BeanUtil;
 import org.smarty.core.utils.CommonUtil;
 import org.smarty.core.utils.JdbcUtil;
 
+import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -58,12 +58,13 @@ public class BeanMapperHandler<T extends ModelSerializable> implements RowMapper
     private void setObject(ResultSet rs, String cn, int index, T obj) throws SQLException {
         String fn = CommonUtil.toJavaField(cn);
         try {
-            Class fc = BeanUtil.getFieldClass(superClass, fn);
-            Object value = JdbcUtil.getResultSetValue(rs, index, fc);
-            BeanUtil.invokeSetterMethod(obj, fn, value);
+            Field field = BeanUtil.getField(superClass, fn);
+            field.setAccessible(true);
+            Object value = JdbcUtil.getResultSetValue(rs, index, field.getType());
+            field.set(obj, value);
         } catch (NoSuchReflectException e) {
             logger.out(e);
-        } catch (InvokeMethodException e) {
+        } catch (IllegalAccessException e) {
             logger.out(e);
         }
     }

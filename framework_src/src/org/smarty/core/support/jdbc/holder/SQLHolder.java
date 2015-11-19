@@ -1,6 +1,6 @@
 package org.smarty.core.support.jdbc.holder;
 
-import org.smarty.core.support.jdbc.parameter.ModelSerializable;
+import org.smarty.core.io.ModelSerializable;
 import org.smarty.core.bean.Pager;
 import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.support.jdbc.support.DBType;

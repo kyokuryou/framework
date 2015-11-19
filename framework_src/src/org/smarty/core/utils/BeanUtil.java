@@ -50,6 +50,26 @@ public class BeanUtil {
     }
 
     /**
+     * 返回字段的声明类型。
+     *
+     * @param clazz Class 对象
+     * @param name  所表示字段的字符串
+     * @return Class对象
+     * @throws NoSuchReflectException 未发现字段表示的字符串
+     */
+    public static Field getField(Class<?> clazz, String name) throws NoSuchReflectException {
+        try {
+            return clazz.getDeclaredField(name);
+        } catch (NoSuchFieldException e) {
+            if ("java.lang.Object".equals(clazz.getSuperclass().getName())) {
+                logger.out("not find field:" + name);
+                throw new NoSuchReflectException(e);
+            }
+            return getField(clazz.getSuperclass(), name);
+        }
+    }
+
+    /**
      * 返回 Field 对象的一个数组，这些对象反映此 Class 对象所表示的类或接口所声明的所有字段。
      *
      * @param clazz   Class 对象。
