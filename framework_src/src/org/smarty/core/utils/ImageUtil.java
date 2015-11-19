@@ -10,9 +10,11 @@ import java.awt.image.CropImageFilter;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * 图片处理工具类(该类对图片的处理基于imagescaling第三方组件)
@@ -52,18 +54,19 @@ public class ImageUtil {
     /**
      * 根据文件流读取图片文件真实类型
      *
-     * @param image
+     * @param in
      * @return
      */
-    public static String getImageRealType(File image) {
+    public static String getRealType(InputStream in) throws IOException {
+        if (in == null || in.available() == 0) {
+            return null;
+        }
         byte[] b = new byte[4];
-        FileInputStream is = null;
-        try {
-            is = new FileInputStream(image);
-            is.read(b, 0, b.length);
-            is.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        // 重置流
+        in.reset();
+        // 读取前4个字节
+        if (in.read(b) != -1) {
+            return null;
         }
         String type = bytesToHexString(b).toUpperCase();
         if (type.contains("FFD8FF")) {
@@ -80,32 +83,34 @@ public class ImageUtil {
         return type;
     }
 
-    /**
-     * 根据文件流读取图片文件真实类型
-     *
-     * @param in
-     * @return
-     */
-    public static String getImageRealType(InputStream in) {
-        byte[] b = new byte[4];
+    public static String getSha1(InputStream in) throws IOException {
+        return getDigest(in, "SHA-1");
+    }
+
+
+    public static String getMd5(InputStream in) throws IOException {
+        return getDigest(in, "MD5");
+    }
+
+    public static String getDigest(InputStream in, String algorithm) throws IOException {
+        if (in == null || in.available() == 0) {
+            return null;
+        }
+        byte[] b = new byte[1024];
+        int len = 0;
         try {
-            in.read(b, 0, b.length);
-        } catch (IOException e) {
+            MessageDigest md = MessageDigest.getInstance(algorithm);
+            // 重置流
+            in.reset();
+            // 读取
+            while ((len = in.read(b)) != -1) {
+                md.update(b, 0, len);
+            }
+            return new BigInteger(1, md.digest()).toString(32);
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        String type = bytesToHexString(b).toUpperCase();
-        if (type.contains("FFD8FF")) {
-            return "jpg";
-        } else if (type.contains("89504E47")) {
-            return "png";
-        } else if (type.contains("47494638")) {
-            return "gif";
-        } else if (type.contains("49492A00")) {
-            return "tif";
-        } else if (type.contains("424D")) {
-            return "bmp";
-        }
-        return type;
+        return null;
     }
 
     /**
@@ -119,7 +124,7 @@ public class ImageUtil {
      * @param db         是否等比例缩放
      * @throws java.io.IOException
      */
-    public static void resizeImage(File oldFile, String formatName, File newFile, int width, int height, boolean db) throws IOException {
+    public static void resize(File oldFile, String formatName, File newFile, int width, int height, boolean db) throws IOException {
         if (!(oldFile != null && oldFile.isFile() && oldFile.exists()) || newFile == null) {
             return;
         }
@@ -194,37 +199,33 @@ public class ImageUtil {
     /**
      * 图片切割
      *
-     * @param intImageFile 源图像地址
-     * @param outImageFile 新图片地址
-     * @param x            目标切片起点x坐标
-     * @param y            目标切片起点y坐标
-     * @param destWidth    目标切片宽度
-     * @param destHeight   目标切片高度
+     * @param srcFile    源图像地址
+     * @param targetFile 新图片地址
+     * @param x          目标切片起点x坐标
+     * @param y          目标切片起点y坐标
+     * @param destWidth  目标切片宽度
+     * @param destHeight 目标切片高度
      */
-    public static void cut(String intImageFile, String outImageFile, int x,
-                           int y, int destWidth, int destHeight) {
+    public static void cut(String srcFile, String targetFile, int x, int y, int destWidth, int destHeight) {
         try {
             Image img;
             ImageFilter cropFilter;
             // 读取源图像
-            BufferedImage bi = ImageIO.read(new File(intImageFile));
+            BufferedImage bi = ImageIO.read(new File(srcFile));
             int srcWidth = bi.getWidth(); // 源图宽度
             int srcHeight = bi.getHeight(); // 源图高度
             if (srcWidth >= destWidth && srcHeight >= destHeight) {
-                Image image = bi.getScaledInstance(srcWidth, srcHeight,
-                        Image.SCALE_DEFAULT);
+                Image image = bi.getScaledInstance(srcWidth, srcHeight, Image.SCALE_DEFAULT);
                 cropFilter = new CropImageFilter(x, y, destWidth, destHeight);
-                img = Toolkit.getDefaultToolkit().createImage(
-                        new FilteredImageSource(image.getSource(), cropFilter));
-                BufferedImage tag = new BufferedImage(destWidth, destHeight,
-                        BufferedImage.TYPE_INT_RGB);
+                img = Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(image.getSource(), cropFilter));
+                BufferedImage tag = new BufferedImage(destWidth, destHeight, BufferedImage.TYPE_INT_RGB);
                 Graphics g = tag.getGraphics();
                 g.drawImage(img, 0, 0, null); // 绘制缩小后的图
                 g.dispose();
                 // 输出为文件
-                ImageIO.write(tag, "JPEG", new File(outImageFile));
+                ImageIO.write(tag, "JPEG", new File(targetFile));
             } else {
-                ImageIO.write(bi, "JPEG", new File(outImageFile));
+                ImageIO.write(bi, "JPEG", new File(targetFile));
             }
         } catch (Exception e) {
             logger.out(e);
