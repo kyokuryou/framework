@@ -36,11 +36,11 @@ public class Pager {
     /**
      * 总记录数
      */
-    private long totalCount = 0L;
+    private int totalCount = 0;
     /**
      * 总页数
      */
-    private long pageCount = 0L;
+    private int pageCount = 0;
     /**
      * 参数
      */
@@ -94,15 +94,15 @@ public class Pager {
         this.params = new HashMap<String, Object>(params);
     }
 
-    public long getTotalCount() {
+    public int getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(long totalCount) {
+    public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
     }
 
-    public long getPageCount() {
+    public int getPageCount() {
         pageCount = totalCount / pageSize;
         if (totalCount % pageSize > 0) {
             pageCount++;
@@ -110,7 +110,7 @@ public class Pager {
         return pageCount;
     }
 
-    public void setPageCount(long pageCount) {
+    public void setPageCount(int pageCount) {
         this.pageCount = pageCount;
     }
 

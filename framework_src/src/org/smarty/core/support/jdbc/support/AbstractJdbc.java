@@ -52,9 +52,8 @@ public abstract class AbstractJdbc {
      *            MapMapperHandler (org.jdbc.mapper)
      * @param <T> 映射类型
      * @return T
-     * @throws java.sql.SQLException SQLException
      */
-    protected final <T> T queryForSingle(final String sql, final SqlParameterSource sps, final RowMapperHandler<T> rmh) throws SQLException {
+    protected final <T> T queryForSingle(final String sql, final SqlParameterSource sps, final RowMapperHandler<T> rmh) {
         return jdbcLocal.execute(new ConnectionCallback<T>() {
             public T doInConnection(Connection connection) throws SQLException, DataAccessException {
                 PreparedStatement ps = null;
@@ -84,9 +83,8 @@ public abstract class AbstractJdbc {
      *            MapMapperHandler (org.jdbc.mapper)
      * @param <T> 映射类型
      * @return List<T>
-     * @throws java.sql.SQLException SQLException
      */
-    protected final <T> List<T> queryForMulti(final String sql, final SqlParameterSource sps, final RowMapperHandler<T> rmh) throws SQLException {
+    protected final <T> List<T> queryForMulti(final String sql, final SqlParameterSource sps, final RowMapperHandler<T> rmh) {
         return jdbcLocal.execute(new ConnectionCallback<List<T>>() {
             public List<T> doInConnection(Connection connection) throws SQLException, DataAccessException {
                 PreparedStatement ps = null;
@@ -111,9 +109,8 @@ public abstract class AbstractJdbc {
      *            MapSqlParameterSource (org.springframework.jdbc.core.namedparam)
      *            BeanPropertySqlParameterSource (org.springframework.jdbc.core.namedparam)
      * @return 执行结果
-     * @throws java.sql.SQLException SQLException
      */
-    protected final Object executeForUpdate(final String sql, final SqlParameterSource sps) throws SQLException {
+    protected final Object executeForUpdate(final String sql, final SqlParameterSource sps) {
         return jdbcLocal.execute(new ConnectionCallback<Object>() {
             public Object doInConnection(Connection connection) throws SQLException, DataAccessException {
                 PreparedStatement ps = null;
@@ -137,9 +134,8 @@ public abstract class AbstractJdbc {
      *            MapSqlParameterSource (org.springframework.jdbc.core.namedparam)
      *            BeanPropertySqlParameterSource (org.springframework.jdbc.core.namedparam)
      * @return 执行结果
-     * @throws java.sql.SQLException SQLException
      */
-    protected final boolean executeForCall(final String sql, final SqlParameterSource sps) throws SQLException {
+    protected final boolean executeForCall(final String sql, final SqlParameterSource sps) {
         return jdbcLocal.execute(new ConnectionCallback<Boolean>() {
             public Boolean doInConnection(Connection connection) throws SQLException, DataAccessException {
                 CallableStatement ps = null;

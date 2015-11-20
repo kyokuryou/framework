@@ -10,7 +10,6 @@ import org.smarty.core.support.jdbc.support.DBType;
 import org.springframework.beans.factory.InitializingBean;
 
 import javax.sql.DataSource;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -55,9 +54,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      *
      * @param sql sql
      * @return int
-     * @throws java.sql.SQLException
      */
-    public int queryForInt(SQL sql) throws SQLException {
+    public int queryForInt(SQL sql) {
         return __query_number(getHolder(sql)).intValue();
     }
 
@@ -67,9 +65,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      * @param sql    sql
      * @param params 参数
      * @return int
-     * @throws java.sql.SQLException
      */
-    public int queryForInt(SQL sql, Map<String, Object> params) throws SQLException {
+    public int queryForInt(SQL sql, Map<String, Object> params) {
         return __query_number(getHolder(sql), params).intValue();
     }
 
@@ -79,9 +76,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      * @param sql    sql
      * @param params 参数
      * @return int
-     * @throws java.sql.SQLException
      */
-    public int queryForInt(SQL sql, ModelSerializable params) throws SQLException {
+    public int queryForInt(SQL sql, ModelSerializable params) {
         return __query_number(getHolder(sql), params).intValue();
     }
 
@@ -90,9 +86,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      *
      * @param sql sql
      * @return Long
-     * @throws java.sql.SQLException
      */
-    public Long queryForLong(SQL sql) throws SQLException {
+    public Long queryForLong(SQL sql) {
         return __query_number(getHolder(sql)).longValue();
     }
 
@@ -102,9 +97,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      * @param sql    sql
      * @param params 参数
      * @return Long
-     * @throws java.sql.SQLException
      */
-    public Long queryForLong(SQL sql, Map<String, Object> params) throws SQLException {
+    public Long queryForLong(SQL sql, Map<String, Object> params) {
         return __query_number(getHolder(sql), params).longValue();
     }
 
@@ -114,9 +108,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      * @param sql    sql
      * @param params 参数
      * @return Long
-     * @throws java.sql.SQLException
      */
-    public Long queryForLong(SQL sql, ModelSerializable params) throws SQLException {
+    public Long queryForLong(SQL sql, ModelSerializable params) {
         return __query_number(getHolder(sql), params).longValue();
     }
 
@@ -125,9 +118,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      *
      * @param sql sql
      * @return Object
-     * @throws java.sql.SQLException
      */
-    public Object queryForObject(SQL sql) throws SQLException {
+    public Object queryForObject(SQL sql) {
         return __query_object(getHolder(sql));
     }
 
@@ -137,9 +129,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      * @param sql    sql
      * @param params 参数
      * @return Object
-     * @throws java.sql.SQLException
      */
-    public Object queryForObject(SQL sql, Map<String, Object> params) throws SQLException {
+    public Object queryForObject(SQL sql, Map<String, Object> params) {
         return __query_object(getHolder(sql), params);
     }
 
@@ -149,9 +140,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      * @param sql    sql
      * @param params 参数
      * @return Object
-     * @throws java.sql.SQLException
      */
-    public Object queryForObject(SQL sql, ModelSerializable params) throws SQLException {
+    public Object queryForObject(SQL sql, ModelSerializable params) {
         return __query_object(getHolder(sql), params);
     }
 
@@ -160,9 +150,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      *
      * @param sql sql
      * @return Map
-     * @throws java.sql.SQLException
      */
-    public Map<String, Object> queryForMap(SQL sql) throws SQLException {
+    public Map<String, Object> queryForMap(SQL sql) {
         return __query_map(getHolder(sql));
     }
 
@@ -172,9 +161,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      * @param sql    sql
      * @param params 参数
      * @return Map
-     * @throws java.sql.SQLException
      */
-    public Map<String, Object> queryForMap(SQL sql, Map<String, Object> params) throws SQLException {
+    public Map<String, Object> queryForMap(SQL sql, Map<String, Object> params) {
         return __query_map(getHolder(sql), params);
     }
 
@@ -184,9 +172,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      * @param sql    sql
      * @param params 参数
      * @return Map
-     * @throws java.sql.SQLException
      */
-    public Map<String, Object> queryForMap(SQL sql, ModelSerializable params) throws SQLException {
+    public Map<String, Object> queryForMap(SQL sql, ModelSerializable params) {
         return __query_map(getHolder(sql), params);
     }
 
@@ -196,9 +183,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      * @param sql   sql
      * @param klass Class对象
      * @return E
-     * @throws java.sql.SQLException
      */
-    public <E extends ModelSerializable> E queryForBean(SQL sql, Class<E> klass) throws SQLException {
+    public <E extends ModelSerializable> E queryForBean(SQL sql, Class<E> klass) {
         return __query_bean(getHolder(sql), klass);
     }
 
@@ -209,9 +195,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      * @param params 参数
      * @param klass  Class对象
      * @return E
-     * @throws java.sql.SQLException
      */
-    public <E extends ModelSerializable> E queryForBean(SQL sql, Map<String, Object> params, Class<E> klass) throws SQLException {
+    public <E extends ModelSerializable> E queryForBean(SQL sql, Map<String, Object> params, Class<E> klass) {
         return __query_bean(getHolder(sql), params, klass);
     }
 
@@ -221,9 +206,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      * @param sql    sql
      * @param params 参数
      * @return E
-     * @throws java.sql.SQLException
      */
-    public <T extends ModelSerializable> T queryForBean(SQL sql, T params) throws SQLException {
+    public <T extends ModelSerializable> T queryForBean(SQL sql, T params) {
         return __query_bean(getHolder(sql), params);
     }
 
@@ -232,9 +216,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      *
      * @param sql sql
      * @return List
-     * @throws java.sql.SQLException
      */
-    public List<Object> queryForObjectList(SQL sql) throws SQLException {
+    public List<Object> queryForObjectList(SQL sql) {
         return __query_object_list(getHolder(sql));
     }
 
@@ -244,9 +227,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      * @param sql    sql
      * @param params 参数
      * @return List
-     * @throws java.sql.SQLException
      */
-    public List<Object> queryForObjectList(SQL sql, Map<String, Object> params) throws SQLException {
+    public List<Object> queryForObjectList(SQL sql, Map<String, Object> params) {
         return __query_object_list(getHolder(sql), params);
     }
 
@@ -256,9 +238,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      * @param sql    sql
      * @param params 参数
      * @return List
-     * @throws java.sql.SQLException
      */
-    public List<Object> queryForObjectList(SQL sql, ModelSerializable params) throws SQLException {
+    public List<Object> queryForObjectList(SQL sql, ModelSerializable params) {
         return __query_object_list(getHolder(sql), params);
     }
 
@@ -267,9 +248,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      *
      * @param sql sql
      * @return List
-     * @throws java.sql.SQLException
      */
-    public List<Map<String, Object>> queryForMapList(SQL sql) throws SQLException {
+    public List<Map<String, Object>> queryForMapList(SQL sql) {
         return __query_map_list(getHolder(sql));
     }
 
@@ -279,9 +259,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      * @param sql    sql
      * @param params 参数
      * @return List
-     * @throws java.sql.SQLException
      */
-    public List<Map<String, Object>> queryForMapList(SQL sql, Map<String, Object> params) throws SQLException {
+    public List<Map<String, Object>> queryForMapList(SQL sql, Map<String, Object> params) {
         return __query_map_list(getHolder(sql), params);
     }
 
@@ -291,9 +270,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      * @param sql    sql
      * @param params 参数
      * @return List
-     * @throws java.sql.SQLException
      */
-    public List<Map<String, Object>> queryForMapList(SQL sql, ModelSerializable params) throws SQLException {
+    public List<Map<String, Object>> queryForMapList(SQL sql, ModelSerializable params) {
         return __query_map_list(getHolder(sql), params);
     }
 
@@ -303,9 +281,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      * @param sql   sql
      * @param klass Class对象
      * @return List
-     * @throws java.sql.SQLException
      */
-    public <E extends ModelSerializable> List<E> queryForBeanList(SQL sql, Class<E> klass) throws SQLException {
+    public <E extends ModelSerializable> List<E> queryForBeanList(SQL sql, Class<E> klass) {
         return __query_bean_list(getHolder(sql), klass);
     }
 
@@ -316,9 +293,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      * @param params 参数
      * @param klass  Class对象
      * @return List
-     * @throws java.sql.SQLException
      */
-    public <E extends ModelSerializable> List<E> queryForBeanList(SQL sql, Map<String, Object> params, Class<E> klass) throws SQLException {
+    public <E extends ModelSerializable> List<E> queryForBeanList(SQL sql, Map<String, Object> params, Class<E> klass) {
         return __query_bean_list(getHolder(sql), params, klass);
     }
 
@@ -328,9 +304,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      * @param sql    sql
      * @param params 参数
      * @return List
-     * @throws java.sql.SQLException
      */
-    public <T extends ModelSerializable> List<T> queryForBeanList(SQL sql, T params) throws SQLException {
+    public <T extends ModelSerializable> List<T> queryForBeanList(SQL sql, T params) {
         return __query_bean_list(getHolder(sql), params);
     }
 
@@ -341,9 +316,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      * @param pager 分页信息或null
      * @param klass Class对象
      * @return List
-     * @throws java.sql.SQLException
      */
-    public <E extends ModelSerializable> Pager queryForPager(SQL sql, Pager pager, Class<E> klass) throws SQLException {
+    public <E extends ModelSerializable> Pager queryForPager(SQL sql, Pager pager, Class<E> klass) {
         return __query_pager(getHolder(sql), pager, klass);
     }
 
@@ -353,9 +327,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      * @param sql   sql
      * @param klass Class对象
      * @return List
-     * @throws java.sql.SQLException
      */
-    public <E extends ModelSerializable> List<Element> queryForElement(SQL sql, Class<E> klass) throws SQLException {
+    public <E extends ModelSerializable> List<Element> queryForElement(SQL sql, Class<E> klass) {
         return __query_element_list(getHolder(sql), klass);
     }
 
@@ -366,9 +339,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      * @param params 参数
      * @param klass  Class对象
      * @return List
-     * @throws java.sql.SQLException
      */
-    public <E extends ModelSerializable> List<Element> queryForElement(SQL sql, Map<String, Object> params, Class<E> klass) throws SQLException {
+    public <E extends ModelSerializable> List<Element> queryForElement(SQL sql, Map<String, Object> params, Class<E> klass) {
         return __query_element_list(getHolder(sql), params, klass);
     }
 
@@ -378,9 +350,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      * @param sql    sql
      * @param params 参数
      * @return List
-     * @throws java.sql.SQLException
      */
-    public <T extends ModelSerializable> List<Element> queryForElement(SQL sql, T params) throws SQLException {
+    public <T extends ModelSerializable> List<Element> queryForElement(SQL sql, T params) {
         return __query_element_list(getHolder(sql), params);
     }
 
@@ -389,9 +360,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      *
      * @param sql sql
      * @return 影响行数
-     * @throws java.sql.SQLException
      */
-    public Object executeUpdate(SQL sql) throws SQLException {
+    public Object executeUpdate(SQL sql) {
         return __execute_update(getHolder(sql));
     }
 
@@ -401,9 +371,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      * @param sql    sql
      * @param params 参数
      * @return 影响行数
-     * @throws java.sql.SQLException
      */
-    public Object executeUpdate(SQL sql, Map<String, Object> params) throws SQLException {
+    public Object executeUpdate(SQL sql, Map<String, Object> params) {
         return __execute_update(getHolder(sql), params);
     }
 
@@ -413,9 +382,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      * @param sql    sql
      * @param params 参数
      * @return 影响行数
-     * @throws java.sql.SQLException
      */
-    public Object executeUpdate(SQL sql, ModelSerializable params) throws SQLException {
+    public Object executeUpdate(SQL sql, ModelSerializable params) {
         return __execute_update(getHolder(sql), params);
     }
 
@@ -424,9 +392,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      *
      * @param sql sql
      * @return 影响行数
-     * @throws java.sql.SQLException
      */
-    public boolean executeCall(SQL sql) throws SQLException {
+    public boolean executeCall(SQL sql) {
         return __execute_call(getHolder(sql));
     }
 
@@ -436,9 +403,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      * @param sql    sql
      * @param params 参数
      * @return 影响行数
-     * @throws java.sql.SQLException
      */
-    public boolean executeCall(SQL sql, Map<String, Object> params) throws SQLException {
+    public boolean executeCall(SQL sql, Map<String, Object> params) {
         return __execute_call(getHolder(sql), params);
     }
 
@@ -448,9 +414,8 @@ public final class SQLSession extends JdbcSupport implements IStringSQL, Initial
      * @param sql    sql
      * @param params 参数
      * @return 影响行数
-     * @throws java.sql.SQLException
      */
-    public boolean executeCall(SQL sql, ModelSerializable params) throws SQLException {
+    public boolean executeCall(SQL sql, ModelSerializable params) {
         return __execute_call(getHolder(sql), params);
     }
 }

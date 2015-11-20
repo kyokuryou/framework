@@ -22,7 +22,7 @@ public class MySQLHolder extends SQLHolder {
         StringBuilder sb = new StringBuilder(sql);
 
         // 计算总页数
-        Long pageCount = 0L;
+        int pageCount = 0;
         if (pager.getTotalCount() % pager.getPageSize() == 0) {
             pageCount = pager.getTotalCount() / pager.getPageSize();
         } else if (pager.getTotalCount() % pager.getPageSize() > 0) {
