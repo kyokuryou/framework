@@ -281,7 +281,7 @@ abstract class JdbcSupport extends AbstractJdbc {
      * @throws java.sql.SQLException
      */
     protected <E extends ModelSerializable> Pager __query_pager(SQLHolder sqlHolder, Pager pager, Class<E> klass) throws SQLException {
-        Map<String, String> paramMap = pager.getParams();
+        Map<String, Object> paramMap = pager.getParams();
         // 获得总记录数
         String countSql = sqlHolder.convertCountSQL();
         logger.out(sqlHolder.getSQLType() + ":" + countSql);

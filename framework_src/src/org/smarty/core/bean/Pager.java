@@ -1,5 +1,6 @@
 package org.smarty.core.bean;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +44,7 @@ public class Pager {
     /**
      * 参数
      */
-    private Map<String, String> params;
+    private Map<String, Object> params;
     /**
      * 排序字段
      */
@@ -85,12 +86,12 @@ public class Pager {
         return MAX_PAGE_SIZE;
     }
 
-    public Map<String, String> getParams() {
+    public Map<String, Object> getParams() {
         return params;
     }
 
-    public void setParams(Map<String, String> params) {
-        this.params = params;
+    public void setParams(Map<String, ?> params) {
+        this.params = new HashMap<String, Object>(params);
     }
 
     public long getTotalCount() {
