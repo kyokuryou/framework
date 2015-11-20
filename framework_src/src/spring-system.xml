@@ -80,11 +80,6 @@
             </props>
         </property>
     </bean>
-    <!-- 邮件管理器 -->
-    <bean id="mailManager" class="org.smarty.core.support.MailManager" lazy-init="true">
-        <property name="javaMailSender" ref="javaMailSender"/>
-        <property name="taskExecutor" ref="taskExecutor"/>
-    </bean>
     <!-- 网络适配器(服务器) -->
     <bean id="socketServer" class="org.smarty.core.support.net.SocketServer" lazy-init="true">
         <property name="taskExecutor" ref="taskExecutor"/>

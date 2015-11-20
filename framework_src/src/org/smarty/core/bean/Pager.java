@@ -27,23 +27,23 @@ public class Pager {
     /**
      * 当前页码
      */
-    private Integer pageNumber = 1;
+    private int pageNumber = 1;
     /**
      * 每页记录数
      */
-    private Integer pageSize = 20;
+    private int pageSize = 20;
     /**
      * 总记录数
      */
-    private Long totalCount = 0L;
+    private long totalCount = 0L;
     /**
      * 总页数
      */
-    private Long pageCount = 0L;
+    private long pageCount = 0L;
     /**
      * 参数
      */
-    private Map<String, Object> params;
+    private Map<String, String> params;
     /**
      * 排序字段
      */
@@ -57,22 +57,22 @@ public class Pager {
      */
     private List<?> list;
 
-    public Integer getPageNumber() {
+    public int getPageNumber() {
         return pageNumber;
     }
 
-    public void setPageNumber(Integer pageNumber) {
+    public void setPageNumber(int pageNumber) {
         if (pageNumber < 1) {
             pageNumber = 1;
         }
         this.pageNumber = pageNumber;
     }
 
-    public Integer getPageSize() {
+    public int getPageSize() {
         return pageSize;
     }
 
-    public void setPageSize(Integer pageSize) {
+    public void setPageSize(int pageSize) {
         if (pageSize < 1) {
             pageSize = 1;
         } else if (pageSize > MAX_PAGE_SIZE) {
@@ -81,23 +81,27 @@ public class Pager {
         this.pageSize = pageSize;
     }
 
-    public Map<String, Object> getParams() {
+    public static int getMaxPageSize() {
+        return MAX_PAGE_SIZE;
+    }
+
+    public Map<String, String> getParams() {
         return params;
     }
 
-    public void setParams(Map<String, Object> params) {
+    public void setParams(Map<String, String> params) {
         this.params = params;
     }
 
-    public Long getTotalCount() {
+    public long getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(Long totalCount) {
+    public void setTotalCount(long totalCount) {
         this.totalCount = totalCount;
     }
 
-    public Long getPageCount() {
+    public long getPageCount() {
         pageCount = totalCount / pageSize;
         if (totalCount % pageSize > 0) {
             pageCount++;
@@ -105,7 +109,7 @@ public class Pager {
         return pageCount;
     }
 
-    public void setPageCount(Long pageCount) {
+    public void setPageCount(long pageCount) {
         this.pageCount = pageCount;
     }
 

@@ -58,14 +58,14 @@ public class ImageUtil {
      * @return
      */
     public static String getRealType(InputStream in) throws IOException {
-        if (in == null || in.available() == 0) {
+        if (in == null) {
             return null;
         }
         byte[] b = new byte[4];
         // 重置流
         in.reset();
         // 读取前4个字节
-        if (in.read(b) != -1) {
+        if (in.read(b) == -1) {
             return null;
         }
         String type = bytesToHexString(b).toUpperCase();
@@ -93,7 +93,7 @@ public class ImageUtil {
     }
 
     public static String getDigest(InputStream in, String algorithm) throws IOException {
-        if (in == null || in.available() == 0) {
+        if (in == null) {
             return null;
         }
         byte[] b = new byte[1024];
@@ -114,53 +114,126 @@ public class ImageUtil {
     }
 
     /**
-     * 缩放图片
+     * 缩放图片jpg
      *
-     * @param oldFile    原图片
-     * @param formatName 缩放后格式
-     * @param newFile    缩放后图片
+     * @param in         原图片
+     * @param targetFile 缩放后图片
      * @param width      指定宽度
      * @param height     指定高度
      * @param db         是否等比例缩放
      * @throws java.io.IOException
      */
-    public static void resize(File oldFile, String formatName, File newFile, int width, int height, boolean db) throws IOException {
-        if (!(oldFile != null && oldFile.isFile() && oldFile.exists()) || newFile == null) {
+    public static void resizeJPG(InputStream in, File targetFile, int width, int height, boolean db) throws IOException {
+        if (in == null) {
             return;
         }
         try {
-            BufferedImage image = ImageIO.read(oldFile);
-            double[] zoomSize = new double[2];
+            // 重置流
+            in.reset();
+            BufferedImage image = ImageIO.read(in);
             double srcWidth = image.getWidth();
             double srcHeigth = image.getHeight();
-
+            int zoomWidth = width;
+            int zoomHeight = height;
             if (db) {
-                // 文件宽和高都小于指定宽和高则不需要处理
-                // if (srcWidth <= width && srcHeigth <= height) {
-                // // 不缩放
-                // zoomSize[0] = srcWidth;
-                // zoomSize[1] = srcHeigth;
-                // } else {
-                // 等比例缩放控制
+                // 等比例缩放
                 double tempHeight = (srcHeigth / srcWidth) * width;
                 if (tempHeight > height) {
-                    zoomSize[0] = (srcWidth / srcHeigth) * height;
-                    zoomSize[1] = height;
+                    zoomWidth = (int) ((srcWidth / srcHeigth) * height);
+                    zoomHeight = height;
                 } else {
-                    zoomSize[0] = width;
-                    zoomSize[1] = (srcHeigth / srcWidth) * width;
+                    zoomWidth = width;
+                    zoomHeight = (int) ((srcHeigth / srcWidth) * width);
                 }
-                // }
-            } else {// 不等比例
-                zoomSize[0] = width;
-                zoomSize[1] = height;
             }
-            ResampleOp resampleOp = new ResampleOp((int) zoomSize[0],
-                    (int) zoomSize[1]);
+            ResampleOp resampleOp = new ResampleOp(zoomWidth, zoomHeight);
             BufferedImage tag = resampleOp.filter(image, null);
-            ImageIO.write(tag, formatName, newFile);
+            ImageIO.write(tag, "JPEG", targetFile);
         } catch (IOException e) {
-            logger.out("ImageUtils resizeImage this image IOException", e);
+            logger.out("ImageUtils resize this image IOException", e);
+        }
+    }
+
+    /**
+     * 缩放图片jpg
+     *
+     * @param in   原图片
+     * @param file 缩放后图片
+     * @throws java.io.IOException
+     */
+    public static void originalJPG(InputStream in, File file) throws IOException {
+        if (in == null) {
+            return;
+        }
+        try {
+            // 重置流
+            in.reset();
+            BufferedImage image = ImageIO.read(in);
+            ImageIO.write(image, "JPEG", file);
+        } catch (IOException e) {
+            logger.out("ImageUtils original this image IOException", e);
+        }
+    }
+
+    /**
+     * 缩放图片png
+     *
+     * @param in         原图片
+     * @param targetFile 缩放后图片
+     * @param width      指定宽度
+     * @param height     指定高度
+     * @param db         是否等比例缩放
+     * @throws java.io.IOException
+     */
+    public static void resizePNG(InputStream in, File targetFile, int width, int height, boolean db) throws IOException {
+        if (in == null) {
+            return;
+        }
+        try {
+            // 重置流
+            in.reset();
+            BufferedImage image = ImageIO.read(in);
+            double srcWidth = image.getWidth();
+            double srcHeigth = image.getHeight();
+            int zoomWidth = width;
+            int zoomHeight = height;
+            if (db) {
+                // 等比例缩放
+                double tempHeight = (srcHeigth / srcWidth) * width;
+                if (tempHeight > height) {
+                    zoomWidth = (int) ((srcWidth / srcHeigth) * height);
+                    zoomHeight = height;
+                } else {
+                    zoomWidth = width;
+                    zoomHeight = (int) ((srcHeigth / srcWidth) * width);
+                }
+            }
+            ResampleOp resampleOp = new ResampleOp(zoomWidth, zoomHeight);
+            BufferedImage tag = resampleOp.filter(image, null);
+            ImageIO.write(tag, "PNG", targetFile);
+        } catch (IOException e) {
+            logger.out("ImageUtils resize this image IOException", e);
+        }
+    }
+
+    /**
+     * 缩放图片png
+     *
+     * @param in   原图片
+     * @param file 缩放后图片
+     * @throws java.io.IOException
+     */
+    public static void originalPNG(InputStream in, File file) throws IOException {
+        if (in == null) {
+            return;
+        }
+        try {
+            // 重置流
+            in.reset();
+            BufferedImage image = ImageIO.read(in);
+            ImageIO.write(image, "PNG", file);
+        } catch (IOException e) {
+            logger.out("ImageUtils original this image IOException", e);
         }
     }
 
@@ -199,33 +272,32 @@ public class ImageUtil {
     /**
      * 图片切割
      *
-     * @param srcFile    源图像地址
      * @param targetFile 新图片地址
      * @param x          目标切片起点x坐标
      * @param y          目标切片起点y坐标
-     * @param destWidth  目标切片宽度
-     * @param destHeight 目标切片高度
+     * @param width      目标切片宽度
+     * @param height     目标切片高度
      */
-    public static void cut(String srcFile, String targetFile, int x, int y, int destWidth, int destHeight) {
+    public static void cut(InputStream in, File targetFile, int x, int y, int width, int height) {
         try {
             Image img;
             ImageFilter cropFilter;
             // 读取源图像
-            BufferedImage bi = ImageIO.read(new File(srcFile));
+            BufferedImage bi = ImageIO.read(in);
             int srcWidth = bi.getWidth(); // 源图宽度
             int srcHeight = bi.getHeight(); // 源图高度
-            if (srcWidth >= destWidth && srcHeight >= destHeight) {
+            if (srcWidth >= width && srcHeight >= height) {
                 Image image = bi.getScaledInstance(srcWidth, srcHeight, Image.SCALE_DEFAULT);
-                cropFilter = new CropImageFilter(x, y, destWidth, destHeight);
+                cropFilter = new CropImageFilter(x, y, width, height);
                 img = Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(image.getSource(), cropFilter));
-                BufferedImage tag = new BufferedImage(destWidth, destHeight, BufferedImage.TYPE_INT_RGB);
+                BufferedImage tag = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
                 Graphics g = tag.getGraphics();
                 g.drawImage(img, 0, 0, null); // 绘制缩小后的图
                 g.dispose();
                 // 输出为文件
-                ImageIO.write(tag, "JPEG", new File(targetFile));
+                ImageIO.write(tag, "PNG", targetFile);
             } else {
-                ImageIO.write(bi, "JPEG", new File(targetFile));
+                ImageIO.write(bi, "PNG", targetFile);
             }
         } catch (Exception e) {
             logger.out(e);
