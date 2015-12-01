@@ -1,6 +1,7 @@
 package org.smarty.core.io;
 
-import java.nio.charset.Charset;
+import org.smarty.core.common.BaseConstant;
+
 import java.util.LinkedHashMap;
 
 /**
@@ -9,7 +10,6 @@ import java.util.LinkedHashMap;
  */
 public final class ModelMap extends LinkedHashMap<String, Object> implements ModelSerializable {
     public static final long serialVersionUID = 42L;
-    private final Charset charset = Charset.forName("UTF-8");
 
     public String getString(String key) {
         return (String) super.get(key);
@@ -20,7 +20,7 @@ public final class ModelMap extends LinkedHashMap<String, Object> implements Mod
         if (res == null || "".equals(res)) {
             return new byte[0];
         }
-        return res.getBytes(charset);
+        return res.getBytes(BaseConstant.DEF_CHARSET);
     }
 
     public char[] getChars(String key) {

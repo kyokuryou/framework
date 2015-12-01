@@ -1,14 +1,14 @@
 package org.smarty.core.io;
 
-import java.nio.charset.Charset;
+import org.smarty.core.common.BaseConstant;
+
 import java.util.HashMap;
 
 /**
  * @author qul
  * @since LVGG1.1
  */
-public class ParameterMap extends HashMap<String, Object> implements ParameterSerializable{
-    private final Charset charset = Charset.forName("UTF-8");
+public class ParameterMap extends HashMap<String, Object> implements ParameterSerializable {
 
     public String getString(String key) {
         return (String) super.get(key);
@@ -19,7 +19,7 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
         if (res == null || "".equals(res)) {
             return new byte[0];
         }
-        return res.getBytes(charset);
+        return res.getBytes(BaseConstant.DEF_CHARSET);
     }
 
     public char[] getChars(String key) {

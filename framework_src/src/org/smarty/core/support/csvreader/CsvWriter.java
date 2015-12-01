@@ -20,7 +20,14 @@
  */
 package org.smarty.core.support.csvreader;
 
-import java.io.*;
+import org.smarty.core.common.BaseConstant;
+
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.charset.Charset;
 
 /**
@@ -229,8 +236,8 @@ public class CsvWriter {
                 && (content.indexOf(userSettings.TextQualifier) > -1
                 || content.indexOf(userSettings.Delimiter) > -1
                 || (!useCustomRecordDelimiter && (content
-                .indexOf(Letters.LF) > -1 || content
-                .indexOf(Letters.CR) > -1))
+                .indexOf(BaseConstant.LETTERS_LF) > -1 || content
+                .indexOf(BaseConstant.LETTERS_CR) > -1))
                 || (useCustomRecordDelimiter && content
                 .indexOf(userSettings.RecordDelimiter) > -1)
                 || (firstColumn && content.length() > 0 && content
@@ -245,14 +252,14 @@ public class CsvWriter {
                 && content.length() > 0 && preserveSpaces) {
             char firstLetter = content.charAt(0);
 
-            if (firstLetter == Letters.SPACE || firstLetter == Letters.TAB) {
+            if (firstLetter == BaseConstant.LETTERS_SPACE || firstLetter == BaseConstant.LETTERS_TAB) {
                 textQualify = true;
             }
 
             if (!textQualify && content.length() > 1) {
                 char lastLetter = content.charAt(content.length() - 1);
 
-                if (lastLetter == Letters.SPACE || lastLetter == Letters.TAB) {
+                if (lastLetter == BaseConstant.LETTERS_SPACE || lastLetter == BaseConstant.LETTERS_TAB) {
                     textQualify = true;
                 }
             }
@@ -262,38 +269,38 @@ public class CsvWriter {
             outputStream.write(userSettings.TextQualifier);
 
             if (userSettings.EscapeMode == ESCAPE_MODE_BACKSLASH) {
-                content = replace(content, "" + Letters.BACKSLASH, ""
-                        + Letters.BACKSLASH + Letters.BACKSLASH);
+                content = replace(content, "" + BaseConstant.LETTERS_BACKSLASH, ""
+                        + BaseConstant.LETTERS_BACKSLASH + BaseConstant.LETTERS_BACKSLASH);
                 content = replace(content, "" + userSettings.TextQualifier, ""
-                        + Letters.BACKSLASH + userSettings.TextQualifier);
+                        + BaseConstant.LETTERS_BACKSLASH + userSettings.TextQualifier);
             } else {
                 content = replace(content, "" + userSettings.TextQualifier, ""
                         + userSettings.TextQualifier
                         + userSettings.TextQualifier);
             }
         } else if (userSettings.EscapeMode == ESCAPE_MODE_BACKSLASH) {
-            content = replace(content, "" + Letters.BACKSLASH, ""
-                    + Letters.BACKSLASH + Letters.BACKSLASH);
+            content = replace(content, "" + BaseConstant.LETTERS_BACKSLASH, ""
+                    + BaseConstant.LETTERS_BACKSLASH + BaseConstant.LETTERS_BACKSLASH);
             content = replace(content, "" + userSettings.Delimiter, ""
-                    + Letters.BACKSLASH + userSettings.Delimiter);
+                    + BaseConstant.LETTERS_BACKSLASH + userSettings.Delimiter);
 
             if (useCustomRecordDelimiter) {
                 content = replace(content, "" + userSettings.RecordDelimiter,
-                        "" + Letters.BACKSLASH + userSettings.RecordDelimiter);
+                        "" + BaseConstant.LETTERS_BACKSLASH + userSettings.RecordDelimiter);
             } else {
-                content = replace(content, "" + Letters.CR, ""
-                        + Letters.BACKSLASH + Letters.CR);
-                content = replace(content, "" + Letters.LF, ""
-                        + Letters.BACKSLASH + Letters.LF);
+                content = replace(content, "" + BaseConstant.LETTERS_CR, ""
+                        + BaseConstant.LETTERS_BACKSLASH + BaseConstant.LETTERS_CR);
+                content = replace(content, "" + BaseConstant.LETTERS_LF, ""
+                        + BaseConstant.LETTERS_BACKSLASH + BaseConstant.LETTERS_LF);
             }
 
             if (firstColumn && content.length() > 0
                     && content.charAt(0) == userSettings.Comment) {
                 if (content.length() > 1) {
-                    content = "" + Letters.BACKSLASH + userSettings.Comment
+                    content = "" + BaseConstant.LETTERS_BACKSLASH + userSettings.Comment
                             + content.substring(1);
                 } else {
-                    content = "" + Letters.BACKSLASH + userSettings.Comment;
+                    content = "" + BaseConstant.LETTERS_BACKSLASH + userSettings.Comment;
                 }
             }
         }
@@ -483,11 +490,11 @@ public class CsvWriter {
         public boolean ForceQualifier;
 
         public UserSettings() {
-            TextQualifier = Letters.QUOTE;
+            TextQualifier = BaseConstant.LETTERS_QUOTE;
             UseTextQualifier = true;
-            Delimiter = Letters.COMMA;
-            RecordDelimiter = Letters.NULL;
-            Comment = Letters.POUND;
+            Delimiter = BaseConstant.LETTERS_COMMA;
+            RecordDelimiter = BaseConstant.LETTERS_NULL;
+            Comment = BaseConstant.LETTERS_POUND;
             EscapeMode = ESCAPE_MODE_DOUBLED;
             ForceQualifier = false;
         }

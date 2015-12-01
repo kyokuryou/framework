@@ -1,5 +1,6 @@
 package org.smarty.core.support.cache;
 
+import org.smarty.core.common.BaseConstant;
 import org.smarty.core.exception.CacheNameNotExistException;
 import org.smarty.core.utils.CommonUtil;
 import org.smarty.core.utils.LogicUtil;
@@ -14,8 +15,6 @@ import java.util.concurrent.ConcurrentMap;
 public class CacheMessage {
     private final String dignityKey = "42d8aa7cde9c78c4757862d84620c335";
     private String dignity;
-    private final static String SYSTEM_CACHE = "system";
-    private final static String TEMPORARY_CACHE = "temporary";
 
     private static final ConcurrentMap<String, CacheMemory> memory = new ConcurrentHashMap<String, CacheMemory>();
 
@@ -51,7 +50,7 @@ public class CacheMessage {
      * @param value value
      */
     public static void flushSystemCache(String key, Object value) {
-        CacheMemory cm = memory.get(SYSTEM_CACHE);
+        CacheMemory cm = memory.get(BaseConstant.CACHE_SYSTEM);
         cm.flushCache(key, value);
     }
 
@@ -62,7 +61,7 @@ public class CacheMessage {
      * @param value value
      */
     public static void putSystemCache(String key, Object value) {
-        CacheMemory cm = memory.get(SYSTEM_CACHE);
+        CacheMemory cm = memory.get(BaseConstant.CACHE_SYSTEM);
         cm.putCache(key, value, true);
     }
 
@@ -73,7 +72,7 @@ public class CacheMessage {
      * @return value
      */
     public static Object getSystemCache(String key) throws CacheNameNotExistException {
-        CacheMemory cm = memory.get(SYSTEM_CACHE);
+        CacheMemory cm = memory.get(BaseConstant.CACHE_SYSTEM);
         return cm.getCache(key);
     }
 
@@ -84,7 +83,7 @@ public class CacheMessage {
      * @param value value
      */
     public static void flushCache(String key, Object value) {
-        CacheMemory cm = memory.get(TEMPORARY_CACHE);
+        CacheMemory cm = memory.get(BaseConstant.CACHE_TEMPORARY);
         cm.flushCache(key, value);
     }
 
@@ -95,7 +94,7 @@ public class CacheMessage {
      * @param value value
      */
     public static void putCache(String key, Object value) {
-        CacheMemory cm = memory.get(TEMPORARY_CACHE);
+        CacheMemory cm = memory.get(BaseConstant.CACHE_TEMPORARY);
         cm.putCache(key, value, false);
     }
 
@@ -106,7 +105,7 @@ public class CacheMessage {
      * @return value
      */
     public static Object getCache(String key) throws CacheNameNotExistException {
-        CacheMemory cm = memory.get(TEMPORARY_CACHE);
+        CacheMemory cm = memory.get(BaseConstant.CACHE_TEMPORARY);
         return cm.getCache(key);
     }
 }

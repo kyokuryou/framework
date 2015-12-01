@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import org.smarty.core.common.BaseConstant;
 import org.smarty.core.logger.RuntimeLogger;
 
 import java.io.Serializable;
@@ -36,7 +37,7 @@ public final class JsonUtil {
         // 支持Map的key为复杂对象的形式
         gb.enableComplexMapKeySerialization();
         // 时间转化为特定格式
-        gb.setDateFormat(DateUtil.DEFAULT_FORMAT);
+        gb.setDateFormat(BaseConstant.DEF_DATETIME_FORMAT);
         // 序列化null字段
         gb.serializeNulls();
         // 会把字段首字母大写

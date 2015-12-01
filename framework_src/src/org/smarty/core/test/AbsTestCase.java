@@ -2,10 +2,10 @@ package org.smarty.core.test;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.smarty.core.common.BaseConstant;
 import org.smarty.core.utils.SpringUtil;
 
 import javax.sql.DataSource;
-import java.io.PrintStream;
 
 /**
  * junit自定义扩展接口定义.所有要实现junit的类必须继承.
@@ -15,7 +15,6 @@ import java.io.PrintStream;
  * @version 1.0
  */
 public abstract class AbsTestCase {
-    protected static PrintStream out = System.out;
     protected static DataSource dataSource;
 
     protected void setUpSpring(String... files) {
@@ -23,7 +22,7 @@ public abstract class AbsTestCase {
         sb.append("================================\n");
         sb.append("==获得SpringContext-spring.xml==\n");
         sb.append("================================\n");
-        out.println(sb.toString());
+        BaseConstant.DEF_OUT.println(sb.toString());
         SpringUtil.initApplicationContext(files);
         // dataSource = SpringUtil.getBean("dataSource", DataSource.class);
     }
@@ -34,7 +33,7 @@ public abstract class AbsTestCase {
         sb.append("================================\n");
         sb.append("======  启动Junit测试环境  ======\n");
         sb.append("================================\n");
-        out.println(sb.toString());
+        BaseConstant.DEF_OUT.println(sb.toString());
     }
 
     @AfterClass
@@ -43,6 +42,6 @@ public abstract class AbsTestCase {
         sb.append("================================\n");
         sb.append("======  停止Junit测试环境  ======\n");
         sb.append("================================\n");
-        out.println(sb.toString());
+        BaseConstant.DEF_OUT.println(sb.toString());
     }
 }

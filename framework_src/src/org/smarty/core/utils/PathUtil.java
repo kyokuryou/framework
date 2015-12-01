@@ -1,12 +1,21 @@
 package org.smarty.core.utils;
 
+import org.smarty.core.common.BaseConstant;
 import org.smarty.core.launcher.LauncherWrapper;
 import org.smarty.core.logger.RuntimeLogger;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.charset.Charset;
 import java.util.Properties;
 
 /**
@@ -18,12 +27,6 @@ import java.util.Properties;
  */
 public class PathUtil {
     private static RuntimeLogger logger = new RuntimeLogger(PathUtil.class);
-
-    /**
-     * 在调用getResourceAsReader使用的字符集
-     * null表示使用系统默认
-     */
-    private static Charset charset = Charset.forName("UTF-8");
 
     /**
      * 返回类路径上的资源的URL
@@ -140,13 +143,7 @@ public class PathUtil {
      */
     public static Reader getResourceAsReader(String resource, ClassLoader loader) {
         try {
-            Reader reader;
-            if (charset == null) {
-                reader = new InputStreamReader(getResourceAsInStream(resource, loader));
-            } else {
-                reader = new InputStreamReader(getResourceAsInStream(resource, loader), charset);
-            }
-            return reader;
+            return new InputStreamReader(getResourceAsInStream(resource, loader), BaseConstant.DEF_CHARSET);
         } catch (IOException e) {
             logger.out(e);
         }
@@ -210,13 +207,7 @@ public class PathUtil {
      */
     public static Reader getUrlAsReader(String urlString) {
         try {
-            Reader reader;
-            if (charset == null) {
-                reader = new InputStreamReader(getUrlAsInStream(urlString));
-            } else {
-                reader = new InputStreamReader(getUrlAsInStream(urlString), charset);
-            }
-            return reader;
+            return new InputStreamReader(getUrlAsInStream(urlString), BaseConstant.DEF_CHARSET);
         } catch (IOException e) {
             logger.out(e);
         }
@@ -264,13 +255,7 @@ public class PathUtil {
      */
     public static Writer getUrlAsWriter(String urlString) {
         try {
-            Writer writer;
-            if (charset == null) {
-                writer = new OutputStreamWriter(getUrlAsOutStream(urlString));
-            } else {
-                writer = new OutputStreamWriter(getUrlAsOutStream(urlString), charset);
-            }
-            return writer;
+            return new OutputStreamWriter(getUrlAsOutStream(urlString), BaseConstant.DEF_CHARSET);
         } catch (IOException e) {
             logger.out(e);
         }
@@ -312,14 +297,8 @@ public class PathUtil {
      * @return 输出流
      */
     public static Writer getResourceAsWriter(String filePath) {
-        Writer writer;
         try {
-            if (charset == null) {
-                writer = new OutputStreamWriter(getResourceAsOutStream(filePath, null));
-            } else {
-                writer = new OutputStreamWriter(getResourceAsOutStream(filePath, null), charset);
-            }
-            return writer;
+            return new OutputStreamWriter(getResourceAsOutStream(filePath, null), BaseConstant.DEF_CHARSET);
         } catch (IOException e) {
             logger.out(e);
         }
@@ -335,34 +314,10 @@ public class PathUtil {
      */
     public static Writer getResourceAsWriter(String resource, ClassLoader loader) {
         try {
-            Writer writer;
-            if (charset == null) {
-                writer = new OutputStreamWriter(getResourceAsOutStream(resource, loader));
-            } else {
-                writer = new OutputStreamWriter(getResourceAsOutStream(resource, loader), charset);
-            }
-            return writer;
+            return new OutputStreamWriter(getResourceAsOutStream(resource, loader), BaseConstant.DEF_CHARSET);
         } catch (IOException e) {
             logger.out(e);
         }
         return null;
-    }
-
-    /**
-     * 返回编码格式
-     *
-     * @return Charset对象
-     */
-    public static Charset getCharset() {
-        return charset;
-    }
-
-    /**
-     * 设置编码格式
-     *
-     * @param charset Charset对象
-     */
-    public static void setCharset(Charset charset) {
-        PathUtil.charset = charset;
     }
 }

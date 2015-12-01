@@ -1,12 +1,16 @@
 package org.smarty.core.utils;
 
 import org.smarty.core.bean.Csv;
+import org.smarty.core.common.BaseConstant;
 import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.support.csvreader.CsvReader;
 import org.smarty.core.support.csvreader.CsvWriter;
-import org.smarty.core.support.csvreader.Letters;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
@@ -64,7 +68,7 @@ public class CsvUtil {
      * @throws IOException
      */
     public static Csv readCsv(InputStream is, Csv csv) throws IOException {
-        CsvReader csvr = new CsvReader(is, Letters.COMMA, Charset.forName(csv.getCharset()));
+        CsvReader csvr = new CsvReader(is, BaseConstant.LETTERS_COMMA, Charset.forName(csv.getCharset()));
         try {
             // 读取表头数据
             if (csvr.readHeaders()) {
@@ -92,7 +96,7 @@ public class CsvUtil {
      * @param csv csv
      */
     public void writeCsv(OutputStream os, Csv csv) {
-        CsvWriter csvw = new CsvWriter(os, Letters.COMMA, Charset.forName(csv.getCharset()));
+        CsvWriter csvw = new CsvWriter(os, BaseConstant.LETTERS_COMMA, Charset.forName(csv.getCharset()));
         try {
             csvw.writeRecord(csv.getHeaders());
             for (Object[] obj : csv.getValues()) {

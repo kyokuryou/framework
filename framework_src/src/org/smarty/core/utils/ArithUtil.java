@@ -1,5 +1,7 @@
 package org.smarty.core.utils;
 
+import org.smarty.core.common.BaseConstant;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
@@ -11,9 +13,6 @@ import java.text.DecimalFormat;
  * @version 1.0
  */
 public class ArithUtil {
-
-    // 默认除法运算精度
-    private static final int DEF_DIV_SCALE = 10;
 
     private ArithUtil() {
     }
@@ -65,7 +64,7 @@ public class ArithUtil {
      * @return 两个参数的商
      */
     public static double div(double v1, double v2) {
-        return div(v1, v2, DEF_DIV_SCALE);
+        return div(v1, v2, BaseConstant.DEF_DIV_SCALE);
     }
 
     /**

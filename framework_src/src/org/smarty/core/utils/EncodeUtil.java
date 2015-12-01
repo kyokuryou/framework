@@ -3,6 +3,7 @@ package org.smarty.core.utils;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
+import org.smarty.core.common.BaseConstant;
 import org.smarty.core.logger.RuntimeLogger;
 
 import java.io.UnsupportedEncodingException;
@@ -18,7 +19,6 @@ import java.net.URLEncoder;
  */
 public class EncodeUtil {
     private static RuntimeLogger logger = new RuntimeLogger(EncodeUtil.class);
-    private static final String DEFAULT_URL_ENCODING = "UTF-8";
 
     private EncodeUtil() {
 
@@ -61,7 +61,7 @@ public class EncodeUtil {
      * URL 编码, Encode默认为UTF-8.
      */
     public static String urlEncode(String input) {
-        return urlEncode(input, DEFAULT_URL_ENCODING);
+        return urlEncode(input, BaseConstant.DEF_ENCODING);
     }
 
     /**

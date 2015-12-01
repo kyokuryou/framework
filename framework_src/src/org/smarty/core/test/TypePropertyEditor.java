@@ -1,5 +1,6 @@
 package org.smarty.core.test;
 
+import org.smarty.core.common.BaseConstant;
 import org.smarty.core.utils.DateUtil;
 
 import java.beans.PropertyEditorSupport;
@@ -13,7 +14,7 @@ import java.beans.PropertyEditorSupport;
  */
 public class TypePropertyEditor extends PropertyEditorSupport {
 
-    private String format = DateUtil.DEFAULT_FORMAT;
+    private String format = BaseConstant.DEF_DATETIME_FORMAT;
     private DateType type = DateType.DATE;
 
     public void setAsText(String text) throws IllegalArgumentException {

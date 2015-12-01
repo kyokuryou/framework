@@ -1,12 +1,10 @@
 package org.smarty.core.logger;
 
 import org.apache.log4j.Logger;
-
-import java.io.PrintStream;
+import org.smarty.core.common.BaseConstant;
 
 public class RuntimeLogger {
     private static Logger logger;
-    private static PrintStream out = System.out;
 
     public RuntimeLogger(Class klass) {
         logger = Logger.getLogger(klass);
@@ -55,7 +53,7 @@ public class RuntimeLogger {
             po.append(e.getMessage());
         }
         if (po.length() > 0) {
-            out.println(po.toString());
+            BaseConstant.DEF_OUT.println(po.toString());
         }
     }
 

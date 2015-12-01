@@ -1,5 +1,6 @@
 package org.smarty.core.support.net;
 
+import org.smarty.core.common.BaseConstant;
 import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.utils.CommonUtil;
 import org.smarty.core.utils.LogicUtil;
@@ -27,7 +28,6 @@ import java.net.Socket;
  */
 public abstract class AbstractSocket {
     private static RuntimeLogger logger = new RuntimeLogger(AbstractSocket.class);
-    private final int maxSize = 1024;
 
     /**
      * 发送一段文本
@@ -187,8 +187,8 @@ public abstract class AbstractSocket {
         if (a == 0) {
             return null;
         }
-        int off = group * maxSize;
-        int len = a > maxSize ? maxSize : a;
+        int off = group * BaseConstant.SOCKET_MAX_STREAM;
+        int len = a > BaseConstant.SOCKET_MAX_STREAM ? BaseConstant.SOCKET_MAX_STREAM : a;
 
         byte[] bytes = new byte[len + off];
         if (is.read(bytes, off, len) != -1) {

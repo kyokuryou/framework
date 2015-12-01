@@ -1,5 +1,6 @@
 package org.smarty.core.utils;
 
+import org.smarty.core.common.BaseConstant;
 import org.smarty.core.logger.RuntimeLogger;
 
 import java.sql.Time;
@@ -10,7 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.TimeZone;
 
 /**
  * 时间工具
@@ -21,8 +21,6 @@ import java.util.TimeZone;
  */
 public class DateUtil {
     private static RuntimeLogger logger = new RuntimeLogger(DateUtil.class);
-    public static final String DEFAULT_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    public static final TimeZone timeZone = TimeZone.getTimeZone("GMT");
 
     private DateUtil() {
     }
@@ -33,7 +31,7 @@ public class DateUtil {
      * @return calendar
      */
     public static Calendar getCalendar() {
-        return GregorianCalendar.getInstance(timeZone);
+        return GregorianCalendar.getInstance(BaseConstant.DEF_TIME_ZONE);
     }
 
     /**
@@ -42,7 +40,7 @@ public class DateUtil {
      * @return calendar
      */
     public static Calendar getCalendar(Date date) {
-        Calendar cal = GregorianCalendar.getInstance(timeZone);
+        Calendar cal = GregorianCalendar.getInstance(BaseConstant.DEF_TIME_ZONE);
         cal.setTime(date);
         return cal;
     }
@@ -105,7 +103,7 @@ public class DateUtil {
      */
     public static DateFormat getFormat(String format) {
         DateFormat df = new SimpleDateFormat(format);
-        df.setTimeZone(timeZone);
+        df.setTimeZone(BaseConstant.DEF_TIME_ZONE);
         return df;
     }
 
@@ -116,7 +114,7 @@ public class DateUtil {
      * @return 格式化后的字符串
      */
     public static String format(Date date) {
-        return format(date, DEFAULT_FORMAT);
+        return format(date, BaseConstant.DEF_DATETIME_FORMAT);
     }
 
 
@@ -138,7 +136,7 @@ public class DateUtil {
      * @return 转换后的Date类型
      */
     public static Date toDate(String source) {
-        return toDate(source, DEFAULT_FORMAT);
+        return toDate(source, BaseConstant.DEF_DATETIME_FORMAT);
     }
 
     /**
@@ -165,7 +163,7 @@ public class DateUtil {
      * @return 转换后的Timestamp类型
      */
     public static Timestamp toTimestamp(String source) {
-        return toTimestamp(source, DEFAULT_FORMAT);
+        return toTimestamp(source, BaseConstant.DEF_DATETIME_FORMAT);
     }
 
     /**
@@ -186,7 +184,7 @@ public class DateUtil {
      * @return 转换后的Time类型
      */
     public static Time toTime(String source) {
-        return toTime(source, DEFAULT_FORMAT);
+        return toTime(source, BaseConstant.DEF_DATETIME_FORMAT);
     }
 
     /**
