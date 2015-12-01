@@ -4,7 +4,6 @@ import freemarker.ext.beans.BeansWrapper;
 import freemarker.ext.beans.ResourceBundleModel;
 import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.utils.LogicUtil;
-import org.smarty.core.utils.SystemConfigUtil;
 
 import javax.servlet.ServletContext;
 import java.util.HashMap;
@@ -43,7 +42,6 @@ public class SpringWebUtil {
         ResourceBundleModel resourceBundleModel = new ResourceBundleModel(resourceBundle, new BeansWrapper());
         commonData.put("message", resourceBundleModel);
         commonData.put("base", servletContext.getContextPath());
-        commonData.put("systemConfig", SystemConfigUtil.getSystemConfig());
         if (LogicUtil.isNotEmptyMap(data)) {
             commonData.putAll(data);
         }

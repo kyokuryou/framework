@@ -26,7 +26,10 @@
 
     <!-- ======================================== -->
     <!-- 拦截器定义 -->
-    <bean id="loginVerifyInterceptor" class="org.smarty.web.http.LoginVerifyInterceptor"/>
+    <bean id="loginVerifyInterceptor" class="org.smarty.web.http.LoginVerifyInterceptor">
+        <property name="sessionId" value="${login.session.id}"/>
+        <property name="cookieName" value="${login.cookie.name}"/>
+    </bean>
     <mvc:interceptors>
         <bean class="org.springframework.web.servlet.handler.ConversionServiceExposingInterceptor">
             <constructor-arg ref="conversionService"/>

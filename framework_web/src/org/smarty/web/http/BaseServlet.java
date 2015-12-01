@@ -1,10 +1,7 @@
 package org.smarty.web.http;
 
 import org.smarty.core.bean.Pager;
-import org.smarty.core.bean.SystemConfig;
 import org.smarty.core.logger.RuntimeLogger;
-import org.smarty.core.utils.JsonUtil;
-import org.smarty.core.utils.SystemConfigUtil;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
@@ -16,9 +13,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * Action基类
@@ -98,15 +93,6 @@ public abstract class BaseServlet {
      */
     public void setTheme(Theme useTheme) {
         this.useTheme = useTheme;
-    }
-
-    /**
-     * 获取系统配置信息
-     *
-     * @return 系统配置信息
-     */
-    public SystemConfig getSystemConfig() {
-        return SystemConfigUtil.getSystemConfig();
     }
 
     /**
