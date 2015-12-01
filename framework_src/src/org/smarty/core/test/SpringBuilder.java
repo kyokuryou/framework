@@ -64,8 +64,8 @@ public class SpringBuilder {
 
     }
 
-    public <E extends ModelSerializable> void outSpringXml(SQL sql, Map<String, Object> param, Class<E> klass) throws SQLException {
-        List<Element> eList = sqlSession.queryForElement(sql, param, klass);
+    public <E extends ModelSerializable> void outSpringXml(SQL sql, Class<E> klass) throws SQLException {
+        List<Element> eList = sqlSession.queryForElementList(sql, klass);
         String pn = klass.getPackage().getName();
         String name = klass.getSimpleName();
         String filePath = outPath + "/" + pn.replaceAll("[.]", "/");

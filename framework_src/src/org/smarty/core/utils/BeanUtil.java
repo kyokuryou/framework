@@ -3,6 +3,8 @@ package org.smarty.core.utils;
 import org.smarty.core.exception.InstanceClassException;
 import org.smarty.core.exception.InvokeMethodException;
 import org.smarty.core.exception.NoSuchReflectException;
+import org.smarty.core.io.ModelMap;
+import org.smarty.core.io.ParameterMap;
 import org.smarty.core.logger.RuntimeLogger;
 
 import java.io.ByteArrayInputStream;
@@ -452,11 +454,11 @@ public class BeanUtil {
         }
     }
 
-    public static <T extends Serializable> Map<String, Object> copyToMap(T t) {
+    public static <T extends Serializable> ParameterMap copyToParameterMap(T t) {
         if (t == null) {
             return null;
         }
-        Map<String, Object> param = new HashMap<String, Object>();
+        ParameterMap param = new ParameterMap();
 
         Field[] fields = getFields(t.getClass());
         for (Field field : fields) {

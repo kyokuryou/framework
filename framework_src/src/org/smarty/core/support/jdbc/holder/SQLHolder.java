@@ -1,7 +1,10 @@
 package org.smarty.core.support.jdbc.holder;
 
+import org.smarty.core.io.ModelMap;
 import org.smarty.core.io.ModelSerializable;
 import org.smarty.core.bean.Pager;
+import org.smarty.core.io.ParameterMap;
+import org.smarty.core.io.ParameterSerializable;
 import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.support.jdbc.support.DBType;
 import org.smarty.core.utils.BeanUtil;
@@ -30,20 +33,11 @@ public abstract class SQLHolder {
     /**
      * 返回处理完成的SQL(可直接使用)
      *
-     * @return SQL
-     */
-    public final String getSQLString() {
-        return getSQLString(new HashMap<String, Object>());
-    }
-
-    /**
-     * 返回处理完成的SQL(可直接使用)
-     *
      * @param bean velocity参数
      * @return SQL
      */
-    public final <T extends ModelSerializable> String getSQLString(T bean) {
-        Map<String, Object> params = BeanUtil.copyToMap(bean);
+    public final <T extends ParameterSerializable> String getSQLString(T bean) {
+        ParameterMap params = BeanUtil.copyToParameterMap(bean);
         return getSQLString(params);
     }
 
@@ -53,7 +47,7 @@ public abstract class SQLHolder {
      * @param params velocity参数
      * @return SQL
      */
-    public final String getSQLString(Map<String, Object> params) {
+    public final String getSQLString(ParameterMap params) {
         if (LogicUtil.isEmptyMap(params)) {
             return sql;
         }

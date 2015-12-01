@@ -1,8 +1,8 @@
 package org.smarty.core.bean;
 
-import java.util.HashMap;
+import org.smarty.core.io.ParameterMap;
+
 import java.util.List;
-import java.util.Map;
 
 /**
  * 分页
@@ -44,7 +44,7 @@ public class Pager {
     /**
      * 参数
      */
-    private Map<String, Object> params;
+    private ParameterMap params;
     /**
      * 排序字段
      */
@@ -86,12 +86,19 @@ public class Pager {
         return MAX_PAGE_SIZE;
     }
 
-    public Map<String, Object> getParams() {
+    public ParameterMap getParams() {
         return params;
     }
 
-    public void setParams(Map<String, ?> params) {
-        this.params = new HashMap<String, Object>(params);
+    public void setParams(ParameterMap params) {
+        this.params = params;
+    }
+
+    public void addParams(String key, Object value) {
+        if (params == null) {
+            params = new ParameterMap();
+        }
+        params.put(key, value);
     }
 
     public int getTotalCount() {

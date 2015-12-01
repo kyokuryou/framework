@@ -9,5 +9,5 @@ import java.io.Serializable;
  * @author quliang
  * @version 1.0
  */
-public interface ModelSerializable extends Serializable {
+public interface ParameterSerializable extends Serializable {
 }

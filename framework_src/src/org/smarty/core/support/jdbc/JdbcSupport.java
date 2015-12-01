@@ -2,19 +2,21 @@ package org.smarty.core.support.jdbc;
 
 import org.dom4j.Element;
 import org.smarty.core.bean.Pager;
+import org.smarty.core.io.ModelMap;
 import org.smarty.core.io.ModelSerializable;
+import org.smarty.core.io.ParameterMap;
+import org.smarty.core.io.ParameterSerializable;
 import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.support.jdbc.holder.SQLHolder;
-import org.smarty.core.support.jdbc.mapper.BeanMapperHandler;
 import org.smarty.core.support.jdbc.mapper.ElementMapperHandler;
-import org.smarty.core.support.jdbc.mapper.MapMapperHandler;
+import org.smarty.core.support.jdbc.mapper.ModelMapperHandler;
 import org.smarty.core.support.jdbc.mapper.SingleMapperHandler;
 import org.smarty.core.support.jdbc.support.AbstractJdbc;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * jdbc从文件中读取支持
@@ -22,57 +24,23 @@ import java.util.Map;
 abstract class JdbcSupport extends AbstractJdbc {
     private static RuntimeLogger logger = new RuntimeLogger(JdbcSupport.class);
 
-    /**
-     * 查询(返回结果int)
-     *
-     * @param sqlHolder sql工具
-     * @return int 影响行数
-     */
-    protected Number __query_number(SQLHolder sqlHolder) {
-        String hsql = sqlHolder.getSQLString();
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        Object ro = queryForSingle(hsql, new MapSqlParameterSource(), new SingleMapperHandler());
-        return ro != null ? (Number) ro : 0;
+    protected <E extends ParameterSerializable> SqlParameterSource getParameterSource(E params) {
+        if (params == null) {
+            return new MapSqlParameterSource();
+        }
+        if (params instanceof ParameterMap) {
+            return new MapSqlParameterSource((ParameterMap) params);
+        } else {
+            return new BeanPropertySqlParameterSource(params);
+        }
     }
 
-    /**
-     * 查询(返回结果int)
-     *
-     * @param sqlHolder sql工具
-     * @param params    参数
-     * @return int 影响行数
-     */
-    protected Number __query_number(SQLHolder sqlHolder, Map<String, Object> params) {
-        String hsql = sqlHolder.getSQLString(params);
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        Object ro = queryForSingle(hsql, new MapSqlParameterSource(params), new SingleMapperHandler());
-        return ro != null ? (Number) ro : 0;
-    }
-
-    /**
-     * 查询(返回结果Number)
-     *
-     * @param sqlHolder sql工具
-     * @param params    参数
-     * @return Number
-     */
-    protected <T extends ModelSerializable> Number __query_number(SQLHolder sqlHolder, T params) {
-        String hsql = sqlHolder.getSQLString(params);
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        Object ro = queryForSingle(hsql, new BeanPropertySqlParameterSource(params), new SingleMapperHandler());
-        return ro != null ? (Number) ro : 0;
-    }
-
-    /**
-     * 查询(返回结果Object)
-     *
-     * @param sqlHolder sql工具
-     * @return klass 实例
-     */
-    protected Object __query_object(SQLHolder sqlHolder) {
-        String hsql = sqlHolder.getSQLString();
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        return queryForSingle(hsql, new MapSqlParameterSource(), new SingleMapperHandler());
+    protected <T extends ModelSerializable> Class<?> getSuperClass(Class<T> klass) {
+        if (klass != null) {
+            return klass;
+        } else {
+            return ModelMap.class;
+        }
     }
 
     /**
@@ -82,50 +50,23 @@ abstract class JdbcSupport extends AbstractJdbc {
      * @param params    参数
      * @return klass 实例
      */
-    protected Object __query_object(SQLHolder sqlHolder, Map<String, Object> params) {
+    protected <P extends ParameterSerializable> Object __query_object(SQLHolder sqlHolder, P params) {
         String hsql = sqlHolder.getSQLString(params);
         logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        return queryForSingle(hsql, new MapSqlParameterSource(params), new SingleMapperHandler());
+        return queryForSingle(hsql, getParameterSource(params), new SingleMapperHandler());
     }
 
     /**
-     * 查询(返回结果Object)
+     * 查询(返回结果Object集合)
      *
      * @param sqlHolder sql工具
      * @param params    参数
      * @return klass 实例
      */
-    protected <T extends ModelSerializable> Object __query_object(SQLHolder sqlHolder, T params) {
+    protected <P extends ParameterSerializable> List<Object> __query_object_list(SQLHolder sqlHolder, P params) {
         String hsql = sqlHolder.getSQLString(params);
         logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        return queryForSingle(hsql, new BeanPropertySqlParameterSource(params), new SingleMapperHandler());
-    }
-
-    /**
-     * 查询(返回结果bean)
-     *
-     * @param sqlHolder sql工具
-     * @param klass     class
-     * @return Model实例
-     */
-    protected <E extends ModelSerializable> E __query_bean(SQLHolder sqlHolder, Class<E> klass) {
-        String hsql = sqlHolder.getSQLString();
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        return queryForSingle(hsql, new MapSqlParameterSource(), new BeanMapperHandler<E>(klass));
-    }
-
-    /**
-     * 查询(返回结果bean)
-     *
-     * @param sqlHolder sql工具
-     * @param params    参数
-     * @param klass     class
-     * @return Model实例
-     */
-    protected <E extends ModelSerializable> E __query_bean(SQLHolder sqlHolder, Map<String, Object> params, Class<E> klass) {
-        String hsql = sqlHolder.getSQLString(params);
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        return queryForSingle(hsql, new MapSqlParameterSource(params), new BeanMapperHandler<E>(klass));
+        return queryForMulti(hsql, getParameterSource(params), new SingleMapperHandler());
     }
 
     /**
@@ -135,73 +76,23 @@ abstract class JdbcSupport extends AbstractJdbc {
      * @param params    参数
      * @return Model实例
      */
-    protected <T extends ModelSerializable> T __query_bean(SQLHolder sqlHolder, T params) {
+    protected <P extends ParameterSerializable, M extends ModelSerializable> M __query_model(SQLHolder sqlHolder, P params, Class<M> klass) {
         String hsql = sqlHolder.getSQLString(params);
         logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        return queryForSingle(hsql, new BeanPropertySqlParameterSource(params), new BeanMapperHandler<T>(params.getClass()));
+        return queryForSingle(hsql, getParameterSource(params), new ModelMapperHandler<M>(getSuperClass(klass)));
     }
 
     /**
-     * 查询(返回结果Map)
-     *
-     * @param sqlHolder sql工具
-     * @return Map
-     */
-    protected Map<String, Object> __query_map(SQLHolder sqlHolder) {
-        String hsql = sqlHolder.getSQLString();
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        return queryForSingle(hsql, new MapSqlParameterSource(), new MapMapperHandler());
-    }
-
-    /**
-     * 查询(返回结果Map)
+     * 查询(返回结果bean集合)
      *
      * @param sqlHolder sql工具
      * @param params    参数
-     * @return Map
+     * @return Model实例
      */
-    protected Map<String, Object> __query_map(SQLHolder sqlHolder, Map<String, Object> params) {
+    protected <P extends ParameterSerializable, M extends ModelSerializable> List<M> __query_model_list(SQLHolder sqlHolder, P params, Class<M> klass) {
         String hsql = sqlHolder.getSQLString(params);
         logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        return queryForSingle(hsql, new MapSqlParameterSource(params), new MapMapperHandler());
-    }
-
-    /**
-     * 查询(返回结果Map)
-     *
-     * @param sqlHolder sql工具
-     * @param params    参数
-     * @return Map
-     */
-    protected <T extends ModelSerializable> Map<String, Object> __query_map(SQLHolder sqlHolder, T params) {
-        String hsql = sqlHolder.getSQLString(params);
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        return queryForSingle(hsql, new BeanPropertySqlParameterSource(params), new MapMapperHandler());
-    }
-
-    /**
-     * 执行插入,更新,删除操作
-     *
-     * @param sqlHolder sql工具
-     * @return int 影响行数
-     */
-    protected Object __execute_update(SQLHolder sqlHolder) {
-        String hsql = sqlHolder.getSQLString();
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        return executeForUpdate(hsql, new MapSqlParameterSource());
-    }
-
-    /**
-     * 执行插入,更新,删除操作
-     *
-     * @param sqlHolder sql工具
-     * @param params    参数
-     * @return int 影响行数
-     */
-    protected Object __execute_update(SQLHolder sqlHolder, Map<String, Object> params) {
-        String hsql = sqlHolder.getSQLString(params);
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        return executeForUpdate(hsql, new MapSqlParameterSource(params));
+        return queryForMulti(hsql, getParameterSource(params), new ModelMapperHandler<M>(getSuperClass(klass)));
     }
 
     /**
@@ -211,22 +102,10 @@ abstract class JdbcSupport extends AbstractJdbc {
      * @param params    参数
      * @return int   影响行数
      */
-    protected <T extends ModelSerializable> Object __execute_update(SQLHolder sqlHolder, T params) {
+    protected <P extends ParameterSerializable> Object __execute_update(SQLHolder sqlHolder, P params) {
         String hsql = sqlHolder.getSQLString(params);
         logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        return executeForUpdate(hsql, new BeanPropertySqlParameterSource(params));
-    }
-
-    /**
-     * 执行存储过程
-     *
-     * @param sqlHolder sql工具
-     * @return boolean
-     */
-    protected boolean __execute_call(SQLHolder sqlHolder) {
-        String hsql = sqlHolder.getSQLString();
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        return executeForCall(hsql, new MapSqlParameterSource());
+        return executeForUpdate(hsql, getParameterSource(params));
     }
 
     /**
@@ -236,23 +115,10 @@ abstract class JdbcSupport extends AbstractJdbc {
      * @param params    参数
      * @return boolean
      */
-    protected boolean __execute_call(SQLHolder sqlHolder, Map<String, Object> params) {
+    protected <P extends ParameterSerializable> boolean __execute_call(SQLHolder sqlHolder, P params) {
         String hsql = sqlHolder.getSQLString(params);
         logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        return executeForCall(hsql, new MapSqlParameterSource(params));
-    }
-
-    /**
-     * 执行存储过程
-     *
-     * @param sqlHolder sql工具
-     * @param params    参数
-     * @return boolean
-     */
-    protected <T extends ModelSerializable> boolean __execute_call(SQLHolder sqlHolder, T params) {
-        String hsql = sqlHolder.getSQLString(params);
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        return executeForCall(hsql, new BeanPropertySqlParameterSource(params));
+        return executeForCall(hsql, getParameterSource(params));
     }
 
     /**
@@ -263,8 +129,8 @@ abstract class JdbcSupport extends AbstractJdbc {
      * @param klass     class
      * @return pager
      */
-    protected <E extends ModelSerializable> Pager __query_pager(SQLHolder sqlHolder, Pager pager, Class<E> klass) {
-        Map<String, Object> paramMap = pager.getParams();
+    protected <M extends ModelSerializable> Pager __query_pager(SQLHolder sqlHolder, Pager pager, Class<M> klass) {
+        ParameterMap paramMap = pager.getParams();
         // 获得总记录数
         String countSql = sqlHolder.convertCountSQL();
         logger.out(sqlHolder.getSQLType() + ":" + countSql);
@@ -279,37 +145,12 @@ abstract class JdbcSupport extends AbstractJdbc {
         // 查询记录 Limit
         String limitSql = sqlHolder.convertLimitSQL(pager);
         logger.out(sqlHolder.getSQLType() + ":" + limitSql);
-        List<E> list = queryForMulti(
+        List<M> list = queryForMulti(
                 sqlHolder.convertLimitSQL(pager),
                 new MapSqlParameterSource(paramMap),
-                new BeanMapperHandler<E>(klass)
+                new ModelMapperHandler<M>(klass)
         );
         return sqlHolder.convertLimitList(pager, list);
-    }
-
-    /**
-     * 查询,符合SpringBean标准
-     *
-     * @param sqlHolder sql工具
-     * @param klass     class
-     * @return Element集合
-     */
-    protected <E extends ModelSerializable> Element __query_element(SQLHolder sqlHolder, Class<E> klass) {
-        String hsql = sqlHolder.getSQLString();
-        return queryForSingle(hsql, new MapSqlParameterSource(), new ElementMapperHandler(klass));
-    }
-
-    /**
-     * 查询,符合SpringBean标准
-     *
-     * @param sqlHolder sql工具
-     * @param params    参数
-     * @param klass     class
-     * @return Element集合
-     */
-    protected <E extends ModelSerializable> Element __query_element(SQLHolder sqlHolder, Map<String, Object> params, Class<E> klass) {
-        String hsql = sqlHolder.getSQLString(params);
-        return queryForSingle(hsql, new MapSqlParameterSource(params), new ElementMapperHandler(klass));
     }
 
     /**
@@ -319,151 +160,9 @@ abstract class JdbcSupport extends AbstractJdbc {
      * @param params    参数
      * @return Element集合
      */
-    protected <T extends ModelSerializable> Element __query_element(SQLHolder sqlHolder, T params) {
+    protected <P extends ParameterSerializable, M extends ModelSerializable> Element __query_element(SQLHolder sqlHolder, P params, Class<M> klass) {
         String hsql = sqlHolder.getSQLString(params);
-        return queryForSingle(hsql, new BeanPropertySqlParameterSource(params), new ElementMapperHandler(params.getClass()));
-    }
-
-    /**
-     * 查询(返回结果Object集合)
-     *
-     * @param sqlHolder sql工具
-     * @return klass 实例
-     */
-    protected List<Object> __query_object_list(SQLHolder sqlHolder) {
-        String hsql = sqlHolder.getSQLString();
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        return queryForMulti(hsql, new MapSqlParameterSource(), new SingleMapperHandler());
-    }
-
-    /**
-     * 查询(返回结果Object集合)
-     *
-     * @param sqlHolder sql工具
-     * @param params    参数
-     * @return klass 实例
-     */
-    protected List<Object> __query_object_list(SQLHolder sqlHolder, Map<String, Object> params) {
-        String hsql = sqlHolder.getSQLString(params);
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        return queryForMulti(hsql, new MapSqlParameterSource(params), new SingleMapperHandler());
-    }
-
-    /**
-     * 查询(返回结果Object集合)
-     *
-     * @param sqlHolder sql工具
-     * @param params    参数
-     * @return klass 实例
-     */
-    protected <T extends ModelSerializable> List<Object> __query_object_list(SQLHolder sqlHolder, T params) {
-        String hsql = sqlHolder.getSQLString(params);
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        return queryForMulti(hsql, new BeanPropertySqlParameterSource(params), new SingleMapperHandler());
-    }
-
-    /**
-     * 查询(返回结果bean集合)
-     *
-     * @param sqlHolder sql工具
-     * @param klass     class
-     * @return Model实例
-     */
-    protected <E extends ModelSerializable> List<E> __query_bean_list(SQLHolder sqlHolder, Class<E> klass) {
-        String hsql = sqlHolder.getSQLString();
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        return queryForMulti(hsql, new MapSqlParameterSource(), new BeanMapperHandler<E>(klass));
-    }
-
-    /**
-     * 查询(返回结果bean集合)
-     *
-     * @param sqlHolder sql工具
-     * @param params    参数
-     * @param klass     class
-     * @return Model实例
-     */
-    protected <E extends ModelSerializable> List<E> __query_bean_list(SQLHolder sqlHolder, Map<String, Object> params, Class<E> klass) {
-        String hsql = sqlHolder.getSQLString(params);
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        return queryForMulti(hsql, new MapSqlParameterSource(params), new BeanMapperHandler<E>(klass));
-    }
-
-    /**
-     * 查询(返回结果bean集合)
-     *
-     * @param sqlHolder sql工具
-     * @param params    参数
-     * @return Model实例
-     */
-    protected <T extends ModelSerializable> List<T> __query_bean_list(SQLHolder sqlHolder, T params) {
-        String hsql = sqlHolder.getSQLString(params);
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        return queryForMulti(hsql, new BeanPropertySqlParameterSource(params), new BeanMapperHandler<T>(params.getClass()));
-    }
-
-    /**
-     * 查询(返回结果Map集合)
-     *
-     * @param sqlHolder sql工具
-     * @return Map
-     */
-    protected List<Map<String, Object>> __query_map_list(SQLHolder sqlHolder) {
-        String hsql = sqlHolder.getSQLString();
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        return queryForMulti(hsql, new MapSqlParameterSource(), new MapMapperHandler());
-    }
-
-    /**
-     * 查询(返回结果Map集合)
-     *
-     * @param sqlHolder sql工具
-     * @param params    参数
-     * @return Map
-     */
-    protected List<Map<String, Object>> __query_map_list(SQLHolder sqlHolder, Map<String, Object> params) {
-        String hsql = sqlHolder.getSQLString(params);
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        return queryForMulti(hsql, new MapSqlParameterSource(params), new MapMapperHandler());
-    }
-
-    /**
-     * 查询(返回结果Map集合)
-     *
-     * @param sqlHolder sql工具
-     * @param params    参数
-     * @return Map
-     */
-    protected <T extends ModelSerializable> List<Map<String, Object>> __query_map_list(SQLHolder sqlHolder, T params) {
-        String hsql = sqlHolder.getSQLString(params);
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
-        return queryForMulti(hsql, new BeanPropertySqlParameterSource(params), new MapMapperHandler());
-    }
-
-
-    /**
-     * 查询(返回结果Element集合),符合SpringBean标准
-     *
-     * @param sqlHolder sql工具
-     * @param klass     class
-     * @return Element集合
-     */
-    protected <E extends ModelSerializable> List<Element> __query_element_list(SQLHolder sqlHolder, Class<E> klass) {
-        String hsql = sqlHolder.getSQLString();
-        return queryForMulti(hsql, new MapSqlParameterSource(), new ElementMapperHandler(klass));
-    }
-
-    /**
-     * 查询(返回结果Element集合),符合SpringBean标准
-     *
-     * @param sqlHolder sql工具
-     * @param params    参数
-     * @param klass     class
-     * @return Element集合
-     */
-    protected <E extends ModelSerializable> List<Element> __query_element_list(SQLHolder sqlHolder, Map<String, Object> params, Class<E> klass) {
-        String hsql = sqlHolder.getSQLString(params);
-        return queryForMulti(hsql, new MapSqlParameterSource(params), new ElementMapperHandler(klass));
+        return queryForSingle(hsql, getParameterSource(params), new ElementMapperHandler(getSuperClass(klass)));
     }
 
     /**
@@ -473,8 +172,8 @@ abstract class JdbcSupport extends AbstractJdbc {
      * @param params    参数
      * @return Element集合
      */
-    protected <T extends ModelSerializable> List<Element> __query_element_list(SQLHolder sqlHolder, T params) {
+    protected <P extends ParameterSerializable, M extends ModelSerializable> List<Element> __query_element_list(SQLHolder sqlHolder, P params, Class<M> klass) {
         String hsql = sqlHolder.getSQLString(params);
-        return queryForMulti(hsql, new BeanPropertySqlParameterSource(params), new ElementMapperHandler(params.getClass()));
+        return queryForMulti(hsql, getParameterSource(params), new ElementMapperHandler(getSuperClass(klass)));
     }
 }

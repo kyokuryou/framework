@@ -2,83 +2,80 @@ package org.smarty.core.support.jdbc;
 
 import org.dom4j.Element;
 import org.smarty.core.bean.Pager;
+import org.smarty.core.io.ModelMap;
 import org.smarty.core.io.ModelSerializable;
+import org.smarty.core.io.ParameterSerializable;
 import org.smarty.core.support.jdbc.sql.SQL;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 静态SQL接口
  */
 public interface IStringSQL {
 
+    // int
     int queryForInt(SQL sql);
 
-    int queryForInt(SQL sql, Map<String, Object> params);
+    <P extends ParameterSerializable> int queryForInt(SQL sql, P params);
 
-    int queryForInt(SQL sql, ModelSerializable params);
+    // long
+    long queryForLong(SQL sql);
 
-    Long queryForLong(SQL sql);
+    <P extends ParameterSerializable> long queryForLong(SQL sql, P params);
 
-    Long queryForLong(SQL sql, Map<String, Object> params);
-
-    Long queryForLong(SQL sql, ModelSerializable params);
-
+    // object
     Object queryForObject(SQL sql);
 
-    Object queryForObject(SQL sql, Map<String, Object> params);
+    <P extends ParameterSerializable> Object queryForObject(SQL sql, P params);
 
-    Object queryForObject(SQL sql, ModelSerializable params);
-
-    Map<String, Object> queryForMap(SQL sql);
-
-    Map<String, Object> queryForMap(SQL sql, Map<String, Object> params);
-
-    Map<String, Object> queryForMap(SQL sql, ModelSerializable params);
-
-    <E extends ModelSerializable> E queryForBean(SQL sql, Class<E> klass);
-
-    <E extends ModelSerializable> E queryForBean(SQL sql, Map<String, Object> params, Class<E> klass);
-
-    <T extends ModelSerializable> T queryForBean(SQL sql, T params);
-
+    // object list
     List<Object> queryForObjectList(SQL sql);
 
-    List<Object> queryForObjectList(SQL sql, Map<String, Object> params);
+    <P extends ParameterSerializable> List<Object> queryForObjectList(SQL sql, P params);
 
-    List<Object> queryForObjectList(SQL sql, ModelSerializable params);
+    // model
+    ModelMap queryForModel(SQL sql);
 
-    List<Map<String, Object>> queryForMapList(SQL sql);
+    <P extends ParameterSerializable> ModelMap queryForModel(SQL sql, P params);
 
-    List<Map<String, Object>> queryForMapList(SQL sql, Map<String, Object> params);
+    <M extends ModelSerializable> M queryForModel(SQL sql, Class<M> klass);
 
-    List<Map<String, Object>> queryForMapList(SQL sql, ModelSerializable params);
+    <P extends ParameterSerializable, M extends ModelSerializable> M queryForModel(SQL sql, P params, Class<M> klass);
 
-    <E extends ModelSerializable> List<E> queryForBeanList(SQL sql, Class<E> klass);
+    // model list
+    List<ModelMap> queryForModelList(SQL sql);
 
-    <E extends ModelSerializable> List<E> queryForBeanList(SQL sql, Map<String, Object> params, Class<E> klass);
+    <P extends ParameterSerializable> List<ModelMap> queryForModelList(SQL sql, P params);
 
-    <T extends ModelSerializable> List<T> queryForBeanList(SQL sql, T params);
+    <M extends ModelSerializable> List<M> queryForModelList(SQL sql, Class<M> klass);
 
-    <E extends ModelSerializable> Pager queryForPager(SQL sql, Pager pager, Class<E> klass);
+    <P extends ParameterSerializable, M extends ModelSerializable> List<M> queryForModelList(SQL sql, P params, Class<M> klass);
 
-    <E extends ModelSerializable> List<Element> queryForElement(SQL sql, Class<E> klass);
+    // pager
+    <M extends ModelSerializable> Pager queryForPager(SQL sql, Pager pager, Class<M> klass);
 
-    <E extends ModelSerializable> List<Element> queryForElement(SQL sql, Map<String, Object> params, Class<E> klass);
+    // element
+    <M extends ModelSerializable> Element queryForElement(SQL sql, Class<M> klass);
 
-    <T extends ModelSerializable> List<Element> queryForElement(SQL sql, T params);
+    <P extends ParameterSerializable> Element queryForElement(SQL sql, P params);
 
+    <P extends ParameterSerializable, M extends ModelSerializable> Element queryForElement(SQL sql, P params, Class<M> klass);
+
+    // element list
+    <E extends ModelSerializable> List<Element> queryForElementList(SQL sql, Class<E> klass);
+
+    <P extends ParameterSerializable> List<Element> queryForElementList(SQL sql, P params);
+
+    <P extends ParameterSerializable, M extends ModelSerializable> List<Element> queryForElementList(SQL sql, P params, Class<M> klass);
+
+    // update
     Object executeUpdate(SQL sql);
 
-    Object executeUpdate(SQL sql, Map<String, Object> params);
+    <P extends ParameterSerializable> Object executeUpdate(SQL sql, P params);
 
-    Object executeUpdate(SQL sql, ModelSerializable params);
-
+    // call
     boolean executeCall(SQL sql);
 
-    boolean executeCall(SQL sql, Map<String, Object> params);
-
-    boolean executeCall(SQL sql, ModelSerializable params);
-
+    <P extends ParameterSerializable> boolean executeCall(SQL sql, P params);
 }
