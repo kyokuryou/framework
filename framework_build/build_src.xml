@@ -49,6 +49,7 @@
         <jar jarfile="${src.build.dirPath}/${src.jar.name}.jar" basedir="${src.build.dirPath}">
             <exclude name="**/*.jar"/>
             <exclude name="**/*.zip"/>
+            <exclude name="**/*.local.properties"/>
             <manifest>
                 <attribute name="Specification-Title" value="${component.name}"/>
                 <attribute name="Specification-Version" value="${component.Version}"/>

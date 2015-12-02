@@ -30,21 +30,14 @@ public class CaptchaEngine extends ListImageCaptchaEngine {
     public static final String IMAGE_CAPTCHA_KEY = "imageCaptcha";// ImageCaptcha对象存放在Session中的key
     public static final String CAPTCHA_INPUT_NAME = "j_captcha";// 验证码输入表单名称
     public static final String CAPTCHA_IMAGE_URL = "/captcha.jpg";// 验证码图片URL
-    private static final Integer MIN_WORD_LENGTH = 4;// 验证码最小长度
-    private static final Integer MAX_WORD_LENGTH = 4;// 验证码最大长度
-    private static final Integer IMAGE_HEIGHT = 28;// 验证码图片高度
-    private static final Integer IMAGE_WIDTH = 80;// 验证码图片宽度
-    private static final Integer MIN_FONT_SIZE = 16;// 验证码最小字体
-    private static final Integer MAX_FONT_SIZE = 16;// 验证码最大字体
-    private static final String RANDOM_WORD = "ABCDEFGHIJKLMNPQRSTUVWXYZ";// 随机字符
 
     // 验证码随机字体
     private static final Font[] RANDOM_FONT = new Font[]{
-            new Font("nyala", Font.BOLD, MIN_FONT_SIZE),
-            new Font("Arial", Font.BOLD, MIN_FONT_SIZE),
-            new Font("Bell MT", Font.BOLD, MIN_FONT_SIZE),
-            new Font("Credit valley", Font.BOLD, MIN_FONT_SIZE),
-            new Font("Impact", Font.BOLD, MIN_FONT_SIZE)
+            new Font("nyala", Font.BOLD, WebBaseConstant.CAPTCHA_MIN_FONT),
+            new Font("Arial", Font.BOLD, WebBaseConstant.CAPTCHA_MIN_FONT),
+            new Font("Bell MT", Font.BOLD, WebBaseConstant.CAPTCHA_MIN_FONT),
+            new Font("Credit valley", Font.BOLD, WebBaseConstant.CAPTCHA_MIN_FONT),
+            new Font("Impact", Font.BOLD, WebBaseConstant.CAPTCHA_MIN_FONT)
     };
 
     // 验证码随机颜色
@@ -63,13 +56,13 @@ public class CaptchaEngine extends ListImageCaptchaEngine {
 
         BackgroundGenerator backgroundGenerator = new RandomBackgroundGenerator();
 
-        WordGenerator wordGenerator = new RandomWordGenerator(RANDOM_WORD);
+        WordGenerator wordGenerator = new RandomWordGenerator(WebBaseConstant.CAPTCHA_RANDOM_WORD);
 
-        FontGenerator fontGenerator = new RandomFontGenerator(MIN_FONT_SIZE, MAX_FONT_SIZE, RANDOM_FONT);
+        FontGenerator fontGenerator = new RandomFontGenerator(WebBaseConstant.CAPTCHA_MIN_FONT, WebBaseConstant.CAPTCHA_MAX_FONT, RANDOM_FONT);
 
         TextDecorator[] textDecorator = new TextDecorator[]{};
 
-        TextPaster textPaster = new DecoratedRandomTextPaster(MIN_WORD_LENGTH, MAX_WORD_LENGTH, randomListColorGenerator, textDecorator);
+        TextPaster textPaster = new DecoratedRandomTextPaster(WebBaseConstant.CAPTCHA_MIN_WORD, WebBaseConstant.CAPTCHA_MAX_WORD, randomListColorGenerator, textDecorator);
 
         WordToImage wordToImage = new ComposedWordToImage(fontGenerator, backgroundGenerator, textPaster);
 
@@ -79,26 +72,26 @@ public class CaptchaEngine extends ListImageCaptchaEngine {
     private class RandomBackgroundGenerator implements BackgroundGenerator {
 
         public int getImageHeight() {
-            return IMAGE_WIDTH;
+            return WebBaseConstant.CAPTCHA_IMAGE_WIDTH;
         }
 
         public int getImageWidth() {
-            return IMAGE_HEIGHT;
+            return WebBaseConstant.CAPTCHA_IMAGE_HEIGHT;
         }
 
         public BufferedImage getBackground() {
             Random random = new Random();
-            BufferedImage image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
+            BufferedImage image = new BufferedImage(WebBaseConstant.CAPTCHA_IMAGE_WIDTH, WebBaseConstant.CAPTCHA_IMAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
             Graphics g = image.getGraphics();
             // 设定背景色
             g.setColor(getRandColor(200, 250));
-            g.fillRect(0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
+            g.fillRect(0, 0, WebBaseConstant.CAPTCHA_IMAGE_WIDTH, WebBaseConstant.CAPTCHA_IMAGE_HEIGHT);
             g.setColor(getRandColor(160, 200));
             for (int i = 0; i < 10; i++) {
-                int x = random.nextInt(IMAGE_WIDTH);
-                int y = random.nextInt(IMAGE_HEIGHT);
-                int xl = random.nextInt(IMAGE_WIDTH / 2);
-                int yl = random.nextInt(IMAGE_HEIGHT / 2);
+                int x = random.nextInt(WebBaseConstant.CAPTCHA_IMAGE_WIDTH);
+                int y = random.nextInt(WebBaseConstant.CAPTCHA_IMAGE_HEIGHT);
+                int xl = random.nextInt(WebBaseConstant.CAPTCHA_IMAGE_WIDTH / 2);
+                int yl = random.nextInt(WebBaseConstant.CAPTCHA_IMAGE_HEIGHT / 2);
                 g.drawLine(x, y, x + xl, y + yl);
             }
             g.dispose();

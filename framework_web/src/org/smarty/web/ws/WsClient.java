@@ -7,6 +7,7 @@ import org.codehaus.xfire.transport.http.CommonsHttpMessageSender;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.smarty.core.utils.PathUtil;
+import org.smarty.web.commons.WebBaseConstant;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -20,8 +21,6 @@ import java.net.URL;
  */
 public class WsClient {
     private URL wsdlUrl;
-    private Integer timeout = 10000;
-    private Long requestSize = 10 * 1024 * 1024L;
     private Handler handler;
 
     public WsClient(String wsdlUrl) throws MalformedURLException {
@@ -31,15 +30,6 @@ public class WsClient {
     public WsClient(String wsdlUrl, Handler handler) throws MalformedURLException {
         this.wsdlUrl = getWsdlUrl(wsdlUrl);
         this.handler = handler;
-    }
-
-
-    public void setTimeout(Integer timeout) {
-        this.timeout = timeout;
-    }
-
-    public void setRequestSize(Long requestSize) {
-        this.requestSize = requestSize;
     }
 
     public URL getWsdlUrl(String wsdl) throws MalformedURLException {
@@ -115,7 +105,7 @@ public class WsClient {
         HttpClientParams params = new HttpClientParams();
         params.setParameter(HttpClientParams.USE_EXPECT_CONTINUE, Boolean.FALSE);
         params.setParameter(HttpClientParams.CONNECTION_MANAGER_TIMEOUT, 10 * 1000L);
-        params.setParameter(HttpClientParams.SO_TIMEOUT, timeout);
+        params.setParameter(HttpClientParams.SO_TIMEOUT, WebBaseConstant.TIME_OUT);
         return params;
     }
 
@@ -129,8 +119,8 @@ public class WsClient {
         } else {
             bytes = obj.toString().getBytes();
         }
-        if (bytes.length > requestSize) {
-            throw new StringIndexOutOfBoundsException("request params expected less than:" + requestSize + ",reality is:" + bytes.length);
+        if (bytes.length > WebBaseConstant.REQ_MAX_DATA) {
+            throw new StringIndexOutOfBoundsException("request params expected less than:" + WebBaseConstant.REQ_MAX_DATA + ",reality is:" + bytes.length);
         }
         return new Object[]{obj};
 

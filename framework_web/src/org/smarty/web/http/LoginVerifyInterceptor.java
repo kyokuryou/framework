@@ -1,5 +1,6 @@
 package org.smarty.web.http;
 
+import org.smarty.web.commons.WebBaseConstant;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.Cookie;
@@ -14,8 +15,8 @@ import javax.servlet.http.HttpServletResponse;
  * @version 1.0
  */
 public class LoginVerifyInterceptor extends HandlerInterceptorAdapter {
-    private String sessionId = "jsession";
-    private String cookieName = "jcookie";
+    private String sessionId;
+    private String cookieName;
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String loginMemberId = (String) request.getSession().getAttribute(sessionId);

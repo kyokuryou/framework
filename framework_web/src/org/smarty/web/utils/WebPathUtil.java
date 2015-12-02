@@ -1,9 +1,19 @@
 package org.smarty.web.utils;
 
 import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.web.commons.WebBaseConstant;
 
 import javax.servlet.ServletContext;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
 import java.nio.charset.Charset;
 
 /**
@@ -68,14 +78,8 @@ public class WebPathUtil {
      * @return 输出流
      */
     public static Reader getServletAsReader(String filePath) {
-        Reader reader;
         try {
-            if (charset == null) {
-                reader = new InputStreamReader(getServletAsInStream(filePath));
-            } else {
-                reader = new InputStreamReader(getServletAsInStream(filePath), charset);
-            }
-            return reader;
+            return new InputStreamReader(getServletAsInStream(filePath), WebBaseConstant.DEF_CHARSET);
         } catch (IOException e) {
             logger.out(e);
         }
@@ -89,38 +93,11 @@ public class WebPathUtil {
      * @return 输出流
      */
     public static Writer getServletAsWriter(String filePath) {
-
-        Writer writer;
         try {
-            if (charset == null) {
-                writer = new OutputStreamWriter(getServletAsOutStream(filePath));
-            } else {
-                writer = new OutputStreamWriter(getServletAsOutStream(filePath), charset);
-            }
-            return writer;
+            return new OutputStreamWriter(getServletAsOutStream(filePath), WebBaseConstant.DEF_CHARSET);
         } catch (IOException e) {
             logger.out(e);
         }
         return null;
     }
-
-
-    /**
-     * 返回编码格式
-     *
-     * @return Charset对象
-     */
-    public static Charset getCharset() {
-        return charset;
-    }
-
-    /**
-     * 设置编码格式
-     *
-     * @param charset Charset对象
-     */
-    public static void setCharset(Charset charset) {
-        WebPathUtil.charset = charset;
-    }
-
 }

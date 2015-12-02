@@ -59,7 +59,7 @@
     <property name="lib.extend.commons.dirPath" value="${lib.extend.dirPath}/commons"/>
     <property name="lib.extend.compressor.dirPath" value="${lib.extend.dirPath}/compressor"/>
     <property name="lib.extend.flex.dirPath" value="${lib.extend.dirPath}/flex"/>
-    <property name="lib.extend.image.dirPath" value="${lib.extend.dirPath}/image"/>
+    <!--<property name="lib.extend.image.dirPath" value="${lib.extend.dirPath}/image"/>-->
     <property name="lib.extend.jcaptcha.dirPath" value="${lib.extend.dirPath}/jcaptcha"/>
     <property name="lib.extend.poi.dirPath" value="${lib.extend.dirPath}/poi"/>
     <property name="lib.extend.security.dirPath" value="${lib.extend.dirPath}/security"/>
@@ -162,10 +162,11 @@
         <fileset dir="${lib.extend.flex.dirPath}">
             <include name="*.jar"/>
         </fileset>
-        <!-- image依赖(可选) -->
+        <!-- image依赖(可选)
         <fileset dir="${lib.extend.image.dirPath}">
             <include name="*.jar"/>
         </fileset>
+        -->
         <!-- 验证码(可选) -->
         <fileset dir="${lib.extend.jcaptcha.dirPath}">
             <include name="*.jar"/>

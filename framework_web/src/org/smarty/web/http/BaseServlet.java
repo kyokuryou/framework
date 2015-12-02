@@ -24,17 +24,6 @@ import java.util.Locale;
  */
 public abstract class BaseServlet {
     private static RuntimeLogger logger = new RuntimeLogger(BaseServlet.class);
-    private static final long serialVersionUID = 6718838822334455667L;
-
-    public static final String VIEW = "view";
-    public static final String LIST = "list";
-    public static final String INPUT = "input";
-    public static final String STATUS = "status";
-    public static final String WARN = "warn";
-    public static final String SUCCESS = "success";
-    public static final String ERROR = "error";
-    public static final String MESSAGE = "message";
-
 
     public Theme useTheme;
 

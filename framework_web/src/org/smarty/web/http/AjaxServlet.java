@@ -1,6 +1,7 @@
 package org.smarty.web.http;
 
 import org.smarty.core.utils.JsonUtil;
+import org.smarty.web.commons.WebBaseConstant;
 
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -114,8 +115,8 @@ public abstract class AjaxServlet extends BaseServlet {
      */
     public String ajaxJsonWarnMessage(String message) {
         Map<String, String> jsonMap = new HashMap<String, String>();
-        jsonMap.put(STATUS, WARN);
-        jsonMap.put(MESSAGE, message);
+        jsonMap.put(WebBaseConstant.VIEW_STATUS, WebBaseConstant.VIEW_WARN);
+        jsonMap.put(WebBaseConstant.VIEW_MESSAGE, message);
         return ajaxJson(jsonMap);
     }
 
@@ -135,8 +136,8 @@ public abstract class AjaxServlet extends BaseServlet {
      */
     public String ajaxJsonSuccessMessage(String message) {
         Map<String, String> jsonMap = new HashMap<String, String>();
-        jsonMap.put(STATUS, SUCCESS);
-        jsonMap.put(MESSAGE, message);
+        jsonMap.put(WebBaseConstant.VIEW_STATUS, WebBaseConstant.VIEW_SUCCESS);
+        jsonMap.put(WebBaseConstant.VIEW_MESSAGE, message);
         return ajaxJson(jsonMap);
     }
 
@@ -156,8 +157,8 @@ public abstract class AjaxServlet extends BaseServlet {
      */
     public String ajaxJsonErrorMessage(String message) {
         Map<String, String> jsonMap = new HashMap<String, String>();
-        jsonMap.put(STATUS, ERROR);
-        jsonMap.put(MESSAGE, message);
+        jsonMap.put(WebBaseConstant.VIEW_STATUS, WebBaseConstant.VIEW_ERROR);
+        jsonMap.put(WebBaseConstant.VIEW_MESSAGE, message);
         return ajaxJson(jsonMap);
     }
 }

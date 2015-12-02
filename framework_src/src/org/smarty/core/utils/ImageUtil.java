@@ -1,17 +1,11 @@
 package org.smarty.core.utils;
 
-import com.mortennobel.imagescaling.ResampleOp;
-import org.smarty.core.logger.RuntimeLogger;
-
-import javax.imageio.IIOImage;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReadParam;
-import javax.imageio.ImageReader;
-import javax.imageio.ImageTypeSpecifier;
-import javax.imageio.ImageWriteParam;
-import javax.imageio.ImageWriter;
-import javax.imageio.stream.ImageInputStream;
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.CropImageFilter;
@@ -28,6 +22,15 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Iterator;
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
+import javax.imageio.ImageReader;
+import javax.imageio.ImageTypeSpecifier;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageInputStream;
+import org.smarty.core.logger.RuntimeLogger;
 
 /**
  * 图片处理工具类(该类对图片的处理基于imagescaling第三方组件)
@@ -160,23 +163,22 @@ public class ImageUtil {
      * @throws IOException
      */
     public static BufferedImage resize(BufferedImage image, int width, int height, boolean db) throws IOException {
-        double srcWidth = image.getWidth();
-        double srcHeigth = image.getHeight();
-        int zoomWidth = width;
-        int zoomHeight = height;
+        int srcWidth = image.getWidth();
+        int srcHeigth = image.getHeight();
+        double zoomWidth = width * 1.0f / srcWidth;
+        double zoomHeight = height * 1.0f / srcHeigth;
         if (db) {
             // 等比例缩放
             double tempHeight = (srcHeigth / srcWidth) * width;
             if (tempHeight > height) {
-                zoomWidth = (int) ((srcWidth / srcHeigth) * height);
-                zoomHeight = height;
+                zoomWidth = ((srcWidth / srcHeigth) * height) * 1.0f / srcWidth;
             } else {
-                zoomWidth = width;
-                zoomHeight = (int) ((srcHeigth / srcWidth) * width);
+                zoomHeight = tempHeight / srcHeigth;
             }
         }
-        ResampleOp op = new ResampleOp(zoomWidth, zoomHeight);
-        return op.filter(image, null);
+        AffineTransform atf = AffineTransform.getScaleInstance(zoomWidth, zoomHeight);
+        AffineTransformOp ato = new AffineTransformOp(atf, null);
+        return ato.filter(image, null);
     }
 
     /**
