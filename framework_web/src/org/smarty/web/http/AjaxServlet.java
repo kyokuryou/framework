@@ -1,16 +1,24 @@
 package org.smarty.web.http;
 
-import org.smarty.core.utils.JsonUtil;
-import org.smarty.web.commons.WebBaseConstant;
-
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
+import org.smarty.core.utils.JsonUtil;
+import org.smarty.web.commons.WebBaseConstant;
 
 /**
  * ajax servlet高级类
  */
 public abstract class AjaxServlet extends BaseServlet {
+
+    protected void setHttpServlet(HttpServletResponse response) {
+        if (response == null) {
+            return;
+        }
+        this.response = response;
+    }
+
 
     /**
      * AJAX输出

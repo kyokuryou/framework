@@ -75,31 +75,16 @@
         <property name="defaultLocale" value="${i18n.default_locale}"/>
     </bean>
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="resolveLazily" value="true"/>
         <property name="maxUploadSize" value="${upload.max_size}"/>
-        <property name="maxInMemorySize" value="${upload.max_size}"/>
-    </bean>
-    <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-        <property name="order" value="0"/>
-        <property name="exceptionMappings">
-            <props>
-                <prop key="org.springframework.web.bind.MissingServletRequestParameterException">
-                    ${page.error.required_parameter}
-                </prop>
-                <prop key="org.springframework.beans.TypeMismatchException">${page.error.mismatch_parameter}</prop>
-                <prop key="org.springframework.web.bind.ServletRequestBindingException">${page.error.bind_exception}
-                </prop>
-                <prop key="org.springframework.dao.DataIntegrityViolationException">${page.error.integrity_violation}
-                </prop>
-            </props>
-        </property>
     </bean>
     <bean name="responseStatusExceptionResolver"
           class="org.springframework.web.servlet.mvc.annotation.ResponseStatusExceptionResolver">
-        <property name="order" value="1"/>
+        <property name="order" value="0"/>
     </bean>
     <bean name="defaultExceptionResolver"
           class="org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver">
-        <property name="order" value="2"/>
+        <property name="order" value="1"/>
     </bean>
     <!-- method handler adapter -->
     <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
