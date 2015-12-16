@@ -1,18 +1,17 @@
 package org.smarty.core.support.jdbc.mapper;
 
+import java.lang.reflect.InvocationTargetException;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import org.apache.commons.beanutils.BeanUtils;
 import org.smarty.core.exception.InstanceClassException;
-import org.smarty.core.exception.NoSuchReflectException;
 import org.smarty.core.io.ModelMap;
 import org.smarty.core.io.ModelSerializable;
 import org.smarty.core.logger.RuntimeLogger;
 import org.smarty.core.utils.BeanUtil;
 import org.smarty.core.utils.CommonUtil;
 import org.smarty.core.utils.JdbcUtil;
-
-import java.lang.reflect.Field;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 
 /**
  * @author qul
@@ -56,24 +55,22 @@ public class ModelMapperHandler<T extends ModelSerializable> implements RowMappe
     private T createModelBean(ResultSet rs) throws SQLException {
         T obj;
         try {
-            obj = (T)BeanUtil.instanceClass(superClass);
+            obj = (T) BeanUtil.instanceClass(superClass);
         } catch (InstanceClassException e) {
             logger.out(e);
             return null;
         }
         ResultSetMetaData rsm = rs.getMetaData();
-        Integer cc = rsm.getColumnCount();
+        int cc = rsm.getColumnCount();
         for (int i = 1; i <= cc; i++) {
             String cn = JdbcUtil.getResultSetColumnName(rsm, i);
+            Object value = JdbcUtil.getResultSetValue(rs, i);
             String fn = CommonUtil.toJavaField(cn);
             try {
-                Field field = BeanUtil.getField(superClass, fn);
-                field.setAccessible(true);
-                Object value = JdbcUtil.getResultSetValue(rs, i, field.getType());
-                field.set(obj, value);
-            } catch (NoSuchReflectException e) {
-                logger.out(e);
+                BeanUtils.setProperty(obj, fn, value);
             } catch (IllegalAccessException e) {
+                logger.out(e);
+            } catch (InvocationTargetException e) {
                 logger.out(e);
             }
         }

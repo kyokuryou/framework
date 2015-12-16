@@ -1,12 +1,15 @@
 package org.smarty.core.utils;
 
-import org.smarty.core.logger.RuntimeLogger;
-
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+import org.smarty.core.logger.RuntimeLogger;
 
 /**
  * 公用工具
@@ -371,22 +374,31 @@ public class CommonUtil {
     /**
      * 处理成标准JavaBean命名方式
      *
-     * @param name 需转换的字段名所表示的字符串(如:name或name_name)
+     * @param name 需转换的字段名所表示的字符串(如:name.name或name.name_name)
      * @return 字段名
      */
     public static String toJavaField(String name) {
         if (name == null || "".equals(name)) {
             return "";
         }
-        String[] fns = name.toLowerCase().split("_");
+        String[] fnList = name.toLowerCase().split("[.]");
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < fns.length; i++) {
-            char[] fn = fns[i].toCharArray();
-            if (i > 0) {
-                fn[0] = Character.toUpperCase(fn[0]);
+        for (String fns : fnList) {
+            if (fns == null || "".equals(fns)) {
+                continue;
             }
-            sb.append(fn);
+            String[] fntmp = fns.split("_");
+            for (int i = 0; i < fntmp.length; i++) {
+                char[] fn = fntmp[i].toCharArray();
+                if (i > 0) {
+                    fn[0] = Character.toUpperCase(fn[0]);
+                }
+                sb.append(fn);
+            }
+            sb.append(".");
         }
+        int len = sb.length();
+        sb.delete(len - 1, len);
         return sb.toString();
     }
 

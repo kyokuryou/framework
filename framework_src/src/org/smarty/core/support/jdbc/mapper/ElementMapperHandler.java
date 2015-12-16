@@ -52,7 +52,7 @@ public class ElementMapperHandler implements RowMapperHandler<Element> {
         String key = CommonUtil.toJavaField(cn);
         try {
             Class keyType = BeanUtil.getFieldClass(superClass, key);
-            Object value = JdbcUtil.getResultSetValue(rs, index, String.class);
+            Object value = JdbcUtil.getResultSetValue(rs, index);
             if (value == null) return;
             Element proEl = getBeanProperty(key, value, keyType);
             if (proEl == null) return;

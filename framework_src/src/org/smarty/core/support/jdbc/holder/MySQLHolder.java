@@ -37,7 +37,7 @@ public class MySQLHolder extends SQLHolder {
         sb.append(" LIMIT ");
         sb.append(pager.getPageNumber() < 1 ? 0 : (pager.getPageNumber() - 1) * pager.getPageSize());
         sb.append(",");
-        sb.append(pager.getPageNumber() * pager.getPageSize());
+        sb.append(pager.getPageSize());
         return sb.toString();
     }
 }
