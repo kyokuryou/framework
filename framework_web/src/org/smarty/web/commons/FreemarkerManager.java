@@ -16,7 +16,7 @@ import java.io.OutputStreamWriter;
 import java.util.Map;
 
 /**
- * Freemarkerπ‹¿Ì
+ * Freemarker
  * Created Date 2015/04/09
  *
  * @author quliang

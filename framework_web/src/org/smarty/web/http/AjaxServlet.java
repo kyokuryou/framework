@@ -121,7 +121,7 @@ public abstract class AjaxServlet extends BaseServlet {
      * @param message 内容
      * @return null
      */
-    public String ajaxJsonWarnMessage(String message) {
+    public String ajaxJsonWarn(String message) {
         Map<String, String> jsonMap = new HashMap<String, String>();
         jsonMap.put(WebBaseConstant.VIEW_STATUS, WebBaseConstant.VIEW_WARN);
         jsonMap.put(WebBaseConstant.VIEW_MESSAGE, message);
@@ -142,7 +142,7 @@ public abstract class AjaxServlet extends BaseServlet {
      * @param message 内容
      * @return null
      */
-    public String ajaxJsonSuccessMessage(String message) {
+    public String ajaxJsonSuccess(String message) {
         Map<String, String> jsonMap = new HashMap<String, String>();
         jsonMap.put(WebBaseConstant.VIEW_STATUS, WebBaseConstant.VIEW_SUCCESS);
         jsonMap.put(WebBaseConstant.VIEW_MESSAGE, message);
@@ -163,7 +163,7 @@ public abstract class AjaxServlet extends BaseServlet {
      * @param message 内容
      * @return null
      */
-    public String ajaxJsonErrorMessage(String message) {
+    public String ajaxJsonError(String message) {
         Map<String, String> jsonMap = new HashMap<String, String>();
         jsonMap.put(WebBaseConstant.VIEW_STATUS, WebBaseConstant.VIEW_ERROR);
         jsonMap.put(WebBaseConstant.VIEW_MESSAGE, message);
