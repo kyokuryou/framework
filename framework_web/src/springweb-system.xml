@@ -30,16 +30,6 @@
         <property name="sessionId" value="${login.session.id}"/>
         <property name="cookieName" value="${login.cookie.name}"/>
     </bean>
-    <mvc:interceptors>
-        <bean class="org.springframework.web.servlet.handler.ConversionServiceExposingInterceptor">
-            <constructor-arg ref="conversionService"/>
-        </bean>
-        <bean class="org.smarty.web.http.ServletInterceptor"/>
-        <!--<bean class="org.smarty.web.http.TrimInterceptor"/>-->
-        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-            <property name="paramName" value="lang"/>
-        </bean>
-    </mvc:interceptors>
     <!-- mapping -->
     <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
         <property name="order" value="0"/>
