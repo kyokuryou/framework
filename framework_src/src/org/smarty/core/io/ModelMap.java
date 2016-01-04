@@ -1,8 +1,7 @@
 package org.smarty.core.io;
 
-import org.smarty.core.common.BaseConstant;
-
 import java.util.LinkedHashMap;
+import org.smarty.core.common.BaseConstant;
 
 /**
  * @author qul
@@ -13,6 +12,10 @@ public final class ModelMap extends LinkedHashMap<String, Object> implements Mod
 
     public String getString(String key) {
         return (String) super.get(key);
+    }
+
+    public Number getNumber(String key) {
+        return (Number) super.get(key);
     }
 
     public byte[] getBytes(String key) {
@@ -32,43 +35,43 @@ public final class ModelMap extends LinkedHashMap<String, Object> implements Mod
     }
 
     public short getShort(String key) {
-        String res = getString(key);
-        if (res == null || "".equals(res)) {
+        Number res = getNumber(key);
+        if (res == null) {
             return Short.MIN_VALUE;
         }
-        return Short.valueOf(res);
+        return res.shortValue();
     }
 
     public int getInt(String key) {
-        String res = getString(key);
-        if (res == null || "".equals(res)) {
+        Number res = getNumber(key);
+        if (res == null) {
             return Integer.MIN_VALUE;
         }
-        return Integer.valueOf(res);
+        return res.intValue();
     }
 
     public long getLong(String key) {
-        String res = getString(key);
-        if (res == null || "".equals(res)) {
+        Number res = getNumber(key);
+        if (res == null) {
             return Long.MIN_VALUE;
         }
-        return Long.valueOf(res);
+        return res.longValue();
     }
 
     public float getFloat(String key) {
-        String res = getString(key);
-        if (res == null || "".equals(res)) {
+        Number res = getNumber(key);
+        if (res == null) {
             return Float.MIN_VALUE;
         }
-        return Float.valueOf(res);
+        return res.floatValue();
     }
 
     public double getDouble(String key) {
-        String res = getString(key);
-        if (res == null || "".equals(res)) {
+        Number res = getNumber(key);
+        if (res == null) {
             return Double.MIN_VALUE;
         }
-        return Double.valueOf(res);
+        return res.doubleValue();
     }
 
     public boolean getBoolean(String key) {
@@ -78,4 +81,5 @@ public final class ModelMap extends LinkedHashMap<String, Object> implements Mod
         }
         return Boolean.valueOf(res);
     }
+
 }

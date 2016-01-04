@@ -3,6 +3,7 @@ package org.test.dao;
 import org.smarty.core.support.jdbc.InsertSQL;
 import org.smarty.core.support.jdbc.SQLSession;
 import org.smarty.core.support.jdbc.SelectSQL;
+import org.smarty.core.support.jdbc.UpdateSQL;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,5 +39,13 @@ public class TestDao {
         InsertSQL.INSERT("t_z1");
         InsertSQL.VALUES("`code`", "'abc'");
         return testSqlSession.executeUpdate(InsertSQL.SQL());
+    }
+
+    public Object getTestUpdate1() throws SQLException {
+        UpdateSQL.BEGIN();
+        UpdateSQL.UPDATE("t_z");
+        UpdateSQL.SET("`code`='abc1'");
+        UpdateSQL.WHERE("id=50");
+        return testSqlSession.executeUpdate(UpdateSQL.SQL());
     }
 }

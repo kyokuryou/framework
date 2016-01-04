@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.io.IOUtils;
-import org.smarty.core.bean.Pager;
 import org.smarty.core.logger.RuntimeLogger;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
@@ -29,13 +28,9 @@ public abstract class BaseServlet {
     private static RuntimeLogger logger = new RuntimeLogger(BaseServlet.class);
 
     public Theme useTheme;
-
     protected HttpServletRequest request;
     protected HttpServletResponse response;
     protected HttpSession session;
-    protected String id;
-    protected String[] ids;
-    protected Pager pager;
 
     public enum Theme {
         defPlan, planA, planB, planC, planD, planE, planF, planG
@@ -162,19 +157,15 @@ public abstract class BaseServlet {
         return null;
     }
 
-    protected void downloadStream(InputStream in, String fileName) throws IOException {
-        if (in == null) {
-            return;
-        }
-
+    protected void downloadResponse(String fileName, int len, String sha1) {
         response.reset();
         //设置文件名
         response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
         //设置下载文件大小
-        response.addHeader("Content-Length", in.available() + "");
+        response.addHeader("Content-Length", len + "");
+        response.addHeader("sha1", sha1);
         //设置文件类型
         response.setContentType("application/octet-stream;charset=UTF-8");
-        copyStream(in, response.getOutputStream());
     }
 
     protected void copyStream(InputStream in, OutputStream out) throws IOException {
@@ -185,29 +176,5 @@ public abstract class BaseServlet {
             IOUtils.closeQuietly(out);
             IOUtils.closeQuietly(in);
         }
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String[] getIds() {
-        return ids;
-    }
-
-    public void setIds(String[] ids) {
-        this.ids = ids;
-    }
-
-    public Pager getPager() {
-        return pager;
-    }
-
-    public void setPager(Pager pager) {
-        this.pager = pager;
     }
 }

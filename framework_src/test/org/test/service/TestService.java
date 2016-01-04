@@ -36,10 +36,7 @@ public class TestService {
     @Transactional
     public Object insert1() {
         try {
-            testDao.getTestInsert1();
-            testDao.getTestInsert1();
-            testDao.getTestInsert1();
-            testDao.getTestInsert1();
+           return testDao.getTestUpdate1();
         } catch (SQLException e) {
             e.printStackTrace();
         }

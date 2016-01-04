@@ -1,5 +1,6 @@
 package org.test.controller;
 
+import org.smarty.web.commons.WebBaseConstant;
 import org.smarty.web.http.BaseServlet;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +13,7 @@ public class TestController extends BaseServlet {
     public String login() {
         request.setAttribute("userName", "qul");
         request.setAttribute("password", "quliang");
-        return forwardView("test", VIEW);
+        return forwardView("test", WebBaseConstant.VIEW_VIEW);
     }
 
     @RequestMapping(value = "/test")

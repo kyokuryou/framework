@@ -17,9 +17,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Iterator;
 import javax.imageio.IIOImage;
@@ -40,31 +37,9 @@ import org.smarty.core.logger.RuntimeLogger;
  * @version 1.0
  */
 public class ImageUtil {
-    private static RuntimeLogger logger = new RuntimeLogger(org.smarty.core.utils.ImageUtil.class);
+    private static RuntimeLogger logger = new RuntimeLogger(ImageUtil.class);
 
     private ImageUtil() {
-    }
-
-    /**
-     * byte数组转换成16进制字符串
-     *
-     * @param src
-     * @return
-     */
-    public static String bytesToHexString(byte[] src) {
-        StringBuilder stringBuilder = new StringBuilder();
-        if (src == null || src.length <= 0) {
-            return "";
-        }
-        for (byte s : src) {
-            int v = s & 0xFF;
-            String hv = Integer.toHexString(v);
-            if (hv.length() < 2) {
-                stringBuilder.append(0);
-            }
-            stringBuilder.append(hv);
-        }
-        return stringBuilder.toString();
     }
 
     /**
@@ -79,7 +54,7 @@ public class ImageUtil {
         }
         byte[] b = Arrays.copyOf(data, 4);
 
-        String type = bytesToHexString(b).toUpperCase();
+        String type = FileUtil.bytesToHexString(b).toUpperCase();
         if (type.contains("FFD8FF")) {
             return "jpg";
         } else if (type.contains("89504E47")) {
@@ -92,32 +67,6 @@ public class ImageUtil {
             return "bmp";
         }
         return type;
-    }
-
-    public static String getSha1Name(byte[] data) throws IOException {
-        String suffix = getRealType(data);
-        return getDigest(data, "SHA-1") + "." + suffix;
-    }
-
-
-    public static String getMd5Name(byte[] data) throws IOException {
-        String suffix = getRealType(data);
-        return getDigest(data, "MD5") + "." + suffix;
-    }
-
-    public static String getDigest(byte[] data, String algorithm) throws IOException {
-        if (data == null || data.length == 0) {
-            return null;
-        }
-        try {
-            MessageDigest md = MessageDigest.getInstance(algorithm);
-            md.update(data);
-            String format32 = new BigInteger(1, md.digest()).toString(32);
-            return format32.toUpperCase();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     /**
