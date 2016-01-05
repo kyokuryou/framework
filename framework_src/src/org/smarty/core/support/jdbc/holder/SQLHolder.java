@@ -63,7 +63,8 @@ public abstract class SQLHolder {
         if (sql.contains("SELECT DISTINCT") || sql.contains("GROUP BY")) {
             sb.append("SELECT COUNT(1) as count FROM (").append(sql).append(") t");
         } else {
-            sb.append(sql).replace(0, sb.lastIndexOf("FROM") - 1, "SELECT COUNT(1) AS count");
+             sb.append(sql).replace(0, sb.indexOf("FROM") - 1, "SELECT COUNT(1) AS count");
+//            sb.append("SELECT COUNT(1) as count FROM (").append(sql).append(") t");
         }
         return sb.toString();
     }

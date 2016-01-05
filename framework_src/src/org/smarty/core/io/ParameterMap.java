@@ -1,8 +1,7 @@
 package org.smarty.core.io;
 
-import org.smarty.core.common.BaseConstant;
-
 import java.util.HashMap;
+import org.smarty.core.common.BaseConstant;
 
 /**
  * @author qul
@@ -11,7 +10,11 @@ import java.util.HashMap;
 public class ParameterMap extends HashMap<String, Object> implements ParameterSerializable {
 
     public String getString(String key) {
-        return (String) super.get(key);
+        Object val = super.get(key);
+        if (val == null) {
+            return null;
+        }
+        return String.valueOf(val);
     }
 
     public byte[] getBytes(String key) {
