@@ -12,8 +12,7 @@ import org.smarty.core.common.BaseConstant;
 public class ParameterMap extends HashMap<String, Object> implements ParameterSerializable {
 
     public String getString(String key) {
-        Object val = super.get(key);
-        return convertString(val);
+        return convertString(super.get(key));
     }
 
     public byte[] getBytes(String key) {
@@ -96,10 +95,72 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
         }
     }
 
-    @Override
-    public String remove(Object key) {
-        Object val = super.remove(key);
-        return convertString(val);
+    public String removeString(String key) {
+        return convertString(super.remove(key));
+    }
+
+    public byte[] removeBytes(String key) {
+        String res = removeString(key);
+        if (res == null || "".equals(res)) {
+            return new byte[0];
+        }
+        return res.getBytes(BaseConstant.DEF_CHARSET);
+    }
+
+    public char[] removeChars(String key) {
+        String res = removeString(key);
+        if (res == null || "".equals(res)) {
+            return new char[0];
+        }
+        return res.toCharArray();
+    }
+
+    public short removeShort(String key) {
+        String res = removeString(key);
+        if (res == null || "".equals(res)) {
+            return Short.MIN_VALUE;
+        }
+        return Short.valueOf(res);
+    }
+
+    public int removeInt(String key) {
+        String res = removeString(key);
+        if (res == null || "".equals(res)) {
+            return Integer.MIN_VALUE;
+        }
+        return Integer.valueOf(res);
+    }
+
+    public long removeLong(String key) {
+        String res = removeString(key);
+        if (res == null || "".equals(res)) {
+            return Long.MIN_VALUE;
+        }
+        return Long.valueOf(res);
+    }
+
+    public float removeFloat(String key) {
+        String res = removeString(key);
+        if (res == null || "".equals(res)) {
+            return Float.MIN_VALUE;
+        }
+        return Float.valueOf(res);
+    }
+
+    public double removeDouble(String key) {
+        String res = removeString(key);
+        if (res == null || "".equals(res)) {
+            return Double.MIN_VALUE;
+        }
+        return Double.valueOf(res);
+    }
+
+    public boolean removeBoolean(String key) {
+        String res = removeString(key);
+        if (res == null || "".equals(res)) {
+            return false;
+        }
+        return Boolean.valueOf(res);
     }
 
     private String convertString(Object value) {
@@ -108,6 +169,9 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
         }
         if (value instanceof Enum) {
             return value.toString();
+        }
+        if (value instanceof String) {
+            return (String) value;
         }
         return String.valueOf(value);
     }
