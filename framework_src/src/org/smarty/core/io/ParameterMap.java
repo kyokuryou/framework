@@ -1,6 +1,8 @@
 package org.smarty.core.io;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import org.smarty.core.common.BaseConstant;
 
 /**
@@ -11,10 +13,7 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
 
     public String getString(String key) {
         Object val = super.get(key);
-        if (val == null) {
-            return null;
-        }
-        return String.valueOf(val);
+        return convertString(val);
     }
 
     public byte[] getBytes(String key) {
@@ -81,4 +80,35 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
         return Boolean.valueOf(res);
     }
 
+    @Override
+    public Object put(String key, Object value) {
+        return super.put(key, convertString(value));
+    }
+
+    @Override
+    public void putAll(Map<? extends String, ?> m) {
+        if (m == null || m.isEmpty()) {
+            return;
+        }
+        Set<? extends Map.Entry<? extends String, ?>> mes = m.entrySet();
+        for (Map.Entry<? extends String, ?> me : mes) {
+            put(me.getKey(), me.getValue());
+        }
+    }
+
+    @Override
+    public String remove(Object key) {
+        Object val = super.remove(key);
+        return convertString(val);
+    }
+
+    private String convertString(Object value) {
+        if (value == null) {
+            return null;
+        }
+        if (value instanceof Enum) {
+            return value.toString();
+        }
+        return String.valueOf(value);
+    }
 }
