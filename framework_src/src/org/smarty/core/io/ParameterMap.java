@@ -1,6 +1,9 @@
 package org.smarty.core.io;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.smarty.core.common.BaseConstant;
@@ -13,6 +16,14 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
 
     public String getString(String key) {
         return convertString(super.get(key));
+    }
+
+    public String[] getStringArray(String key) {
+        String res = getString(key);
+        if (res == null || "".equals(res)) {
+            return null;
+        }
+        return res.split(",");
     }
 
     public byte[] getBytes(String key) {
@@ -79,8 +90,43 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
         return Boolean.valueOf(res);
     }
 
+    public List<String> getList(String key) {
+        String[] res = getStringArray(key);
+        if (res == null || res.length == 0) {
+            return null;
+        }
+        return Arrays.asList(res);
+    }
+
+    public List<Integer> getIntList(String key) {
+        String[] res = getStringArray(key);
+        if (res == null || res.length == 0) {
+            return null;
+        }
+        List<Integer> list = new ArrayList<Integer>();
+        for (String re : res) {
+            list.add(Integer.valueOf(re));
+        }
+        return list;
+    }
+
+    public List<Long> getLongList(String key) {
+        String[] res = getStringArray(key);
+        if (res == null || res.length == 0) {
+            return null;
+        }
+        List<Long> list = new ArrayList<Long>();
+        for (String re : res) {
+            list.add(Long.valueOf(re));
+        }
+        return list;
+    }
+
     @Override
     public Object put(String key, Object value) {
+        if (value instanceof List) {
+            return super.put(key, value);
+        }
         return super.put(key, convertString(value));
     }
 
