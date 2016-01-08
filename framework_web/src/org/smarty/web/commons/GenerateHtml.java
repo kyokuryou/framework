@@ -1,6 +1,6 @@
 package org.smarty.web.commons;
 
-import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.io.RuntimeLogger;
 import org.smarty.core.utils.ConvertUtil;
 import org.smarty.web.utils.WebPathUtil;
 import org.springframework.beans.factory.InitializingBean;

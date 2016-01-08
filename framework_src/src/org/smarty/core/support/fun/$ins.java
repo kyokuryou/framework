@@ -5,7 +5,7 @@ import org.lilystudio.smarty4j.statement.LineFunction;
 import org.lilystudio.smarty4j.statement.ParameterCharacter;
 import org.smarty.core.exception.InvokeMethodException;
 import org.smarty.core.exception.NoSuchReflectException;
-import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.io.RuntimeLogger;
 import org.smarty.core.utils.BeanUtil;
 import org.smarty.core.utils.LogicUtil;
 

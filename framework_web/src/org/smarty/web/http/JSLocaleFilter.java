@@ -1,6 +1,6 @@
 package org.smarty.web.http;
 
-import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.io.RuntimeLogger;
 import org.smarty.core.utils.DateUtil;
 import org.smarty.web.commons.FreemarkerManager;
 import org.springframework.beans.factory.InitializingBean;

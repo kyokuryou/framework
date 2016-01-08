@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.io.RuntimeLogger;
 
 /**
  * 公用工具

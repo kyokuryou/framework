@@ -1,7 +1,7 @@
 package org.smarty.core.support.net;
 
 import org.smarty.core.common.BaseConstant;
-import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.io.RuntimeLogger;
 import org.smarty.core.utils.CommonUtil;
 import org.smarty.core.utils.LogicUtil;
 

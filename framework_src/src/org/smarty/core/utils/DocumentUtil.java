@@ -5,7 +5,7 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 import org.smarty.core.common.BaseConstant;
-import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.io.RuntimeLogger;
 import org.xml.sax.SAXException;
 
 import javax.xml.validation.Schema;

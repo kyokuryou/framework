@@ -4,7 +4,7 @@ import org.lilystudio.smarty4j.Context;
 import org.lilystudio.smarty4j.Engine;
 import org.lilystudio.smarty4j.Template;
 import org.smarty.core.bean.TemplateConfig;
-import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.io.RuntimeLogger;
 
 import java.io.StringWriter;
 import java.io.Writer;

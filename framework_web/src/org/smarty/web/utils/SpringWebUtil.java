@@ -2,7 +2,7 @@ package org.smarty.web.utils;
 
 import freemarker.ext.beans.BeansWrapper;
 import freemarker.ext.beans.ResourceBundleModel;
-import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.io.RuntimeLogger;
 import org.smarty.core.utils.LogicUtil;
 
 import javax.servlet.ServletContext;

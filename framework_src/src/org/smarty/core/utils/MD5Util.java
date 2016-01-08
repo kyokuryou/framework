@@ -1,6 +1,6 @@
 package org.smarty.core.utils;
 
-import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.io.RuntimeLogger;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

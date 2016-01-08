@@ -1,6 +1,6 @@
 package org.smarty.core.utils;
 
-import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.io.RuntimeLogger;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

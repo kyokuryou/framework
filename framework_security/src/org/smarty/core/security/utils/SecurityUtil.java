@@ -1,6 +1,6 @@
 package org.smarty.core.security.utils;
 
-import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.io.RuntimeLogger;
 import org.smarty.core.security.common.SecurityFilter;
 import org.smarty.core.utils.LogicUtil;
 import org.smarty.core.utils.SpringUtil;

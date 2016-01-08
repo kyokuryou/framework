@@ -4,7 +4,7 @@ import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 import org.smarty.core.common.BaseConstant;
-import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.io.RuntimeLogger;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

@@ -1,6 +1,6 @@
 package org.smarty.core.support.jdbc.mapper;
 
-import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.io.RuntimeLogger;
 import org.smarty.core.utils.JdbcUtil;
 
 import java.sql.ResultSet;

@@ -8,7 +8,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.smarty.core.exception.InstanceClassException;
 import org.smarty.core.io.ModelMap;
 import org.smarty.core.io.ModelSerializable;
-import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.io.RuntimeLogger;
 import org.smarty.core.utils.BeanUtil;
 import org.smarty.core.utils.CommonUtil;
 import org.smarty.core.utils.JdbcUtil;

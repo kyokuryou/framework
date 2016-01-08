@@ -2,7 +2,7 @@ package org.smarty.web.http;
 
 import com.octo.captcha.service.CaptchaService;
 import com.octo.captcha.service.CaptchaServiceException;
-import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.io.RuntimeLogger;
 import org.springframework.beans.factory.InitializingBean;
 
 import javax.imageio.ImageIO;

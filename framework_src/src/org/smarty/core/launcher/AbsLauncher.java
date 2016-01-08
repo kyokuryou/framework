@@ -1,6 +1,6 @@
 package org.smarty.core.launcher;
 
-import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.io.RuntimeLogger;
 import org.smarty.core.support.cache.CacheMessage;
 import org.smarty.core.utils.SpringUtil;
 import org.springframework.beans.BeansException;

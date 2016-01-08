@@ -1,6 +1,6 @@
 package org.smarty.web.utils;
 
-import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.io.RuntimeLogger;
 import org.smarty.web.commons.WebBaseConstant;
 
 import javax.servlet.ServletContext;

@@ -3,7 +3,7 @@ package org.smarty.web.commons;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.io.RuntimeLogger;
 import org.smarty.core.utils.LogicUtil;
 import org.smarty.web.utils.SpringWebUtil;
 import org.springframework.beans.factory.InitializingBean;

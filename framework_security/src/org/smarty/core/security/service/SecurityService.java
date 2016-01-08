@@ -1,6 +1,6 @@
 package org.smarty.core.security.service;
 
-import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.io.RuntimeLogger;
 import org.smarty.core.security.dao.SecurityDao;
 import org.smarty.core.utils.LogicUtil;
 

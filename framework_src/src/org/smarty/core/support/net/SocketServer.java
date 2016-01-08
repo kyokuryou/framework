@@ -1,6 +1,6 @@
 package org.smarty.core.support.net;
 
-import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.io.RuntimeLogger;
 import org.springframework.core.task.TaskExecutor;
 
 import java.io.IOException;

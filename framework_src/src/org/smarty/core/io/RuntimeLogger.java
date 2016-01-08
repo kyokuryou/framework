@@ -1,4 +1,4 @@
-package org.smarty.core.logger;
+package org.smarty.core.io;
 
 import org.apache.log4j.Logger;
 import org.smarty.core.common.BaseConstant;
@@ -8,6 +8,10 @@ public class RuntimeLogger {
 
     public RuntimeLogger(Class klass) {
         logger = Logger.getLogger(klass);
+    }
+
+    public boolean isDebugEnabled() {
+        return logger.isDebugEnabled();
     }
 
     public void error(String memo) {

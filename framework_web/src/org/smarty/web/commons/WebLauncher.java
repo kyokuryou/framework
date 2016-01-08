@@ -1,7 +1,7 @@
 package org.smarty.web.commons;
 
 import org.smarty.core.launcher.AbsLauncher;
-import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.io.RuntimeLogger;
 import org.smarty.web.utils.SpringWebUtil;
 import org.springframework.web.context.ServletContextAware;
 

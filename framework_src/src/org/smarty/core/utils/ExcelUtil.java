@@ -7,7 +7,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.smarty.core.bean.ExcelUnit;
 import org.smarty.core.exception.OfficeException;
-import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.io.RuntimeLogger;
 
 import java.io.*;
 import java.util.*;

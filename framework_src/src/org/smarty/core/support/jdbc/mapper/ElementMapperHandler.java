@@ -3,7 +3,7 @@ package org.smarty.core.support.jdbc.mapper;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.smarty.core.exception.NoSuchReflectException;
-import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.io.RuntimeLogger;
 import org.smarty.core.utils.BeanUtil;
 import org.smarty.core.utils.CommonUtil;
 import org.smarty.core.utils.ConvertUtil;

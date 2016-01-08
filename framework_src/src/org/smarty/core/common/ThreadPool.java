@@ -1,6 +1,6 @@
 package org.smarty.core.common;
 
-import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.io.RuntimeLogger;
 
 import java.util.LinkedList;
 

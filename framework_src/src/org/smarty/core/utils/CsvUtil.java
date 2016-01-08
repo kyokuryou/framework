@@ -2,7 +2,7 @@ package org.smarty.core.utils;
 
 import org.smarty.core.bean.Csv;
 import org.smarty.core.common.BaseConstant;
-import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.io.RuntimeLogger;
 import org.smarty.core.support.csvreader.CsvReader;
 import org.smarty.core.support.csvreader.CsvWriter;
 

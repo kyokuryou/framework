@@ -3,7 +3,7 @@ package org.smarty.core.support.jdbc.holder;
 import org.smarty.core.bean.Pager;
 import org.smarty.core.io.ParameterMap;
 import org.smarty.core.io.ParameterSerializable;
-import org.smarty.core.logger.RuntimeLogger;
+import org.smarty.core.io.RuntimeLogger;
 import org.smarty.core.support.jdbc.support.DBType;
 import org.smarty.core.utils.BeanUtil;
 import org.smarty.core.utils.LilystudioUtil;
