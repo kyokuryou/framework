@@ -52,6 +52,10 @@ public abstract class BaseServlet {
 
     }
 
+    public String getParameter(String key) {
+        return request.getParameter(key);
+    }
+
     public String redirectAction(String action, String name) {
         StringBuilder url = new StringBuilder("redirect:/");
         url.append(action).append("/");
