@@ -27,9 +27,8 @@
     <!-- 定时器任务 -->
     <task:annotation-driven/>
     <!-- 自定义定时任务-->
-    <bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"/>
-    <bean id="scheduleManager" class="org.smarty.core.support.ScheduleManager">
-        <property name="scheduler" ref="schedulerFactory"/>
+    <bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" abstract="true">
+        <property name="taskExecutor" ref="taskExecutor"/>
     </bean>
 
     <!-- JDBC参数配置 -->
