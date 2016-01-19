@@ -86,6 +86,12 @@ public abstract class AbstractSQL<T> {
         return getSelf();
     }
 
+    public T setLimit(int from, int to) {
+        sql().limit.add(String.valueOf(from));
+        sql().limit.add(String.valueOf(to));
+        return getSelf();
+    }
+
     public T addColumn(String column) {
         sql().columns.add(column);
         return getSelf();
@@ -160,6 +166,7 @@ public abstract class AbstractSQL<T> {
         List<String> having = new ArrayList<String>();
         List<String> groupBy = new ArrayList<String>();
         List<String> orderBy = new ArrayList<String>();
+        List<String> limit = new ArrayList<String>();
         List<String> lastList = new ArrayList<String>();
         List<String> columns = new ArrayList<String>();
         List<String> values = new ArrayList<String>();
@@ -208,6 +215,7 @@ public abstract class AbstractSQL<T> {
             sqlClause(builder, "GROUP BY", groupBy, "", "", ", ");
             sqlClause(builder, "HAVING", having, "(", ")", " AND ");
             sqlClause(builder, "ORDER BY", orderBy, "", "", ", ");
+            sqlClause(builder, "LIMIT", limit, "", "", ", ");
             return builder.toString();
         }
 

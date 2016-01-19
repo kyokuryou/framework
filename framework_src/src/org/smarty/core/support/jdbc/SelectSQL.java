@@ -74,6 +74,10 @@ public class SelectSQL {
         sql().setOrderBy(columns);
     }
 
+    public static void LIMIT(int from, int to) {
+        sql().setLimit(from, to);
+    }
+
     private static SQL sql() {
         return localSQL.get();
     }
