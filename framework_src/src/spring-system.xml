@@ -25,12 +25,16 @@
     <aop:aspectj-autoproxy proxy-target-class="true"/>
     <aop:config proxy-target-class="true"/>
     <!-- 定时器任务 -->
-    <task:annotation-driven/>
+    <task:annotation-driven executor="taskExecutor" mode="proxy"/>
     <!-- 自定义定时任务-->
-    <bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" abstract="true">
+    <bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="autoStartup" value="true"/>
         <property name="taskExecutor" ref="taskExecutor"/>
     </bean>
-
+    <!-- 动态定时任务 -->
+    <bean id="dispatcherSchedule" class="org.smarty.core.support.schedule.DispatcherSchedule" abstract="true">
+        <property name="scheduler" ref="schedulerFactory"/>
+    </bean>
     <!-- JDBC参数配置 -->
     <bean id="configurer" class="org.springframework.beans.factory.config.PropertiesFactoryBean" lazy-init="true">
         <property name="fileEncoding" value="UTF-8"/>
