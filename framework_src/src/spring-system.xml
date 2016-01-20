@@ -26,10 +26,13 @@
     <aop:config proxy-target-class="true"/>
     <!-- 定时器任务 -->
     <task:annotation-driven executor="taskExecutor" mode="proxy"/>
+
     <!-- 自定义定时任务-->
+    <bean id="schedulerJobFactory" class="org.smarty.core.support.schedule.DispatcherJobFactory"/>
     <bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="autoStartup" value="true"/>
         <property name="taskExecutor" ref="taskExecutor"/>
+        <property name="jobFactory" ref="schedulerJobFactory"/>
     </bean>
     <!-- 动态定时任务 -->
     <bean id="dispatcherSchedule" class="org.smarty.core.support.schedule.DispatcherSchedule" abstract="true">
