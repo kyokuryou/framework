@@ -105,4 +105,11 @@
 
     <bean id="conversionService" class="org.springframework.format.support.DefaultFormattingConversionService"/>
 
+    <bean id="baseLauncher" class="org.smarty.core.launcher.AbsLauncher" init-method="main" destroy-method="exit"
+          abstract="true">
+        <property name="systemCatchSize" value="${cache.system.size}"/>
+        <property name="temporaryCatchSize" value="${cache.temporary.size}"/>
+    </bean>
+
+
 </beans>

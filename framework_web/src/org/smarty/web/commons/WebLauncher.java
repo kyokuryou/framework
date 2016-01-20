@@ -1,12 +1,13 @@
 package org.smarty.web.commons;
 
-import org.smarty.core.launcher.AbsLauncher;
-import org.smarty.core.io.RuntimeLogger;
-import org.smarty.web.utils.SpringWebUtil;
-import org.springframework.web.context.ServletContextAware;
-
-import javax.servlet.ServletContext;
 import java.util.Set;
+import javax.servlet.ServletContext;
+import org.smarty.core.io.RuntimeLogger;
+import org.smarty.core.launcher.AbsLauncher;
+import org.smarty.web.utils.SpringWebUtil;
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceAware;
+import org.springframework.web.context.ServletContextAware;
 
 /**
  * web启动器
@@ -15,11 +16,15 @@ import java.util.Set;
  * @author quliang
  * @version 1.0
  */
-public class WebLauncher extends AbsLauncher implements ServletContextAware {
+public class WebLauncher extends AbsLauncher implements ServletContextAware, MessageSourceAware {
     private static RuntimeLogger logger = new RuntimeLogger(WebLauncher.class);
 
     public final void setServletContext(ServletContext servletContext) {
         SpringWebUtil.setServletContext(servletContext);
+    }
+
+    public final void setMessageSource(MessageSource messageSource) {
+        SpringWebUtil.setMessageSource(messageSource);
     }
 
     protected Set<ClassLoader> getLauncher() {
@@ -27,4 +32,6 @@ public class WebLauncher extends AbsLauncher implements ServletContextAware {
         cls.add(WebLauncher.class.getClassLoader());
         return cls;
     }
+
+
 }

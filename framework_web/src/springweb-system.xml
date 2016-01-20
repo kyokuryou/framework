@@ -129,6 +129,7 @@
         <property name="jsFtl" value="${template.jsFtl}"/>
     </bean>
     <!-- 扩展定义 -->
+    <bean id="webLauncher" class="org.smarty.web.commons.WebLauncher" parent="baseLauncher" abstract="true"/>
     <!-- 模版配置 -->
     <bean id="freemarkerManager" class="org.smarty.web.commons.FreemarkerManager">
         <property name="freeMarkerConfigurer" ref="freemarkerConfigurer"/>

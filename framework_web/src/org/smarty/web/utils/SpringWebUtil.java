@@ -1,14 +1,9 @@
 package org.smarty.web.utils;
 
-import freemarker.ext.beans.BeansWrapper;
-import freemarker.ext.beans.ResourceBundleModel;
-import org.smarty.core.io.RuntimeLogger;
-import org.smarty.core.utils.LogicUtil;
-
+import java.util.Locale;
 import javax.servlet.ServletContext;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import org.smarty.core.io.RuntimeLogger;
+import org.springframework.context.MessageSource;
 
 /**
  * spring mvc工具
@@ -20,6 +15,7 @@ import java.util.ResourceBundle;
 public class SpringWebUtil {
     private static RuntimeLogger logger = new RuntimeLogger(SpringWebUtil.class);
     private static ServletContext servletContext;
+    private static MessageSource messageSource;
 
     public static void setServletContext(ServletContext servletContext) {
         if (SpringWebUtil.servletContext != null) {
@@ -29,6 +25,14 @@ public class SpringWebUtil {
         logger.info("holded servletContext,displayName:" + servletContext.getServletContextName());
     }
 
+    public static void setMessageSource(MessageSource messageSource) {
+        if (SpringWebUtil.messageSource != null) {
+            throw new IllegalStateException("ServletContextHolder already holded 'messageSource'.");
+        }
+        SpringWebUtil.messageSource = messageSource;
+        logger.info("holded messageSource");
+    }
+
     public static ServletContext getServletContext() {
         if (servletContext == null) {
             throw new IllegalStateException("'servletContext' property is null,ServletContextHolder not yet init.");
@@ -36,15 +40,11 @@ public class SpringWebUtil {
         return servletContext;
     }
 
-    public static Map<String, Object> getCommonData(Map<String, Object> data) {
-        Map<String, Object> commonData = new HashMap<String, Object>();
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("i18n");
-        ResourceBundleModel resourceBundleModel = new ResourceBundleModel(resourceBundle, new BeansWrapper());
-        commonData.put("message", resourceBundleModel);
-        commonData.put("base", servletContext.getContextPath());
-        if (LogicUtil.isNotEmptyMap(data)) {
-            commonData.putAll(data);
-        }
-        return commonData;
+    public static String getMessage(String key, Object... values) {
+        return messageSource.getMessage(key, values, Locale.getDefault());
+    }
+
+    public static String getMessage(String key, Locale locale, Object... values) {
+        return messageSource.getMessage(key, values, locale);
     }
 }

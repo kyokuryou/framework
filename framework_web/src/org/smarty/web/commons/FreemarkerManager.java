@@ -3,17 +3,15 @@ package org.smarty.web.commons;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import org.smarty.core.io.RuntimeLogger;
-import org.smarty.core.utils.LogicUtil;
-import org.smarty.web.utils.SpringWebUtil;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.Map;
+import org.smarty.core.io.RuntimeLogger;
+import org.smarty.core.utils.LogicUtil;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 /**
  * Freemarker
@@ -47,7 +45,7 @@ public class FreemarkerManager implements InitializingBean {
         try {
             OutputStreamWriter sw = new OutputStreamWriter(os);
             Template template = configuration.getTemplate(name);
-            template.process(SpringWebUtil.getCommonData(data), sw);
+            template.process(data, sw);
             sw.flush();
         } catch (TemplateException e) {
             logger.out(e);
@@ -55,11 +53,5 @@ public class FreemarkerManager implements InitializingBean {
             logger.out(e);
             throw e;
         }
-    }
-
-    public String getTemplateString(String name, Map<String, Object> data) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        outputTemplate(name, data, baos);
-        return baos.toString();
     }
 }

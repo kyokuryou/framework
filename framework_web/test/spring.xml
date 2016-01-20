@@ -22,7 +22,7 @@
     </context:component-scan>
 
     <bean name="configFiles" class="java.util.ArrayList">
-        <constructor-arg >
+        <constructor-arg>
             <list>
                 <value>classpath:/config.local.properties</value>
                 <value>classpath:/web.local.properties</value>
@@ -55,10 +55,7 @@
     <bean name="mCaptchaFilter" parent="captchaFilter"/>
 
     <!--对该dataSource增加注解事务管理 end-->
-    <bean class="org.test.commons.TestWebLauncher" init-method="main" destroy-method="exit">
-        <property name="systemCatchSize" value="${cache.system.size}"/>
-        <property name="temporaryCatchSize" value="${cache.temporary.size}"/>
-    </bean>
+    <bean class="org.test.commons.TestWebLauncher" parent="webLauncher"/>
 
 
 </beans>
