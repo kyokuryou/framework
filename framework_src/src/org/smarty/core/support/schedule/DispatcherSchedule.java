@@ -65,9 +65,13 @@ public class DispatcherSchedule extends SchedulerAccessor implements BeanNameAwa
         }
     }
 
-    public void stopJob(JobDataMap dataMap) throws SchedulerException {
+    public void stopJob(JobDataMap dataMap) {
         JobKey key = JobKey.jobKey(parseName(dataMap), beanName);
-        scheduler.deleteJob(key);
+        try {
+            scheduler.deleteJob(key);
+        } catch (SchedulerException e) {
+            logger.error(e);
+        }
     }
 
     @Override
