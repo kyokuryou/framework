@@ -15,6 +15,7 @@
     <!-- 设置需要进行Spring注解扫描的类包 -->
     <context:component-scan base-package="org.test" use-default-filters="false">
         <!--  扫描符合@Service @Repository @Controller的类 -->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
@@ -43,5 +44,11 @@
     <bean class="org.test.commons.TestLauncher" init-method="main" destroy-method="exit">
         <property name="systemCatchSize" value="${cache.system.size}"/>
         <property name="temporaryCatchSize" value="${cache.temporary.size}"/>
+    </bean>
+
+    <bean id="testSchedule1" parent="dispatcherSchedule">
+        <property name="startDelay" value="1000"/>
+        <property name="jobClass" value="org.test.commons.TestSchedule"/>
+        <property name="description" value="testSchedule"/>
     </bean>
 </beans>

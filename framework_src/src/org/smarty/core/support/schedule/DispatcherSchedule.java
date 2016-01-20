@@ -1,5 +1,6 @@
 package org.smarty.core.support.schedule;
 
+import java.util.Arrays;
 import java.util.Date;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
@@ -78,17 +79,18 @@ public class DispatcherSchedule extends SchedulerAccessor implements BeanNameAwa
         StringBuilder nb = new StringBuilder(beanName + "?");
         if (LogicUtil.isEmptyMap(dataMap)) {
             nb.append("default");
-        } else {
-            String[] keys = dataMap.getKeys();
-            for (String key : keys) {
-                nb.append(key);
-                nb.append("=");
-                nb.append(dataMap.get(key));
+            return MD5Util.encode(nb.toString());
+        }
+        String[] keys = dataMap.getKeys();
+        Arrays.sort(keys);
+        for (int i = 0, len = keys.length; i < len; i++) {
+            String key = keys[i];
+            nb.append(key).append("=");
+            nb.append(dataMap.get(key));
+            if (i < len - 1) {
                 nb.append("&");
             }
-            nb.delete(nb.length() - 1, nb.length());
         }
-
         return MD5Util.encode(nb.toString());
     }
 
