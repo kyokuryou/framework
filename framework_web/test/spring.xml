@@ -21,24 +21,16 @@
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
     </context:component-scan>
 
-    <bean name="configFiles" class="java.util.ArrayList">
-        <constructor-arg>
-            <list>
-                <value>classpath:/config.local.properties</value>
-                <value>classpath:/web.local.properties</value>
-            </list>
-        </constructor-arg>
-    </bean>
     <!-- 主要配置(必须) -->
     <import resource="classpath:spring-system.xml"/>
     <import resource="classpath:springweb-system.xml"/>
 
     <!--jdbc配置 start-->
     <bean id="testDataSource" parent="dataSource">
-        <property name="driverClass" value="${fwork.driver}"/>
-        <property name="jdbcUrl" value="${fwork.url}"/>
-        <property name="user" value="${fwork.username}"/>
-        <property name="password" value="${fwork.password}"/>
+        <property name="driverClass" value="${lvgg.driver}"/>
+        <property name="jdbcUrl" value="${lvgg.url}"/>
+        <property name="user" value="${lvgg.username}"/>
+        <property name="password" value="${lvgg.password}"/>
     </bean>
     <!--jdbc配置 end-->
     <bean id="testSqlSession" parent="sqlSession">

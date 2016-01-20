@@ -21,7 +21,7 @@
         <property name="cookieName" value="${login.cookie.name}"/>
     </bean>
     <!-- mapping -->
-    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
         <property name="order" value="0"/>
     </bean>
     <!-- view resolver-->
@@ -67,7 +67,7 @@
         <property name="order" value="1"/>
     </bean>
     <!-- method handler adapter -->
-    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
         <!-- messageConverters属性的配置可以解决JSON返回中文为问号的问题 -->
         <property name="messageConverters">
             <list>
@@ -85,11 +85,7 @@
     <!-- 国际化 -->
     <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
         <property name="cacheSeconds" value="-1"/>
-        <property name="basenames">
-            <list>
-                <value>${i18n.names}</value>
-            </list>
-        </property>
+        <property name="basenames" value="classpath:/${i18n.names}"/>
     </bean>
     <!-- freemarker configurer-->
     <bean id="freemarkerConfigurer" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
@@ -129,7 +125,9 @@
         <property name="jsFtl" value="${template.jsFtl}"/>
     </bean>
     <!-- 扩展定义 -->
-    <bean id="webLauncher" class="org.smarty.web.commons.WebLauncher" parent="baseLauncher" abstract="true"/>
+    <bean id="webLauncher" class="org.smarty.web.commons.WebLauncher" parent="baseLauncher" abstract="true">
+        <property name="messageSource" ref="messageSource"/>
+    </bean>
     <!-- 模版配置 -->
     <bean id="freemarkerManager" class="org.smarty.web.commons.FreemarkerManager">
         <property name="freeMarkerConfigurer" ref="freemarkerConfigurer"/>

@@ -6,7 +6,6 @@ import org.smarty.core.io.RuntimeLogger;
 import org.smarty.core.launcher.AbsLauncher;
 import org.smarty.web.utils.SpringWebUtil;
 import org.springframework.context.MessageSource;
-import org.springframework.context.MessageSourceAware;
 import org.springframework.web.context.ServletContextAware;
 
 /**
@@ -16,7 +15,7 @@ import org.springframework.web.context.ServletContextAware;
  * @author quliang
  * @version 1.0
  */
-public class WebLauncher extends AbsLauncher implements ServletContextAware, MessageSourceAware {
+public class WebLauncher extends AbsLauncher implements ServletContextAware {
     private static RuntimeLogger logger = new RuntimeLogger(WebLauncher.class);
 
     public final void setServletContext(ServletContext servletContext) {
