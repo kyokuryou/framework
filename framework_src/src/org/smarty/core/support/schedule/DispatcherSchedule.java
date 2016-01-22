@@ -105,7 +105,7 @@ public class DispatcherSchedule extends SchedulerAccessor implements BeanNameAwa
         JobDetailImpl jdi = new JobDetailImpl();
         jdi.setKey(jobKey);
         jdi.setJobClass(jobClass);
-        jdi.setDurability(false);
+        jdi.setDurability(true);
         return jdi;
     }
 

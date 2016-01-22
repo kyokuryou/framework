@@ -15,7 +15,7 @@ public interface BaseConstant {
     String DEF_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     String DEF_DATE_FORMAT = "yyyy-MM-dd";
     String DEF_TIME_FORMAT = "HH:mm:ss";
-    TimeZone DEF_TIME_ZONE = TimeZone.getTimeZone("GMT");
+    TimeZone DEF_TIME_ZONE = TimeZone.getDefault();
 
     String DEF_XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
 
