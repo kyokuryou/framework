@@ -17,7 +17,7 @@ public class TestMain {
             }
             sb.append(Character.toLowerCase(nm));
         }
-        sb.delete(sb.lastIndexOf("_"),sb.length());
+        sb.delete(sb.lastIndexOf("_"), sb.length());
         System.out.println(sb.toString());
 
     }

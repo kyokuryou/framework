@@ -22,5 +22,9 @@
 
     <!-- 开启MVC注解处理器 -->
     <mvc:annotation-driven/>
-
+    <mvc:default-servlet-handler/>
+    <mvc:interceptors>
+        <ref bean="lvggLocaleInterceptor"/>
+    </mvc:interceptors>
+    <bean id="localeResolver" class="org.test.commons.LvggLocaleResolver"/>
 </beans>
