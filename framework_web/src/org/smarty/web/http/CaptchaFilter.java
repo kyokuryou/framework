@@ -2,9 +2,8 @@ package org.smarty.web.http;
 
 import com.octo.captcha.service.CaptchaService;
 import com.octo.captcha.service.CaptchaServiceException;
-import org.smarty.core.io.RuntimeLogger;
-import org.springframework.beans.factory.InitializingBean;
-
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -15,8 +14,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * Created Date 2015/04/09
@@ -25,7 +25,7 @@ import java.io.IOException;
  * @version 1.0
  */
 public class CaptchaFilter implements Filter, InitializingBean {
-    private static RuntimeLogger logger = new RuntimeLogger(CaptchaFilter.class);
+    private static Log logger = LogFactory.getLog(CaptchaFilter.class);
     private CaptchaService captchaService;
 
     public void afterPropertiesSet() throws Exception {
@@ -53,7 +53,7 @@ public class CaptchaFilter implements Filter, InitializingBean {
             ImageIO.write(challenge, "jpg", out);
             out.flush();
         } catch (CaptchaServiceException e) {
-            logger.out(e);
+            logger.warn(e);
         } finally {
             out.close();
         }

@@ -3,12 +3,12 @@ package org.smarty.web.commons;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.Map;
-import org.smarty.core.io.RuntimeLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.smarty.core.utils.LogicUtil;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
@@ -21,7 +21,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
  * @version 1.0
  */
 public class FreemarkerManager implements InitializingBean {
-    private static RuntimeLogger logger = new RuntimeLogger(FreemarkerManager.class);
+    private static Log logger = LogFactory.getLog(FreemarkerManager.class);
     private Configuration configuration;
 
     public FreemarkerManager() {
@@ -48,9 +48,9 @@ public class FreemarkerManager implements InitializingBean {
             template.process(data, sw);
             sw.flush();
         } catch (TemplateException e) {
-            logger.out(e);
+            logger.warn(e);
         } catch (IOException e) {
-            logger.out(e);
+            logger.warn(e);
             throw e;
         }
     }

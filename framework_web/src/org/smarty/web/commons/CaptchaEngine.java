@@ -13,8 +13,9 @@ import com.octo.captcha.component.word.wordgenerator.RandomWordGenerator;
 import com.octo.captcha.component.word.wordgenerator.WordGenerator;
 import com.octo.captcha.engine.image.ListImageCaptchaEngine;
 import com.octo.captcha.image.gimpy.GimpyFactory;
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
@@ -32,23 +33,10 @@ public class CaptchaEngine extends ListImageCaptchaEngine {
     public static final String CAPTCHA_IMAGE_URL = "/captcha.jpg";// 验证码图片URL
 
     // 验证码随机字体
-    private static final Font[] RANDOM_FONT = new Font[]{
-            new Font("nyala", Font.BOLD, WebBaseConstant.CAPTCHA_MIN_FONT),
-            new Font("Arial", Font.BOLD, WebBaseConstant.CAPTCHA_MIN_FONT),
-            new Font("Bell MT", Font.BOLD, WebBaseConstant.CAPTCHA_MIN_FONT),
-            new Font("Credit valley", Font.BOLD, WebBaseConstant.CAPTCHA_MIN_FONT),
-            new Font("Impact", Font.BOLD, WebBaseConstant.CAPTCHA_MIN_FONT)
-    };
+    private static final Font[] RANDOM_FONT = new Font[]{new Font("nyala", Font.BOLD, WebBaseConstant.CAPTCHA_MIN_FONT), new Font("Arial", Font.BOLD, WebBaseConstant.CAPTCHA_MIN_FONT), new Font("Bell MT", Font.BOLD, WebBaseConstant.CAPTCHA_MIN_FONT), new Font("Credit valley", Font.BOLD, WebBaseConstant.CAPTCHA_MIN_FONT), new Font("Impact", Font.BOLD, WebBaseConstant.CAPTCHA_MIN_FONT)};
 
     // 验证码随机颜色
-    private static final Color[] RANDOM_COLOR = new Color[]{
-            new Color(255, 255, 255),
-            new Color(255, 220, 220),
-            new Color(220, 255, 255),
-            new Color(220, 220, 255),
-            new Color(255, 255, 220),
-            new Color(220, 255, 220)
-    };
+    private static final Color[] RANDOM_COLOR = new Color[]{new Color(255, 255, 255), new Color(255, 220, 220), new Color(220, 255, 255), new Color(220, 220, 255), new Color(255, 255, 220), new Color(220, 255, 220)};
 
     // 生成验证码
     protected void buildInitialFactories() {

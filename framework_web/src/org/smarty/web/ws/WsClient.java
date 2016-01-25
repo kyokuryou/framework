@@ -1,5 +1,7 @@
 package org.smarty.web.ws;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import org.apache.commons.httpclient.params.HttpClientParams;
 import org.codehaus.xfire.client.Client;
 import org.codehaus.xfire.handler.Handler;
@@ -8,9 +10,6 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.smarty.core.utils.PathUtil;
 import org.smarty.web.commons.WebBaseConstant;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 
 /**
  * webService 子端实现

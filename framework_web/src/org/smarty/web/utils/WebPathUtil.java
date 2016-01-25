@@ -1,9 +1,5 @@
 package org.smarty.web.utils;
 
-import org.smarty.core.io.RuntimeLogger;
-import org.smarty.web.commons.WebBaseConstant;
-
-import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -15,6 +11,10 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import javax.servlet.ServletContext;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.smarty.web.commons.WebBaseConstant;
 
 /**
  * Created Date 2015/04/09
@@ -23,7 +23,7 @@ import java.nio.charset.Charset;
  * @version 1.0
  */
 public class WebPathUtil {
-    private static RuntimeLogger logger = new RuntimeLogger(WebPathUtil.class);
+    private static Log logger = LogFactory.getLog(WebPathUtil.class);
     /**
      * 在调用getResourceAsReader使用的字符集
      * null表示使用系统默认
@@ -79,9 +79,9 @@ public class WebPathUtil {
      */
     public static Reader getServletAsReader(String filePath) {
         try {
-            return new InputStreamReader(getServletAsInStream(filePath), WebBaseConstant.DEF_CHARSET);
+            return new InputStreamReader(getServletAsInStream(filePath), WebBaseConstant.DEF_ENCODE);
         } catch (IOException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
     }
@@ -94,9 +94,9 @@ public class WebPathUtil {
      */
     public static Writer getServletAsWriter(String filePath) {
         try {
-            return new OutputStreamWriter(getServletAsOutStream(filePath), WebBaseConstant.DEF_CHARSET);
+            return new OutputStreamWriter(getServletAsOutStream(filePath), WebBaseConstant.DEF_ENCODE);
         } catch (IOException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
     }

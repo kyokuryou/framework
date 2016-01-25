@@ -17,12 +17,8 @@
     <!-- ======================================== -->
     <!-- 拦截器定义 -->
     <bean id="loginVerifyInterceptor" class="org.smarty.web.http.LoginVerifyInterceptor">
-        <property name="sessionId" value="${login.session.id}"/>
-        <property name="cookieName" value="${login.cookie.name}"/>
-    </bean>
-    <!-- mapping -->
-    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
-        <property name="order" value="0"/>
+        <property name="sessionId" value="${session.id}"/>
+        <property name="cookieName" value="${cookie.name}"/>
     </bean>
     <!-- view resolver-->
     <bean id="beanNameViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
@@ -31,9 +27,9 @@
     <bean id="freeMarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
         <property name="contentType" value="text/html;charset=UTF-8"/>
-        <property name="requestContextAttribute" value="${context.path.name}"/>
+        <property name="requestContextAttribute" value="${context.path}"/>
         <property name="prefix" value="${resources.ftl}"/>
-        <property name="viewNames" value="*.ftl"/>
+        <property name="viewNames" value="${resources.ftl.names}"/>
         <property name="exposeSessionAttributes" value="true"/>
         <property name="exposeRequestAttributes" value="true"/>
         <property name="exposeSpringMacroHelpers" value="true"/>
@@ -44,16 +40,11 @@
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
         <property name="contentType" value="text/html;charset=UTF-8"/>
         <property name="prefix" value="${resources.jsp}"/>
-        <property name="viewNames" value="*.jsp,*.do"/>
+        <property name="viewNames" value="${resources.jsp.names}"/>
         <property name="cache" value="false"/>
         <property name="order" value="2"/>
     </bean>
     <!-- resolver-->
-    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
-        <property name="cookieName" value="${i18n.cookie_name}"/>
-        <property name="cookieMaxAge" value="${i18n.cookie_max_age}"/>
-        <property name="defaultLocale" value="${i18n.default_locale}"/>
-    </bean>
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="resolveLazily" value="true"/>
         <property name="maxUploadSize" value="${upload.max_size}"/>
@@ -83,26 +74,31 @@
         </property>
     </bean>
     <!-- 国际化 -->
-    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-        <property name="cacheSeconds" value="-1"/>
-        <property name="basenames" value="classpath:/${i18n.names}"/>
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="cacheSeconds" value="3600"/>
+        <property name="useCodeAsDefaultMessage" value="true"/>
+        <property name="basenames" value="${i18n.names}"/>
+    </bean>
+    <!-- 主题 -->
+    <bean id="themeSource" class="org.springframework.ui.context.support.ResourceBundleThemeSource">
+        <property name="basenamePrefix" value="${theme.names}"/>
     </bean>
     <!-- freemarker configurer-->
     <bean id="freemarkerConfigurer" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
         <property name="templateLoaderPath" value="${freemarker.template_load_path}"/>
-        <property name="defaultEncoding" value="${freemarker.default_encoding}"/>
+        <property name="defaultEncoding" value="${default.encode}"/>
         <property name="freemarkerSettings">
             <props>
                 <prop key="template_update_delay">${freemarker.template_update_delay}</prop>
-                <prop key="default_encoding">${freemarker.default_encoding}</prop>
-                <prop key="locale">${freemarker.locale}</prop>
+                <prop key="default_encoding">${default.encode}</prop>
+                <prop key="locale">${default.locale}</prop>
                 <prop key="classic_compatible">${freemarker.classic_compatible}</prop>
                 <prop key="whitespace_stripping">${freemarker.whitespace_stripping}</prop>
                 <prop key="url_escaping_charset">${freemarker.url_escaping_charset}</prop>
-                <prop key="date_format">${freemarker.date_format}</prop>
-                <prop key="time_format">${freemarker.time_format}</prop>
-                <prop key="datetime_format">${freemarker.datetime_format}</prop>
-                <prop key="number_format">${freemarker.number_format}</prop>
+                <prop key="date_format">${default.date.format}</prop>
+                <prop key="time_format">${default.time.format}</prop>
+                <prop key="datetime_format">${default.datetime.format}</prop>
+                <prop key="number_format">${default.arith.format}</prop>
                 <prop key="boolean_format">${freemarker.boolean_format}</prop>
                 <prop key="tag_syntax">${freemarker.tag_syntax}</prop>
                 <prop key="auto_import">${freemarker.auto_import}</prop>
@@ -136,7 +132,7 @@
     <!-- 生成静态页面 -->
     <bean id="generateHtml" class="org.smarty.web.commons.GenerateHtml">
         <property name="freemarkerManager" ref="freemarkerManager"/>
-        <property name="cachePath" value="${resources.static_html}"/>
+        <property name="cachePath" value="${resources.html}"/>
     </bean>
 
     <bean id="captchaService" class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService"

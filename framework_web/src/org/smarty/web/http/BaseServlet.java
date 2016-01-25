@@ -13,7 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.io.IOUtils;
-import org.smarty.core.io.RuntimeLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
@@ -25,16 +26,11 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
  * @version 1.0
  */
 public abstract class BaseServlet {
-    private static RuntimeLogger logger = new RuntimeLogger(BaseServlet.class);
+    private static Log logger = LogFactory.getLog(BaseServlet.class);
 
-    public Theme useTheme;
     protected HttpServletRequest request;
     protected HttpServletResponse response;
     protected HttpSession session;
-
-    public enum Theme {
-        defPlan, planA, planB, planC, planD, planE, planF, planG
-    }
 
     public String getBase() {
         return request.getContextPath();
@@ -56,50 +52,8 @@ public abstract class BaseServlet {
         return request.getParameter(key);
     }
 
-    public String redirectAction(String action, String name) {
-        StringBuilder url = new StringBuilder("redirect:/");
-        url.append(action).append("/");
-        url.append(name).append(".do");
-        return url.toString();
-    }
-
-    public String forwardView(String prefix, String name) {
-        StringBuilder url = new StringBuilder();
-        url.append(prefix).append("_");
-        url.append(name).append(".jsp");
-        return url.toString();
-    }
-
-    /**
-     * 返回主题,未设置时返回默认主题
-     *
-     * @return 主题
-     */
-    public String getTheme() {
-        if (useTheme == null) {
-            useTheme = Theme.defPlan;
-        }
-        return useTheme.toString();
-    }
-
-    /**
-     * 设置主题
-     *
-     * @param useTheme 主题
-     */
-    public void setTheme(Theme useTheme) {
-        this.useTheme = useTheme;
-    }
-
-    /**
-     * 选择语言
-     *
-     * @param language 小写的两字母 ISO-639 代码
-     * @param country  大写的两字母 ISO-3166 代码
-     */
-    public void chooseLanguage(String language, String country) {
-        Locale locale = new Locale(language, country);
-        session.setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, locale);
+    public Locale getLocale() {
+        return (Locale) session.getAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME);
     }
 
     private HttpURLConnection getConnection(URL url) throws IOException {
@@ -131,7 +85,7 @@ public abstract class BaseServlet {
         try {
             return response.getWriter();
         } catch (IOException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
     }

@@ -1,15 +1,15 @@
 package org.smarty.web.commons;
 
-import org.smarty.core.io.RuntimeLogger;
-import org.smarty.core.utils.ConvertUtil;
-import org.smarty.web.utils.WebPathUtil;
-import org.springframework.beans.factory.InitializingBean;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.smarty.core.utils.ConvertUtil;
+import org.smarty.web.utils.WebPathUtil;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * 生成HTML
@@ -19,7 +19,7 @@ import java.util.Map;
  * @version 1.0
  */
 public class GenerateHtml implements InitializingBean {
-    private static RuntimeLogger logger = new RuntimeLogger(GenerateHtml.class);
+    private static Log logger = LogFactory.getLog(GenerateHtml.class);
     private FreemarkerManager freemarkerManager;
     private String cachePath;
 
@@ -41,7 +41,7 @@ public class GenerateHtml implements InitializingBean {
             freemarkerManager.outputTemplate(tn, data, os);
             os.close();
         } catch (IOException e) {
-            logger.out(e);
+            logger.warn(e);
         }
     }
 

@@ -1,11 +1,9 @@
 package org.smarty.web.http;
 
-import org.smarty.web.commons.WebBaseConstant;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 /**
  * 判断会员是否登录

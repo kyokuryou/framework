@@ -2,7 +2,9 @@ package org.smarty.web.utils;
 
 import java.util.Locale;
 import javax.servlet.ServletContext;
-import org.smarty.core.io.RuntimeLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.smarty.core.common.BaseConstant;
 import org.springframework.context.MessageSource;
 
 /**
@@ -13,7 +15,7 @@ import org.springframework.context.MessageSource;
  * @version 1.0
  */
 public class SpringWebUtil {
-    private static RuntimeLogger logger = new RuntimeLogger(SpringWebUtil.class);
+    private static Log logger = LogFactory.getLog(SpringWebUtil.class);
     private static ServletContext servletContext;
     private static MessageSource messageSource;
 
@@ -41,10 +43,10 @@ public class SpringWebUtil {
     }
 
     public static String getMessage(String key, Object... values) {
-        return messageSource.getMessage(key, values, Locale.getDefault());
+        return messageSource.getMessage(key, values, BaseConstant.DEF_LOCALE);
     }
 
-    public static String getMessage(String key, Locale locale, Object... values) {
-        return messageSource.getMessage(key, values, locale);
+    public static String getMessage(Locale locale, String key, Object... values) {
+        return messageSource.getMessage(key, values, locale == null ? BaseConstant.DEF_LOCALE : locale);
     }
 }

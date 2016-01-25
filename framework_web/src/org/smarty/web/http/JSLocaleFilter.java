@@ -1,10 +1,7 @@
 package org.smarty.web.http;
 
-import org.smarty.core.io.RuntimeLogger;
-import org.smarty.core.utils.DateUtil;
-import org.smarty.web.commons.FreemarkerManager;
-import org.springframework.beans.factory.InitializingBean;
-
+import java.io.IOException;
+import java.util.Date;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -13,8 +10,11 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Date;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.smarty.core.utils.DateUtil;
+import org.smarty.web.commons.FreemarkerManager;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * Created Date 2015/04/09
@@ -22,8 +22,8 @@ import java.util.Date;
  * @author kyokuryou
  * @version 1.0
  */
-public class JSLocaleFilter  implements Filter, InitializingBean {
-    private static RuntimeLogger logger = new RuntimeLogger(JSLocaleFilter.class);
+public class JSLocaleFilter implements Filter, InitializingBean {
+    private static Log logger = LogFactory.getLog(JSLocaleFilter.class);
     private FreemarkerManager freemarkerManager;
     private String jsFtl;
 
@@ -52,7 +52,7 @@ public class JSLocaleFilter  implements Filter, InitializingBean {
         try {
             freemarkerManager.outputTemplate(jsFtl, null, osw);
         } catch (IOException e) {
-            logger.out(e);
+            logger.warn(e);
         } finally {
             osw.close();
         }
