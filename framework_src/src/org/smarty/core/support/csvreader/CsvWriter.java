@@ -20,8 +20,6 @@
  */
 package org.smarty.core.support.csvreader;
 
-import org.smarty.core.common.BaseConstant;
-
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -29,6 +27,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import org.smarty.core.common.BaseConstant;
 
 /**
  * A stream based writer for writing delimited text data to a file or a stream.
@@ -211,8 +210,7 @@ public class CsvWriter {
      * @throws java.io.IOException Thrown if an error occurs while writing data to the
      *                             destination stream.
      */
-    public void write(String content, boolean preserveSpaces)
-            throws IOException {
+    public void write(String content, boolean preserveSpaces) throws IOException {
         checkClosed();
 
         checkInit();
@@ -231,25 +229,14 @@ public class CsvWriter {
             content = content.trim();
         }
 
-        if (!textQualify
-                && userSettings.UseTextQualifier
-                && (content.indexOf(userSettings.TextQualifier) > -1
-                || content.indexOf(userSettings.Delimiter) > -1
-                || (!useCustomRecordDelimiter && (content
-                .indexOf(BaseConstant.LETTERS_LF) > -1 || content
-                .indexOf(BaseConstant.LETTERS_CR) > -1))
-                || (useCustomRecordDelimiter && content
-                .indexOf(userSettings.RecordDelimiter) > -1)
-                || (firstColumn && content.length() > 0 && content
-                .charAt(0) == userSettings.Comment) ||
+        if (!textQualify && userSettings.UseTextQualifier && (content.indexOf(userSettings.TextQualifier) > -1 || content.indexOf(userSettings.Delimiter) > -1 || (!useCustomRecordDelimiter && (content.indexOf(BaseConstant.LETTERS_LF) > -1 || content.indexOf(BaseConstant.LETTERS_CR) > -1)) || (useCustomRecordDelimiter && content.indexOf(userSettings.RecordDelimiter) > -1) || (firstColumn && content.length() > 0 && content.charAt(0) == userSettings.Comment) ||
                 // check for empty first column, which if on its own line must
                 // be qualified or the line will be skipped
                 (firstColumn && content.length() == 0))) {
             textQualify = true;
         }
 
-        if (userSettings.UseTextQualifier && !textQualify
-                && content.length() > 0 && preserveSpaces) {
+        if (userSettings.UseTextQualifier && !textQualify && content.length() > 0 && preserveSpaces) {
             char firstLetter = content.charAt(0);
 
             if (firstLetter == BaseConstant.LETTERS_SPACE || firstLetter == BaseConstant.LETTERS_TAB) {
@@ -269,36 +256,25 @@ public class CsvWriter {
             outputStream.write(userSettings.TextQualifier);
 
             if (userSettings.EscapeMode == ESCAPE_MODE_BACKSLASH) {
-                content = replace(content, "" + BaseConstant.LETTERS_BACKSLASH, ""
-                        + BaseConstant.LETTERS_BACKSLASH + BaseConstant.LETTERS_BACKSLASH);
-                content = replace(content, "" + userSettings.TextQualifier, ""
-                        + BaseConstant.LETTERS_BACKSLASH + userSettings.TextQualifier);
+                content = replace(content, "" + BaseConstant.LETTERS_BACKSLASH, "" + BaseConstant.LETTERS_BACKSLASH + BaseConstant.LETTERS_BACKSLASH);
+                content = replace(content, "" + userSettings.TextQualifier, "" + BaseConstant.LETTERS_BACKSLASH + userSettings.TextQualifier);
             } else {
-                content = replace(content, "" + userSettings.TextQualifier, ""
-                        + userSettings.TextQualifier
-                        + userSettings.TextQualifier);
+                content = replace(content, "" + userSettings.TextQualifier, "" + userSettings.TextQualifier + userSettings.TextQualifier);
             }
         } else if (userSettings.EscapeMode == ESCAPE_MODE_BACKSLASH) {
-            content = replace(content, "" + BaseConstant.LETTERS_BACKSLASH, ""
-                    + BaseConstant.LETTERS_BACKSLASH + BaseConstant.LETTERS_BACKSLASH);
-            content = replace(content, "" + userSettings.Delimiter, ""
-                    + BaseConstant.LETTERS_BACKSLASH + userSettings.Delimiter);
+            content = replace(content, "" + BaseConstant.LETTERS_BACKSLASH, "" + BaseConstant.LETTERS_BACKSLASH + BaseConstant.LETTERS_BACKSLASH);
+            content = replace(content, "" + userSettings.Delimiter, "" + BaseConstant.LETTERS_BACKSLASH + userSettings.Delimiter);
 
             if (useCustomRecordDelimiter) {
-                content = replace(content, "" + userSettings.RecordDelimiter,
-                        "" + BaseConstant.LETTERS_BACKSLASH + userSettings.RecordDelimiter);
+                content = replace(content, "" + userSettings.RecordDelimiter, "" + BaseConstant.LETTERS_BACKSLASH + userSettings.RecordDelimiter);
             } else {
-                content = replace(content, "" + BaseConstant.LETTERS_CR, ""
-                        + BaseConstant.LETTERS_BACKSLASH + BaseConstant.LETTERS_CR);
-                content = replace(content, "" + BaseConstant.LETTERS_LF, ""
-                        + BaseConstant.LETTERS_BACKSLASH + BaseConstant.LETTERS_LF);
+                content = replace(content, "" + BaseConstant.LETTERS_CR, "" + BaseConstant.LETTERS_BACKSLASH + BaseConstant.LETTERS_CR);
+                content = replace(content, "" + BaseConstant.LETTERS_LF, "" + BaseConstant.LETTERS_BACKSLASH + BaseConstant.LETTERS_LF);
             }
 
-            if (firstColumn && content.length() > 0
-                    && content.charAt(0) == userSettings.Comment) {
+            if (firstColumn && content.length() > 0 && content.charAt(0) == userSettings.Comment) {
                 if (content.length() > 1) {
-                    content = "" + BaseConstant.LETTERS_BACKSLASH + userSettings.Comment
-                            + content.substring(1);
+                    content = "" + BaseConstant.LETTERS_BACKSLASH + userSettings.Comment + content.substring(1);
                 } else {
                     content = "" + BaseConstant.LETTERS_BACKSLASH + userSettings.Comment;
                 }
@@ -353,8 +329,7 @@ public class CsvWriter {
      * @throws java.io.IOException Thrown if an error occurs while writing data to the
      *                             destination stream.
      */
-    public void writeRecord(String[] values, boolean preserveSpaces)
-            throws IOException {
+    public void writeRecord(String[] values, boolean preserveSpaces) throws IOException {
         if (values != null && values.length > 0) {
             for (int i = 0; i < values.length; i++) {
                 write(values[i], preserveSpaces);
@@ -401,8 +376,7 @@ public class CsvWriter {
     private void checkInit() throws IOException {
         if (!initialized) {
             if (fileName != null) {
-                outputStream = new BufferedWriter(new OutputStreamWriter(
-                        new FileOutputStream(fileName), charset));
+                outputStream = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), charset));
             }
 
             initialized = true;
@@ -460,8 +434,7 @@ public class CsvWriter {
      */
     private void checkClosed() throws IOException {
         if (closed) {
-            throw new IOException(
-                    "This instance of the CsvWriter class has already been closed.");
+            throw new IOException("This instance of the CsvWriter class has already been closed.");
         }
     }
 

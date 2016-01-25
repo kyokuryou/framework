@@ -1,12 +1,14 @@
 package org.smarty.core.support.jdbc;
 
+import java.util.List;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.dom4j.Element;
 import org.smarty.core.bean.Pager;
 import org.smarty.core.io.ModelMap;
 import org.smarty.core.io.ModelSerializable;
 import org.smarty.core.io.ParameterMap;
 import org.smarty.core.io.ParameterSerializable;
-import org.smarty.core.io.RuntimeLogger;
 import org.smarty.core.support.jdbc.holder.SQLHolder;
 import org.smarty.core.support.jdbc.mapper.ElementMapperHandler;
 import org.smarty.core.support.jdbc.mapper.ModelMapperHandler;
@@ -16,13 +18,11 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
-import java.util.List;
-
 /**
  * jdbc从文件中读取支持
  */
 abstract class JdbcSupport extends AbstractJdbc {
-    private static RuntimeLogger logger = new RuntimeLogger(JdbcSupport.class);
+    private static Log logger = LogFactory.getLog(JdbcSupport.class);
 
     protected <E extends ParameterSerializable> SqlParameterSource getParameterSource(E params) {
         if (params == null) {
@@ -52,7 +52,7 @@ abstract class JdbcSupport extends AbstractJdbc {
      */
     protected <P extends ParameterSerializable> Object __query_object(SQLHolder sqlHolder, P params) {
         String hsql = sqlHolder.getSQLString(params);
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
+        logger.debug(sqlHolder.getSQLType() + ":" + hsql);
         return queryForSingle(hsql, getParameterSource(params), new SingleMapperHandler());
     }
 
@@ -65,7 +65,7 @@ abstract class JdbcSupport extends AbstractJdbc {
      */
     protected <P extends ParameterSerializable> List<Object> __query_object_list(SQLHolder sqlHolder, P params) {
         String hsql = sqlHolder.getSQLString(params);
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
+        logger.debug(sqlHolder.getSQLType() + ":" + hsql);
         return queryForMulti(hsql, getParameterSource(params), new SingleMapperHandler());
     }
 
@@ -78,7 +78,7 @@ abstract class JdbcSupport extends AbstractJdbc {
      */
     protected <P extends ParameterSerializable, M extends ModelSerializable> M __query_model(SQLHolder sqlHolder, P params, Class<M> klass) {
         String hsql = sqlHolder.getSQLString(params);
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
+        logger.debug(sqlHolder.getSQLType() + ":" + hsql);
         return queryForSingle(hsql, getParameterSource(params), new ModelMapperHandler<M>(getSuperClass(klass)));
     }
 
@@ -91,7 +91,7 @@ abstract class JdbcSupport extends AbstractJdbc {
      */
     protected <P extends ParameterSerializable, M extends ModelSerializable> List<M> __query_model_list(SQLHolder sqlHolder, P params, Class<M> klass) {
         String hsql = sqlHolder.getSQLString(params);
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
+        logger.debug(sqlHolder.getSQLType() + ":" + hsql);
         return queryForMulti(hsql, getParameterSource(params), new ModelMapperHandler<M>(getSuperClass(klass)));
     }
 
@@ -104,7 +104,7 @@ abstract class JdbcSupport extends AbstractJdbc {
      */
     protected <P extends ParameterSerializable> Object __execute_update(SQLHolder sqlHolder, P params) {
         String hsql = sqlHolder.getSQLString(params);
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
+        logger.debug(sqlHolder.getSQLType() + ":" + hsql);
         return executeForUpdate(hsql, getParameterSource(params));
     }
 
@@ -117,7 +117,7 @@ abstract class JdbcSupport extends AbstractJdbc {
      */
     protected <P extends ParameterSerializable> boolean __execute_call(SQLHolder sqlHolder, P params) {
         String hsql = sqlHolder.getSQLString(params);
-        logger.out(sqlHolder.getSQLType() + ":" + hsql);
+        logger.debug(sqlHolder.getSQLType() + ":" + hsql);
         return executeForCall(hsql, getParameterSource(params));
     }
 
@@ -133,23 +133,16 @@ abstract class JdbcSupport extends AbstractJdbc {
         ParameterMap paramMap = pager.getParams();
         // 获得总记录数
         String countSql = sqlHolder.convertCountSQL();
-        logger.out(sqlHolder.getSQLType() + ":" + countSql);
+        logger.debug(sqlHolder.getSQLType() + ":" + countSql);
 
-        Number totalCount = (Number) queryForSingle(countSql,
-                new MapSqlParameterSource(paramMap),
-                new SingleMapperHandler()
-        );
+        Number totalCount = (Number) queryForSingle(countSql, new MapSqlParameterSource(paramMap), new SingleMapperHandler());
 
         pager.setTotalCount(totalCount != null ? totalCount.intValue() : 0);
 
         // 查询记录 Limit
         String limitSql = sqlHolder.convertLimitSQL(pager);
-        logger.out(sqlHolder.getSQLType() + ":" + limitSql);
-        List<M> list = queryForMulti(
-                sqlHolder.convertLimitSQL(pager),
-                new MapSqlParameterSource(paramMap),
-                new ModelMapperHandler<M>(klass)
-        );
+        logger.debug(sqlHolder.getSQLType() + ":" + limitSql);
+        List<M> list = queryForMulti(sqlHolder.convertLimitSQL(pager), new MapSqlParameterSource(paramMap), new ModelMapperHandler<M>(klass));
         return sqlHolder.convertLimitList(pager, list);
     }
 

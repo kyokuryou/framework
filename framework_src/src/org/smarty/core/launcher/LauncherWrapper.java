@@ -1,9 +1,8 @@
 package org.smarty.core.launcher;
 
-import org.smarty.core.utils.LogicUtil;
-
 import java.util.HashSet;
 import java.util.Set;
+import org.smarty.core.utils.LogicUtil;
 
 /**
  * Class加载器

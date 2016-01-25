@@ -1,5 +1,10 @@
 package org.smarty.core.test;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.sql.SQLException;
+import java.util.List;
+import javax.sql.DataSource;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
@@ -11,13 +16,6 @@ import org.smarty.core.support.jdbc.sql.SQL;
 import org.smarty.core.support.jdbc.support.DBType;
 import org.smarty.core.utils.PathUtil;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-
-import javax.sql.DataSource;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 创建SpringBean文件

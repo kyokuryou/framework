@@ -1,9 +1,9 @@
 package org.smarty.core.utils;
 
-import org.smarty.core.io.RuntimeLogger;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * MD5加密工具类
@@ -13,9 +13,8 @@ import java.security.NoSuchAlgorithmException;
  * @version 1.0
  */
 public class MD5Util {
-    private static RuntimeLogger logger = new RuntimeLogger(MD5Util.class);
-    private final static String[] strDigits = {"0", "1", "2", "3", "4", "5",
-            "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"};
+    private static Log logger = LogFactory.getLog(MD5Util.class);
+    private final static String[] strDigits = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"};
 
     // 返回形式为数字跟字符串
     private static String byteToArrayString(byte bByte) {
@@ -52,7 +51,7 @@ public class MD5Util {
             MessageDigest md = MessageDigest.getInstance("MD5");
             return byteToString(md.digest(str.getBytes()));
         } catch (NoSuchAlgorithmException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
     }

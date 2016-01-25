@@ -1,11 +1,5 @@
 package org.smarty.core.utils;
 
-import org.smarty.core.bean.Csv;
-import org.smarty.core.common.BaseConstant;
-import org.smarty.core.io.RuntimeLogger;
-import org.smarty.core.support.csvreader.CsvReader;
-import org.smarty.core.support.csvreader.CsvWriter;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,6 +8,12 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.smarty.core.bean.Csv;
+import org.smarty.core.common.BaseConstant;
+import org.smarty.core.support.csvreader.CsvReader;
+import org.smarty.core.support.csvreader.CsvWriter;
 
 /**
  * CSV工具
@@ -23,7 +23,7 @@ import java.util.List;
  * @version 1.0
  */
 public class CsvUtil {
-    private static RuntimeLogger logger = new RuntimeLogger(CsvUtil.class);
+    private static Log logger = LogFactory.getLog(CsvUtil.class);
 
     /**
      * 由fileName描述的文件字符串,读取CSV;
@@ -81,7 +81,7 @@ public class CsvUtil {
             }
             csv.setValues(csvList);
         } catch (IOException e) {
-            logger.out(e);
+            logger.warn(e);
         } finally {
             csvr.close();
         }
@@ -100,10 +100,10 @@ public class CsvUtil {
         try {
             csvw.writeRecord(csv.getHeaders());
             for (Object[] obj : csv.getValues()) {
-//                taskExecutor.execute(new WriteTask(csvw, obj));
+                // taskExecutor.execute(new WriteTask(csvw, obj));
             }
         } catch (IOException e) {
-            logger.out(e);
+            logger.warn(e);
         } finally {
             csvw.close();
         }

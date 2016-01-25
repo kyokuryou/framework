@@ -1,9 +1,8 @@
 package org.smarty.core.test;
 
+import java.beans.PropertyEditorSupport;
 import org.smarty.core.common.BaseConstant;
 import org.smarty.core.utils.DateUtil;
-
-import java.beans.PropertyEditorSupport;
 
 /**
  * 类型转换

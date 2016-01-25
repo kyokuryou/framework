@@ -1,11 +1,11 @@
 package org.smarty.core.common;
 
-import org.smarty.core.io.RuntimeLogger;
-
 import java.util.LinkedList;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class ThreadPool extends ThreadGroup {
-    private static RuntimeLogger logger = new RuntimeLogger(ThreadPool.class);
+    private static Log logger = LogFactory.getLog(ThreadPool.class);
     private boolean isClosed = false;  //线程池是否关闭
     private LinkedList<Runnable> workQueue;      //工作队列
     private static int threadPoolID = 1;  //线程池的id
@@ -88,7 +88,7 @@ public class ThreadPool extends ThreadGroup {
                 //等待工作线程结束
                 threads[i].join();
             } catch (InterruptedException ex) {
-                logger.out(ex);
+                logger.warn(ex);
             }
         }
     }
@@ -119,7 +119,7 @@ public class ThreadPool extends ThreadGroup {
                     //运行任务
                     task.run();
                 } catch (Throwable t) {
-                    logger.out(t);
+                    logger.warn(t);
                 }
             }
         }

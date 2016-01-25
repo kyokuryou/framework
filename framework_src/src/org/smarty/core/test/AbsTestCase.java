@@ -1,11 +1,10 @@
 package org.smarty.core.test;
 
+import javax.sql.DataSource;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.smarty.core.common.BaseConstant;
 import org.smarty.core.utils.SpringUtil;
-
-import javax.sql.DataSource;
 
 /**
  * junit自定义扩展接口定义.所有要实现junit的类必须继承.

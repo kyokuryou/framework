@@ -1,11 +1,5 @@
 package org.smarty.core.utils;
 
-import org.smarty.core.exception.InstanceClassException;
-import org.smarty.core.exception.InvokeMethodException;
-import org.smarty.core.exception.NoSuchReflectException;
-import org.smarty.core.io.ParameterMap;
-import org.smarty.core.io.RuntimeLogger;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.NotSerializableException;
@@ -19,6 +13,12 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.smarty.core.exception.InstanceClassException;
+import org.smarty.core.exception.InvokeMethodException;
+import org.smarty.core.exception.NoSuchReflectException;
+import org.smarty.core.io.ParameterMap;
 
 /**
  * 反射工具
@@ -28,7 +28,7 @@ import java.util.List;
  * @version 1.0
  */
 public class BeanUtil {
-    private static RuntimeLogger logger = new RuntimeLogger(BeanUtil.class);
+    private static Log logger = LogFactory.getLog(BeanUtil.class);
 
     private BeanUtil() {
     }
@@ -43,7 +43,7 @@ public class BeanUtil {
         try {
             return Class.forName(className);
         } catch (ClassNotFoundException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
     }
@@ -61,7 +61,7 @@ public class BeanUtil {
             return clazz.getDeclaredField(name);
         } catch (NoSuchFieldException e) {
             if ("java.lang.Object".equals(clazz.getSuperclass().getName())) {
-                logger.out("not find field:" + name);
+                logger.warn("not find field:" + name);
                 throw new NoSuchReflectException(e);
             }
             return getField(clazz.getSuperclass(), name);
@@ -112,7 +112,7 @@ public class BeanUtil {
             return clazz.getDeclaredField(name).getType();
         } catch (NoSuchFieldException e) {
             if ("java.lang.Object".equals(clazz.getSuperclass().getName())) {
-                logger.out("not find field:" + name);
+                logger.warn("not find field:" + name);
                 throw new NoSuchReflectException(e);
             }
             return getFieldClass(clazz.getSuperclass(), name);
@@ -146,7 +146,7 @@ public class BeanUtil {
         try {
             return clazz.getMethod(method, cls);
         } catch (NoSuchMethodException e) {
-            logger.out(e);
+            logger.warn(e);
             throw new NoSuchReflectException(e);
         }
     }
@@ -252,16 +252,16 @@ public class BeanUtil {
             cons = clazz.getConstructor(cls);
             return cons.newInstance(params);
         } catch (InvocationTargetException e) {
-            logger.out(e);
+            logger.warn(e);
             throw new InstanceClassException(e);
         } catch (NoSuchMethodException e) {
-            logger.out(e);
+            logger.warn(e);
             throw new InstanceClassException(e);
         } catch (InstantiationException e) {
-            logger.out(e);
+            logger.warn(e);
             throw new InstanceClassException(e);
         } catch (IllegalAccessException e) {
-            logger.out(e);
+            logger.warn(e);
             throw new InstanceClassException(e);
         }
     }
@@ -283,7 +283,7 @@ public class BeanUtil {
             } while (clazz != null);
             return inters.toArray(new Class<?>[0]);
         } catch (ClassNotFoundException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return new Class<?>[0];
     }
@@ -330,10 +330,10 @@ public class BeanUtil {
         try {
             return m.invoke(target, params);
         } catch (InvocationTargetException e) {
-            logger.out(e);
+            logger.warn(e);
             throw new InvokeMethodException(e);
         } catch (IllegalAccessException e) {
-            logger.out(e);
+            logger.warn(e);
             throw new InvokeMethodException(e);
         }
     }
@@ -383,7 +383,7 @@ public class BeanUtil {
         try {
             f = m.getDeclaringClass().getDeclaredField(name);
         } catch (NoSuchFieldException e) {
-            logger.out(e);
+            logger.warn(e);
             throw new NoSuchReflectException(e);
         }
         return f;
@@ -404,10 +404,10 @@ public class BeanUtil {
         try {
             return invoke(bean, fieldGetMethod);
         } catch (NoSuchReflectException e) {
-            logger.out(e);
+            logger.warn(e);
             throw new NoSuchReflectException(e);
         } catch (InvokeMethodException e) {
-            logger.out(e);
+            logger.warn(e);
             throw e;
         }
     }
@@ -463,9 +463,9 @@ public class BeanUtil {
             try {
                 param.put(name, getFieldValue(t, name));
             } catch (NoSuchReflectException e) {
-                logger.out(e);
+                logger.warn(e);
             } catch (InvokeMethodException e) {
-                logger.out(e);
+                logger.warn(e);
             }
         }
         return param;

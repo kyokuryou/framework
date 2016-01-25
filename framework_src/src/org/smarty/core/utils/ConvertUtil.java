@@ -1,8 +1,8 @@
 package org.smarty.core.utils;
 
-import org.smarty.core.io.RuntimeLogger;
-
 import java.util.Date;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * 转换工具
@@ -12,7 +12,7 @@ import java.util.Date;
  * @version 1.0
  */
 public class ConvertUtil {
-    private static RuntimeLogger logger = new RuntimeLogger(ConvertUtil.class);
+    private static Log logger = LogFactory.getLog(ConvertUtil.class);
 
     private ConvertUtil() {
 
@@ -129,12 +129,12 @@ public class ConvertUtil {
             } else if (value instanceof Integer) {
                 return type.cast(Integer.valueOf(value.toString()) != 0);
             } else {
-                logger.out("Value [" + value + "] is of type [" + value.getClass().getName() + "] and cannot be converted to required type [" + type.getName() + "]");
+                logger.warn("Value [" + value + "] is of type [" + value.getClass().getName() + "] and cannot be converted to required type [" + type.getName() + "]");
             }
         } else if (type.isEnum()) {
             return Enum.valueOf(type, value.toString());
         } else {
-            logger.out("Value [" + value + "] is of type [" + value.getClass().getName() + "] and cannot be converted to required type [" + type.getName() + "]");
+            logger.warn("Value [" + value + "] is of type [" + value.getClass().getName() + "] and cannot be converted to required type [" + type.getName() + "]");
         }
         return null;
     }

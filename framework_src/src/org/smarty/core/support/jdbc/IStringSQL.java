@@ -1,13 +1,12 @@
 package org.smarty.core.support.jdbc;
 
+import java.util.List;
 import org.dom4j.Element;
 import org.smarty.core.bean.Pager;
 import org.smarty.core.io.ModelMap;
 import org.smarty.core.io.ModelSerializable;
 import org.smarty.core.io.ParameterSerializable;
 import org.smarty.core.support.jdbc.sql.SQL;
-
-import java.util.List;
 
 /**
  * 静态SQL接口

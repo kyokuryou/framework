@@ -1,10 +1,10 @@
 package org.smarty.core.support.jdbc.mapper;
 
-import org.smarty.core.io.RuntimeLogger;
-import org.smarty.core.utils.JdbcUtil;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.smarty.core.utils.JdbcUtil;
 
 /**
  * 映射一行一列数据
@@ -14,13 +14,13 @@ import java.sql.SQLException;
  * @version 1.0
  */
 public class SingleMapperHandler implements RowMapperHandler<Object> {
-    private static RuntimeLogger logger = new RuntimeLogger(SingleMapperHandler.class);
+    private static Log logger = LogFactory.getLog(SingleMapperHandler.class);
 
     public Object rowMapper(ResultSet rs) throws SQLException {
         try {
             return JdbcUtil.getResultSetValue(rs, 1);
         } catch (SQLException e) {
-            logger.out(e);
+            logger.warn(e);
             throw e;
         }
     }

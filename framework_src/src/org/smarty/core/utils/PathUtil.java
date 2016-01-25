@@ -1,9 +1,5 @@
 package org.smarty.core.utils;
 
-import org.smarty.core.common.BaseConstant;
-import org.smarty.core.launcher.LauncherWrapper;
-import org.smarty.core.io.RuntimeLogger;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -17,6 +13,10 @@ import java.io.Writer;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Properties;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.smarty.core.common.BaseConstant;
+import org.smarty.core.launcher.LauncherWrapper;
 
 /**
  * 通过ClassLoader,对资源的简单的访问
@@ -26,7 +26,7 @@ import java.util.Properties;
  * @version 1.0
  */
 public class PathUtil {
-    private static RuntimeLogger logger = new RuntimeLogger(PathUtil.class);
+    private static Log logger = LogFactory.getLog(PathUtil.class);
 
     /**
      * 返回类路径上的资源的URL
@@ -42,10 +42,8 @@ public class PathUtil {
         for (ClassLoader cl : classLoader) {
             if (null != cl) {
                 url = cl.getResource(resource);
-                if (null == url)
-                    url = cl.getResource("/" + resource);
-                if (null != url)
-                    return url;
+                if (null == url) url = cl.getResource("/" + resource);
+                if (null != url) return url;
             }
         }
         throw new FileNotFoundException(resource + "文件不存在");
@@ -61,7 +59,7 @@ public class PathUtil {
         try {
             return getResourceAsURL(resource, null);
         } catch (IOException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
     }
@@ -79,10 +77,8 @@ public class PathUtil {
         for (ClassLoader cl : classLoader) {
             if (null != cl) {
                 InputStream returnValue = cl.getResourceAsStream(resource);
-                if (null == returnValue)
-                    returnValue = cl.getResourceAsStream("/" + resource);
-                if (null != returnValue)
-                    return returnValue;
+                if (null == returnValue) returnValue = cl.getResourceAsStream("/" + resource);
+                if (null != returnValue) return returnValue;
             }
         }
         throw new FileNotFoundException(resource + "文件不存在");
@@ -99,7 +95,7 @@ public class PathUtil {
         try {
             return getResourceAsInStream(resource, null);
         } catch (IOException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
     }
@@ -119,7 +115,7 @@ public class PathUtil {
             in.close();
             return props;
         } catch (IOException e) {
-            logger.out("资源没发现或不能读", e);
+            logger.warn("资源没发现或不能读", e);
         }
         return null;
     }
@@ -143,9 +139,9 @@ public class PathUtil {
      */
     public static Reader getResourceAsReader(String resource, ClassLoader loader) {
         try {
-            return new InputStreamReader(getResourceAsInStream(resource, loader), BaseConstant.DEF_CHARSET);
+            return new InputStreamReader(getResourceAsInStream(resource, loader), BaseConstant.DEF_ENCODE);
         } catch (IOException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
     }
@@ -171,7 +167,7 @@ public class PathUtil {
         try {
             return new File(getResourceAsURL(resource, loader).getFile());
         } catch (IOException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
     }
@@ -207,9 +203,9 @@ public class PathUtil {
      */
     public static Reader getUrlAsReader(String urlString) {
         try {
-            return new InputStreamReader(getUrlAsInStream(urlString), BaseConstant.DEF_CHARSET);
+            return new InputStreamReader(getUrlAsInStream(urlString), BaseConstant.DEF_ENCODE);
         } catch (IOException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
     }
@@ -228,7 +224,7 @@ public class PathUtil {
             in.close();
             return props;
         } catch (IOException e) {
-            logger.out("资源没发现或不能读", e);
+            logger.warn("资源没发现或不能读", e);
         }
         return null;
     }
@@ -255,9 +251,9 @@ public class PathUtil {
      */
     public static Writer getUrlAsWriter(String urlString) {
         try {
-            return new OutputStreamWriter(getUrlAsOutStream(urlString), BaseConstant.DEF_CHARSET);
+            return new OutputStreamWriter(getUrlAsOutStream(urlString), BaseConstant.DEF_ENCODE);
         } catch (IOException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
     }
@@ -285,7 +281,7 @@ public class PathUtil {
         try {
             return getResourceAsOutStream(resource, null);
         } catch (IOException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
     }
@@ -298,9 +294,9 @@ public class PathUtil {
      */
     public static Writer getResourceAsWriter(String filePath) {
         try {
-            return new OutputStreamWriter(getResourceAsOutStream(filePath, null), BaseConstant.DEF_CHARSET);
+            return new OutputStreamWriter(getResourceAsOutStream(filePath, null), BaseConstant.DEF_ENCODE);
         } catch (IOException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
     }
@@ -314,9 +310,9 @@ public class PathUtil {
      */
     public static Writer getResourceAsWriter(String resource, ClassLoader loader) {
         try {
-            return new OutputStreamWriter(getResourceAsOutStream(resource, loader), BaseConstant.DEF_CHARSET);
+            return new OutputStreamWriter(getResourceAsOutStream(resource, loader), BaseConstant.DEF_ENCODE);
         } catch (IOException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
     }

@@ -2,6 +2,7 @@ package org.smarty.core.common;
 
 import java.io.PrintStream;
 import java.nio.charset.Charset;
+import java.util.Locale;
 import java.util.TimeZone;
 
 /**
@@ -10,15 +11,19 @@ import java.util.TimeZone;
  */
 public interface BaseConstant {
     PrintStream DEF_OUT = System.out;
-    Charset DEF_CHARSET = Charset.forName("UTF-8");
-    String DEF_ENCODING = "UTF-8";
-    String DEF_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    String DEF_DATE_FORMAT = "yyyy-MM-dd";
-    String DEF_TIME_FORMAT = "HH:mm:ss";
-    TimeZone DEF_TIME_ZONE = TimeZone.getDefault();
 
     String DEF_XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
 
+    Locale DEF_LOCALE = new Locale("zh", "CN");
+    TimeZone DEF_TIMEZONE = TimeZone.getDefault();
+    Charset DEF_ENCODE = Charset.forName("UTF-8");
+    String DEF_TIME_FORMAT = "HH:mm:ss";
+    String DEF_DATE_FORMAT = "yyyy-MM-dd";
+    String DEF_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    String DEF_ARITH_FORMAT = "#.####";
+    String DEF_NUMBER_FORMAT = "#,##,###,####.##";
+    String DEF_MONEY_FORMAT = "#,##,###,####.00";
+    String DEF_RANDOM_DATE = "yyyyMMddHHmmssS";
     // 缓存
     String CACHE_SYSTEM = "system";
     String CACHE_TEMPORARY = "temporary";

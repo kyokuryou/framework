@@ -1,11 +1,11 @@
 package org.smarty.core.support.net;
 
-import org.smarty.core.io.RuntimeLogger;
-import org.springframework.core.task.TaskExecutor;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.core.task.TaskExecutor;
 
 /**
  * 网络适配器(服务端)
@@ -15,7 +15,7 @@ import java.net.Socket;
  * @version 1.0
  */
 public class SocketServer extends AbstractSocket {
-    private static RuntimeLogger logger = new RuntimeLogger(SocketServer.class);
+    private static Log logger = LogFactory.getLog(SocketServer.class);
 
     private TaskExecutor taskExecutor;
 
@@ -36,7 +36,7 @@ public class SocketServer extends AbstractSocket {
             ServerSocket ss = new ServerSocket(sm.getPort(), 50, sm.getInetAddress());
             taskExecutor.execute(new MonitorThread(ss, sm));
         } catch (IOException e) {
-            logger.out(e);
+            logger.warn(e);
         }
     }
 
@@ -60,7 +60,7 @@ public class SocketServer extends AbstractSocket {
                 Socket so = ss.accept();
                 sm.acceptSocket(so);
             } catch (IOException e) {
-                logger.out(e);
+                logger.warn(e);
             } finally {
                 interrupt();
             }

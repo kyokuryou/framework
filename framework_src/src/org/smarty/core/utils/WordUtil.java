@@ -1,11 +1,15 @@
 package org.smarty.core.utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.usermodel.Paragraph;
 import org.apache.poi.hwpf.usermodel.Range;
-import org.smarty.core.io.RuntimeLogger;
-
-import java.io.*;
 
 /**
  * Microsoft Word工具(未完待续)
@@ -15,7 +19,7 @@ import java.io.*;
  * @version 1.0
  */
 public class WordUtil {
-    private static RuntimeLogger logger = new RuntimeLogger(WordUtil.class);
+    private static Log logger = LogFactory.getLog(WordUtil.class);
 
     private WordUtil() {
 
@@ -31,7 +35,7 @@ public class WordUtil {
         try {
             return instanceRead(new FileInputStream(fileName));
         } catch (FileNotFoundException e) {
-            logger.out(e);
+            logger.warn(e);
             throw e;
         }
     }
@@ -45,7 +49,7 @@ public class WordUtil {
         try {
             return instanceRead(new FileInputStream(file));
         } catch (FileNotFoundException e) {
-            logger.out(e);
+            logger.warn(e);
             throw e;
         }
     }
@@ -72,7 +76,7 @@ public class WordUtil {
                 this.is = is;
                 we = new HWPFDocument(is);
             } catch (IOException e) {
-                logger.out(e);
+                logger.warn(e);
                 throw e;
             }
         }
@@ -113,7 +117,7 @@ public class WordUtil {
             try {
                 is.close();
             } catch (IOException e) {
-                logger.out(e);
+                logger.warn(e);
             }
         }
     }

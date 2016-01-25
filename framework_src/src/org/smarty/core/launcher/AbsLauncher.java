@@ -1,17 +1,17 @@
 package org.smarty.core.launcher;
 
-import org.smarty.core.io.RuntimeLogger;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.smarty.core.support.cache.CacheMessage;
 import org.smarty.core.utils.SpringUtil;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * 启动器
@@ -21,7 +21,7 @@ import java.util.Set;
  * @version 1.0
  */
 public abstract class AbsLauncher implements ApplicationContextAware, InitializingBean {
-    private static RuntimeLogger logger = new RuntimeLogger(AbsLauncher.class);
+    private static Log logger = LogFactory.getLog(AbsLauncher.class);
     private Integer systemCatchSize;
     private Integer temporaryCatchSize;
 
@@ -46,7 +46,7 @@ public abstract class AbsLauncher implements ApplicationContextAware, Initializi
         try {
             init();
         } catch (Exception e) {
-            logger.out("AbsLauncher 初始化失败");
+            logger.warn("AbsLauncher 初始化失败");
             exit();
         }
     }

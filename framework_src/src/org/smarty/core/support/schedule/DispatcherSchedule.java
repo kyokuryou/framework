@@ -2,6 +2,8 @@ package org.smarty.core.support.schedule;
 
 import java.util.Arrays;
 import java.util.Date;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobKey;
@@ -9,7 +11,6 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.JobDetailImpl;
 import org.quartz.impl.triggers.SimpleTriggerImpl;
-import org.smarty.core.io.RuntimeLogger;
 import org.smarty.core.utils.LogicUtil;
 import org.smarty.core.utils.MD5Util;
 import org.springframework.beans.factory.BeanNameAware;
@@ -21,7 +22,7 @@ import org.springframework.scheduling.quartz.SchedulerAccessor;
  * @since LVGG1.1
  */
 public class DispatcherSchedule extends SchedulerAccessor implements BeanNameAware, InitializingBean {
-    private final RuntimeLogger logger = new RuntimeLogger(DispatcherSchedule.class);
+    private final Log logger = LogFactory.getLog(DispatcherSchedule.class);
     private String beanName;
     private long startDelay;
     private Class<? extends Job> jobClass;

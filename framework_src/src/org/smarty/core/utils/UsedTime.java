@@ -1,8 +1,8 @@
 package org.smarty.core.utils;
 
-import org.smarty.core.io.RuntimeLogger;
-
 import java.util.Stack;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * 测试一段过程消耗的时间, 线程安全的类, 无需实例
@@ -12,7 +12,7 @@ import java.util.Stack;
  * @version 1.0
  */
 public final class UsedTime {
-    private static RuntimeLogger logger = new RuntimeLogger(UsedTime.class);
+    private static Log logger = LogFactory.getLog(UsedTime.class);
     private static ThreadLocal<Stack<Time>> times = new ThreadLocal<Stack<Time>>();
     private static final String NULL_STR = "";
 
@@ -91,7 +91,7 @@ public final class UsedTime {
             out.append(Long.toString(t.usedTime()));
             out.append(" ms");
         } catch (Exception e) {
-            logger.out(e);
+            logger.warn(e);
         }
     }
 

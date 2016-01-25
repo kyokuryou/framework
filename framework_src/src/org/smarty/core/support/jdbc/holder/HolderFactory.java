@@ -1,6 +1,7 @@
 package org.smarty.core.support.jdbc.holder;
 
-import org.smarty.core.io.RuntimeLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.smarty.core.support.jdbc.sql.SQL;
 import org.smarty.core.support.jdbc.support.DBType;
 
@@ -12,7 +13,7 @@ import org.smarty.core.support.jdbc.support.DBType;
  * @version 1.0
  */
 public class HolderFactory {
-    private static RuntimeLogger logger = new RuntimeLogger(HolderFactory.class);
+    private static Log logger = LogFactory.getLog(HolderFactory.class);
 
 
     /**
@@ -57,7 +58,7 @@ public class HolderFactory {
             case SQLite:
                 return new SQLiteHolder();
             default:
-                logger.out("Not found the available SQL type");
+                logger.warn("Not found the available SQL type");
                 return null;
         }
     }

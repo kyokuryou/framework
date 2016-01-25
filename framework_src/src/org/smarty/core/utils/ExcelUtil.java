@@ -1,16 +1,33 @@
 package org.smarty.core.utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.ss.usermodel.RichTextString;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.smarty.core.bean.ExcelUnit;
+import org.smarty.core.common.BaseConstant;
 import org.smarty.core.exception.OfficeException;
-import org.smarty.core.io.RuntimeLogger;
-
-import java.io.*;
-import java.util.*;
 
 /**
  * Microsoft Excel工具
@@ -20,16 +37,11 @@ import java.util.*;
  * @version 1.0
  */
 public class ExcelUtil {
-    private static RuntimeLogger logger = new RuntimeLogger(ExcelUtil.class);
-
+    private static Log logger = LogFactory.getLog(ExcelUtil.class);
     // 2003版本
     public final static int VERSION03 = 0;
     // 2007版本
     public final static int VERSION07 = 1;
-
-    private final static String DATE_FORMAT = "yyyy-MM-dd HH:mm";
-    private final static String NUMBER_FORMAT = "#,##,###,####.##";
-    private final static String MONEY_FORMAT = "#,##,###,####.00";
 
     private ExcelUtil() {
     }
@@ -43,7 +55,7 @@ public class ExcelUtil {
         try {
             return instanceRead(new FileInputStream(fileName), version);
         } catch (FileNotFoundException e) {
-            logger.out(e);
+            logger.warn(e);
             throw new OfficeException(e);
         }
     }
@@ -57,7 +69,7 @@ public class ExcelUtil {
         try {
             return instanceRead(new FileInputStream(file), version);
         } catch (FileNotFoundException e) {
-            logger.out(e);
+            logger.warn(e);
             throw new OfficeException(e);
         }
     }
@@ -71,7 +83,7 @@ public class ExcelUtil {
         try {
             return new ReadExcel(is, version);
         } catch (IOException e) {
-            logger.out(e);
+            logger.warn(e);
             throw new OfficeException(e);
         }
     }
@@ -162,7 +174,7 @@ public class ExcelUtil {
                     throw new OfficeException("office version [" + vs + "] not find");
                 }
             } catch (IOException e) {
-                logger.out(e);
+                logger.warn(e);
                 throw e;
             }
         }
@@ -319,7 +331,7 @@ public class ExcelUtil {
             try {
                 is.close();
             } catch (IOException e) {
-                logger.out(e);
+                logger.warn(e);
             }
         }
     }
@@ -365,10 +377,7 @@ public class ExcelUtil {
             lastRow = lastRow > firstRow ? lastRow - 1 : 0;
             lastCol = lastCol > firstCol ? lastCol - 1 : 0;
             // 创建合并对象
-            CellRangeAddress cra = new CellRangeAddress(
-                    firstRow, lastRow,
-                    firstCol, lastCol
-            );
+            CellRangeAddress cra = new CellRangeAddress(firstRow, lastRow, firstCol, lastCol);
             // 合并
             sheet.addMergedRegion(cra);
         }
@@ -418,11 +427,11 @@ public class ExcelUtil {
             CellStyle cs = wb.createCellStyle();
             cs.setFont(wb.createFont());
             if (value instanceof Number) {
-                cs.setDataFormat(df.getFormat(NUMBER_FORMAT));
+                cs.setDataFormat(df.getFormat(BaseConstant.DEF_NUMBER_FORMAT));
             } else if (value instanceof Date) {
-                cs.setDataFormat(df.getFormat(DATE_FORMAT));
+                cs.setDataFormat(df.getFormat(BaseConstant.DEF_DATETIME_FORMAT));
             } else if (value instanceof Calendar) {
-                cs.setDataFormat(df.getFormat(DATE_FORMAT));
+                cs.setDataFormat(df.getFormat(BaseConstant.DEF_DATETIME_FORMAT));
             }
             return cs;
         }
@@ -467,7 +476,7 @@ public class ExcelUtil {
             try {
                 outStream(os);
             } catch (IOException e) {
-                logger.out(e);
+                logger.warn(e);
                 throw e;
             } finally {
                 os.flush();
@@ -486,7 +495,7 @@ public class ExcelUtil {
             try {
                 wb.write(os);
             } catch (IOException e) {
-                logger.out(e);
+                logger.warn(e);
                 throw e;
             }
         }

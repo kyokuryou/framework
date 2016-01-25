@@ -110,6 +110,4 @@
         <property name="systemCatchSize" value="${cache.system.size}"/>
         <property name="temporaryCatchSize" value="${cache.temporary.size}"/>
     </bean>
-
-
 </beans>

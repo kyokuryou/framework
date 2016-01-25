@@ -27,7 +27,8 @@ import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageInputStream;
-import org.smarty.core.io.RuntimeLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * 图片处理工具类(该类对图片的处理基于imagescaling第三方组件)
@@ -37,7 +38,7 @@ import org.smarty.core.io.RuntimeLogger;
  * @version 1.0
  */
 public class ImageUtil {
-    private static RuntimeLogger logger = new RuntimeLogger(ImageUtil.class);
+    private static Log logger = LogFactory.getLog(ImageUtil.class);
 
     private ImageUtil() {
     }

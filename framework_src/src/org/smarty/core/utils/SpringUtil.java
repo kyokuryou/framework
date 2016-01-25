@@ -1,6 +1,7 @@
 package org.smarty.core.utils;
 
-import org.smarty.core.io.RuntimeLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
@@ -14,7 +15,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * @version 1.0
  */
 public class SpringUtil {
-    private static RuntimeLogger logger = new RuntimeLogger(SpringUtil.class);
+    private static Log logger = LogFactory.getLog(SpringUtil.class);
 
     private static ApplicationContext applicationContext;
 
@@ -54,7 +55,7 @@ public class SpringUtil {
         try {
             return getApplicationContext().getBean(name);
         } catch (BeansException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
     }
@@ -72,7 +73,7 @@ public class SpringUtil {
         try {
             return getApplicationContext().getBean(name, requiredType);
         } catch (BeansException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
     }
@@ -98,7 +99,7 @@ public class SpringUtil {
         try {
             return getApplicationContext().isSingleton(name);
         } catch (NoSuchBeanDefinitionException e) {
-            logger.out("给定名字相应的bean定义没有被找到", e);
+            logger.warn("给定名字相应的bean定义没有被找到", e);
         }
         return false;
     }
@@ -114,7 +115,7 @@ public class SpringUtil {
         try {
             return getApplicationContext().getType(name);
         } catch (NoSuchBeanDefinitionException e) {
-            logger.out("给定名字相应的bean定义没有被找到", e);
+            logger.warn("给定名字相应的bean定义没有被找到", e);
         }
         return null;
     }
@@ -130,7 +131,7 @@ public class SpringUtil {
         try {
             return getApplicationContext().getAliases(name);
         } catch (NoSuchBeanDefinitionException e) {
-            logger.out("给定名字相应的bean定义没有被找到", e);
+            logger.warn("给定名字相应的bean定义没有被找到", e);
         }
         return null;
     }
@@ -146,7 +147,7 @@ public class SpringUtil {
                 throw new IllegalStateException("ApplicationContextHolder already holded 'applicationContext'.");
             SpringUtil.applicationContext = new ClassPathXmlApplicationContext(file);
         } catch (BeansException e) {
-            logger.out(e);
+            logger.warn(e);
         }
     }
 }

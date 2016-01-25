@@ -1,9 +1,9 @@
 package org.smarty.core.utils;
 
-import org.smarty.core.io.RuntimeLogger;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * 正则表达式工具
@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  * @version 1.0
  */
 public class RegexUtil {
-    private static RuntimeLogger logger = new RuntimeLogger(RegexUtil.class);
+    private static Log logger = LogFactory.getLog(RegexUtil.class);
     /**
      * 制表符,换行符,换页符,回车符
      */
@@ -23,22 +23,7 @@ public class RegexUtil {
     /**
      * sql关键字
      */
-    private final static String sqlKeywords = new StringBuilder("(")
-            .append("(\\b)")
-            .append("(create|drop|")
-            .append("select|update|delete|insert|call|into|set|as|distinct|values|")
-            .append("count|sum|max|min|avg|")
-            .append("from|inner|left|right|outer|cross|straight|natural|join|on|")
-            .append("where|")
-            .append("and|or|like|not|is|between|in|")
-            .append("group|by|")
-            .append("having|")
-            .append("order|")
-            .append("limit|")
-            .append("char|substr|declare|master|execute)")
-            .append("(\\p{Blank})")
-            .append(")")
-            .toString();
+    private final static String sqlKeywords = new StringBuilder("(").append("(\\b)").append("(create|drop|").append("select|update|delete|insert|call|into|set|as|distinct|values|").append("count|sum|max|min|avg|").append("from|inner|left|right|outer|cross|straight|natural|join|on|").append("where|").append("and|or|like|not|is|between|in|").append("group|by|").append("having|").append("order|").append("limit|").append("char|substr|declare|master|execute)").append("(\\p{Blank})").append(")").toString();
     /**
      * 固定电话
      */
@@ -51,6 +36,27 @@ public class RegexUtil {
      * 电子邮箱
      */
     private static final String email = "^\\w+((-\\w+)|(\\.\\w+))*\\@[A-Za-z0-9]+((\\.|-)[A-Za-z0-9]+)*\\.[A-Za-z0-9]+$";
+
+    /**
+     * 清除掉所有特殊字符 包括空格
+     */
+    private final static String stingSpecial = "[`~_ !@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+
+    /**
+     * 定义HTML标签的正则表达式
+     */
+    private final static String regEx_html = "<[^>]+>";
+    /**
+     * 定义script的正则表达式{或<script[^>]*?>[\\s\\S]*?<\\/script>
+     */
+    private final static String regScript = "<[\\s]*?script[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?script[\\s]*?>";
+    /**
+     * 定义style的正则表达式{或<style[^>]*?>[\\s\\S]*?<\\/style>
+     */
+    private final static String regStyle = "<[\\s]*?style[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?style[\\s]*?>";
+
+    private RegexUtil() {
+    }
 
     /**
      * 验证固定电话格式
@@ -86,27 +92,6 @@ public class RegexUtil {
         Pattern pattern = Pattern.compile(email);
         Matcher matcher = pattern.matcher(emailString);
         return matcher.find();
-    }
-
-    /**
-     * 清除掉所有特殊字符 包括空格
-     */
-    private final static String stingSpecial = "[`~_ !@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
-
-    /**
-     * 定义HTML标签的正则表达式
-     */
-    private final static String regEx_html = "<[^>]+>";
-    /**
-     * 定义script的正则表达式{或<script[^>]*?>[\\s\\S]*?<\\/script>
-     */
-    private final static String regScript = "<[\\s]*?script[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?script[\\s]*?>";
-    /**
-     * 定义style的正则表达式{或<style[^>]*?>[\\s\\S]*?<\\/style>
-     */
-    private final static String regStyle = "<[\\s]*?style[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?style[\\s]*?>";
-
-    private RegexUtil() {
     }
 
     /**
@@ -205,7 +190,7 @@ public class RegexUtil {
             Matcher m_html = p_html.matcher(htmlStr);
             return m_html.replaceAll(""); // 过滤html标签
         } catch (Exception e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return "";
     }

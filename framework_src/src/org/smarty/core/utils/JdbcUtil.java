@@ -1,15 +1,32 @@
 package org.smarty.core.utils;
 
-import org.smarty.core.io.RuntimeLogger;
-import org.smarty.core.support.jdbc.mapper.RowMapperHandler;
-import org.springframework.jdbc.core.*;
-import org.springframework.jdbc.core.namedparam.*;
-
-import java.sql.*;
+import java.sql.Blob;
+import java.sql.Clob;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.smarty.core.support.jdbc.mapper.RowMapperHandler;
+import org.springframework.jdbc.core.CallableStatementCreator;
+import org.springframework.jdbc.core.CallableStatementCreatorFactory;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterUtils;
+import org.springframework.jdbc.core.namedparam.ParsedSql;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
 /**
  * JDBC工具
@@ -19,7 +36,7 @@ import java.util.Map;
  * @version 1.0
  */
 public abstract class JdbcUtil {
-    private static RuntimeLogger logger = new RuntimeLogger(JdbcUtil.class);
+    private static Log logger = LogFactory.getLog(JdbcUtil.class);
 
     /**
      * 创建preparedStatement
@@ -144,7 +161,7 @@ public abstract class JdbcUtil {
         try {
             con.close();
         } catch (SQLException ex) {
-            logger.out(ex);
+            logger.warn(ex);
         }
     }
 
@@ -162,7 +179,7 @@ public abstract class JdbcUtil {
             stmt.clearWarnings();
             stmt.close();
         } catch (SQLException ex) {
-            logger.out(ex);
+            logger.warn(ex);
         }
     }
 
@@ -180,7 +197,7 @@ public abstract class JdbcUtil {
             rs.clearWarnings();
             rs.close();
         } catch (SQLException ex) {
-            logger.out(ex);
+            logger.warn(ex);
         }
     }
 
@@ -210,14 +227,11 @@ public abstract class JdbcUtil {
             obj = rs.getBytes(index);
         } else if (obj instanceof Clob) {
             obj = rs.getString(index);
-        } else if (className != null &&
-                ("oracle.sql.TIMESTAMP".equals(className) ||
-                        "oracle.sql.TIMESTAMPTZ".equals(className))) {
+        } else if (className != null && ("oracle.sql.TIMESTAMP".equals(className) || "oracle.sql.TIMESTAMPTZ".equals(className))) {
             obj = rs.getTimestamp(index);
         } else if (className != null && className.startsWith("oracle.sql.DATE")) {
             String metaDataClassName = rs.getMetaData().getColumnClassName(index);
-            if ("java.sql.Timestamp".equals(metaDataClassName) ||
-                    "oracle.sql.TIMESTAMP".equals(metaDataClassName)) {
+            if ("java.sql.Timestamp".equals(metaDataClassName) || "oracle.sql.TIMESTAMP".equals(metaDataClassName)) {
                 obj = rs.getTimestamp(index);
             } else {
                 obj = rs.getDate(index);
@@ -245,9 +259,9 @@ public abstract class JdbcUtil {
                 }
             }
         } catch (SQLException ex) {
-            logger.out(ex);
+            logger.warn(ex);
         } catch (AbstractMethodError err) {
-            logger.out(err);
+            logger.warn(err);
         }
         return false;
     }

@@ -1,8 +1,7 @@
 package org.smarty.core.bean;
 
-import org.smarty.core.io.ParameterMap;
-
 import java.util.List;
+import org.smarty.core.io.ParameterMap;
 
 /**
  * 分页

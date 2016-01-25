@@ -1,10 +1,5 @@
 package org.smarty.core.support.net;
 
-import org.smarty.core.common.BaseConstant;
-import org.smarty.core.io.RuntimeLogger;
-import org.smarty.core.utils.CommonUtil;
-import org.smarty.core.utils.LogicUtil;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
@@ -18,6 +13,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.smarty.core.common.BaseConstant;
+import org.smarty.core.utils.CommonUtil;
+import org.smarty.core.utils.LogicUtil;
 
 /**
  * 网络适配器
@@ -27,7 +27,7 @@ import java.net.Socket;
  * @version 1.0
  */
 public abstract class AbstractSocket {
-    private static RuntimeLogger logger = new RuntimeLogger(AbstractSocket.class);
+    private static Log logger = LogFactory.getLog(AbstractSocket.class);
 
     /**
      * 发送一段文本

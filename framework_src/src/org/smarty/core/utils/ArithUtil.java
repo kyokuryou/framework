@@ -1,9 +1,8 @@
 package org.smarty.core.utils;
 
-import org.smarty.core.common.BaseConstant;
-
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import org.smarty.core.common.BaseConstant;
 
 /**
  * 运算工具
@@ -195,7 +194,7 @@ public class ArithUtil {
      * @return 小数位数
      */
     public static int getDecimals(float number) {
-        DecimalFormat decimalFormat = new DecimalFormat("#.####");
+        DecimalFormat decimalFormat = new DecimalFormat(BaseConstant.DEF_ARITH_FORMAT);
         String numberString = decimalFormat.format(number);
         if (numberString.indexOf(".") > 0) {
             return numberString.length() - String.valueOf(number).indexOf(".") - 1;

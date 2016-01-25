@@ -1,15 +1,15 @@
 package org.smarty.core.support.jdbc.holder;
 
+import java.util.List;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.smarty.core.bean.Pager;
 import org.smarty.core.io.ParameterMap;
 import org.smarty.core.io.ParameterSerializable;
-import org.smarty.core.io.RuntimeLogger;
 import org.smarty.core.support.jdbc.support.DBType;
 import org.smarty.core.utils.BeanUtil;
 import org.smarty.core.utils.LilystudioUtil;
 import org.smarty.core.utils.LogicUtil;
-
-import java.util.List;
 
 /**
  * SQL创建
@@ -19,7 +19,7 @@ import java.util.List;
  * @version 1.0
  */
 public abstract class SQLHolder {
-    private static RuntimeLogger logger = new RuntimeLogger(SQLHolder.class);
+    private static Log logger = LogFactory.getLog(SQLHolder.class);
     private String sql;
 
     public void setSql(String sql) {
@@ -63,8 +63,8 @@ public abstract class SQLHolder {
         if (sql.contains("SELECT DISTINCT") || sql.contains("GROUP BY")) {
             sb.append("SELECT COUNT(1) as count FROM (").append(sql).append(") t");
         } else {
-             sb.append(sql).replace(0, sb.indexOf("FROM") - 1, "SELECT COUNT(1) AS count");
-//            sb.append("SELECT COUNT(1) as count FROM (").append(sql).append(") t");
+            sb.append(sql).replace(0, sb.indexOf("FROM") - 1, "SELECT COUNT(1) AS count");
+            //            sb.append("SELECT COUNT(1) as count FROM (").append(sql).append(") t");
         }
         return sb.toString();
     }

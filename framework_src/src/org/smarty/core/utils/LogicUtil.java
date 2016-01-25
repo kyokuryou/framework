@@ -122,11 +122,7 @@ public class LogicUtil {
      * @return boolean
      */
     public static boolean isSpace(Character ch) {
-        return ch <= '\0'
-                || ch == '\t'
-                || ch == '\r'
-                || ch == '\n'
-                || ch == '\f';
+        return ch <= '\0' || ch == '\t' || ch == '\r' || ch == '\n' || ch == '\f';
     }
 
     /**

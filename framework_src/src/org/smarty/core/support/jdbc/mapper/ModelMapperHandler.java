@@ -5,10 +5,11 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.smarty.core.exception.InstanceClassException;
 import org.smarty.core.io.ModelMap;
 import org.smarty.core.io.ModelSerializable;
-import org.smarty.core.io.RuntimeLogger;
 import org.smarty.core.utils.BeanUtil;
 import org.smarty.core.utils.CommonUtil;
 import org.smarty.core.utils.JdbcUtil;
@@ -19,7 +20,7 @@ import org.smarty.core.utils.JdbcUtil;
  */
 public class ModelMapperHandler<T extends ModelSerializable> implements RowMapperHandler<T> {
 
-    private static RuntimeLogger logger = new RuntimeLogger(ModelMapperHandler.class);
+    private static Log logger = LogFactory.getLog(ModelMapperHandler.class);
 
     private Class<?> superClass;
 
@@ -57,7 +58,7 @@ public class ModelMapperHandler<T extends ModelSerializable> implements RowMappe
         try {
             obj = (T) BeanUtil.instanceClass(superClass);
         } catch (InstanceClassException e) {
-            logger.out(e);
+            logger.warn(e);
             return null;
         }
         ResultSetMetaData rsm = rs.getMetaData();
@@ -69,9 +70,9 @@ public class ModelMapperHandler<T extends ModelSerializable> implements RowMappe
             try {
                 BeanUtils.setProperty(obj, fn, value);
             } catch (IllegalAccessException e) {
-                logger.out(e);
+                logger.warn(e);
             } catch (InvocationTargetException e) {
-                logger.out(e);
+                logger.warn(e);
             }
         }
         return obj;

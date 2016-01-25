@@ -1,10 +1,9 @@
 package org.smarty.core.support.jdbc.holder;
 
+import java.util.List;
 import org.smarty.core.bean.Pager;
 import org.smarty.core.support.jdbc.support.DBType;
 import org.smarty.core.utils.LogicUtil;
-
-import java.util.List;
 
 /**
  * SQLServer工具箱

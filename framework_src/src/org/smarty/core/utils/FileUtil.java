@@ -4,14 +4,15 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import org.smarty.core.io.RuntimeLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author qul
  * @since LVGG1.1
  */
 public class FileUtil {
-    private static RuntimeLogger logger = new RuntimeLogger(FileUtil.class);
+    private static Log logger = LogFactory.getLog(FileUtil.class);
 
     /**
      * byte数组转换成16进制字符串

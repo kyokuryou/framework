@@ -5,9 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import org.smarty.core.common.BaseConstant;
-import org.smarty.core.io.RuntimeLogger;
-
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -16,6 +13,9 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.smarty.core.common.BaseConstant;
 
 /**
  * json工具
@@ -25,7 +25,7 @@ import java.util.Map;
  * @version 1.0
  */
 public final class JsonUtil {
-    private static RuntimeLogger logger = new RuntimeLogger(JsonUtil.class);
+    private static Log logger = LogFactory.getLog(JsonUtil.class);
 
     private JsonUtil() {
     }
@@ -53,7 +53,7 @@ public final class JsonUtil {
         StringWriter sw = new StringWriter();
         toJsonWriter(src, sw);
         String json = sw.toString();
-        logger.out(json);
+        logger.warn(json);
         return json;
     }
 
@@ -61,35 +61,35 @@ public final class JsonUtil {
         StringWriter sw = new StringWriter();
         toJsonWriter(src, sw);
         String json = sw.toString();
-        logger.out(json);
+        logger.warn(json);
         return json;
     }
 
     public static Map decode(String json) {
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(json);
-        logger.out(json);
+        logger.warn(json);
         return decode(element, HashMap.class);
     }
 
     public static <T extends Serializable> T decode(String json, Class<T> clzss) {
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(json);
-        logger.out(json);
+        logger.warn(json);
         return decode(element, clzss);
     }
 
     public static <T extends Serializable> T decodeByKey(String json, Class<T> clzss) {
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(json);
-        logger.out(json);
+        logger.warn(json);
         return decodeByKey(element, clzss);
     }
 
     public static <T extends Serializable> List<?> decodeArray(String json, Class<T> clzss) {
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(json);
-        logger.out(json);
+        logger.warn(json);
         return decodeArray(element, clzss);
     }
 

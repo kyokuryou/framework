@@ -1,8 +1,5 @@
 package org.smarty.core.utils;
 
-import org.smarty.core.common.BaseConstant;
-import org.smarty.core.io.RuntimeLogger;
-
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -11,6 +8,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.smarty.core.common.BaseConstant;
 
 /**
  * 时间工具
@@ -20,7 +20,7 @@ import java.util.GregorianCalendar;
  * @version 1.0
  */
 public class DateUtil {
-    private static RuntimeLogger logger = new RuntimeLogger(DateUtil.class);
+    private static Log logger = LogFactory.getLog(DateUtil.class);
 
     private DateUtil() {
     }
@@ -31,7 +31,7 @@ public class DateUtil {
      * @return calendar
      */
     public static Calendar getCalendar() {
-        return GregorianCalendar.getInstance(BaseConstant.DEF_TIME_ZONE);
+        return GregorianCalendar.getInstance(BaseConstant.DEF_TIMEZONE);
     }
 
     /**
@@ -40,7 +40,7 @@ public class DateUtil {
      * @return calendar
      */
     public static Calendar getCalendar(Date date) {
-        Calendar cal = GregorianCalendar.getInstance(BaseConstant.DEF_TIME_ZONE);
+        Calendar cal = GregorianCalendar.getInstance(BaseConstant.DEF_TIMEZONE);
         cal.setTime(date);
         return cal;
     }
@@ -103,7 +103,7 @@ public class DateUtil {
      */
     public static DateFormat getFormat(String format) {
         DateFormat df = new SimpleDateFormat(format);
-        df.setTimeZone(BaseConstant.DEF_TIME_ZONE);
+        df.setTimeZone(BaseConstant.DEF_TIMEZONE);
         return df;
     }
 
@@ -150,7 +150,7 @@ public class DateUtil {
         try {
             return getFormat(format).parse(source);
         } catch (ParseException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
     }

@@ -1,13 +1,14 @@
 package org.smarty.core.utils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.smarty.core.common.BaseConstant;
-import org.smarty.core.io.RuntimeLogger;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 /**
  * 各种格式的编码加码工具类.
@@ -18,7 +19,7 @@ import java.net.URLEncoder;
  * @version 1.0
  */
 public class EncodeUtil {
-    private static RuntimeLogger logger = new RuntimeLogger(EncodeUtil.class);
+    private static Log logger = LogFactory.getLog(EncodeUtil.class);
 
     private EncodeUtil() {
 
@@ -38,7 +39,7 @@ public class EncodeUtil {
         try {
             return Hex.decodeHex(input.toCharArray());
         } catch (DecoderException e) {
-            logger.out("Hex Decoder exception:", e);
+            logger.warn("Hex Decoder exception:", e);
         }
         return new byte[0];
     }
@@ -61,17 +62,17 @@ public class EncodeUtil {
      * URL 编码, Encode默认为UTF-8.
      */
     public static String urlEncode(String input) {
-        return urlEncode(input, BaseConstant.DEF_ENCODING);
+        return urlEncode(input, BaseConstant.DEF_ENCODE);
     }
 
     /**
      * URL 编码.
      */
-    public static String urlEncode(String input, String encoding) {
+    public static String urlEncode(String input, Charset charset) {
         try {
-            return URLEncoder.encode(input, encoding);
+            return URLEncoder.encode(input, charset.name());
         } catch (UnsupportedEncodingException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return "";
     }

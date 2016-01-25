@@ -1,5 +1,7 @@
 package org.smarty.core.support.jdbc;
 
+import java.util.List;
+import javax.sql.DataSource;
 import org.dom4j.Element;
 import org.smarty.core.bean.Pager;
 import org.smarty.core.io.ModelMap;
@@ -10,9 +12,6 @@ import org.smarty.core.support.jdbc.holder.SQLHolder;
 import org.smarty.core.support.jdbc.sql.SQL;
 import org.smarty.core.support.jdbc.support.DBType;
 import org.springframework.beans.factory.InitializingBean;
-
-import javax.sql.DataSource;
-import java.util.List;
 
 /**
  * 简单的JDBC支持

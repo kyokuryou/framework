@@ -23,7 +23,7 @@ public final class ModelMap extends LinkedHashMap<String, Object> implements Mod
         if (res == null || "".equals(res)) {
             return new byte[0];
         }
-        return res.getBytes(BaseConstant.DEF_CHARSET);
+        return res.getBytes(BaseConstant.DEF_ENCODE);
     }
 
     public char[] getChars(String key) {

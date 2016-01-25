@@ -1,17 +1,17 @@
 package org.smarty.core.support.fun;
 
+import java.io.Writer;
+import java.util.List;
+import java.util.Map;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.lilystudio.smarty4j.Context;
 import org.lilystudio.smarty4j.statement.LineFunction;
 import org.lilystudio.smarty4j.statement.ParameterCharacter;
 import org.smarty.core.exception.InvokeMethodException;
 import org.smarty.core.exception.NoSuchReflectException;
-import org.smarty.core.io.RuntimeLogger;
 import org.smarty.core.utils.BeanUtil;
 import org.smarty.core.utils.LogicUtil;
-
-import java.io.Writer;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 输出in语法
@@ -36,7 +36,7 @@ import java.util.Map;
  * </code>
  */
 public class $ins extends LineFunction {
-    private static final RuntimeLogger logger = new RuntimeLogger($ins.class);
+    private static final Log logger = LogFactory.getLog($ins.class);
 
     public void execute(Context context, Writer writer, Object[] objects) throws Exception {
         List value = (List) objects[0];
@@ -78,9 +78,9 @@ public class $ins extends LineFunction {
             try {
                 return BeanUtil.invokeGetterMethod(obj, item);
             } catch (NoSuchReflectException e) {
-                logger.out(e);
+                logger.warn(e);
             } catch (InvokeMethodException e) {
-                logger.out(e);
+                logger.warn(e);
             }
         }
         return obj;
@@ -88,9 +88,6 @@ public class $ins extends LineFunction {
 
 
     public ParameterCharacter[] getDefinitions() {
-        return new ParameterCharacter[]{
-                new ParameterCharacter(ParameterCharacter.OBJECT, "value"),
-                new ParameterCharacter(ParameterCharacter.STRING, null, "item")
-        };
+        return new ParameterCharacter[]{new ParameterCharacter(ParameterCharacter.OBJECT, "value"), new ParameterCharacter(ParameterCharacter.STRING, null, "item")};
     }
 }

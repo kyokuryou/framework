@@ -1,16 +1,5 @@
 package org.smarty.core.utils;
 
-import org.dom4j.*;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.SAXReader;
-import org.dom4j.io.XMLWriter;
-import org.smarty.core.common.BaseConstant;
-import org.smarty.core.io.RuntimeLogger;
-import org.xml.sax.SAXException;
-
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-import javax.xml.validation.Validator;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -18,6 +7,21 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.dom4j.Node;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
+import org.smarty.core.common.BaseConstant;
+import org.xml.sax.SAXException;
 
 /**
  * xml工具
@@ -27,7 +31,7 @@ import java.util.Random;
  * @version 1.0
  */
 public class DocumentUtil {
-    private static RuntimeLogger logger = new RuntimeLogger(DocumentUtil.class);
+    private static Log logger = LogFactory.getLog(DocumentUtil.class);
     private final static String xsd = "";
 
     private DocumentUtil() {
@@ -37,7 +41,7 @@ public class DocumentUtil {
         try {
             return DocumentHelper.parseText(srcXml);
         } catch (DocumentException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
     }
@@ -54,7 +58,7 @@ public class DocumentUtil {
             SAXReader saxReader = new SAXReader();
             document = saxReader.read(file);
         } catch (Exception e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return document;
     }
@@ -72,7 +76,7 @@ public class DocumentUtil {
             xmlWriter.write(document);
             xmlWriter.close();
         } catch (Exception e) {
-            logger.out(e);
+            logger.warn(e);
         } finally {
             DocumentUtil.closeWriter(xmlWriter);
         }
@@ -94,7 +98,7 @@ public class DocumentUtil {
             parentElement.add(docNode.getRootElement());
             return docSrc.asXML();
         } catch (DocumentException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
     }
@@ -114,7 +118,7 @@ public class DocumentUtil {
             removeElement.detach(); // 直接删除自己
             return docSrc.asXML();
         } catch (DocumentException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
     }
@@ -132,7 +136,7 @@ public class DocumentUtil {
             removeNullIdElement(srcDoc, xpath);
             return srcDoc.asXML();
         } catch (DocumentException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
     }
@@ -148,7 +152,7 @@ public class DocumentUtil {
     public static Document removeNullIdElement(Document srcDoc, String xpath) {
         Node parentNode = srcDoc.getRootElement().selectSingleNode(xpath);
         if (!(parentNode instanceof Element)) {
-            logger.out("所传入的xpath不是Elementpath，删除空节点失败！");
+            logger.warn("所传入的xpath不是Elementpath，删除空节点失败！");
             return null;
         } else {
             Iterator<Element> it = ((Element) parentNode).elementIterator();
@@ -181,7 +185,7 @@ public class DocumentUtil {
             }
             return srcDoc.asXML();
         } catch (DocumentException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
     }
@@ -217,7 +221,7 @@ public class DocumentUtil {
             parentUpNode.add(newRoot);
             return docSrc.asXML();
         } catch (DocumentException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
 
@@ -259,7 +263,7 @@ public class DocumentUtil {
             parentUpNode.add(newRoot);
             return docSrc.asXML();
         } catch (DocumentException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
     }
@@ -279,7 +283,7 @@ public class DocumentUtil {
             root.addAttribute("ID", nextValue.toString());
             return root.asXML();
         } catch (DocumentException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
     }
@@ -306,7 +310,7 @@ public class DocumentUtil {
             }
             return root.asXML();
         } catch (DocumentException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
     }
@@ -348,12 +352,12 @@ public class DocumentUtil {
      * @return OutputFormat
      */
     public static OutputFormat getOutputFormat() {
-        OutputFormat outputFormat = OutputFormat.createPrettyPrint();// 设置XML文档输出格式
-        outputFormat.setEncoding("UTF-8");// 设置XML文档的编码类型
-        outputFormat.setIndent(true);// 设置是否缩进
-        outputFormat.setIndent("	");// 以TAB方式实现缩进
-        outputFormat.setNewlines(true);// 设置是否换行
-        return outputFormat;
+        OutputFormat warnputFormat = OutputFormat.createPrettyPrint();// 设置XML文档输出格式
+        warnputFormat.setEncoding(BaseConstant.DEF_ENCODE.name());// 设置XML文档的编码类型
+        warnputFormat.setIndent(true);// 设置是否缩进
+        warnputFormat.setIndent("	");// 以TAB方式实现缩进
+        warnputFormat.setNewlines(true);// 设置是否换行
+        return warnputFormat;
     }
 
     /**
@@ -366,7 +370,7 @@ public class DocumentUtil {
             try {
                 xmlWriter.close();
             } catch (IOException e) {
-                logger.out(e);
+                logger.warn(e);
             }
         }
     }
@@ -381,7 +385,7 @@ public class DocumentUtil {
             try {
                 inputStream.close();
             } catch (IOException e) {
-                logger.out(e);
+                logger.warn(e);
             }
         }
     }

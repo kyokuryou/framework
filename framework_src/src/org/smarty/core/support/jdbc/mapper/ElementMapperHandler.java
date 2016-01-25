@@ -1,18 +1,18 @@
 package org.smarty.core.support.jdbc.mapper;
 
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.smarty.core.exception.NoSuchReflectException;
-import org.smarty.core.io.RuntimeLogger;
-import org.smarty.core.utils.BeanUtil;
-import org.smarty.core.utils.CommonUtil;
-import org.smarty.core.utils.ConvertUtil;
-import org.smarty.core.utils.JdbcUtil;
-
 import java.lang.reflect.Array;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.smarty.core.exception.NoSuchReflectException;
+import org.smarty.core.utils.BeanUtil;
+import org.smarty.core.utils.CommonUtil;
+import org.smarty.core.utils.ConvertUtil;
+import org.smarty.core.utils.JdbcUtil;
 
 /**
  * 映射一行数据,以Spring bean形式创建
@@ -22,7 +22,7 @@ import java.sql.SQLException;
  * @version 1.0
  */
 public class ElementMapperHandler implements RowMapperHandler<Element> {
-    private static RuntimeLogger logger = new RuntimeLogger(ElementMapperHandler.class);
+    private static Log logger = LogFactory.getLog(ElementMapperHandler.class);
     private Class superClass;
 
     public ElementMapperHandler(Class superClass) {
@@ -58,7 +58,7 @@ public class ElementMapperHandler implements RowMapperHandler<Element> {
             if (proEl == null) return;
             bean.add(proEl);
         } catch (NoSuchReflectException e) {
-            logger.out(e);
+            logger.warn(e);
         }
     }
 

@@ -31,7 +31,7 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
         if (res == null || "".equals(res)) {
             return new byte[0];
         }
-        return res.getBytes(BaseConstant.DEF_CHARSET);
+        return res.getBytes(BaseConstant.DEF_ENCODE);
     }
 
     public char[] getChars(String key) {
@@ -150,7 +150,7 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
         if (res == null || "".equals(res)) {
             return new byte[0];
         }
-        return res.getBytes(BaseConstant.DEF_CHARSET);
+        return res.getBytes(BaseConstant.DEF_ENCODE);
     }
 
     public char[] removeChars(String key) {

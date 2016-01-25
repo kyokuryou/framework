@@ -9,7 +9,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-import org.smarty.core.io.RuntimeLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.smarty.core.common.BaseConstant;
 
 /**
  * 公用工具
@@ -19,7 +21,7 @@ import org.smarty.core.io.RuntimeLogger;
  * @version 1.0
  */
 public class CommonUtil {
-    private static RuntimeLogger logger = new RuntimeLogger(CommonUtil.class);
+    private static Log logger = LogFactory.getLog(CommonUtil.class);
 
     private CommonUtil() {
     }
@@ -34,8 +36,7 @@ public class CommonUtil {
      */
     public static Object copyArray(Object array, int from, int to) {
         int newLength = to - from;
-        if (newLength < 0)
-            throw new IllegalArgumentException(from + " > " + to);
+        if (newLength < 0) throw new IllegalArgumentException(from + " > " + to);
         int len = Array.getLength(array);
         Class ct = array.getClass().getComponentType();
         Object copy = Array.newInstance(ct, newLength);
@@ -60,7 +61,7 @@ public class CommonUtil {
      * @return 时间字符串
      */
     public static String getDateRandom(int extLen) {
-        String str = DateUtil.format(new Date(), "yyyyMMddHHmmssS");
+        String str = DateUtil.format(new Date(), BaseConstant.DEF_RANDOM_DATE);
         return str + getRandomString(extLen);
     }
 
@@ -96,7 +97,7 @@ public class CommonUtil {
             md.update(text.getBytes());
             return toHexString(md.digest());
         } catch (NoSuchAlgorithmException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         return null;
     }
@@ -210,8 +211,7 @@ public class CommonUtil {
      */
     public static String getExt(String fileName) {
         if (LogicUtil.isNotEmpty(fileName)) {
-            return fileName.substring(fileName.lastIndexOf(".") + 1, fileName
-                    .length());
+            return fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
         }
         return null;
     }
@@ -282,7 +282,7 @@ public class CommonUtil {
         try {
             str = new String(str.getBytes(), strCode);
         } catch (UnsupportedEncodingException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         for (int i = 0; i < str.length(); ++i) {
             char c1 = str.charAt(i);
@@ -308,7 +308,7 @@ public class CommonUtil {
         try {
             str = new String(str.getBytes(), strCode);
         } catch (UnsupportedEncodingException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         for (int i = 0; i < str.length(); ++i) {
             char c1 = str.charAt(i);
@@ -333,7 +333,7 @@ public class CommonUtil {
         try {
             str = new String(str.getBytes(), code);
         } catch (UnsupportedEncodingException e) {
-            logger.out(e);
+            logger.warn(e);
         }
         for (int i = 0; i < str.length(); ++i) {
             char c1 = str.charAt(i);

@@ -1,15 +1,15 @@
 package org.smarty.core.utils;
 
-import org.lilystudio.smarty4j.Context;
-import org.lilystudio.smarty4j.Engine;
-import org.lilystudio.smarty4j.Template;
-import org.smarty.core.bean.TemplateConfig;
-import org.smarty.core.io.RuntimeLogger;
-
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Map;
 import java.util.Properties;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.lilystudio.smarty4j.Context;
+import org.lilystudio.smarty4j.Engine;
+import org.lilystudio.smarty4j.Template;
+import org.smarty.core.bean.TemplateConfig;
 
 /**
  * 工具类 - 模板配置
@@ -19,7 +19,7 @@ import java.util.Properties;
  * @version 1.0
  */
 public class LilystudioUtil {
-    private static RuntimeLogger logger = new RuntimeLogger(LilystudioUtil.class);
+    private static Log logger = LogFactory.getLog(LilystudioUtil.class);
 
     private static Engine engine;
 
@@ -49,7 +49,7 @@ public class LilystudioUtil {
         try {
             template = new Template(engine, source);
         } catch (Exception e) {
-            logger.out(e);
+            logger.warn(e);
             return null;
         }
 
@@ -73,7 +73,7 @@ public class LilystudioUtil {
         try {
             template = engine.getTemplate(tc.getSrc());
         } catch (Exception e) {
-            logger.out(e);
+            logger.warn(e);
             return;
         }
         Context context = new Context();
@@ -81,7 +81,7 @@ public class LilystudioUtil {
         try {
             template.merge(context, tc.getTarget());
         } catch (Exception e) {
-            logger.out(e);
+            logger.warn(e);
         }
     }
 }

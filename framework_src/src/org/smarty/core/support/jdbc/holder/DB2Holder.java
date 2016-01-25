@@ -4,8 +4,6 @@ import org.smarty.core.bean.Pager;
 import org.smarty.core.support.jdbc.support.DBType;
 import org.smarty.core.utils.LogicUtil;
 
-import java.util.Map;
-
 /**
  * DB2工具箱
  * Created Date 2015/04/09
