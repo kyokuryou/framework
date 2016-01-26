@@ -12,7 +12,7 @@ import com.googlecode.htmlcompressor.compressor.XmlCompressor;
  * @author quliang
  * @version 1.0
  */
-public class CompressorUtil {
+public final class CompressorUtil {
     private CompressorUtil() {
     }
 

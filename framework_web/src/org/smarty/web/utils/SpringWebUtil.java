@@ -14,10 +14,13 @@ import org.springframework.context.MessageSource;
  * @author quliang
  * @version 1.0
  */
-public class SpringWebUtil {
-    private static Log logger = LogFactory.getLog(SpringWebUtil.class);
+public final class SpringWebUtil {
+    private final static Log logger = LogFactory.getLog(SpringWebUtil.class);
     private static ServletContext servletContext;
     private static MessageSource messageSource;
+
+    private SpringWebUtil() {
+    }
 
     public static void setServletContext(ServletContext servletContext) {
         if (SpringWebUtil.servletContext != null) {

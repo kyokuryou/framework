@@ -8,7 +8,6 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -16,7 +15,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 /**
  * Action基类
@@ -25,8 +23,8 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
  * @author quliang
  * @version 1.0
  */
-public abstract class BaseServlet {
-    private static Log logger = LogFactory.getLog(BaseServlet.class);
+public abstract class AbsServlet {
+    private static Log logger = LogFactory.getLog(AbsServlet.class);
 
     protected HttpServletRequest request;
     protected HttpServletResponse response;
@@ -50,10 +48,6 @@ public abstract class BaseServlet {
 
     public String getParameter(String key) {
         return request.getParameter(key);
-    }
-
-    public Locale getLocale() {
-        return (Locale) session.getAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME);
     }
 
     private HttpURLConnection getConnection(URL url) throws IOException {

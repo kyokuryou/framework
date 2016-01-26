@@ -16,10 +16,7 @@
     </context:component-scan>
     <!-- ======================================== -->
     <!-- 拦截器定义 -->
-    <bean id="loginVerifyInterceptor" class="org.smarty.web.http.LoginVerifyInterceptor">
-        <property name="sessionId" value="${session.id}"/>
-        <property name="cookieName" value="${cookie.name}"/>
-    </bean>
+    <bean id="baseInterceptor" class="org.smarty.web.http.AbsInterceptor" abstract="true"/>
     <!-- view resolver-->
     <bean id="beanNameViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
         <property name="order" value="0"/>

@@ -10,7 +10,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
-import java.nio.charset.Charset;
 import javax.servlet.ServletContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,14 +21,11 @@ import org.smarty.web.commons.WebBaseConstant;
  * @author quliang
  * @version 1.0
  */
-public class WebPathUtil {
-    private static Log logger = LogFactory.getLog(WebPathUtil.class);
-    /**
-     * 在调用getResourceAsReader使用的字符集
-     * null表示使用系统默认
-     */
-    private static Charset charset = Charset.forName("UTF-8");
+public final class WebPathUtil {
+    private final static Log logger = LogFactory.getLog(WebPathUtil.class);
 
+    private WebPathUtil() {
+    }
 
     /**
      * 在Servlet资源获取作为一个文件对象
