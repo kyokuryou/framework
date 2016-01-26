@@ -23,7 +23,7 @@ public class RegexUtil {
     /**
      * sql关键字
      */
-    private final static String sqlKeywords = new StringBuilder("(").append("(\\b)").append("(create|drop|").append("select|update|delete|insert|call|into|set|as|distinct|values|").append("count|sum|max|min|avg|").append("from|inner|left|right|outer|cross|straight|natural|join|on|").append("where|").append("and|or|like|not|is|between|in|").append("group|by|").append("having|").append("order|").append("limit|").append("char|substr|declare|master|execute)").append("(\\p{Blank})").append(")").toString();
+    private final static String sqlKeywords = "((\\b)(create|drop|select|update|delete|insert|call|into|set|as|distinct|values|count|sum|max|min|avg|from|inner|left|right|outer|cross|straight|natural|join|on|where|and|or|like|not|is|between|in|group|by|having|order|limit|char|substr|declare|master|execute)(\\p{Blank}))";
     /**
      * 固定电话
      */
@@ -31,7 +31,7 @@ public class RegexUtil {
     /**
      * 手机
      */
-    private static final String moblie = "^13[0-9]{9}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}$";
+    private static final String mobile = "^(13[0-9]{9}|14[57][0-9]{8}|15[012356789][0-9]{8}|17[0678][0-9]{8}|18[0-9]{9})$";
     /**
      * 电子邮箱
      */
@@ -64,7 +64,7 @@ public class RegexUtil {
      * @param telephoneString
      * @return
      */
-    public static boolean getTelephone(String telephoneString) {
+    public static boolean verifyTelephone(String telephoneString) {
         Pattern pattern = Pattern.compile(telephone);
         Matcher matcher = pattern.matcher(telephoneString);
         return matcher.find();
@@ -76,8 +76,8 @@ public class RegexUtil {
      * @param mobileString
      * @return
      */
-    public static boolean getMoblie(String mobileString) {
-        Pattern pattern = Pattern.compile(moblie);
+    public static boolean verifyMobile(String mobileString) {
+        Pattern pattern = Pattern.compile(mobile);
         Matcher matcher = pattern.matcher(mobileString);
         return matcher.find();
     }
@@ -88,7 +88,7 @@ public class RegexUtil {
      * @param emailString
      * @return
      */
-    public static boolean getEmail(String emailString) {
+    public static boolean verifyEmail(String emailString) {
         Pattern pattern = Pattern.compile(email);
         Matcher matcher = pattern.matcher(emailString);
         return matcher.find();
