@@ -4,6 +4,8 @@ import java.util.Locale;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.ui.context.Theme;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,13 +18,15 @@ import org.springframework.web.servlet.support.RequestContextUtils;
  * @since LVGG1.1
  */
 public abstract class AbsInterceptor extends HandlerInterceptorAdapter {
+    protected final Log logger = LogFactory.getLog(getClass());
 
-    public final boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
+    public final boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Locale locale = getLocale(request);
         Theme theme = getTheme(request);
         if (locale != null) {
             LocaleResolver lr = RequestContextUtils.getLocaleResolver(request);
             if (lr == null) {
+                logger.error("No LocaleResolver found: not in a DispatcherServlet request?");
                 throw new IllegalStateException("No LocaleResolver found: not in a DispatcherServlet request?");
             }
             lr.setLocale(request, response, locale);
@@ -30,6 +34,7 @@ public abstract class AbsInterceptor extends HandlerInterceptorAdapter {
         if (theme != null) {
             ThemeResolver tr = RequestContextUtils.getThemeResolver(request);
             if (tr == null) {
+                logger.error("No ThemeResolver found: not in a DispatcherServlet request?");
                 throw new IllegalStateException("No ThemeResolver found: not in a DispatcherServlet request?");
             }
             tr.setThemeName(request, response, theme.getName());
@@ -38,7 +43,7 @@ public abstract class AbsInterceptor extends HandlerInterceptorAdapter {
     }
 
     @Override
-    public final void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelView) throws ServletException {
+    public final void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelView) throws Exception {
         postInterceptor(request, response, handler, modelView);
     }
 
@@ -50,11 +55,11 @@ public abstract class AbsInterceptor extends HandlerInterceptorAdapter {
         return null;
     }
 
-    public boolean preInterceptor(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
+    public boolean preInterceptor(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         return true;
     }
 
-    public void postInterceptor(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelView) throws ServletException {
+    public void postInterceptor(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelView) throws Exception {
     }
 
 }
