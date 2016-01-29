@@ -8,10 +8,10 @@ package org.smarty.core.exception;
  * @version 1.0
  */
 public class InvokeMethodException extends Exception {
-    public InvokeMethodException() {
-    }
+	public InvokeMethodException() {
+	}
 
-    public InvokeMethodException(Throwable cause) {
-        super(cause);
-    }
+	public InvokeMethodException(Throwable cause) {
+		super(cause);
+	}
 }

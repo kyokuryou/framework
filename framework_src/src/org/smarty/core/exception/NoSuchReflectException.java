@@ -8,11 +8,11 @@ package org.smarty.core.exception;
  * @version 1.0
  */
 public class NoSuchReflectException extends Exception {
-    public NoSuchReflectException() {
-        super();
-    }
+	public NoSuchReflectException() {
+		super();
+	}
 
-    public NoSuchReflectException(Throwable cause) {
-        super(cause);
-    }
+	public NoSuchReflectException(Throwable cause) {
+		super(cause);
+	}
 }

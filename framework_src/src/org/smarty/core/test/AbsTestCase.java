@@ -14,33 +14,32 @@ import org.smarty.core.utils.SpringUtil;
  * @version 1.0
  */
 public abstract class AbsTestCase {
-    protected static DataSource dataSource;
+	protected static DataSource dataSource;
 
-    protected void setUpSpring(String... files) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("================================\n");
-        sb.append("==获得SpringContext-spring.xml==\n");
-        sb.append("================================\n");
-        BaseConstant.DEF_OUT.println(sb.toString());
-        SpringUtil.initApplicationContext(files);
-        // dataSource = SpringUtil.getBean("dataSource", DataSource.class);
-    }
+	protected void setUpSpring(String... files) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("================================\n");
+		sb.append("==获得SpringContext-spring.xml==\n");
+		sb.append("================================\n");
+		BaseConstant.DEF_OUT.println(sb.toString());
+		SpringUtil.initApplicationContext(files);
+	}
 
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-        StringBuilder sb = new StringBuilder();
-        sb.append("================================\n");
-        sb.append("======  启动Junit测试环境  ======\n");
-        sb.append("================================\n");
-        BaseConstant.DEF_OUT.println(sb.toString());
-    }
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		StringBuilder sb = new StringBuilder();
+		sb.append("================================\n");
+		sb.append("======  启动Junit测试环境  ======\n");
+		sb.append("================================\n");
+		BaseConstant.DEF_OUT.println(sb.toString());
+	}
 
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-        StringBuilder sb = new StringBuilder();
-        sb.append("================================\n");
-        sb.append("======  停止Junit测试环境  ======\n");
-        sb.append("================================\n");
-        BaseConstant.DEF_OUT.println(sb.toString());
-    }
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+		StringBuilder sb = new StringBuilder();
+		sb.append("================================\n");
+		sb.append("======  停止Junit测试环境  ======\n");
+		sb.append("================================\n");
+		BaseConstant.DEF_OUT.println(sb.toString());
+	}
 }

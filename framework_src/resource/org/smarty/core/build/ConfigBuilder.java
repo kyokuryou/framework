@@ -1,5 +1,7 @@
 package org.smarty.core.build;
 
+import java.io.IOException;
+import java.util.Properties;
 import org.smarty.core.build.files.FileConfig;
 import org.smarty.core.build.files.FlexConfig;
 import org.smarty.core.build.files.LocalConfig;
@@ -8,9 +10,6 @@ import org.smarty.core.build.files.SpringConfig;
 import org.smarty.core.build.files.Struts2Config;
 import org.smarty.core.build.files.WebConfig;
 import org.smarty.core.build.files.WsConfig;
-
-import java.io.IOException;
-import java.util.Properties;
 
 /**
  * 配置文件创建者
@@ -23,16 +22,7 @@ import java.util.Properties;
 public class ConfigBuilder {
 
     public static void main_test(String[] args) throws IOException {
-        String[] ars = new String[]{
-                "true",
-                "D:/work/framework/testModule",
-                "D:/work/framework/testModule/src",
-                "D:/work/framework/testModule/web",
-                "V2_4",
-                "struts2,xfire,flex",
-                "test>jdbc",
-                "org.test"
-        };
+        String[] ars = new String[]{"true", "D:/work/framework/testModule", "D:/work/framework/testModule/src", "D:/work/framework/testModule/web", "V2_4", "struts2,xfire,flex", "test>jdbc", "org.test"};
         // main1(ars);
     }
 
@@ -55,26 +45,19 @@ public class ConfigBuilder {
         }
         ConfigBuilder cb = new ConfigBuilder();
         Properties pr = cb.setProperties(args);
-        FileConfig[] fcs = {
-                new FlexConfig(),
-                new LocalConfig(),
-                new Log4jConfig(),
-                new SpringConfig(),
-                new Struts2Config(),
-                new WebConfig(),
-                new WsConfig()
-        };
-        for(FileConfig fc : fcs){
+        FileConfig[] fcs = {new FlexConfig(), new LocalConfig(), new Log4jConfig(), new SpringConfig(), new Struts2Config(), new WebConfig(), new WsConfig()};
+        for (FileConfig fc : fcs) {
             fc.buildFile(pr);
         }
     }
 
     /**
      * 创建环境变量
+     *
      * @param args 参数
      * @return 环境变量
      */
-    private Properties setProperties(String[] args){
+    private Properties setProperties(String[] args) {
         Properties pro = new Properties();
         pro.setProperty("enabledWeb", args[0]);
         pro.setProperty("targetBasic", args[1]);

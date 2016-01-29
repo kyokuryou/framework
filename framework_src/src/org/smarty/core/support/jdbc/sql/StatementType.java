@@ -5,5 +5,5 @@ package org.smarty.core.support.jdbc.sql;
  * @since LVGG1.1
  */
 public enum StatementType {
-    DELETE, INSERT, SELECT, UPDATE
+	DELETE, INSERT, SELECT, UPDATE, CALL
 }

@@ -7,7 +7,7 @@ import org.smarty.core.support.jdbc.sql.StatementType;
  * @author qul
  * @since LVGG1.1
  */
-public class InsertSQL {
+public class CallSQL {
 	private static final ThreadLocal<SQL> localSQL = new ThreadLocal<SQL>();
 
 	public static void BEGIN() {
@@ -15,15 +15,14 @@ public class InsertSQL {
 	}
 
 	public static void RESET() {
-		localSQL.set(new SQL(StatementType.INSERT));
+		localSQL.set(new SQL(StatementType.CALL));
 	}
 
-	public static void INSERT(String tableName) {
-		sql().setTable(tableName);
+	public static void CALL(String callName) {
+		sql().setTable(callName);
 	}
 
-	public static void VALUES(String columns, String values) {
-		sql().addColumn(columns);
+	public static void VALUE(String values) {
 		sql().addValue(values);
 	}
 

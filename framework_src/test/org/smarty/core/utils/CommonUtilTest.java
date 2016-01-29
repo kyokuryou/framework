@@ -1,10 +1,9 @@
 package org.smarty.core.utils;
 
-import org.smarty.core.test.AbsTestCase;
-import org.junit.Test;
-
 import java.io.File;
 import java.io.FileOutputStream;
+import org.junit.Test;
+import org.smarty.core.test.AbsTestCase;
 
 /**
  *
@@ -38,7 +37,7 @@ public class CommonUtilTest extends AbsTestCase {
         System.out.println(CommonUtil.getGroupCount(bytes, 10));
     }
 
-    public void testToDBField(){
+    public void testToDBField() {
         System.out.println(CommonUtil.toDBField("name"));
         System.out.println(CommonUtil.toDBField("nameA"));
         System.out.println(CommonUtil.toDBField("NameB"));
@@ -56,7 +55,7 @@ public class CommonUtilTest extends AbsTestCase {
     public void testGetUUID() throws Exception {
         File file = new File("D:/home/Desktop/uuid.txt");
         FileOutputStream fos = new FileOutputStream(file);
-        for(int i=0;i<4000;i++){
+        for (int i = 0; i < 4000; i++) {
             String uid = CommonUtil.getUUID();
             fos.write(uid.getBytes());
             fos.write('\r');

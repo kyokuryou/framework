@@ -1,16 +1,15 @@
 package org.smarty.core.build.files;
 
 import config.FileWrapper;
-import org.smarty.core.build.CodeBook;
-import org.smarty.core.utils.DocumentUtil;
-import org.smarty.core.utils.TemplateUtil;
-import org.dom4j.Document;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import org.dom4j.Document;
+import org.smarty.core.build.CodeBook;
+import org.smarty.core.utils.DocumentUtil;
+import org.smarty.core.utils.TemplateUtil;
 
 /**
  * Created with Liang Qu
@@ -28,7 +27,7 @@ public class SpringConfig extends FileConfig {
         try {
             buildWsFile(ps, params);
             buildDB(ps, params);
-            buildJCaptcha(ps,params);
+            buildJCaptcha(ps, params);
             String sxs = TemplateUtil.render(getString(), params);
             Document doc = DocumentUtil.createDocument(sxs);
             File sf = createFile(ps.getProperty(CodeBook.TARGET_SRC), CodeBook.SPRING_FILE);
@@ -38,12 +37,12 @@ public class SpringConfig extends FileConfig {
         }
     }
 
-    private void buildJCaptcha(Properties ps, Map<String, Object> params) throws IOException{
+    private void buildJCaptcha(Properties ps, Map<String, Object> params) throws IOException {
         Boolean ew = Boolean.valueOf(ps.getProperty(CodeBook.ENABLED_WEB));
         String com = ps.getProperty(CodeBook.COMPONENT);
         if (ew && com.contains(CodeBook.JCAPTCHA)) {
             params.put(CodeBook.JCAPTCHA_KEY, getFileString(CodeBook.SRC_SPRING_JCAPTCHA));
-        }else{
+        } else {
             params.put(CodeBook.JCAPTCHA_KEY, "");
         }
     }
@@ -70,7 +69,7 @@ public class SpringConfig extends FileConfig {
             WsConfig wc = new WsConfig();
             wc.buildFile(ps);
             params.put(CodeBook.XFIRE_KEY, getFileString(CodeBook.SRC_SPRING_WS));
-        }else{
+        } else {
             params.put(CodeBook.XFIRE_KEY, "");
         }
     }

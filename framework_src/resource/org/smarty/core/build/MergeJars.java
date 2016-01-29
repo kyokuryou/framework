@@ -23,7 +23,7 @@ import java.util.zip.ZipFile;
  */
 public class MergeJars {
     private final String VERSION = "1.0";
-    private final String IGNORED_EXISTING_HEADERS ="Bnd-LastModified,Import-Package,Export-Package,Tool";
+    private final String IGNORED_EXISTING_HEADERS = "Bnd-LastModified,Import-Package,Export-Package,Tool";
     // MANIFEST.mf依赖key
     private final String[] MANIFEST_ATTR = {"Import-Package", "Import-Template", "Export-Package", "Ignored-Existing-Headers"};
     // 忽略文件式
@@ -80,7 +80,7 @@ public class MergeJars {
         Manifest mf = new Manifest();
         Attributes attr = mf.getMainAttributes();
         attr.putValue("Manifest-Version", VERSION);
-        attr.putValue("Ignored-Existing-Headers",IGNORED_EXISTING_HEADERS);
+        attr.putValue("Ignored-Existing-Headers", IGNORED_EXISTING_HEADERS);
         for (String mfattr : MANIFEST_ATTR) {
             attr.putValue(mfattr, mergeManifest(manifests, mfattr, ","));
         }

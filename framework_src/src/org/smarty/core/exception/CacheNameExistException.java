@@ -9,11 +9,11 @@ package org.smarty.core.exception;
  */
 public class CacheNameExistException extends Exception {
 
-    public CacheNameExistException() {
-        super();
-    }
+	public CacheNameExistException() {
+		super();
+	}
 
-    public CacheNameExistException(Throwable cause) {
-        super(cause);
-    }
+	public CacheNameExistException(Throwable cause) {
+		super(cause);
+	}
 }

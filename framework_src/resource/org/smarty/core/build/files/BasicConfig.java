@@ -16,15 +16,15 @@ public class BasicConfig extends FileConfig {
         // TODO
     }
 
-    private void clearFile(Properties ps){
+    private void clearFile(Properties ps) {
         // TODO
     }
 
     protected File getFile(String fileName) throws IOException {
-        throw outException("该方法basic不支持",new UnsupportedOperationException());
+        throw outException("该方法basic不支持", new UnsupportedOperationException());
     }
 
     public String getString() throws IOException {
-        throw outException("该方法basic不支持",new UnsupportedOperationException());
+        throw outException("该方法basic不支持", new UnsupportedOperationException());
     }
 }

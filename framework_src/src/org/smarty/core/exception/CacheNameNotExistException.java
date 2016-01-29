@@ -8,11 +8,11 @@ package org.smarty.core.exception;
  * @version 1.0
  */
 public class CacheNameNotExistException extends Exception {
-    public CacheNameNotExistException() {
-        super();
-    }
+	public CacheNameNotExistException() {
+		super();
+	}
 
-    public CacheNameNotExistException(Throwable cause) {
-        super(cause);
-    }
+	public CacheNameNotExistException(Throwable cause) {
+		super(cause);
+	}
 }

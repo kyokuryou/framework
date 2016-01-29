@@ -13,31 +13,32 @@ import org.smarty.core.utils.LogicUtil;
  */
 public class OracleHolder extends SQLHolder {
 
-    public DBType getSQLType() {
-        return DBType.Oracle;
-    }
+	public DBType getSQLType() {
+		return DBType.Oracle;
+	}
 
-    public String convertLimitSQL(Pager pager) {
-        String sql = getSQLString(pager.getParams());
-        StringBuilder sb = new StringBuilder("SELECT * FROM ( SELECT row_.*, ROWNUM rownum_ FROM ( ");
-        sb.append(sql);
+	public String convertLimitSQL(Pager pager, int totalCount) {
+		String sql = getSQLString(pager.getParams());
+		StringBuilder sb = new StringBuilder("SELECT * FROM ( SELECT row_.*, ROWNUM rownum_ FROM ( ");
+		sb.append(sql);
 
-        // 计算总页数
-        int pageCount = 0;
-        if (pager.getTotalCount() % pager.getPageSize() == 0) {
-            pageCount = pager.getTotalCount() / pager.getPageSize();
-        } else if (pager.getTotalCount() % pager.getPageSize() > 0) {
-            pageCount = pager.getTotalCount() / pager.getPageSize() + 1;
-        }
-        pager.setPageCount(pageCount);
+		// 计算总页数
+		int pageCount = 0;
+		if (totalCount % pager.getPageSize() == 0) {
+			pageCount = totalCount / pager.getPageSize();
+		} else if (totalCount % pager.getPageSize() > 0) {
+			pageCount = totalCount / pager.getPageSize() + 1;
+		}
+		pager.setPageCount(pageCount);
+		pager.setTotalCount(totalCount);
 
-        String orderBy = orderBy(pager.getOrderBy(), pager.getOrderType());
-        if (LogicUtil.isNotEmpty(orderBy)) {
-            sb.append(orderBy);
-        }
-        int pagerNum = pager.getPageNumber() < 1 ? 1 : pager.getPageNumber();
-        sb.append(" ) row_ WHERE ROWNUM <= ").append(pagerNum * pager.getPageSize()).append(" )");
-        sb.append(" WHERE rownum_ > ").append(pagerNum - 1);
-        return sb.toString();
-    }
+		String orderBy = orderBy(pager.getOrderBy(), pager.getOrderType());
+		if (LogicUtil.isNotEmpty(orderBy)) {
+			sb.append(orderBy);
+		}
+		int pagerNum = pager.getPageNumber() < 1 ? 1 : pager.getPageNumber();
+		sb.append(" ) row_ WHERE ROWNUM <= ").append(pagerNum * pager.getPageSize()).append(" )");
+		sb.append(" WHERE rownum_ > ").append(pagerNum - 1);
+		return sb.toString();
+	}
 }

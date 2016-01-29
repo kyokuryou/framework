@@ -12,17 +12,17 @@ import org.springframework.scheduling.quartz.AdaptableJobFactory;
  * @since LVGG1.1
  */
 public class DispatcherJobFactory extends AdaptableJobFactory implements ApplicationContextAware {
-    private AutowireCapableBeanFactory beanFactory;
+	private AutowireCapableBeanFactory beanFactory;
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        beanFactory = applicationContext.getAutowireCapableBeanFactory();
-    }
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		beanFactory = applicationContext.getAutowireCapableBeanFactory();
+	}
 
-    @Override
-    protected Object createJobInstance(TriggerFiredBundle bundle) throws Exception {
-        Object job = super.createJobInstance(bundle);
-        beanFactory.autowireBean(job);
-        return job;
-    }
+	@Override
+	protected Object createJobInstance(TriggerFiredBundle bundle) throws Exception {
+		Object job = super.createJobInstance(bundle);
+		beanFactory.autowireBean(job);
+		return job;
+	}
 }

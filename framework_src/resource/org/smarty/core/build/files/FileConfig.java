@@ -35,7 +35,7 @@ public abstract class FileConfig {
 
     public File createFile(String path, String file) throws IOException {
         File f = new File(path, file);
-        if(!f.exists()){
+        if (!f.exists()) {
             f.createNewFile();
         }
         return f;

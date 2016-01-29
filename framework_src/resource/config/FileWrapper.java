@@ -1,13 +1,12 @@
 package config;
 
-import org.smarty.core.build.CodeBook;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import org.smarty.core.build.CodeBook;
 
 /**
  * 文件索引
@@ -72,10 +71,8 @@ public final class FileWrapper {
         for (ClassLoader cl : classLoader) {
             if (null != cl) {
                 url = cl.getResource(resource);
-                if (null == url)
-                    url = cl.getResource("/" + resource);
-                if (null != url)
-                    return url;
+                if (null == url) url = cl.getResource("/" + resource);
+                if (null != url) return url;
             }
         }
         throw new FileNotFoundException(resource + "文件不存在");

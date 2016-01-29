@@ -8,15 +8,15 @@ package org.smarty.core.exception;
  * @version 1.0
  */
 public class OfficeException extends Exception {
-    public OfficeException() {
-        super();
-    }
+	public OfficeException() {
+		super();
+	}
 
-    public OfficeException(Throwable cause) {
-        super(cause);
-    }
+	public OfficeException(Throwable cause) {
+		super(cause);
+	}
 
-    public OfficeException(String message) {
-        super(message);
-    }
+	public OfficeException(String message) {
+		super(message);
+	}
 }

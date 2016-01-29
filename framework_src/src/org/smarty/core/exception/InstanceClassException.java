@@ -9,10 +9,10 @@ package org.smarty.core.exception;
  */
 public class InstanceClassException extends Exception {
 
-    public InstanceClassException() {
-    }
+	public InstanceClassException() {
+	}
 
-    public InstanceClassException(Throwable cause) {
-        super(cause);
-    }
+	public InstanceClassException(Throwable cause) {
+		super(cause);
+	}
 }

@@ -1,7 +1,7 @@
 package org.smarty.core.utils;
 
-import org.smarty.core.test.AbsTestCase;
 import org.junit.Test;
+import org.smarty.core.test.AbsTestCase;
 
 /**
  *
@@ -15,8 +15,8 @@ public class RegexUtilTest extends AbsTestCase {
     }
 
     @Test
-    public void testIsFirstPunct(){
-        String abc =":abc";
+    public void testIsFirstPunct() {
+        String abc = ":abc";
         System.out.println(RegexUtil.isFirstPunct(abc));
     }
 }

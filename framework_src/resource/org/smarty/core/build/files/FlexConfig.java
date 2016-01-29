@@ -1,13 +1,12 @@
 package org.smarty.core.build.files;
 
 import config.FileWrapper;
-import org.smarty.core.build.CodeBook;
-import org.smarty.core.utils.DocumentUtil;
-import org.dom4j.Document;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
+import org.dom4j.Document;
+import org.smarty.core.build.CodeBook;
+import org.smarty.core.utils.DocumentUtil;
 
 /**
  * Created with Liang Qu
@@ -70,6 +69,6 @@ public class FlexConfig extends FileConfig {
     }
 
     public String getString() throws IOException {
-        throw outException("该方法flex不支持",new UnsupportedOperationException());
+        throw outException("该方法flex不支持", new UnsupportedOperationException());
     }
 }

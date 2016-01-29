@@ -11,11 +11,12 @@ import org.smarty.core.support.jdbc.support.DBType;
  * @version 1.0
  */
 public class InformixHolder extends SQLHolder {
-    public DBType getSQLType() {
-        return DBType.Informix;
-    }
+	public DBType getSQLType() {
+		return DBType.Informix;
+	}
 
-    public String convertLimitSQL(Pager pager) {
-        return null; //TODO insert code
-    }
+	@Override
+	public String convertLimitSQL(Pager pager, int totalCount) {
+		return null;
+	}
 }

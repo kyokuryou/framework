@@ -12,11 +12,12 @@ import org.smarty.core.support.jdbc.support.DBType;
  */
 public class SybaseHolder extends SQLHolder {
 
-    public DBType getSQLType() {
-        return DBType.Sybase;
-    }
+	public DBType getSQLType() {
+		return DBType.Sybase;
+	}
 
-    public String convertLimitSQL(Pager pager) {
-        return null; //TODO insert code
-    }
+	@Override
+	public String convertLimitSQL(Pager pager, int totalCount) {
+		return null;
+	}
 }

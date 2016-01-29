@@ -7,312 +7,131 @@ import org.smarty.core.bean.Pager;
 import org.smarty.core.io.ModelMap;
 import org.smarty.core.io.ModelSerializable;
 import org.smarty.core.io.ParameterSerializable;
-import org.smarty.core.support.jdbc.holder.HolderFactory;
 import org.smarty.core.support.jdbc.holder.SQLHolder;
+import org.smarty.core.support.jdbc.mapper.ElementMapperHandler;
+import org.smarty.core.support.jdbc.mapper.ModelMapperHandler;
+import org.smarty.core.support.jdbc.mapper.RowMapperHandler;
+import org.smarty.core.support.jdbc.mapper.SingleMapperHandler;
 import org.smarty.core.support.jdbc.sql.SQL;
 import org.smarty.core.support.jdbc.support.DBType;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
 /**
  * 简单的JDBC支持
  */
-public final class SQLSession extends JdbcSupport implements IStringSQL, InitializingBean {
-    private DBType sqlType;
+public final class SQLSession extends JdbcSupport implements InitializingBean {
 
-    public SQLSession() {
-    }
+	public SQLSession() {
+	}
 
-    public SQLSession(DataSource dataSource, DBType sqlType) {
-        this.sqlType = sqlType;
-        super.setDataSource(dataSource);
-    }
+	public SQLSession(DataSource dataSource, DBType sqlType) {
+		super.setSqlType(sqlType);
+		super.setDataSource(dataSource);
+	}
 
-    public void setSqlType(DBType sqlType) {
-        this.sqlType = sqlType;
-    }
+	public void afterPropertiesSet() throws Exception {
 
-    public void setDataSource(DataSource dataSource) {
-        super.setDataSource(dataSource);
-    }
+	}
 
-    /**
-     * 静态Holder(sql文来自程序)
-     *
-     * @param sql sql
-     * @return SQLHolder
-     */
-    protected SQLHolder getHolder(SQL sql) {
-        return HolderFactory.getHolder(sql, sqlType);
-    }
+	//	-----------------
+	public Object executeForSingle(SQL sql) {
+		return executeForSingle(sql, null, new SingleMapperHandler());
+	}
 
-    public void afterPropertiesSet() throws Exception {
+	public <P extends ParameterSerializable> Object executeForSingle(SQL sql, P params) {
+		return executeForSingle(sql, params, new SingleMapperHandler());
+	}
 
-    }
+	public <T> T executeForSingle(SQL sql, Class<T> klass) {
+		return executeForSingle(sql, null, new SingleMapperHandler<T>(klass));
+	}
 
-    /**
-     * 执行由调用者提供SQL文(聚合SQL文或SQL文返回结果是int)
-     *
-     * @param sql sql
-     * @return int
-     */
-    public int queryForInt(SQL sql) {
-        Number res = (Number) __query_object(getHolder(sql), null);
-        return res == null ? 0 : res.intValue();
-    }
+	public <P extends ParameterSerializable, T> T executeForSingle(SQL sql, P params, Class<T> klass) {
+		return executeForSingle(sql, params, new SingleMapperHandler<T>(klass));
+	}
 
-    /**
-     * 执行由调用者提供SQL文(聚合SQL文或SQL文返回结果是int)
-     *
-     * @param sql    sql
-     * @param params 参数
-     * @return int
-     */
-    public <P extends ParameterSerializable> int queryForInt(SQL sql, P params) {
-        Number res = (Number) __query_object(getHolder(sql), params);
-        return res == null ? 0 : res.intValue();
-    }
+	//	-----------------
+	public List<?> executeForSingleList(SQL sql) {
+		return executeForMulti(sql, null, new SingleMapperHandler());
+	}
 
-    /**
-     * 执行由调用者提供SQL文(聚合SQL文或SQL文返回结果是long)
-     *
-     * @param sql sql
-     * @return Long
-     */
-    public long queryForLong(SQL sql) {
-        Number res = (Number) __query_object(getHolder(sql), null);
-        return res == null ? 0 : res.longValue();
-    }
+	public <P extends ParameterSerializable> List<?> executeForSingleList(SQL sql, P params) {
+		return executeForMulti(sql, params, new SingleMapperHandler());
+	}
 
-    /**
-     * 执行由调用者提供SQL文(聚合SQL文或SQL文返回结果是long)
-     *
-     * @param sql    sql
-     * @param params 参数
-     * @return Long
-     */
-    public <P extends ParameterSerializable> long queryForLong(SQL sql, P params) {
-        Number res = (Number) __query_object(getHolder(sql), params);
-        return res == null ? 0 : res.longValue();
-    }
+	public <T> List<T> executeForSingleList(SQL sql, Class<T> klass) {
+		return executeForMulti(sql, null, new SingleMapperHandler<T>(klass));
+	}
 
-    /**
-     * 执行由调用者提供SQL文(聚合SQL文或SQL文返回结果非数值类型的单行单列数据)
-     *
-     * @param sql sql
-     * @return Object
-     */
-    public Object queryForObject(SQL sql) {
-        return __query_object(getHolder(sql), null);
-    }
+	public <P extends ParameterSerializable, T> List<T> executeForSingleList(SQL sql, P params, Class<T> klass) {
+		return executeForMulti(sql, params, new SingleMapperHandler<T>(klass));
+	}
 
-    /**
-     * 执行由调用者提供SQL文(聚合SQL文或SQL文返回结果非数值类型的单行单列数据)
-     *
-     * @param sql    sql
-     * @param params 参数
-     * @return Object
-     */
-    public <P extends ParameterSerializable> Object queryForObject(SQL sql, P params) {
-        return __query_object(getHolder(sql), params);
-    }
+	//	-----------------
+	public ModelMap executeForModel(SQL sql) {
+		return executeForSingle(sql, null, new ModelMapperHandler<ModelMap>(ModelMap.class));
+	}
 
-    /**
-     * 执行由调用者提供SQL文(多行单列数据)
-     *
-     * @param sql sql
-     * @return List
-     */
-    public List<Object> queryForObjectList(SQL sql) {
-        return __query_object_list(getHolder(sql), null);
-    }
+	public <P extends ParameterSerializable> ModelMap executeForModel(SQL sql, P params) {
+		return executeForSingle(sql, params, new ModelMapperHandler<ModelMap>(ModelMap.class));
+	}
 
-    /**
-     * 执行由调用者提供SQL文(多行单列数据)
-     *
-     * @param sql    sql
-     * @param params 参数
-     * @return List
-     */
-    public <P extends ParameterSerializable> List<Object> queryForObjectList(SQL sql, P params) {
-        return __query_object_list(getHolder(sql), params);
-    }
+	public <M extends ModelSerializable> M executeForModel(SQL sql, Class<M> klass) {
+		return executeForSingle(sql, null, new ModelMapperHandler<M>(klass));
+	}
 
-    /**
-     * 执行由调用者提供SQL文(单行多列数据)
-     *
-     * @param sql sql
-     * @return List
-     */
-    public ModelMap queryForModel(SQL sql) {
-        return __query_model(getHolder(sql), null, null);
-    }
+	public <P extends ParameterSerializable, M extends ModelSerializable> M executeForModel(SQL sql, P params, Class<M> klass) {
+		return executeForSingle(sql, params, new ModelMapperHandler<M>(klass));
+	}
 
+	//	-----------------
+	public List<ModelMap> executeForModelList(SQL sql) {
+		return executeForMulti(sql, null, new ModelMapperHandler<ModelMap>(ModelMap.class));
+	}
 
-    public <P extends ParameterSerializable> ModelMap queryForModel(SQL sql, P params) {
-        return __query_model(getHolder(sql), params, null);
-    }
+	public <P extends ParameterSerializable> List<ModelMap> executeForModelList(SQL sql, P params) {
+		return executeForMulti(sql, params, new ModelMapperHandler<ModelMap>(ModelMap.class));
+	}
 
-    /**
-     * 执行由调用者提供SQL文(单行多列数据)
-     *
-     * @param sql   sql
-     * @param klass 类型参数
-     * @return List
-     */
-    public <M extends ModelSerializable> M queryForModel(SQL sql, Class<M> klass) {
-        return __query_model(getHolder(sql), null, klass);
-    }
+	public <M extends ModelSerializable> List<M> executeForModelList(SQL sql, Class<M> klass) {
+		return executeForMulti(sql, null, new ModelMapperHandler<M>(klass));
+	}
 
-    /**
-     * 执行由调用者提供SQL文(单行多列数据)
-     *
-     * @param sql   sql
-     * @param klass 类型参数
-     * @return List
-     */
-    public <P extends ParameterSerializable, M extends ModelSerializable> M queryForModel(SQL sql, P params, Class<M> klass) {
-        return __query_model(getHolder(sql), params, klass);
-    }
+	public <P extends ParameterSerializable, M extends ModelSerializable> List<M> executeForModelList(SQL sql, P params, Class<M> klass) {
+		return executeForMulti(sql, params, new ModelMapperHandler<M>(klass));
+	}
 
-    /**
-     * 执行由调用者提供SQL文(多行多列数据)
-     *
-     * @param sql sql
-     * @return List
-     */
-    public List<ModelMap> queryForModelList(SQL sql) {
-        return __query_model_list(getHolder(sql), null, null);
-    }
+	//	-----------------
+	private <P extends ParameterSerializable> Element executeForElement(SQL sql, P params) {
+		return executeForSingle(sql, params, new ElementMapperHandler(ModelMap.class));
+	}
 
-    public <P extends ParameterSerializable> List<ModelMap> queryForModelList(SQL sql, P params) {
-        return __query_model_list(getHolder(sql), params, null);
-    }
+	private <P extends ParameterSerializable> List<Element> executeForElementList(SQL sql, P params) {
+		return executeForMulti(sql, params, new ElementMapperHandler(ModelMap.class));
+	}
 
-    /**
-     * 执行由调用者提供SQL文(多行多列数据)
-     *
-     * @param sql   sql
-     * @param klass 类型参数
-     * @return List
-     */
-    public <M extends ModelSerializable> List<M> queryForModelList(SQL sql, Class<M> klass) {
-        return __query_model_list(getHolder(sql), null, klass);
-    }
+	private <P extends ParameterSerializable, M extends ModelSerializable> Element executeForElement(SQL sql, P params, Class<M> klass) {
+		return executeForSingle(sql, params, new ElementMapperHandler(klass));
+	}
 
-    /**
-     * 执行由调用者提供SQL文(多行多列数据)
-     *
-     * @param sql   sql
-     * @param klass 参数
-     * @return List
-     */
-    public <P extends ParameterSerializable, M extends ModelSerializable> List<M> queryForModelList(SQL sql, P params, Class<M> klass) {
-        return __query_model_list(getHolder(sql), params, klass);
-    }
+	private <P extends ParameterSerializable, M extends ModelSerializable> List<Element> executeForElementList(SQL sql, P params, Class<M> klass) {
+		return executeForMulti(sql, params, new ElementMapperHandler(klass));
+	}
 
-    /**
-     * 执行由调用者提供SQL文(分页)
-     *
-     * @param sql   sql
-     * @param pager 分页信息或null
-     * @param klass Class对象
-     * @return List
-     */
-    public <M extends ModelSerializable> Pager queryForPager(SQL sql, Pager pager, Class<M> klass) {
-        return __query_pager(getHolder(sql), pager, klass);
-    }
-
-    /**
-     * 执行由调用者提供SQL文(多行多列数据并创建springBean形式的Element)
-     *
-     * @param sql   sql
-     * @param klass Class对象
-     * @return List
-     */
-    public <M extends ModelSerializable> Element queryForElement(SQL sql, Class<M> klass) {
-        return __query_element(getHolder(sql), null, klass);
-    }
-
-    public <P extends ParameterSerializable> Element queryForElement(SQL sql, P params) {
-        return __query_element(getHolder(sql), params, null);
-    }
-
-    /**
-     * 执行由调用者提供SQL文(多行多列数据并创建springBean形式的Element)
-     *
-     * @param sql    sql
-     * @param params 参数
-     * @return List
-     */
-    public <P extends ParameterSerializable, M extends ModelSerializable> Element queryForElement(SQL sql, P params, Class<M> klass) {
-        return __query_element(getHolder(sql), params, klass);
-    }
-
-    /**
-     * 执行由调用者提供SQL文(多行多列数据并创建springBean形式的Element)
-     *
-     * @param sql   sql
-     * @param klass Class对象
-     * @return List
-     */
-    public <M extends ModelSerializable> List<Element> queryForElementList(SQL sql, Class<M> klass) {
-        return __query_element_list(getHolder(sql), null, klass);
-    }
-
-    public <P extends ParameterSerializable> List<Element> queryForElementList(SQL sql, P params) {
-        return __query_element_list(getHolder(sql), params, null);
-    }
-
-    /**
-     * 执行由调用者提供SQL文(多行多列数据并创建springBean形式的Element)
-     *
-     * @param sql    sql
-     * @param params 参数
-     * @return List
-     */
-    public <P extends ParameterSerializable, M extends ModelSerializable> List<Element> queryForElementList(SQL sql, P params, Class<M> klass) {
-        return __query_element_list(getHolder(sql), params, klass);
-    }
-
-    /**
-     * 执行由调用者提供更新,插入,删除SQL文
-     *
-     * @param sql sql
-     * @return 影响行数
-     */
-    public Object executeUpdate(SQL sql) {
-        return __execute_update(getHolder(sql), null);
-    }
-
-    /**
-     * 执行由调用者提供更新,插入,删除SQL文
-     *
-     * @param sql    sql
-     * @param params 参数
-     * @return 影响行数
-     */
-    public <P extends ParameterSerializable> Object executeUpdate(SQL sql, P params) {
-        return __execute_update(getHolder(sql), params);
-    }
-
-    /**
-     * 执行由调用者提供存储过程SQL文
-     *
-     * @param sql sql
-     * @return 影响行数
-     */
-    public boolean executeCall(SQL sql) {
-        return __execute_call(getHolder(sql), null);
-    }
-
-    /**
-     * 执行由调用者提供存储过程SQL文
-     *
-     * @param sql    sql
-     * @param params 参数
-     * @return 影响行数
-     */
-    public <P extends ParameterSerializable> boolean executeCall(SQL sql, P params) {
-        return __execute_call(getHolder(sql), params);
-    }
+	public <M extends ModelSerializable> Pager executeForPager(SQL sql, Pager pager, Class<M> klass) {
+		SqlParameterSource sps = new MapSqlParameterSource(pager.getParams());
+		RowMapperHandler<?> rmh = (klass == null) ? new ModelMapperHandler<ModelMap>(ModelMap.class) : new ModelMapperHandler<M>(klass);
+		SQLHolder sqlHolder = getHolder(sql);
+		// 获得总记录数
+		String countSql = sqlHolder.convertCountSQL();
+		logger.debug(sqlHolder.getSQLType() + ":" + countSql);
+		Number count = queryForSingle(countSql, sps, new SingleMapperHandler<Number>());
+		// 查询记录 Limit
+		String limitSql = sqlHolder.convertLimitSQL(pager, count != null ? count.intValue() : 0);
+		logger.debug(sqlHolder.getSQLType() + ":" + limitSql);
+		List<?> list = queryForMulti(limitSql, sps, rmh);
+		return sqlHolder.convertLimitList(pager, list);
+	}
 }

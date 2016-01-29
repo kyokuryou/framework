@@ -8,11 +8,11 @@ package org.smarty.core.exception;
  * @version 1.0
  */
 public class MemoryNotFindException extends Exception {
-    public MemoryNotFindException() {
-        super();
-    }
+	public MemoryNotFindException() {
+		super();
+	}
 
-    public MemoryNotFindException(Throwable cause) {
-        super(cause);
-    }
+	public MemoryNotFindException(Throwable cause) {
+		super(cause);
+	}
 }

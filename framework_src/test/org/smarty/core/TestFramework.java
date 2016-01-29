@@ -6,7 +6,6 @@ import org.quartz.SchedulerException;
 import org.smarty.core.support.schedule.DispatcherSchedule;
 import org.smarty.core.test.AbsTestCase;
 import org.smarty.core.utils.SpringUtil;
-import org.test.commons.TestSchedule;
 
 /**
  * Created by kyokuryou on 15-4-1.
@@ -18,11 +17,11 @@ public class TestFramework extends AbsTestCase {
         DispatcherSchedule ds = SpringUtil.getBean("testSchedule1", DispatcherSchedule.class);
 
         JobDataMap jdm = new JobDataMap();
-        jdm.put("orderId","abc");
+        jdm.put("orderId", "abc");
 
         ds.startJob(jdm);
         JobDataMap jdm1 = new JobDataMap();
-        jdm1.put("orderId","++----sdfsdf");
+        jdm1.put("orderId", "++----sdfsdf");
         ds.startJob(jdm1);
 
         try {

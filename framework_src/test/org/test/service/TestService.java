@@ -1,11 +1,10 @@
 package org.test.service;
 
+import java.sql.SQLException;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.test.dao.TestDao;
-
-import javax.annotation.Resource;
-import java.sql.SQLException;
 
 /**
  * Created by kyokuryou on 15-4-1.
@@ -24,19 +23,10 @@ public class TestService {
         return 0;
     }
 
-    public int getCountMapper() {
-        try {
-            return testDao.getTestCountFile();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
     @Transactional
     public Object insert1() {
         try {
-           return testDao.getTestUpdate1();
+            return testDao.getTestUpdate1();
         } catch (SQLException e) {
             e.printStackTrace();
         }

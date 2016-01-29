@@ -13,31 +13,32 @@ import org.smarty.core.utils.LogicUtil;
  */
 public class SQLiteHolder extends SQLHolder {
 
-    public DBType getSQLType() {
-        return DBType.SQLite;
-    }
+	public DBType getSQLType() {
+		return DBType.SQLite;
+	}
 
-    public String convertLimitSQL(Pager pager) {
-        String sql = getSQLString(pager.getParams());
-        StringBuilder sb = new StringBuilder(sql);
+	public String convertLimitSQL(Pager pager, int totalCount) {
+		String sql = getSQLString(pager.getParams());
+		StringBuilder sb = new StringBuilder(sql);
 
-        // 计算总页数
-        int pageCount = 0;
-        if (pager.getTotalCount() % pager.getPageSize() == 0) {
-            pageCount = pager.getTotalCount() / pager.getPageSize();
-        } else if (pager.getTotalCount() % pager.getPageSize() > 0) {
-            pageCount = pager.getTotalCount() / pager.getPageSize() + 1;
-        }
-        pager.setPageCount(pageCount);
+		// 计算总页数
+		int pageCount = 0;
+		if (totalCount % pager.getPageSize() == 0) {
+			pageCount = totalCount / pager.getPageSize();
+		} else if (totalCount % pager.getPageSize() > 0) {
+			pageCount = totalCount / pager.getPageSize() + 1;
+		}
+		pager.setPageCount(pageCount);
+		pager.setTotalCount(totalCount);
 
-        String orderBy = orderBy(pager.getOrderBy(), pager.getOrderType());
-        if (LogicUtil.isNotEmpty(orderBy)) {
-            sb.append(orderBy);
-        }
-        sb.append(" LIMIT ");
-        sb.append(pager.getPageNumber() < 1 ? 0 : (pager.getPageNumber() - 1));
-        sb.append(",");
-        sb.append(pager.getPageSize());
-        return sb.toString();
-    }
+		String orderBy = orderBy(pager.getOrderBy(), pager.getOrderType());
+		if (LogicUtil.isNotEmpty(orderBy)) {
+			sb.append(orderBy);
+		}
+		sb.append(" LIMIT ");
+		sb.append(pager.getPageNumber() < 1 ? 0 : (pager.getPageNumber() - 1));
+		sb.append(",");
+		sb.append(pager.getPageSize());
+		return sb.toString();
+	}
 }

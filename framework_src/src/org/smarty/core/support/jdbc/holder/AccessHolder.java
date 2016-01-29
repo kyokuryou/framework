@@ -12,11 +12,12 @@ import org.smarty.core.support.jdbc.support.DBType;
  */
 public class AccessHolder extends SQLHolder {
 
-    public DBType getSQLType() {
-        return DBType.Access;
-    }
+	public DBType getSQLType() {
+		return DBType.Access;
+	}
 
-    public String convertLimitSQL(Pager pager) {
-        return null; //TODO insert code
-    }
+	@Override
+	public String convertLimitSQL(Pager pager, int totalCount) {
+		return null;
+	}
 }

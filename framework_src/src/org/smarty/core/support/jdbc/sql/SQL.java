@@ -6,13 +6,13 @@ package org.smarty.core.support.jdbc.sql;
  */
 public class SQL extends AbstractSQL<SQL> {
 
-    public SQL(StatementType type) {
-        super(type);
-    }
+	public SQL(StatementType type) {
+		super(type);
+	}
 
-    @Override
-    public SQL getSelf() {
-        return this;
-    }
+	@Override
+	public SQL getSelf() {
+		return this;
+	}
 
 }

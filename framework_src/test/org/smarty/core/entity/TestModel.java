@@ -17,7 +17,7 @@ public class TestModel implements ModelSerializable {
     private String name;
     private int msgCnt;
     private TestUserModel user = new TestUserModel();
-    private Map<String,String> map = new HashMap<String, String>();
+    private Map<String, String> map = new HashMap<String, String>();
     private List<String> list = new ArrayList<String>();
 
     public long getId() {
