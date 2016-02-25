@@ -36,7 +36,7 @@ import org.smarty.core.exception.OfficeException;
  * @author quliang
  * @version 1.0
  */
-public class ExcelUtil {
+public final class ExcelUtil {
 	private static Log logger = LogFactory.getLog(ExcelUtil.class);
 	// 2003版本
 	public final static int VERSION03 = 0;
@@ -200,7 +200,7 @@ public class ExcelUtil {
 		 * @param sheetIndex Sheet索引
 		 * @return Sheet名称
 		 */
-		public String getSheetName(Integer sheetIndex) {
+		public String getSheetName(int sheetIndex) {
 			return wb.getSheetName(sheetIndex);
 		}
 
@@ -210,10 +210,10 @@ public class ExcelUtil {
 		 * @param sheetName sheet名
 		 * @return 行数
 		 */
-		public Integer getRows(String sheetName) {
+		public int getRows(String sheetName) {
 			Sheet sh = wb.getSheet(sheetName);
 			if (sh == null) {
-				return null;
+				return 0;
 			}
 			return sh.getPhysicalNumberOfRows();
 		}
@@ -226,7 +226,7 @@ public class ExcelUtil {
 		 * @param cell      列号
 		 * @return 单元格
 		 */
-		public ExcelUnit getExcelUnit(String sheetName, Integer row, Integer cell) {
+		public ExcelUnit getExcelUnit(String sheetName, int row, int cell) {
 			Sheet sh = wb.getSheet(sheetName);
 			if (sh == null) {
 				return null;
@@ -247,7 +247,7 @@ public class ExcelUtil {
 		 * @param row       行号
 		 * @return 一行
 		 */
-		public List<ExcelUnit> getRowExcelUnit(String sheetName, Integer row) {
+		public List<ExcelUnit> getRowExcelUnit(String sheetName, int row) {
 			Sheet sh = wb.getSheet(sheetName);
 			if (sh == null) {
 				return null;
@@ -277,7 +277,7 @@ public class ExcelUtil {
 		 * @param cell      列号
 		 * @return 一列
 		 */
-		public List<ExcelUnit> getCellExcelUnit(String sheetName, Integer cell) {
+		public List<ExcelUnit> getCellExcelUnit(String sheetName, int cell) {
 			Sheet sh = wb.getSheet(sheetName);
 			if (sh == null) {
 				return null;
@@ -306,7 +306,7 @@ public class ExcelUtil {
 		 * @param cell 列号
 		 * @return 单元格
 		 */
-		public ExcelUnit getExcelUnit(Row hr, Integer cell) {
+		public ExcelUnit getExcelUnit(Row hr, int cell) {
 			Cell hc = hr.getCell(cell);
 			// 初始化单元格
 			ExcelUnit eu = new ExcelUnit();
@@ -363,20 +363,20 @@ public class ExcelUtil {
 		 */
 		public void mergedCells(Sheet sheet, ExcelUnit excelUnit) {
 			// 合并行数
-			Integer rmc = excelUnit.getRowMergedCount();
+			int rmc = excelUnit.getRowMergedCount();
 			// 合并列数
-			Integer cmc = excelUnit.getCellMergedCount();
+			int cmc = excelUnit.getCellMergedCount();
 			// 行数和列数同时<=0时,视为不合并
 			if (rmc <= 0 && cmc <= 0)
 				return;
 			// 合并开始行号
-			Integer firstRow = excelUnit.getRowNum();
+			int firstRow = excelUnit.getRowNum();
 			// 计算合并结束行号
-			Integer lastRow = firstRow + rmc;
+			int lastRow = firstRow + rmc;
 			// 合并开始列号
-			Integer firstCol = excelUnit.getCellNum();
+			int firstCol = excelUnit.getCellNum();
 			// 计算合并结束列号
-			Integer lastCol = firstCol + cmc;
+			int lastCol = firstCol + cmc;
 			// 与游标同步
 			lastRow = lastRow > firstRow ? lastRow - 1 : 0;
 			lastCol = lastCol > firstCol ? lastCol - 1 : 0;
@@ -468,8 +468,7 @@ public class ExcelUtil {
 		 * @throws java.io.IOException
 		 */
 		public void outStream(String fileName) throws IOException {
-			if (LogicUtil.isEmpty(fileName))
-				return;
+			ObjectUtil.assertNotEmpty(fileName, "fileName is required; it must not be null or empty");
 			outStream(new File(fileName));
 		}
 
@@ -480,8 +479,7 @@ public class ExcelUtil {
 		 * @throws java.io.IOException
 		 */
 		public void outStream(File file) throws IOException {
-			if (file == null)
-				return;
+			ObjectUtil.assertNotEmpty(file, "file is required; it must not be null or invalid file");
 			OutputStream os = new FileOutputStream(file);
 			try {
 				outStream(os);

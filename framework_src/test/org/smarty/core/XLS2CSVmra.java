@@ -53,6 +53,7 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
  *
  * @author Nick Burch
  */
+@Deprecated
 public class XLS2CSVmra implements HSSFListener {
     private int minColumns;
     private POIFSFileSystem fs;

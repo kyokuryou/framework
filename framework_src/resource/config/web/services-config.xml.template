@@ -21,12 +21,12 @@
         <!--
         <security-constraint id="basic-read-access">
             <auth-method>Basic</auth-method>
-            <roles>
-                <role>guests</role>
-                <role>accountants</role>
-                <role>employees</role>
-                <role>managers</role>
-            </roles>
+            <authorities>
+                <authority>guests</authority>
+                <authority>accountants</authority>
+                <authority>employees</authority>
+                <authority>managers</authority>
+            </authorities>
         </security-constraint>
          -->
     </security>

@@ -7,7 +7,7 @@ import java.io.OutputStream;
 import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.smarty.core.utils.ConvertUtil;
+import org.smarty.core.utils.FileUtil;
 import org.smarty.web.utils.WebPathUtil;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -19,38 +19,38 @@ import org.springframework.beans.factory.InitializingBean;
  * @version 1.0
  */
 public class GenerateHtml implements InitializingBean {
-    private static Log logger = LogFactory.getLog(GenerateHtml.class);
-    private FreemarkerManager freemarkerManager;
-    private String cachePath;
+	private static Log logger = LogFactory.getLog(GenerateHtml.class);
+	private FreemarkerManager freemarkerManager;
+	private String cachePath;
 
-    public void afterPropertiesSet() throws Exception {
+	public void afterPropertiesSet() throws Exception {
 
-    }
+	}
 
-    /**
-     * 生成Html
-     *
-     * @param tn   文件名
-     * @param data 数据
-     */
-    public void buildHtml(String tn, Map<String, Object> data) {
-        String hf = ConvertUtil.reFileSuffix(cachePath + tn, "html");
-        File htmlFile = WebPathUtil.getServletAsFile(hf);
-        try {
-            OutputStream os = new FileOutputStream(htmlFile);
-            freemarkerManager.outputTemplate(tn, data, os);
-            os.close();
-        } catch (IOException e) {
-            logger.warn(e);
-        }
-    }
+	/**
+	 * 生成Html
+	 *
+	 * @param tn   文件名
+	 * @param data 数据
+	 */
+	public void buildHtml(String tn, Map<String, Object> data) {
+		String hf = FileUtil.replaceSuffix(cachePath + tn, "html");
+		File htmlFile = WebPathUtil.getServletAsFile(hf);
+		try {
+			OutputStream os = new FileOutputStream(htmlFile);
+			freemarkerManager.outputTemplate(tn, data, os);
+			os.close();
+		} catch (IOException e) {
+			logger.warn(e);
+		}
+	}
 
 
-    public void setCachePath(String cachePath) {
-        this.cachePath = cachePath;
-    }
+	public void setCachePath(String cachePath) {
+		this.cachePath = cachePath;
+	}
 
-    public void setFreemarkerManager(FreemarkerManager freemarkerManager) {
-        this.freemarkerManager = freemarkerManager;
-    }
+	public void setFreemarkerManager(FreemarkerManager freemarkerManager) {
+		this.freemarkerManager = freemarkerManager;
+	}
 }

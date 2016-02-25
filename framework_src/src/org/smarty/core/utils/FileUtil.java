@@ -11,8 +11,25 @@ import org.apache.commons.logging.LogFactory;
  * @author qul
  * @since LVGG1.1
  */
-public class FileUtil {
+public final class FileUtil {
 	private static Log logger = LogFactory.getLog(FileUtil.class);
+
+	/**
+	 * 文件后+缀名
+	 *
+	 * @param fileName 原件名
+	 * @param suffix   新后缀
+	 * @return
+	 */
+	public static String replaceSuffix(String fileName, String suffix) {
+		if (ObjectUtil.isEmpty(fileName)) {
+			return null;
+		}
+		int i = fileName.lastIndexOf(".");
+		StringBuilder sb = new StringBuilder(fileName);
+		sb.replace(i + 1, fileName.length(), suffix);
+		return sb.toString();
+	}
 
 	/**
 	 * byte数组转换成16进制字符串
@@ -21,10 +38,10 @@ public class FileUtil {
 	 * @return
 	 */
 	public static String bytesToHexString(byte[] src) {
-		StringBuilder stringBuilder = new StringBuilder();
-		if (src == null || src.length <= 0) {
+		if(ObjectUtil.isEmpty(src)){
 			return "";
 		}
+		StringBuilder stringBuilder = new StringBuilder();
 		for (byte s : src) {
 			int v = s & 0xFF;
 			String hv = Integer.toHexString(v);

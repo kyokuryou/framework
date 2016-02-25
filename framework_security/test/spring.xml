@@ -4,29 +4,21 @@
        xmlns:context="http://www.springframework.org/schema/context"
 
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/context
-       http://www.springframework.org/schema/context/spring-context-3.1.xsd">
-
-    <import resource="spring-system.xml"/>
-    <import resource="security-system.xml"/>
-    <import resource="security-system.xml"/>
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context.xsd">
 
 
-    <bean id="secDataSource" parent="dataSource">
-        <property name="driverClass" value="${shop.driver}"/>
-        <property name="jdbcUrl" value="${shop.url}"/>
-        <property name="user" value="${shop.username}"/>
-        <property name="password" value="${shop.password}"/>
-    </bean>
+    <!-- 开启注解处理器 -->
+    <context:annotation-config/>
+    <!-- 设置需要进行Spring注解扫描的类包 -->
+    <context:component-scan base-package="org.smarty.security" use-default-filters="false">
+        <!--  扫描符合@Service @Repository @Controller的类 -->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
+    </context:component-scan>
 
-    <bean id="secSqlSession" parent="sqlSession">
-        <property name="dataSource" ref="secDataSource"/>
-    </bean>
-
-    <bean name="jCaptchaFilter" class="org.smarty.core.common.JCaptchaFilter">
-        <property name="captchaService" ref="captchaService"/>
-    </bean>
-
-    <bean class="org.smarty.core.security.common.SecurityBoot" init-method="init" destroy-method="exit"/>
+    <context:property-placeholder />
 </beans>

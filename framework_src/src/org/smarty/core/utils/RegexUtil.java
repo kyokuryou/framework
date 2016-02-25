@@ -45,7 +45,7 @@ public class RegexUtil {
 	/**
 	 * 定义HTML标签的正则表达式
 	 */
-	private final static String regEx_html = "<[^>]+>";
+	private final static String regExHtml = "<[^>]+>";
 	/**
 	 * 定义script的正则表达式{或<script[^>]*?>[\\s\\S]*?<\\/script>
 	 */
@@ -54,6 +54,8 @@ public class RegexUtil {
 	 * 定义style的正则表达式{或<style[^>]*?>[\\s\\S]*?<\\/style>
 	 */
 	private final static String regStyle = "<[\\s]*?style[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?style[\\s]*?>";
+
+	private final static String suffixName = "^(.*)(\\.)(.*)$";
 
 	private RegexUtil() {
 	}
@@ -125,17 +127,17 @@ public class RegexUtil {
 	 * @return 处理后的字符串
 	 */
 	public static String trim(String value) {
-		if (LogicUtil.isEmpty(value))
+		if (ObjectUtil.isEmpty(value))
 			return value;
 		int st = 0;
 		int len = value.length();
 		char[] val = value.toCharArray();
 		// 字符串前端空白字符结束位置
-		while (LogicUtil.isSpace(val[st])) {
+		while (ObjectUtil.isEmpty(val[st])) {
 			st++;
 		}
 		// 字符串后端空白字符起始位置
-		while (LogicUtil.isSpace(val[len - 1])) {
+		while (ObjectUtil.isEmpty(val[len - 1])) {
 			len--;
 		}
 		// 忽略两端空白字符切割字符串
@@ -149,7 +151,7 @@ public class RegexUtil {
 	 * @return boolean
 	 */
 	public static boolean isFirstPunct(String str) {
-		if (LogicUtil.isEmpty(str)) {
+		if (ObjectUtil.isEmpty(str)) {
 			return false;
 		}
 
@@ -187,12 +189,30 @@ public class RegexUtil {
 			Pattern p_style = Pattern.compile(regStyle, Pattern.CASE_INSENSITIVE);
 			Matcher m_style = p_style.matcher(htmlStr);
 			htmlStr = m_style.replaceAll(""); // 过滤style标签
-			Pattern p_html = Pattern.compile(regEx_html, Pattern.CASE_INSENSITIVE);
+			Pattern p_html = Pattern.compile(regExHtml, Pattern.CASE_INSENSITIVE);
 			Matcher m_html = p_html.matcher(htmlStr);
 			return m_html.replaceAll(""); // 过滤html标签
 		} catch (Exception e) {
 			logger.warn(e);
 		}
 		return "";
+	}
+
+	public static String getSuffixName(String fileName) {
+		Pattern pattern = Pattern.compile(suffixName);
+		Matcher matcher = pattern.matcher(fileName);
+		if (matcher.find()) {
+			return matcher.group(3);
+		}
+		return "";
+	}
+
+	public static String getFileName(String fileName) {
+		Pattern pattern = Pattern.compile(suffixName);
+		Matcher matcher = pattern.matcher(fileName);
+		if (!matcher.find()) {
+			return fileName;
+		}
+		return matcher.group(1);
 	}
 }

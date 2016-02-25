@@ -7,6 +7,7 @@ import org.apache.commons.logging.LogFactory;
 import org.smarty.core.launcher.AbsLauncher;
 import org.smarty.web.utils.SpringWebUtil;
 import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceAware;
 import org.springframework.web.context.ServletContextAware;
 
 /**
@@ -16,22 +17,21 @@ import org.springframework.web.context.ServletContextAware;
  * @author quliang
  * @version 1.0
  */
-public class WebLauncher extends AbsLauncher implements ServletContextAware {
-    private static Log logger = LogFactory.getLog(WebLauncher.class);
+public class WebLauncher extends AbsLauncher implements ServletContextAware, MessageSourceAware {
+	private static Log logger = LogFactory.getLog(WebLauncher.class);
 
-    public final void setServletContext(ServletContext servletContext) {
-        SpringWebUtil.setServletContext(servletContext);
-    }
+	public final void setServletContext(ServletContext servletContext) {
+		SpringWebUtil.setServletContext(servletContext);
+	}
 
-    public final void setMessageSource(MessageSource messageSource) {
-        SpringWebUtil.setMessageSource(messageSource);
-    }
+	public final void setMessageSource(MessageSource messageSource) {
+		SpringWebUtil.setMessageSource(messageSource);
+	}
 
-    protected Set<ClassLoader> getLauncher() {
-        Set<ClassLoader> cls = super.getLauncher();
-        cls.add(WebLauncher.class.getClassLoader());
-        return cls;
-    }
-
+	protected Set<ClassLoader> getLauncher() {
+		Set<ClassLoader> cls = super.getLauncher();
+		cls.add(WebLauncher.class.getClassLoader());
+		return cls;
+	}
 
 }

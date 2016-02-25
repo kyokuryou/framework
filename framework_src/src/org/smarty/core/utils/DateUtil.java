@@ -19,7 +19,7 @@ import org.smarty.core.common.BaseConstant;
  * @author quliang
  * @version 1.0
  */
-public class DateUtil {
+public final class DateUtil {
 	private static Log logger = LogFactory.getLog(DateUtil.class);
 
 	private DateUtil() {
@@ -102,7 +102,7 @@ public class DateUtil {
 	 * @return 实例
 	 */
 	public static DateFormat getFormat(String format) {
-		DateFormat df = new SimpleDateFormat(format);
+		DateFormat df = new SimpleDateFormat(format, BaseConstant.DEF_LOCALE);
 		df.setTimeZone(BaseConstant.DEF_TIMEZONE);
 		return df;
 	}
@@ -135,7 +135,7 @@ public class DateUtil {
 	 * @param source 表示时间的字符串
 	 * @return 转换后的Date类型
 	 */
-	public static Date toDate(String source) {
+	public static Date toDate(String source) throws ParseException {
 		return toDate(source, BaseConstant.DEF_DATETIME_FORMAT);
 	}
 
@@ -146,15 +146,14 @@ public class DateUtil {
 	 * @param format 格式化字符串表示
 	 * @return 转换后的Date类型
 	 */
-	public static Date toDate(String source, String format) {
+	public static Date toDate(String source, String format) throws ParseException {
 		try {
 			return getFormat(format).parse(source);
 		} catch (ParseException e) {
 			logger.warn(e);
+			throw e;
 		}
-		return null;
 	}
-
 
 	/**
 	 * 将source时间字符串转换成Timestamp类型
@@ -162,7 +161,7 @@ public class DateUtil {
 	 * @param source 表示时间的字符串
 	 * @return 转换后的Timestamp类型
 	 */
-	public static Timestamp toTimestamp(String source) {
+	public static Timestamp toTimestamp(String source) throws ParseException {
 		return toTimestamp(source, BaseConstant.DEF_DATETIME_FORMAT);
 	}
 
@@ -173,7 +172,7 @@ public class DateUtil {
 	 * @param format 格式化字符串表示
 	 * @return 转换后的Timestamp类型
 	 */
-	public static Timestamp toTimestamp(String source, String format) {
+	public static Timestamp toTimestamp(String source, String format) throws ParseException {
 		return new Timestamp(toDate(source, format).getTime());
 	}
 
@@ -183,7 +182,7 @@ public class DateUtil {
 	 * @param source 表示时间的字符串
 	 * @return 转换后的Time类型
 	 */
-	public static Time toTime(String source) {
+	public static Time toTime(String source) throws ParseException {
 		return toTime(source, BaseConstant.DEF_DATETIME_FORMAT);
 	}
 
@@ -194,7 +193,7 @@ public class DateUtil {
 	 * @param format 格式化字符串表示
 	 * @return 转换后的Time类型
 	 */
-	public static Time toTime(String source, String format) {
+	public static Time toTime(String source, String format) throws ParseException {
 		return new Time(toDate(source, format).getTime());
 	}
 

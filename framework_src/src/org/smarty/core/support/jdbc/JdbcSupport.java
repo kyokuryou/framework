@@ -10,6 +10,7 @@ import org.smarty.core.support.jdbc.sql.SQL;
 import org.smarty.core.support.jdbc.sql.StatementType;
 import org.smarty.core.support.jdbc.support.AbstractJdbc;
 import org.smarty.core.support.jdbc.support.DBType;
+import org.smarty.core.utils.ObjectUtil;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -29,7 +30,7 @@ abstract class JdbcSupport extends AbstractJdbc {
 	}
 
 	protected <E extends ParameterSerializable> SqlParameterSource getParameterSource(E params) {
-		if (params == null) {
+		if (ObjectUtil.isEmpty(params)) {
 			return new MapSqlParameterSource();
 		}
 		if (params instanceof ParameterMap) {

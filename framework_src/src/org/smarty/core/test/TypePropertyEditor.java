@@ -1,6 +1,7 @@
 package org.smarty.core.test;
 
 import java.beans.PropertyEditorSupport;
+import java.text.ParseException;
 import org.smarty.core.common.BaseConstant;
 import org.smarty.core.utils.DateUtil;
 
@@ -17,19 +18,21 @@ public class TypePropertyEditor extends PropertyEditorSupport {
 	private DateType type = DateType.DATE;
 
 	public void setAsText(String text) throws IllegalArgumentException {
-		Object value = null;
-		switch (type) {
-			case DATE:
-				value = DateUtil.toDate(text, format);
-				break;
-			case TIMESTAMP:
-				value = DateUtil.toTimestamp(text, format);
-				break;
-			case TIME:
-				value = DateUtil.toTime(text, format);
-				break;
+		try {
+			switch (type) {
+				case DATE:
+					setValue(DateUtil.toDate(text, format));
+					break;
+				case TIMESTAMP:
+					setValue(DateUtil.toTimestamp(text, format));
+					break;
+				case TIME:
+					setValue(DateUtil.toTime(text, format));
+					break;
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
-		setValue(value);
 	}
 
 	public void setFormat(String format) {

@@ -25,16 +25,14 @@
          */
         isExist: function (obj) {
             return obj != undefined && obj != null;
-        },
-        /**
+        }, /**
          * 判断此document对象是否不存在
          * @param obj
          * @return boolean
          */
         isNotExist: function (obj) {
             return obj == undefined || obj == null;
-        },
-        /**
+        }, /**
          * 判断此document对象是否是顶级对象，如：body,html
          * @param obj
          * @return boolean
@@ -42,8 +40,7 @@
         isSuperTag: function (obj) {
             var tagName = obj.tagName.toLowerCase();
             return tagName == "body" || tagName == "html";
-        },
-        type: function (obj) {
+        }, type: function (obj) {
             var classType = {
                 "[object Boolean]": "boolean",
                 "[object Number]": "number",
@@ -58,9 +55,7 @@
             if (obj == null) {
                 return String(obj);
             }
-            return typeof obj === "object" || typeof obj === "function" ?
-                classType[ classType.toString.call(obj) ] || "object" :
-                typeof obj;
+            return typeof obj === "object" || typeof obj === "function" ? classType[classType.toString.call(obj)] || "object" : typeof obj;
         }
     };
     TS.string = {
@@ -71,16 +66,14 @@
          */
         isEmpty: function (str) {
             return str == undefined || str == null || TS.object.type(str) !== "string" || str.length <= 0;
-        },
-        /**
+        }, /**
          * 判断此string是否不是空
          * @param str 字符串
          * @return boolean
          */
         isNotEmpty: function (str) {
             return str != undefined && str != null && TS.object.type(str) === "string" && str.length > 0;
-        },
-        /**
+        }, /**
          * 根据切分标识获得字符串的前缀
          * @param str 字符串
          * @param mark 标识
@@ -92,8 +85,7 @@
             }
             var obj = str.split(mark);
             return obj[0];
-        },
-        /**
+        }, /**
          * 根据切分标识获得字符串的后缀
          * @param str 字符串
          * @param mark 标识
@@ -105,8 +97,7 @@
             }
             var obj = str.split(mark);
             return obj[1];
-        },
-        /**
+        }, /**
          * 字符是包含字符串
          * @param str1 字符串
          * @param str2 被包含的字符串
@@ -117,8 +108,7 @@
                 return false;
             }
             return str1.indexOf(str2) != -1;
-        },
-        /**
+        }, /**
          * 字符是否以字符串结束
          * @param str1 字符串
          * @param str2 被包含的字符串
@@ -129,8 +119,7 @@
                 return false;
             }
             return str1.lastIndexOf(str2) == str1.length - 1;
-        },
-        /**
+        }, /**
          * 字符是否以字符串开始
          * @param str1 字符串
          * @param str2 被包含的字符串
@@ -141,8 +130,7 @@
                 return false;
             }
             return str1.indexOf(str2) == 0;
-        },
-        /**
+        }, /**
          * 计算字节数,全角或汉字2个字符,半角1个字符
          * @param varField
          * @return number 字数
@@ -156,13 +144,11 @@
 
             for (var i = 0; i < c.length; i++) {
                 if (c[i].charCodeAt(0) > 299)
-                    l += 2;
-                else
+                    l += 2; else
                     l++;
             }
             return l;
-        },
-        /**
+        }, /**
          * 字符串去空格
          * @param sInputString 去掉空格的字符串
          * @return string 处理后的字符串
@@ -195,8 +181,7 @@
             } else {
                 return 0;
             }
-        },
-        /**
+        }, /**
          * 将字符串转换日期对象
          * @param date 字符串描述的日期
          * @returns Date
@@ -206,8 +191,7 @@
                 return new Date(Date.parse(date.replace(/-/g, "/")));
             }
             return null;
-        },
-        /**
+        }, /**
          * 将日期对象转换成字符串描述的日期
          * @param date Date
          * @param format 格式
@@ -236,8 +220,7 @@
                 }
             }
             return formatDate;
-        },
-        /**
+        }, /**
          * 获得某年某月的最大天数
          * @param year 年
          * @param month 月
@@ -251,8 +234,7 @@
             if (month == 2) {
                 if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) {
                     data = 29;
-                }
-                else {
+                } else {
                     data = 28;
                 }
             }
@@ -278,8 +260,7 @@
                 }
                 return null;
             }
-        },
-        /**
+        }, /**
          * 判定是否是数组
          * @param arr 数组
          * @return boolean
@@ -295,8 +276,7 @@
          */
         isEmptyArray: function (arr) {
             return TS.object.type(arr) != "array" || arr.length <= 0;
-        },
-        /**
+        }, /**
          * 将数组转换成json
          * @param arr 数组
          * @return string json
@@ -371,40 +351,35 @@
          */
         integer: function (str) {
             return TS.eregi.code.Integer.test(str);
-        },
-        /**
+        }, /**
          * 检查输入字符串是否符合正整数格式
          * @param str
          * @returns {boolean}
          */
         number: function (str) {
             return TS.eregi.code.Number.test(str);
-        },
-        /**
+        }, /**
          * 检查输入字符串是否是带小数的数字格式,可以是负数
          * @param str
          * @returns {boolean}
          */
         decimal: function (str) {
             return TS.eregi.code.Decimal.test(str);
-        },
-        /**
+        }, /**
          * 检查输入字符串是否符合金额格式,格式定义为带小数的正数，小数点后最多两位
          * @param str
          * @returns {boolean}
          */
         money: function (str) {
             return TS.eregi.code.Money.test(str);
-        },
-        /**
+        }, /**
          * 检查输入的Email信箱格式是否正确
          * @param str
          * @returns {boolean}
          */
         email: function (str) {
             return TS.eregi.code.Email.test(str);
-        },
-        /**
+        }, /**
          * 校验ip地址的格式
          * @param str
          * @returns {boolean}
@@ -423,56 +398,49 @@
             boos = boos && ip3 >= 0 && ip3 <= 255;
             boos = boos && ip4 >= 0 && ip4 <= 255;
             return boos;
-        },
-        /**
+        }, /**
          * 检查输入手机号码是否正确
          * @param str
          * @returns {boolean}
          */
         mobile: function (str) {
             return TS.eregi.code.Mobile.test(str);
-        },
-        /**
+        }, /**
          * 检查输入的电话号码格式是否正确 (带区号)
          * @param str
          * @returns {boolean}
          */
         phone: function (str) {
             return TS.eregi.code.Phone.test(str);
-        },
-        /**
+        }, /**
          * 检查输入的电话号码格式是否正确
          * @param str
          * @returns {boolean}
          */
         phoneNoArea: function (str) {
             return TS.eregi.code.PhoneNoArea.test(str);
-        },
-        /**
+        }, /**
          * 检查输入字符串是否只由英文字母和数字和下划线组成
          * @param str
          * @returns {boolean}
          */
         numberOr_Letter: function (str) {
             return TS.eregi.code.NumberOr_Letter.test(str);
-        },
-        /**
+        }, /**
          * 检查输入字符串是否只由英文字母和数字组成
          * @param str
          * @returns {boolean}
          */
         numberOrLetter: function (str) {
             return TS.eregi.code.NumberOrLetter.test(str);
-        },
-        /**
+        }, /**
          * 检查输入字符串是否只由汉字、字母、数字组成
          * @param str
          * @returns {boolean}
          */
         chinaOrNumbOrLetter: function (str) {
             return TS.eregi.code.ChinaOrNumbOrLetter.test(str);
-        },
-        /**
+        }, /**
          * 判断输入是否是有效的长日期格式 - "YYYY-MM-DD HH:MM:SS" || "YYYY/MM/DD HH:MM:SS"
          * @param str
          * @returns {boolean}
@@ -495,8 +463,7 @@
             boos = boos && tm >= 0 && tm <= 59;
             boos = boos && ts >= 0 && ts <= 59;
             return boos;
-        },
-        /**
+        }, /**
          * 判断输入是否是有效的时间格式 - "HH:MM:SS"
          * @param str
          * @returns {boolean}
@@ -513,8 +480,7 @@
             boos = boos && tm >= 0 && tm <= 59;
             boos = boos && ts >= 0 && ts <= 59;
             return boos;
-        },
-        /**
+        }, /**
          * 判断输入是否是有效的长日期格式 - "YYYY-MM-DD" || "YYYY/MM/DD"
          * @param str
          * @returns {boolean}
@@ -531,16 +497,14 @@
             boos = boos && dm > 0 && dm <= 12;
             boos = boos && dd > 0 && dd <= TS.date.getMaxDay(dy, dm);
             return boos;
-        },
-        /**
+        }, /**
          * 判断输入是否是有效的长度的QQ
          * @param str
          * @returns {boolean}
          */
         qq: function (str) {
             return TS.eregi.code.QQ.test(str);
-        },
-        /**
+        }, /**
          * 自定义正则表达式
          * @param str
          * @returns {boolean}

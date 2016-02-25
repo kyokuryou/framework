@@ -12,7 +12,7 @@ import java.util.List;
  * Security工具
  */
 public class SecurityUtil {
-    private static RuntimeLogger logger = new RuntimeLogger(SecurityUtil.class);
+    private static Log logger = LogFactory.getLog(SecurityUtil.class);
 
     /**
      * 刷新SpringSecurity权限信息

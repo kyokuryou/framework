@@ -1,15 +1,15 @@
-package org.smarty.core.build;
+package org.smarty.core.config;
 
 import java.io.IOException;
 import java.util.Properties;
-import org.smarty.core.build.files.FileConfig;
-import org.smarty.core.build.files.FlexConfig;
-import org.smarty.core.build.files.LocalConfig;
-import org.smarty.core.build.files.Log4jConfig;
-import org.smarty.core.build.files.SpringConfig;
-import org.smarty.core.build.files.Struts2Config;
-import org.smarty.core.build.files.WebConfig;
-import org.smarty.core.build.files.WsConfig;
+import org.smarty.core.config.files.FileConfig;
+import org.smarty.core.config.files.FlexConfig;
+import org.smarty.core.config.files.LocalConfig;
+import org.smarty.core.config.files.Log4jConfig;
+import org.smarty.core.config.files.SpringConfig;
+import org.smarty.core.config.files.Struts2Config;
+import org.smarty.core.config.files.WebConfig;
+import org.smarty.core.config.files.WsConfig;
 
 /**
  * 配置文件创建者

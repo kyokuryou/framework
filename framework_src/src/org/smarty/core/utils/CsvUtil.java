@@ -22,7 +22,7 @@ import org.smarty.core.support.csvreader.CsvWriter;
  * @author quliang
  * @version 1.0
  */
-public class CsvUtil {
+public final class CsvUtil {
 	private static Log logger = LogFactory.getLog(CsvUtil.class);
 
 	/**

@@ -48,11 +48,11 @@ public abstract class AbsInterceptor extends HandlerInterceptorAdapter {
     }
 
     protected Locale getLocale(HttpServletRequest request) {
-        return null;
+        return RequestContextUtils.getLocale(request);
     }
 
     protected Theme getTheme(HttpServletRequest request) {
-        return null;
+        return RequestContextUtils.getTheme(request);
     }
 
     public boolean preInterceptor(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

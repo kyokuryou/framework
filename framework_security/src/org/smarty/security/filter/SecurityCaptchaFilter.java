@@ -1,6 +1,6 @@
 package org.smarty.security.filter;
 
-import com.octo.captcha.service.CaptchaService;
+import com.octo.captcha.service.image.ImageCaptchaService;
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -17,23 +17,21 @@ import org.springframework.security.web.RedirectStrategy;
  * 过滤器 - 后台登录验证码
  */
 public class SecurityCaptchaFilter implements Filter {
-	private final String CAPTCHA_INPUT_NAME = "j_captcha";// 验证码输入表单名称
-	private CaptchaService captchaService;
-	private String defaultTargetUrl = "/";
+	private String captchaParameter;
+	private String defaultTargetUrl;
+	private ImageCaptchaService imageCaptchaService;
 	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
-	public void setCaptchaService(CaptchaService captchaService) {
-		this.captchaService = captchaService;
+	public void setCaptchaParameter(String captchaParameter) {
+		this.captchaParameter = captchaParameter;
 	}
 
 	public void setDefaultTargetUrl(String defaultTargetUrl) {
 		this.defaultTargetUrl = defaultTargetUrl;
 	}
 
-	public void init(FilterConfig fConfig) throws ServletException {
-	}
-
-	public void destroy() {
+	public void setImageCaptchaService(ImageCaptchaService imageCaptchaService) {
+		this.imageCaptchaService = imageCaptchaService;
 	}
 
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
@@ -54,8 +52,17 @@ public class SecurityCaptchaFilter implements Filter {
 	 */
 	protected boolean validateCaptcha(HttpServletRequest request) {
 		String captchaID = request.getSession().getId();
-		String cval = request.getParameter(CAPTCHA_INPUT_NAME);
-		return captchaService.validateResponseForID(captchaID, cval.toUpperCase());
+		String cval = request.getParameter(captchaParameter);
+		return imageCaptchaService.validateResponseForID(captchaID, cval.toUpperCase());
 	}
 
+	@Override
+	public void init(FilterConfig filterConfig) throws ServletException {
+
+	}
+
+	@Override
+	public void destroy() {
+
+	}
 }

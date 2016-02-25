@@ -3,7 +3,7 @@ package org.smarty.core.support.jdbc.holder;
 import java.util.List;
 import org.smarty.core.bean.Pager;
 import org.smarty.core.support.jdbc.support.DBType;
-import org.smarty.core.utils.LogicUtil;
+import org.smarty.core.utils.ObjectUtil;
 
 /**
  * SQLServer工具箱
@@ -36,7 +36,7 @@ public class MSSQLHolder extends SQLHolder {
 		sb.insert(7, "TOP " + topEnd + " ");
 
 		String orderBy = orderBy(pager.getOrderBy(), pager.getOrderType());
-		if (LogicUtil.isNotEmpty(orderBy)) {
+		if (!ObjectUtil.isEmpty(orderBy)) {
 			sb.append(orderBy);
 		}
 		return sb.toString();
@@ -52,7 +52,7 @@ public class MSSQLHolder extends SQLHolder {
 		if (pager == null) {
 			return new Pager();
 		}
-		if (LogicUtil.isNotEmptyCollection(eList)) {
+		if (!ObjectUtil.isEmpty(eList)) {
 			pager.setList(eList.subList(pager.getPageNumber(), eList.size()));
 			return pager;
 		}

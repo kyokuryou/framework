@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentMap;
 import org.smarty.core.common.BaseConstant;
 import org.smarty.core.exception.CacheNameNotExistException;
 import org.smarty.core.utils.CommonUtil;
-import org.smarty.core.utils.LogicUtil;
+import org.smarty.core.utils.ObjectUtil;
 
 /**
  * 缓存管理器
@@ -35,7 +35,7 @@ public class CacheMessage {
 		if (!dignityKey.equals(CommonUtil.md5(dignity))) {
 			return;
 		}
-		if (LogicUtil.isNotEmptyMap(cacheMap)) {
+		if (!ObjectUtil.isEmpty(cacheMap)) {
 			for (Map.Entry<String, Integer> me : cacheMap.entrySet()) {
 				memory.put(me.getKey(), new CacheMemory(me.getValue()));
 			}

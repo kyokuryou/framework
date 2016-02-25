@@ -1,11 +1,5 @@
 package org.smarty.core.utils;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.NotSerializableException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -16,9 +10,9 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.smarty.core.exception.InstanceClassException;
+import org.smarty.core.exception.InvokeFieldException;
 import org.smarty.core.exception.InvokeMethodException;
 import org.smarty.core.exception.NoSuchReflectException;
-import org.smarty.core.io.ParameterMap;
 
 /**
  * 反射工具
@@ -27,7 +21,7 @@ import org.smarty.core.io.ParameterMap;
  * @author quliang
  * @version 1.0
  */
-public class BeanUtil {
+public final class BeanUtil {
 	private static Log logger = LogFactory.getLog(BeanUtil.class);
 
 	private BeanUtil() {
@@ -39,13 +33,13 @@ public class BeanUtil {
 	 * @param className 所需类的完全限定名。
 	 * @return Class对象。
 	 */
-	public static Class getClassForName(String className) {
+	public static Class getClassForName(String className) throws InstanceClassException {
 		try {
 			return Class.forName(className);
 		} catch (ClassNotFoundException e) {
 			logger.warn(e);
+			throw new InstanceClassException(e);
 		}
-		return null;
 	}
 
 	/**
@@ -54,15 +48,15 @@ public class BeanUtil {
 	 * @param clazz Class 对象
 	 * @param name  所表示字段的字符串
 	 * @return Class对象
-	 * @throws NoSuchReflectException 未发现字段表示的字符串
+	 * @throws InvokeFieldException 未发现字段表示的字符串
 	 */
-	public static Field getField(Class<?> clazz, String name) throws NoSuchReflectException {
+	public static Field getField(Class<?> clazz, String name) throws InvokeFieldException {
 		try {
 			return clazz.getDeclaredField(name);
 		} catch (NoSuchFieldException e) {
 			if ("java.lang.Object".equals(clazz.getSuperclass().getName())) {
 				logger.warn("not find field:" + name);
-				throw new NoSuchReflectException(e);
+				throw new InvokeFieldException(e);
 			}
 			return getField(clazz.getSuperclass(), name);
 		}
@@ -80,7 +74,7 @@ public class BeanUtil {
 		Field[] all = clazz.getDeclaredFields();
 		for (Field field : all) {
 			String fname = field.getName();
-			if (LogicUtil.isNotEmpty(exclude) && exclude.contains(fname)) {
+			if (!ObjectUtil.isEmpty(exclude) && exclude.contains(fname)) {
 				continue;
 			}
 			fs.add(field);
@@ -105,15 +99,15 @@ public class BeanUtil {
 	 * @param clazz Class 对象
 	 * @param name  所表示字段的字符串
 	 * @return Class对象
-	 * @throws NoSuchReflectException 未发现字段表示的字符串
+	 * @throws InvokeFieldException 未发现字段表示的字符串
 	 */
-	public static Class getFieldClass(Class<?> clazz, String name) throws NoSuchReflectException {
+	public static Class getFieldClass(Class<?> clazz, String name) throws InvokeFieldException {
 		try {
 			return clazz.getDeclaredField(name).getType();
 		} catch (NoSuchFieldException e) {
 			if ("java.lang.Object".equals(clazz.getSuperclass().getName())) {
 				logger.warn("not find field:" + name);
-				throw new NoSuchReflectException(e);
+				throw new InvokeFieldException(e);
 			}
 			return getFieldClass(clazz.getSuperclass(), name);
 		}
@@ -126,9 +120,9 @@ public class BeanUtil {
 	 * @param method 所表示方法的字符串
 	 * @param params 方法参数
 	 * @return Method 对象
-	 * @throws NoSuchReflectException 未发现方法表示的字符串
+	 * @throws InvokeMethodException 未发现方法表示的字符串
 	 */
-	public static Method getMethod(Object target, String method, Object... params) throws NoSuchReflectException {
+	public static Method getMethod(Object target, String method, Object... params) throws InvokeMethodException {
 
 		Class<?> clazz = target.getClass();
 		Class<?>[] cls = null;
@@ -147,7 +141,7 @@ public class BeanUtil {
 			return clazz.getMethod(method, cls);
 		} catch (NoSuchMethodException e) {
 			logger.warn(e);
-			throw new NoSuchReflectException(e);
+			throw new InvokeMethodException(e);
 		}
 	}
 
@@ -241,22 +235,20 @@ public class BeanUtil {
 	 * @return 该clazz的实例
 	 * @throws InstanceClassException 创建失败
 	 */
-	public static <T> T instanceClass(Class<T> clazz, Object... params) throws InstanceClassException {
-
+	public static <T> T instanceClass(Class<T> clazz, Object... params) throws InstanceClassException, InvokeMethodException {
 		Class<?>[] cls = new Class[params.length];
 		for (int i = 0; i < cls.length; ++i) {
 			cls[i] = params[i].getClass();
 		}
-		Constructor<T> cons = null;
 		try {
-			cons = clazz.getConstructor(cls);
+			Constructor<T> cons = clazz.getConstructor(cls);
 			return cons.newInstance(params);
 		} catch (InvocationTargetException e) {
 			logger.warn(e);
 			throw new InstanceClassException(e);
 		} catch (NoSuchMethodException e) {
 			logger.warn(e);
-			throw new InstanceClassException(e);
+			throw new InvokeMethodException(e);
 		} catch (InstantiationException e) {
 			logger.warn(e);
 			throw new InstanceClassException(e);
@@ -369,7 +361,6 @@ public class BeanUtil {
 	 */
 	public static Field getMethodTargetField(Method m) throws NoSuchReflectException {
 		String name = m.getName();
-		Field f = null;
 
 		if (name.length() > 3 && (name.startsWith("set") || name.startsWith("get"))) {
 			char[] ch = name.toCharArray();
@@ -381,26 +372,23 @@ public class BeanUtil {
 			name = new String(ch, 2, ch.length - 2);
 		}
 		try {
-			f = m.getDeclaringClass().getDeclaredField(name);
+			return m.getDeclaringClass().getDeclaredField(name);
 		} catch (NoSuchFieldException e) {
 			logger.warn(e);
 			throw new NoSuchReflectException(e);
 		}
-		return f;
 	}
 
 	/**
 	 * 通过bean对象fieldname属性对应的getter方法取得该属性的值
 	 *
 	 * @param bean      - 数据对象, 如果为null, 会抛出异常
-	 * @param fieldname - 属性名, 如果为null, 则返回null
+	 * @param fieldName - 属性名, 如果为null, 则返回null
 	 * @return 属性的值
 	 */
-	public static Object getFieldValue(Object bean, String fieldname) throws NoSuchReflectException, InvokeMethodException {
-		if (fieldname == null) {
-			return null;
-		}
-		String fieldGetMethod = getGetterName(fieldname);
+	public static Object getFieldValue(Object bean, String fieldName) throws NoSuchReflectException, InvokeMethodException {
+		ObjectUtil.assertNotEmpty(fieldName, "this fieldName is required; it must not be null");
+		String fieldGetMethod = getGetterName(fieldName);
 		try {
 			return invoke(bean, fieldGetMethod);
 		} catch (NoSuchReflectException e) {
@@ -421,9 +409,9 @@ public class BeanUtil {
 	 */
 	@SuppressWarnings("unchecked")
 	public static Object toCase(Field field, String value) {
-		if (field == null || value == null) {
-			return null;
-		}
+		ObjectUtil.assertNotEmpty(field, "this field is required; it must not be null");
+		ObjectUtil.assertNotEmpty(value, "this value is required; it must not be null");
+
 		Class fieldType = field.getType();
 		if (fieldType.isAssignableFrom(boolean.class) || fieldType.isAssignableFrom(Boolean.class)) {
 			return Boolean.valueOf(value);
@@ -451,89 +439,75 @@ public class BeanUtil {
 		}
 	}
 
-	public static <T extends Serializable> ParameterMap copyToParameterMap(T t) {
-		if (t == null) {
-			return null;
+	/**
+	 * 基本类型Class转换引用类型Class字符串
+	 *
+	 * @param klass 基本类型Class
+	 * @return 引用类型Class字符串
+	 */
+	@SuppressWarnings("unchecked")
+	public static String getClassName(Class klass) {
+		ObjectUtil.assertNotEmpty(klass, "this class is required; it must not be null");
+		// 判断是否是数组,如果是递归调用
+		if (klass.isArray()) {
+			return getClassName(klass.getComponentType());
 		}
-		ParameterMap param = new ParameterMap();
 
-		Field[] fields = getFields(t.getClass());
-		for (Field field : fields) {
-			String name = field.getName();
-			try {
-				param.put(name, getFieldValue(t, name));
-			} catch (NoSuchReflectException e) {
-				logger.warn(e);
-			} catch (InvokeMethodException e) {
-				logger.warn(e);
+		// 获得基本类型的引用类
+		if (klass.isAssignableFrom(boolean.class)) {
+			return Boolean.class.getName();
+		} else if (klass.isAssignableFrom(byte.class)) {
+			return Byte.class.getName();
+		} else if (klass.isAssignableFrom(char.class)) {
+			return Character.class.getName();
+		} else if (klass.isAssignableFrom(double.class)) {
+			return Double.class.getName();
+		} else if (klass.isAssignableFrom(float.class)) {
+			return Float.class.getName();
+		} else if (klass.isAssignableFrom(int.class)) {
+			return Integer.class.getName();
+		} else if (klass.isAssignableFrom(long.class)) {
+			return Long.class.getName();
+		} else if (klass.isAssignableFrom(short.class)) {
+			return Short.class.getName();
+		}
+		return klass.getName();
+	}
+
+	/**
+	 * 将value转换成type类型
+	 *
+	 * @param value 值
+	 * @param type  类型
+	 * @return type类型值
+	 */
+	@SuppressWarnings("unchecked")
+	public static Object valueToType(Object value, Class type) {
+		ObjectUtil.assertNotEmpty(value, "this value is required; it must not be null");
+		if (type == null) {
+			return value;
+		}
+		if (value.getClass().isAssignableFrom(type)) {
+			return type.cast(value);
+		}
+
+		if (String.class.equals(type)) {
+			return type.cast(value);
+		} else if (Boolean.class.isAssignableFrom(type) || boolean.class.isAssignableFrom(type)) {
+			if (value instanceof Boolean) {
+				return value;
+			} else if (value instanceof String) {
+				return type.cast(Boolean.valueOf(value.toString()));
+			} else if (value instanceof Integer) {
+				return type.cast(Integer.valueOf(value.toString()) != 0);
+			} else {
+				logger.warn("Value [" + value + "] is of type [" + value.getClass().getName() + "] and cannot be converted to required type [" + type.getName() + "]");
 			}
-		}
-		return param;
-	}
-
-	/**
-	 * 克隆一个与原对象相同类型新的对象
-	 *
-	 * @param src 原对象
-	 * @param <E> 对象类型
-	 * @return 新对象
-	 * @throws Exception
-	 */
-	@SuppressWarnings("unchecked")
-	public static <E extends Serializable> E copy(E src) throws Exception {
-		Class<E> ct = (Class<E>) src.getClass();
-		return copy(src, ct);
-	}
-
-	/**
-	 * 克隆一个与原对象相同模型的新的对象
-	 *
-	 * @param src    原对象
-	 * @param target 新对象Class信息
-	 * @param <E>    对象类型
-	 * @return 新对象
-	 * @throws Exception
-	 */
-	public static <E extends Serializable, T extends Serializable> T copy(E src, Class<T> target) throws Exception {
-		Object srcObj = cloneBean(src);
-		Class<?> srcCls = src.getClass();
-		T targetObj = target.newInstance();
-		Field[] fs = target.getDeclaredFields();
-		for (Field f : fs) {
-			String fn = f.getName();
-			String getMethod = getXetName(fn, "get");
-			String setMethod = getXetName(fn, "set");
-			Object getValue = srcCls.getDeclaredMethod(getMethod).invoke(srcObj);
-			target.getDeclaredMethod(setMethod, f.getType()).invoke(targetObj, getValue);
-		}
-		return targetObj;
-	}
-
-	/**
-	 * 深度克隆
-	 *
-	 * @param src 对象源
-	 * @param <E> 对象类型
-	 * @return 克隆对象
-	 * @throws Exception
-	 */
-	@SuppressWarnings("unchecked")
-	private static <E extends Serializable> E cloneBean(E src) throws Exception {
-		if (!Serializable.class.isInstance(src)) {
-			throw new NotSerializableException();
-		}
-
-		ByteArrayOutputStream bo = new ByteArrayOutputStream();
-		try {
-			ObjectOutputStream oo = new ObjectOutputStream(bo);
-			oo.writeObject(src);
-			ByteArrayInputStream bi = new ByteArrayInputStream(bo.toByteArray());
-			ObjectInputStream oi = new ObjectInputStream(bi);
-			return (E) oi.readObject();
-		} catch (Exception e) {
-			e.printStackTrace();
+		} else if (type.isEnum()) {
+			return Enum.valueOf(type, value.toString());
+		} else {
+			logger.warn("Value [" + value + "] is of type [" + value.getClass().getName() + "] and cannot be converted to required type [" + type.getName() + "]");
 		}
 		return null;
 	}
-
 }

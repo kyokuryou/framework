@@ -8,6 +8,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.smarty.core.exception.InstanceClassException;
+import org.smarty.core.exception.InvokeMethodException;
 import org.smarty.core.io.ModelMap;
 import org.smarty.core.io.ModelSerializable;
 import org.smarty.core.utils.BeanUtil;
@@ -57,6 +58,9 @@ public class ModelMapperHandler<T extends ModelSerializable> extends RowMapperHa
 		try {
 			obj = BeanUtil.instanceClass(superClass);
 		} catch (InstanceClassException e) {
+			logger.warn(e);
+			return null;
+		} catch (InvokeMethodException e) {
 			logger.warn(e);
 			return null;
 		}

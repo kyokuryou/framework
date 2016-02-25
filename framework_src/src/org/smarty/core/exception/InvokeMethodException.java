@@ -1,7 +1,7 @@
 package org.smarty.core.exception;
 
 /**
- * 反射调用方法时抛出 IllegalAccessException, IllegalArgumentException,InvocationTargetException由此类取代
+ * 反射调用方法时抛出 NoSuchMethodException, SecurityException,InvocationTargetException由此类取代
  * Created Date 2015/04/09
  *
  * @author quliang

@@ -17,7 +17,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.smarty.core.common.BaseConstant;
 import org.smarty.core.utils.CommonUtil;
-import org.smarty.core.utils.LogicUtil;
+import org.smarty.core.utils.ObjectUtil;
 
 /**
  * 网络适配器
@@ -192,7 +192,7 @@ public abstract class AbstractSocket {
 
 		byte[] bytes = new byte[len + off];
 		if (is.read(bytes, off, len) != -1) {
-			return (byte[]) CommonUtil.copyArray(bytes, off, bytes.length);
+			return (byte[]) ObjectUtil.copyArray(bytes, off, bytes.length);
 		}
 		return null;
 	}
@@ -207,7 +207,7 @@ public abstract class AbstractSocket {
 	private void readAndWrite(InputStream is, OutputStream os) throws IOException {
 		for (int i = 0; ; i++) {
 			byte[] bs = readBytes(is, i);
-			if (LogicUtil.isEmptyArray(bs)) {
+			if (ObjectUtil.isEmpty(bs)) {
 				break;
 			}
 			os.write(bs);
@@ -228,7 +228,7 @@ public abstract class AbstractSocket {
 		if (fExt.length() > 15) {
 			throw new IOException("文件后缀超过指定大小.");
 		}
-		return (byte[]) CommonUtil.copyArray(fExt.getBytes(), 0, 15);
+		return (byte[]) ObjectUtil.copyArray(fExt.getBytes(), 0, 15);
 	}
 
 }

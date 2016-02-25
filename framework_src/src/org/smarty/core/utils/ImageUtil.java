@@ -37,7 +37,7 @@ import org.apache.commons.logging.LogFactory;
  * @author quliang
  * @version 1.0
  */
-public class ImageUtil {
+public final class ImageUtil {
 	private static Log logger = LogFactory.getLog(ImageUtil.class);
 
 	private ImageUtil() {
@@ -78,7 +78,7 @@ public class ImageUtil {
 	 * @throws IOException
 	 */
 	public static BufferedImage original(byte[] data, boolean compress) throws IOException {
-		if (data == null || data.length == 0) {
+		if(ObjectUtil.isEmpty(data)){
 			return null;
 		}
 		ByteArrayInputStream bais = new ByteArrayInputStream(data);

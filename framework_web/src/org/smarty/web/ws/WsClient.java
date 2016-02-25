@@ -1,5 +1,6 @@
 package org.smarty.web.ws;
 
+import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import org.apache.commons.httpclient.params.HttpClientParams;
@@ -22,16 +23,16 @@ public class WsClient {
     private URL wsdlUrl;
     private Handler handler;
 
-    public WsClient(String wsdlUrl) throws MalformedURLException {
+    public WsClient(String wsdlUrl) throws MalformedURLException, FileNotFoundException {
         this(wsdlUrl, null);
     }
 
-    public WsClient(String wsdlUrl, Handler handler) throws MalformedURLException {
+    public WsClient(String wsdlUrl, Handler handler) throws MalformedURLException, FileNotFoundException {
         this.wsdlUrl = getWsdlUrl(wsdlUrl);
         this.handler = handler;
     }
 
-    public URL getWsdlUrl(String wsdl) throws MalformedURLException {
+    public URL getWsdlUrl(String wsdl) throws MalformedURLException, FileNotFoundException {
         if (wsdl.startsWith("http://") || wsdl.startsWith("https://")) {
             return new URL(wsdl);
         } else {

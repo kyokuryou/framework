@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import org.smarty.core.build.CodeBook;
+import org.smarty.core.config.CodeBook;
 
 /**
  * 文件索引

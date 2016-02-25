@@ -7,9 +7,9 @@ import org.smarty.core.bean.Pager;
 import org.smarty.core.io.ParameterMap;
 import org.smarty.core.io.ParameterSerializable;
 import org.smarty.core.support.jdbc.support.DBType;
-import org.smarty.core.utils.BeanUtil;
 import org.smarty.core.utils.LilystudioUtil;
-import org.smarty.core.utils.LogicUtil;
+import org.smarty.core.utils.ObjectUtil;
+import org.springframework.util.ObjectUtils;
 
 /**
  * SQL创建
@@ -36,7 +36,7 @@ public abstract class SQLHolder {
 		if (params instanceof ParameterMap) {
 			return getSQLString((ParameterMap) params);
 		}
-		return getSQLString(BeanUtil.copyToParameterMap(params));
+		return getSQLString(ObjectUtil.copyToParameterMap(params));
 	}
 
 	/**
@@ -46,7 +46,7 @@ public abstract class SQLHolder {
 	 * @return SQL
 	 */
 	public final String getSQLString(ParameterMap params) {
-		if (LogicUtil.isEmptyMap(params)) {
+		if (ObjectUtil.isEmpty(params)) {
 			return sql;
 		}
 		return LilystudioUtil.render(sql, params);
@@ -77,7 +77,7 @@ public abstract class SQLHolder {
 	 * @return SQL
 	 */
 	public String orderBy(String orderBy, Pager.OrderType orderType) {
-		if (!sql.contains("ORDER BY") && orderType != null && LogicUtil.isNotEmpty(orderBy)) {
+		if (!sql.contains("ORDER BY") && !ObjectUtils.isEmpty(orderBy)) {
 			StringBuilder sb = new StringBuilder();
 			sb.append(" ORDER BY ");
 			sb.append(orderBy);

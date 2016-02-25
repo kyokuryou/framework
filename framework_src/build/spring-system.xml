@@ -6,11 +6,11 @@
        xmlns:task="http://www.springframework.org/schema/task"
 
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-                     http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                     http://www.springframework.org/schema/beans/spring-beans.xsd
                      http://www.springframework.org/schema/aop
-                     http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+                     http://www.springframework.org/schema/aop/spring-aop.xsd
                      http://www.springframework.org/schema/context
-                     http://www.springframework.org/schema/context/spring-context-3.1.xsd
+                     http://www.springframework.org/schema/context/spring-context.xsd
                      http://www.springframework.org/schema/task
                      http://www.springframework.org/schema/task/spring-task.xsd">
 
@@ -25,13 +25,19 @@
     <aop:aspectj-autoproxy proxy-target-class="true"/>
     <aop:config proxy-target-class="true"/>
     <!-- 定时器任务 -->
-    <task:annotation-driven/>
+    <task:annotation-driven executor="taskExecutor" mode="proxy"/>
+
     <!-- 自定义定时任务-->
-    <bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"/>
-    <bean id="scheduleManager" class="org.smarty.core.support.ScheduleManager">
+    <bean id="schedulerJobFactory" class="org.smarty.core.support.schedule.DispatcherJobFactory"/>
+    <bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="autoStartup" value="true"/>
+        <property name="taskExecutor" ref="taskExecutor"/>
+        <property name="jobFactory" ref="schedulerJobFactory"/>
+    </bean>
+    <!-- 动态定时任务 -->
+    <bean id="dispatcherSchedule" class="org.smarty.core.support.schedule.DispatcherSchedule" abstract="true">
         <property name="scheduler" ref="schedulerFactory"/>
     </bean>
-
     <!-- JDBC参数配置 -->
     <bean id="configurer" class="org.springframework.beans.factory.config.PropertiesFactoryBean" lazy-init="true">
         <property name="fileEncoding" value="UTF-8"/>
@@ -80,11 +86,6 @@
             </props>
         </property>
     </bean>
-    <!-- 邮件管理器 -->
-    <bean id="mailManager" class="org.smarty.core.support.MailManager" lazy-init="true">
-        <property name="javaMailSender" ref="javaMailSender"/>
-        <property name="taskExecutor" ref="taskExecutor"/>
-    </bean>
     <!-- 网络适配器(服务器) -->
     <bean id="socketServer" class="org.smarty.core.support.net.SocketServer" lazy-init="true">
         <property name="taskExecutor" ref="taskExecutor"/>
@@ -104,4 +105,9 @@
 
     <bean id="conversionService" class="org.springframework.format.support.DefaultFormattingConversionService"/>
 
+    <bean id="baseLauncher" class="org.smarty.core.launcher.AbsLauncher" init-method="main" destroy-method="exit"
+          abstract="true">
+        <property name="systemCatchSize" value="${cache.system.size}"/>
+        <property name="temporaryCatchSize" value="${cache.temporary.size}"/>
+    </bean>
 </beans>

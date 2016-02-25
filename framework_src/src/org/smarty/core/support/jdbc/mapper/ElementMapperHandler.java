@@ -8,10 +8,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import org.smarty.core.exception.NoSuchReflectException;
+import org.smarty.core.exception.InvokeFieldException;
 import org.smarty.core.utils.BeanUtil;
 import org.smarty.core.utils.CommonUtil;
-import org.smarty.core.utils.ConvertUtil;
+import org.smarty.core.utils.ObjectUtil;
 import org.springframework.jdbc.support.JdbcUtils;
 
 /**
@@ -59,7 +59,7 @@ public class ElementMapperHandler extends RowMapperHandler<Element> {
 			if (proEl == null)
 				return;
 			bean.add(proEl);
-		} catch (NoSuchReflectException e) {
+		} catch (InvokeFieldException e) {
 			logger.warn(e);
 		}
 	}
@@ -89,16 +89,16 @@ public class ElementMapperHandler extends RowMapperHandler<Element> {
 
 		if (klass.isArray()) {
 			Element element = properties.addElement("array");
-			element.addAttribute("value-type", ConvertUtil.getClassName(valueType));
+			element.addAttribute("value-type", BeanUtil.getClassName(valueType));
 			int arrLen = Array.getLength(value);
 			for (int i = 0; i < arrLen; i++) {
 				Element val = element.addElement("value");
-				val.setText(ConvertUtil.toString(Array.get(value, i)));
+				val.setText(ObjectUtil.toString(Array.get(value, i)));
 			}
 		} else {
 			Element val = properties.addElement("value");
-			val.addAttribute("type", ConvertUtil.getClassName(valueType));
-			val.setText(ConvertUtil.toString(value));
+			val.addAttribute("type", BeanUtil.getClassName(valueType));
+			val.setText(ObjectUtil.toString(value));
 		}
 		return properties;
 	}

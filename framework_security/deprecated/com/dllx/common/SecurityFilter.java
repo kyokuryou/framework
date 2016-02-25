@@ -1,4 +1,4 @@
-package org.smarty.core.security.common;
+package org.smarty.security.common;
 
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityMetadataSource;

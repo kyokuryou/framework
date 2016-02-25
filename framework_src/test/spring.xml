@@ -51,4 +51,6 @@
         <property name="jobClass" value="org.test.commons.TestSchedule"/>
         <property name="description" value="testSchedule"/>
     </bean>
+
+    <bean id="testBeanFactory" class="org.test.commons.TestBeanFactory"/>
 </beans>

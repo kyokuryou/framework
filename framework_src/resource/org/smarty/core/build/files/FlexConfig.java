@@ -1,11 +1,11 @@
-package org.smarty.core.build.files;
+package org.smarty.core.config.files;
 
 import config.FileWrapper;
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 import org.dom4j.Document;
-import org.smarty.core.build.CodeBook;
+import org.smarty.core.config.CodeBook;
 import org.smarty.core.utils.DocumentUtil;
 
 /**

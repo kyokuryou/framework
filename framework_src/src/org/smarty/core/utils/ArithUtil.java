@@ -11,7 +11,7 @@ import org.smarty.core.common.BaseConstant;
  * @author quliang
  * @version 1.0
  */
-public class ArithUtil {
+public final class ArithUtil {
 
 	private ArithUtil() {
 	}
@@ -75,9 +75,7 @@ public class ArithUtil {
 	 * @return 两个参数的商
 	 */
 	public static double div(double v1, double v2, int scale) {
-		if (scale < 0) {
-			throw new IllegalArgumentException("参数scale必须为整数为零!");
-		}
+		ObjectUtil.assertExpression(scale > 0, "this scale is required; it must be gt zero");
 		BigDecimal b1 = new BigDecimal(Double.toString(v1));
 		BigDecimal b2 = new BigDecimal(Double.toString(v2));
 		return b1.divide(b2, scale, BigDecimal.ROUND_HALF_UP).doubleValue();
@@ -91,9 +89,7 @@ public class ArithUtil {
 	 * @return 四舍五入后的结果
 	 */
 	public static double round(double v, int scale) {
-		if (scale < 0) {
-			throw new IllegalArgumentException("参数scale必须为整数为零!");
-		}
+		ObjectUtil.assertExpression(scale > 0, "this scale is required; it must be gt zero");
 		BigDecimal b = new BigDecimal(Double.toString(v));
 		BigDecimal one = new BigDecimal("1");
 		return b.divide(one, scale, BigDecimal.ROUND_HALF_UP).doubleValue();
@@ -202,5 +198,4 @@ public class ArithUtil {
 			return 0;
 		}
 	}
-
 }

@@ -1,7 +1,7 @@
 package org.smarty.security.common;
 
 import java.util.List;
-import org.smarty.security.bean.Resource;
+import org.smarty.security.bean.ResourceSecurity;
 import org.smarty.security.bean.UserSecurity;
 
 /**
@@ -22,5 +22,5 @@ public interface ISecurityService {
 
 	UserSecurity getUserSecurity(String id);
 
-	List<Resource> getResourceList(String url);
+	List<ResourceSecurity> getResourceList(String url);
 }

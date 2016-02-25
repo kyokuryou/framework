@@ -4,12 +4,13 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import org.smarty.core.utils.LogicUtil;
+import org.smarty.core.utils.ObjectUtil;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class UserSecurity implements UserDetails {
+	private String uid;
 	private String username;
 	private String password;
 	private Date lockedDate;
@@ -18,6 +19,10 @@ public class UserSecurity implements UserDetails {
 	private boolean isCredentialsNonExpired;
 	private boolean isEnabled;
 	private Collection<? extends GrantedAuthority> authorities;
+
+	public String getUid() {
+		return uid;
+	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -40,22 +45,26 @@ public class UserSecurity implements UserDetails {
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return !isAccountNonExpired;
+		return isAccountNonExpired;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return !isAccountNonLocked;
+		return isAccountNonLocked;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return !isCredentialsNonExpired;
+		return isCredentialsNonExpired;
 	}
 
 	@Override
 	public boolean isEnabled() {
 		return isEnabled;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
 	}
 
 	public void setUsername(String username) {
@@ -87,7 +96,7 @@ public class UserSecurity implements UserDetails {
 	}
 
 	public void setAuthorities(List<String> authorities) {
-		if (LogicUtil.isEmptyCollection(authorities)) {
+		if (ObjectUtil.isEmpty(authorities)) {
 			return;
 		}
 		List<GrantedAuthority> galist = new LinkedList<GrantedAuthority>();

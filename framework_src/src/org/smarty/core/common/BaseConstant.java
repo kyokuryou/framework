@@ -17,6 +17,12 @@ public interface BaseConstant {
 	Locale DEF_LOCALE = new Locale("zh", "CN");
 	TimeZone DEF_TIMEZONE = TimeZone.getDefault();
 	Charset DEF_ENCODE = Charset.forName("UTF-8");
+
+	String STR_TIMEZONE = DEF_TIMEZONE.getID();
+	String STR_LOCALE = DEF_LOCALE.toString();
+	String STR_CHARSET = DEF_ENCODE.displayName();
+
+
 	String DEF_TIME_FORMAT = "HH:mm:ss";
 	String DEF_DATE_FORMAT = "yyyy-MM-dd";
 	String DEF_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
@@ -27,6 +33,8 @@ public interface BaseConstant {
 	// 缓存
 	String CACHE_SYSTEM = "system";
 	String CACHE_TEMPORARY = "temporary";
+
+	String ASSERT_EXPRESSION = "[Assertion failed] - {0}";
 
 	char LETTERS_LF = '\n';
 

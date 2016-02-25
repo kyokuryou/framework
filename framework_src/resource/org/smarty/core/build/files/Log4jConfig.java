@@ -1,11 +1,11 @@
-package org.smarty.core.build.files;
+package org.smarty.core.config.files;
 
 import config.FileWrapper;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
-import org.smarty.core.build.CodeBook;
+import org.smarty.core.config.CodeBook;
 
 /**
  * Created with Liang Qu

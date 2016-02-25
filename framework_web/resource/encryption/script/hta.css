@@ -16,7 +16,7 @@ body {
     width: 50px;
 }
 
-.encryption_builder, .encryption_path,.encryption_type {
+.encryption_builder, .encryption_path, .encryption_type {
     width: 255px;
 }
 

@@ -18,7 +18,7 @@ import org.smarty.core.bean.TemplateConfig;
  * @author quliang
  * @version 1.0
  */
-public class LilystudioUtil {
+public final class LilystudioUtil {
 	private static Log logger = LogFactory.getLog(LilystudioUtil.class);
 
 	private static Engine engine;

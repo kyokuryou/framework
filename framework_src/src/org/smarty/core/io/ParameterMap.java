@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.smarty.core.common.BaseConstant;
+import org.smarty.core.utils.ObjectUtil;
 
 /**
  * @author qul
@@ -20,7 +21,7 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
 
 	public String[] getStringArray(String key) {
 		String res = getString(key);
-		if (res == null || "".equals(res)) {
+		if (ObjectUtil.isEmpty(res)) {
 			return null;
 		}
 		return res.split(",");
@@ -28,7 +29,7 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
 
 	public byte[] getBytes(String key) {
 		String res = getString(key);
-		if (res == null || "".equals(res)) {
+		if (ObjectUtil.isEmpty(res)) {
 			return new byte[0];
 		}
 		return res.getBytes(BaseConstant.DEF_ENCODE);
@@ -36,7 +37,7 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
 
 	public char[] getChars(String key) {
 		String res = getString(key);
-		if (res == null || "".equals(res)) {
+		if (ObjectUtil.isEmpty(res)) {
 			return new char[0];
 		}
 		return res.toCharArray();
@@ -44,7 +45,7 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
 
 	public short getShort(String key) {
 		String res = getString(key);
-		if (res == null || "".equals(res)) {
+		if (ObjectUtil.isEmpty(res)) {
 			return Short.MIN_VALUE;
 		}
 		return Short.valueOf(res);
@@ -52,7 +53,7 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
 
 	public int getInt(String key) {
 		String res = getString(key);
-		if (res == null || "".equals(res)) {
+		if (ObjectUtil.isEmpty(res)) {
 			return Integer.MIN_VALUE;
 		}
 		return Integer.valueOf(res);
@@ -60,7 +61,7 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
 
 	public long getLong(String key) {
 		String res = getString(key);
-		if (res == null || "".equals(res)) {
+		if (ObjectUtil.isEmpty(res)) {
 			return Long.MIN_VALUE;
 		}
 		return Long.valueOf(res);
@@ -68,7 +69,7 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
 
 	public float getFloat(String key) {
 		String res = getString(key);
-		if (res == null || "".equals(res)) {
+		if (ObjectUtil.isEmpty(res)) {
 			return Float.MIN_VALUE;
 		}
 		return Float.valueOf(res);
@@ -76,7 +77,7 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
 
 	public double getDouble(String key) {
 		String res = getString(key);
-		if (res == null || "".equals(res)) {
+		if (ObjectUtil.isEmpty(res)) {
 			return Double.MIN_VALUE;
 		}
 		return Double.valueOf(res);
@@ -84,7 +85,7 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
 
 	public boolean getBoolean(String key) {
 		String res = getString(key);
-		if (res == null || "".equals(res)) {
+		if (ObjectUtil.isEmpty(res)) {
 			return false;
 		}
 		return Boolean.valueOf(res);
@@ -100,7 +101,7 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
 
 	public List<Integer> getIntList(String key) {
 		String[] res = getStringArray(key);
-		if (res == null || res.length == 0) {
+		if (ObjectUtil.isEmpty(res)) {
 			return null;
 		}
 		List<Integer> list = new ArrayList<Integer>();
@@ -112,7 +113,7 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
 
 	public List<Long> getLongList(String key) {
 		String[] res = getStringArray(key);
-		if (res == null || res.length == 0) {
+		if (ObjectUtil.isEmpty(res)) {
 			return null;
 		}
 		List<Long> list = new ArrayList<Long>();
@@ -132,7 +133,7 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
 
 	@Override
 	public void putAll(Map<? extends String, ?> m) {
-		if (m == null || m.isEmpty()) {
+		if (ObjectUtil.isEmpty(m)) {
 			return;
 		}
 		Set<? extends Map.Entry<? extends String, ?>> mes = m.entrySet();
@@ -147,7 +148,7 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
 
 	public byte[] removeBytes(String key) {
 		String res = removeString(key);
-		if (res == null || "".equals(res)) {
+		if (ObjectUtil.isEmpty(res)) {
 			return new byte[0];
 		}
 		return res.getBytes(BaseConstant.DEF_ENCODE);
@@ -155,7 +156,7 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
 
 	public char[] removeChars(String key) {
 		String res = removeString(key);
-		if (res == null || "".equals(res)) {
+		if (ObjectUtil.isEmpty(res)) {
 			return new char[0];
 		}
 		return res.toCharArray();
@@ -163,7 +164,7 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
 
 	public short removeShort(String key) {
 		String res = removeString(key);
-		if (res == null || "".equals(res)) {
+		if (ObjectUtil.isEmpty(res)) {
 			return Short.MIN_VALUE;
 		}
 		return Short.valueOf(res);
@@ -171,7 +172,7 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
 
 	public int removeInt(String key) {
 		String res = removeString(key);
-		if (res == null || "".equals(res)) {
+		if (ObjectUtil.isEmpty(res)) {
 			return Integer.MIN_VALUE;
 		}
 		return Integer.valueOf(res);
@@ -179,7 +180,7 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
 
 	public long removeLong(String key) {
 		String res = removeString(key);
-		if (res == null || "".equals(res)) {
+		if (ObjectUtil.isEmpty(res)) {
 			return Long.MIN_VALUE;
 		}
 		return Long.valueOf(res);
@@ -187,7 +188,7 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
 
 	public float removeFloat(String key) {
 		String res = removeString(key);
-		if (res == null || "".equals(res)) {
+		if (ObjectUtil.isEmpty(res)) {
 			return Float.MIN_VALUE;
 		}
 		return Float.valueOf(res);
@@ -195,7 +196,7 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
 
 	public double removeDouble(String key) {
 		String res = removeString(key);
-		if (res == null || "".equals(res)) {
+		if (ObjectUtil.isEmpty(res)) {
 			return Double.MIN_VALUE;
 		}
 		return Double.valueOf(res);
@@ -203,7 +204,7 @@ public class ParameterMap extends HashMap<String, Object> implements ParameterSe
 
 	public boolean removeBoolean(String key) {
 		String res = removeString(key);
-		if (res == null || "".equals(res)) {
+		if (ObjectUtil.isEmpty(res)) {
 			return false;
 		}
 		return Boolean.valueOf(res);

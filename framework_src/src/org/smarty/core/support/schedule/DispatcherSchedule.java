@@ -11,8 +11,12 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.JobDetailImpl;
 import org.quartz.impl.triggers.SimpleTriggerImpl;
-import org.smarty.core.utils.LogicUtil;
+import org.smarty.core.config.SystemConfigurer;
 import org.smarty.core.utils.MD5Util;
+import org.smarty.core.utils.ObjectUtil;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.scheduling.quartz.SchedulerAccessor;
@@ -21,17 +25,13 @@ import org.springframework.scheduling.quartz.SchedulerAccessor;
  * @author qul
  * @since LVGG1.1
  */
-public class DispatcherSchedule extends SchedulerAccessor implements BeanNameAware, InitializingBean {
+public class DispatcherSchedule extends SchedulerAccessor implements BeanNameAware, BeanFactoryAware, InitializingBean {
 	private final Log logger = LogFactory.getLog(DispatcherSchedule.class);
 	private String beanName;
 	private long startDelay;
 	private Class<? extends Job> jobClass;
 	private String description;
 	private Scheduler scheduler;
-
-	public void setScheduler(Scheduler scheduler) {
-		this.scheduler = scheduler;
-	}
 
 	public void setStartDelay(long startDelay) {
 		this.startDelay = startDelay;
@@ -82,7 +82,7 @@ public class DispatcherSchedule extends SchedulerAccessor implements BeanNameAwa
 
 	private String parseName(JobDataMap dataMap) {
 		StringBuilder nb = new StringBuilder(beanName + "?");
-		if (LogicUtil.isEmptyMap(dataMap)) {
+		if (ObjectUtil.isEmpty(dataMap)) {
 			nb.append("default");
 			return MD5Util.encode(nb.toString());
 		}
@@ -134,6 +134,11 @@ public class DispatcherSchedule extends SchedulerAccessor implements BeanNameAwa
 	@Override
 	public void setBeanName(String beanName) {
 		this.beanName = beanName;
+	}
+
+	@Override
+	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+		scheduler = beanFactory.getBean(SystemConfigurer.SCHEDULER_NAME, Scheduler.class);
 	}
 
 	@Override

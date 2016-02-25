@@ -1376,7 +1376,7 @@ public class CsvReader {
 				columnBuffer.Buffer = null;
 				rawBuffer.Buffer = null;
 			}
-	        /* 由客户端处理
+		    /* 由客户端处理
             try {
 				if (initialized) {
 					inputStream.close();

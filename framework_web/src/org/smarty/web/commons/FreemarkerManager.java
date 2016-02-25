@@ -9,7 +9,7 @@ import java.io.OutputStreamWriter;
 import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.smarty.core.utils.LogicUtil;
+import org.smarty.core.utils.ObjectUtil;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
@@ -39,7 +39,7 @@ public class FreemarkerManager implements InitializingBean {
     }
 
     public void outputTemplate(String name, Map<String, Object> data, OutputStream os) throws IOException {
-        if (LogicUtil.isEmpty(name) || os == null) {
+        if (ObjectUtil.isEmpty(name) || os == null) {
             return;
         }
         try {

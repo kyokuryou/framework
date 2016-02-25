@@ -1,4 +1,4 @@
-package org.smarty.core.build.files;
+package org.smarty.core.config.files;
 
 import config.FileWrapper;
 import java.io.File;
@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import org.dom4j.Document;
-import org.smarty.core.build.CodeBook;
-import org.smarty.core.build.CodeBook.WebVersion;
+import org.smarty.core.config.CodeBook;
+import org.smarty.core.config.CodeBook.WebVersion;
 import org.smarty.core.utils.DocumentUtil;
 import org.smarty.core.utils.TemplateUtil;
 

@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import org.smarty.core.bean.Cache;
 import org.smarty.core.exception.CacheNameNotExistException;
-import org.smarty.core.utils.LogicUtil;
+import org.smarty.core.utils.ObjectUtil;
 
 /**
  * 缓存管理
@@ -52,7 +52,7 @@ final class CacheMemory {
 	 * @param data 值
 	 */
 	public void putCache(String key, Object data, boolean always) {
-		if (LogicUtil.isEmpty(key) || data == null) {
+		if (ObjectUtil.isEmpty(key) || ObjectUtil.isEmpty(data)) {
 			return;
 		}
 		synchronized (cacheMap) {
@@ -82,7 +82,7 @@ final class CacheMemory {
 	 * @param data 值
 	 */
 	public void flushCache(String key, Object data) {
-		if (LogicUtil.isEmpty(key)) {
+		if (ObjectUtil.isEmpty(key)) {
 			return;
 		}
 		synchronized (cacheMap) {
@@ -101,7 +101,7 @@ final class CacheMemory {
 	 * @param key 名
 	 */
 	public void removeCache(String key) {
-		if (LogicUtil.isEmpty(key)) {
+		if (ObjectUtil.isEmpty(key)) {
 			return;
 		}
 		synchronized (cacheMap) {

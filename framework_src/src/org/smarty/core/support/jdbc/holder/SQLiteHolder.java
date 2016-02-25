@@ -2,7 +2,7 @@ package org.smarty.core.support.jdbc.holder;
 
 import org.smarty.core.bean.Pager;
 import org.smarty.core.support.jdbc.support.DBType;
-import org.smarty.core.utils.LogicUtil;
+import org.smarty.core.utils.ObjectUtil;
 
 /**
  * SQLite实现
@@ -32,7 +32,7 @@ public class SQLiteHolder extends SQLHolder {
 		pager.setTotalCount(totalCount);
 
 		String orderBy = orderBy(pager.getOrderBy(), pager.getOrderType());
-		if (LogicUtil.isNotEmpty(orderBy)) {
+		if (!ObjectUtil.isEmpty(orderBy)) {
 			sb.append(orderBy);
 		}
 		sb.append(" LIMIT ");

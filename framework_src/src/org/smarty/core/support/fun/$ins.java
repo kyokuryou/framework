@@ -11,7 +11,7 @@ import org.lilystudio.smarty4j.statement.ParameterCharacter;
 import org.smarty.core.exception.InvokeMethodException;
 import org.smarty.core.exception.NoSuchReflectException;
 import org.smarty.core.utils.BeanUtil;
-import org.smarty.core.utils.LogicUtil;
+import org.smarty.core.utils.ObjectUtil;
 
 /**
  * 输出in语法
@@ -68,10 +68,10 @@ public class $ins extends LineFunction {
 	 * @return 值
 	 */
 	public Object getValue(Object obj, String item) {
-		if (obj == null) {
+		if (ObjectUtil.isEmpty(obj)) {
 			return null;
 		}
-		if (LogicUtil.isNotEmpty(item)) {
+		if (!ObjectUtil.isEmpty(item)) {
 			if (obj instanceof Map) {
 				return ((Map) obj).get(item);
 			}

@@ -14,7 +14,6 @@ import com.octo.captcha.component.word.wordgenerator.WordGenerator;
 import com.octo.captcha.engine.image.ListImageCaptchaEngine;
 import com.octo.captcha.image.gimpy.GimpyFactory;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.Random;
@@ -28,79 +27,94 @@ import java.util.Random;
  */
 public class CaptchaEngine extends ListImageCaptchaEngine {
 
-    public static final String IMAGE_CAPTCHA_KEY = "imageCaptcha";// ImageCaptcha对象存放在Session中的key
-    public static final String CAPTCHA_INPUT_NAME = "j_captcha";// 验证码输入表单名称
-    public static final String CAPTCHA_IMAGE_URL = "/captcha.jpg";// 验证码图片URL
+	// 生成验证码
+	protected void buildInitialFactories() {
+		RandomListColorGenerator rlcg = new RandomListColorGenerator(
+				WebBaseConstant.CAPTCHA_TEXT_COLOR
+		);
 
-    // 验证码随机字体
-    private static final Font[] RANDOM_FONT = new Font[]{new Font("nyala", Font.BOLD, WebBaseConstant.CAPTCHA_MIN_FONT), new Font("Arial", Font.BOLD, WebBaseConstant.CAPTCHA_MIN_FONT), new Font("Bell MT", Font.BOLD, WebBaseConstant.CAPTCHA_MIN_FONT), new Font("Credit valley", Font.BOLD, WebBaseConstant.CAPTCHA_MIN_FONT), new Font("Impact", Font.BOLD, WebBaseConstant.CAPTCHA_MIN_FONT)};
+		BackgroundGenerator bg = new RandomBackgroundGenerator();
 
-    // 验证码随机颜色
-    private static final Color[] RANDOM_COLOR = new Color[]{new Color(255, 255, 255), new Color(255, 220, 220), new Color(220, 255, 255), new Color(220, 220, 255), new Color(255, 255, 220), new Color(220, 255, 220)};
+		WordGenerator wg = new RandomWordGenerator(WebBaseConstant.CAPTCHA_RANDOM_WORD);
 
-    // 生成验证码
-    protected void buildInitialFactories() {
-        RandomListColorGenerator randomListColorGenerator = new RandomListColorGenerator(RANDOM_COLOR);
+		FontGenerator fg = new RandomFontGenerator(
+				WebBaseConstant.CAPTCHA_MIN_FONT,
+				WebBaseConstant.CAPTCHA_MAX_FONT,
+				WebBaseConstant.CAPTCHA_TEXT_FONT
+		);
 
-        BackgroundGenerator backgroundGenerator = new RandomBackgroundGenerator();
+		TextPaster textPaster = new DecoratedRandomTextPaster(
+				WebBaseConstant.CAPTCHA_MIN_WORD,
+				WebBaseConstant.CAPTCHA_MAX_WORD,
+				rlcg,
+				new TextDecorator[]{}
+		);
 
-        WordGenerator wordGenerator = new RandomWordGenerator(WebBaseConstant.CAPTCHA_RANDOM_WORD);
+		WordToImage wordToImage = new ComposedWordToImage(fg, bg, textPaster);
 
-        FontGenerator fontGenerator = new RandomFontGenerator(WebBaseConstant.CAPTCHA_MIN_FONT, WebBaseConstant.CAPTCHA_MAX_FONT, RANDOM_FONT);
+		addFactory(new GimpyFactory(wg, wordToImage));
+	}
 
-        TextDecorator[] textDecorator = new TextDecorator[]{};
+	private class RandomBackgroundGenerator implements BackgroundGenerator {
 
-        TextPaster textPaster = new DecoratedRandomTextPaster(WebBaseConstant.CAPTCHA_MIN_WORD, WebBaseConstant.CAPTCHA_MAX_WORD, randomListColorGenerator, textDecorator);
+		public int getImageHeight() {
+			return WebBaseConstant.CAPTCHA_IMAGE_HEIGHT;
+		}
 
-        WordToImage wordToImage = new ComposedWordToImage(fontGenerator, backgroundGenerator, textPaster);
+		public int getImageWidth() {
+			return WebBaseConstant.CAPTCHA_IMAGE_WIDTH;
+		}
 
-        addFactory(new GimpyFactory(wordGenerator, wordToImage));
-    }
+		public BufferedImage getBackground() {
+			int width = getImageWidth();
+			int height = getImageHeight();
+			Random random = new Random();
+			BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+			Graphics g = image.getGraphics();
+			// 设定背景色
+			g.setColor(getRandColor());
+			g.fillRect(0, 0, width, height);
+			g.setColor(getRandColor(160, 200));
+			for (int i = 0; i < 10; i++) {
+				int x = random.nextInt(width);
+				int y = random.nextInt(height);
+				int xl = random.nextInt(width / 2);
+				int yl = random.nextInt(height / 2);
+				g.drawLine(x, y, x + xl, y + yl);
+			}
+			g.dispose();
+			return image;
+		}
 
-    private class RandomBackgroundGenerator implements BackgroundGenerator {
+		/**
+		 * 给定范围获得随机颜色
+		 *
+		 * @return
+		 */
+		public Color getRandColor() {
+			int len = WebBaseConstant.CAPTCHA_BACKGROUND_COLOR.length;
+			Random random = new Random();
+			int index = random.nextInt(len);
+			return WebBaseConstant.CAPTCHA_BACKGROUND_COLOR[index];
+		}
 
-        public int getImageHeight() {
-            return WebBaseConstant.CAPTCHA_IMAGE_WIDTH;
-        }
-
-        public int getImageWidth() {
-            return WebBaseConstant.CAPTCHA_IMAGE_HEIGHT;
-        }
-
-        public BufferedImage getBackground() {
-            Random random = new Random();
-            BufferedImage image = new BufferedImage(WebBaseConstant.CAPTCHA_IMAGE_WIDTH, WebBaseConstant.CAPTCHA_IMAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
-            Graphics g = image.getGraphics();
-            // 设定背景色
-            g.setColor(getRandColor(200, 250));
-            g.fillRect(0, 0, WebBaseConstant.CAPTCHA_IMAGE_WIDTH, WebBaseConstant.CAPTCHA_IMAGE_HEIGHT);
-            g.setColor(getRandColor(160, 200));
-            for (int i = 0; i < 10; i++) {
-                int x = random.nextInt(WebBaseConstant.CAPTCHA_IMAGE_WIDTH);
-                int y = random.nextInt(WebBaseConstant.CAPTCHA_IMAGE_HEIGHT);
-                int xl = random.nextInt(WebBaseConstant.CAPTCHA_IMAGE_WIDTH / 2);
-                int yl = random.nextInt(WebBaseConstant.CAPTCHA_IMAGE_HEIGHT / 2);
-                g.drawLine(x, y, x + xl, y + yl);
-            }
-            g.dispose();
-            return image;
-        }
-
-        /**
-         * 给定范围获得随机颜色
-         *
-         * @param fc
-         * @param bc
-         * @return
-         */
-        public Color getRandColor(int fc, int bc) {
-            Random random = new Random();
-            if (fc > 255) fc = 255;
-            if (bc > 255) bc = 255;
-            int r = fc + random.nextInt(bc - fc);
-            int g = fc + random.nextInt(bc - fc);
-            int b = fc + random.nextInt(bc - fc);
-            return new Color(r, g, b);
-        }
-    }
+		/**
+		 * 给定范围获得随机颜色
+		 *
+		 * @param fc
+		 * @param bc
+		 * @return
+		 */
+		public Color getRandColor(int fc, int bc) {
+			Random random = new Random();
+			if (fc > 255)
+				fc = 255;
+			if (bc > 255)
+				bc = 255;
+			int r = fc + random.nextInt(bc - fc);
+			int g = fc + random.nextInt(bc - fc);
+			int b = fc + random.nextInt(bc - fc);
+			return new Color(r, g, b);
+		}
+	}
 }

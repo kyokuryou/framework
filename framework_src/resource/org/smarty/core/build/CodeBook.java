@@ -1,4 +1,4 @@
-package org.smarty.core.build;
+package org.smarty.core.config;
 
 /**
  * 常量定义

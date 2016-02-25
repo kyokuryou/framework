@@ -2,7 +2,7 @@ package org.smarty.core.launcher;
 
 import java.util.HashSet;
 import java.util.Set;
-import org.smarty.core.utils.LogicUtil;
+import org.smarty.core.utils.ObjectUtil;
 
 /**
  * Class加载器
@@ -27,7 +27,7 @@ public class LauncherWrapper {
 		classLoaders.add(Thread.currentThread().getContextClassLoader());
 		classLoaders.add(LauncherWrapper.class.getClassLoader());
 		// 自定义级别
-		if (LogicUtil.isNotEmptyCollection(loaders)) {
+		if (ObjectUtil.isEmpty(loaders)) {
 			classLoaders.addAll(loaders);
 		}
 	}
@@ -38,7 +38,7 @@ public class LauncherWrapper {
 	 * @param classLoader 一个加载器
 	 * @return 加载器
 	 */
-	public static ClassLoader[] getClassLoaders(ClassLoader classLoader) {
+	public static ClassLoader[] getClassLoader1s(ClassLoader classLoader) {
 		Set<ClassLoader> cls = new HashSet<ClassLoader>(classLoaders);
 		// 自定义级别
 		if (classLoader != null) {

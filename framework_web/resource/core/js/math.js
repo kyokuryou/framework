@@ -12,8 +12,7 @@
          */
         setScale: function (scale) {
             defaults.scale = scale;
-        },
-        /**
+        }, /**
          * 浮点数加法运算
          * @param arg1 值1
          * @param arg2 值2
@@ -39,8 +38,7 @@
             val = Math.pow(10, Math.max(num1, num2));
             //先把小数转换成整数然后进行相加，最后转换成小数，toFixed()是精确到小数多少位
             return ((arg1 * val + arg2 * val) / val).toFixed(defaults.scale);
-        },
-        /**
+        }, /**
          * 浮点数减法运算
          * @param arg1 值1
          * @param arg2 值2
@@ -67,8 +65,7 @@
             val = Math.pow(10, Math.max(num1, num2));
             //先把小数转换成整数然后进行相减，最后转换成小数，toFixed()是精确到小数多少位
             return ((arg1 * val - arg2 * val) / val).toFixed(defaults.scale);
-        },
-        /**
+        }, /**
          * 浮点数乘法运算
          * @param arg1 值1
          * @param arg2 值2
@@ -103,8 +100,7 @@
             }
             //把转换后的整数相乘，然后再转换成浮点数
             return ((s1 * s2) / Math.pow(10, a1 + a2)).toFixed(defaults.scale);
-        },
-        /**
+        }, /**
          * 浮点数除法运算
          * @param arg1 值1
          * @param arg2 值2

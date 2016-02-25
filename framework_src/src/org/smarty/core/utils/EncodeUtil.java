@@ -18,7 +18,7 @@ import org.smarty.core.common.BaseConstant;
  * @author quliang
  * @version 1.0
  */
-public class EncodeUtil {
+public final class EncodeUtil {
 	private static Log logger = LogFactory.getLog(EncodeUtil.class);
 
 	private EncodeUtil() {

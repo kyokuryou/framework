@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 @Transactional
 public class RoleService {
-    private static RuntimeLogger logger = new RuntimeLogger(RoleService.class);
+    private static Log logger = LogFactory.getLog(RoleService.class);
 
     @javax.annotation.Resource
     private IRoleDao roleDao;

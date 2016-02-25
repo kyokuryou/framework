@@ -16,7 +16,7 @@ import java.util.Properties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.smarty.core.common.BaseConstant;
-import org.smarty.core.launcher.LauncherWrapper;
+import org.springframework.util.ClassUtils;
 
 /**
  * 通过ClassLoader,对资源的简单的访问
@@ -31,123 +31,78 @@ public class PathUtil {
 	/**
 	 * 返回类路径上的资源的URL
 	 *
-	 * @param loader   用于获取资源的classloader
 	 * @param resource 资源
 	 * @return 资源
-	 * @throws java.io.IOException 如果没发现资源
+	 * @throws java.io.FileNotFoundException 如果没发现资源
 	 */
-	public static URL getResourceAsURL(String resource, ClassLoader loader) throws IOException {
-		ClassLoader[] classLoader = LauncherWrapper.getClassLoaders(loader);
-		URL url;
-		for (ClassLoader cl : classLoader) {
-			if (null != cl) {
-				url = cl.getResource(resource);
-				if (null == url)
-					url = cl.getResource("/" + resource);
-				if (null != url)
-					return url;
-			}
+	public static URL getResourceAsURL(String resource) throws FileNotFoundException {
+		ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
+		if (classLoader != null) {
+			URL url = classLoader.getResource(resource);
+			if (null == url)
+				url = classLoader.getResource("/" + resource);
+			if (null != url)
+				return url;
 		}
-		throw new FileNotFoundException(resource + "文件不存在");
-	}
-
-	/**
-	 * 返回类路径上的资源的URL
-	 *
-	 * @param resource 资源
-	 * @return 资源
-	 */
-	public static URL getResourceAsURL(String resource) {
-		try {
-			return getResourceAsURL(resource, null);
-		} catch (IOException e) {
-			logger.warn(e);
-		}
-		return null;
+		throw new FileNotFoundException("[Read File failed] file:'" + resource + "' not found");
 	}
 
 	/**
 	 * 在classpath中返回一个Stream对象作为一个资源
 	 *
-	 * @param loader   用于获取资源的classloader
 	 * @param resource 资源
 	 * @return 资源
-	 * @throws java.io.IOException 如果资源没发现或不能读
+	 * @throws java.io.FileNotFoundException 如果资源没发现或不能读
 	 */
-	public static InputStream getResourceAsInStream(String resource, ClassLoader loader) throws IOException {
-		ClassLoader[] classLoader = LauncherWrapper.getClassLoaders(loader);
-		for (ClassLoader cl : classLoader) {
-			if (null != cl) {
-				InputStream returnValue = cl.getResourceAsStream(resource);
-				if (null == returnValue)
-					returnValue = cl.getResourceAsStream("/" + resource);
-				if (null != returnValue)
-					return returnValue;
-			}
+	public static InputStream getResourceAsInStream(String resource) throws FileNotFoundException {
+		ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
+		if (classLoader != null) {
+			InputStream returnValue = classLoader.getResourceAsStream(resource);
+			if (null == returnValue)
+				returnValue = classLoader.getResourceAsStream("/" + resource);
+			if (null != returnValue)
+				return returnValue;
 		}
-		throw new FileNotFoundException(resource + "文件不存在");
-	}
-
-
-	/**
-	 * 在classpath中返回一个Stream对象作为一个资源
-	 *
-	 * @param resource 资源
-	 * @return 资源
-	 */
-	public static InputStream getResourceAsInStream(String resource) {
-		try {
-			return getResourceAsInStream(resource, null);
-		} catch (IOException e) {
-			logger.warn(e);
-		}
-		return null;
+		throw new FileNotFoundException("[Read File failed] file:'" + resource + "' not found");
 	}
 
 	/**
 	 * 在classpath资源获取作为一个Properties对象
 	 *
-	 * @param loader   用于获取资源的classloader
 	 * @param resource 资源
 	 * @return 资源
 	 */
-	public static Properties getResourceAsProperties(String resource, ClassLoader loader) {
+	public static Properties getResourceAsProperties(String resource) throws FileNotFoundException {
 		try {
 			Properties props = new Properties();
-			InputStream in = getResourceAsInStream(resource, loader);
+			InputStream in = getResourceAsInStream(resource);
 			props.load(in);
 			in.close();
 			return props;
 		} catch (IOException e) {
-			logger.warn("资源没发现或不能读", e);
+			logger.warn(e);
 		}
-		return null;
+		throw new FileNotFoundException("[Read Properties File failed] Properties file:'" + resource + "' not found");
 	}
 
-	/**
-	 * 在classpath中返回一个Properties对象作为一个资源
-	 *
-	 * @param resource 资源
-	 * @return 资源
-	 */
-	public static Properties getResourceAsProperties(String resource) {
-		return getResourceAsProperties(resource, null);
-	}
 
 	/**
-	 * 在classpath资源获取作为一个Reader对象
+	 * 一个URL作为一个Properties对象获取
 	 *
-	 * @param loader   用于获取资源的classloader
-	 * @param resource 资源
-	 * @return 资源
+	 * @param urlString - 网址
+	 * @return 从URL中的数据与属性对象
 	 */
-	public static Reader getResourceAsReader(String resource, ClassLoader loader) {
+	public static Properties getUrlAsProperties(String urlString) throws FileNotFoundException {
 		try {
-			return new InputStreamReader(getResourceAsInStream(resource, loader), BaseConstant.DEF_ENCODE);
+			Properties props = new Properties();
+			InputStream in = getUrlAsInStream(urlString);
+			props.load(in);
+			in.close();
+			return props;
 		} catch (IOException e) {
 			logger.warn(e);
 		}
-		return null;
+		throw new FileNotFoundException("[Read Properties URL failed] Properties URL:'" + urlString + "' not found");
 	}
 
 	/**
@@ -156,34 +111,28 @@ public class PathUtil {
 	 * @param resource 资源
 	 * @return 资源
 	 */
-	public static Reader getResourceAsReader(String resource) {
-		return getResourceAsReader(resource, null);
+	public static Reader getResourceAsReader(String resource) throws FileNotFoundException {
+		try {
+			return new InputStreamReader(getResourceAsInStream(resource), BaseConstant.DEF_ENCODE);
+		} catch (IOException e) {
+			logger.warn(e);
+		}
+		throw new FileNotFoundException("[Read File failed] File:'" + resource + "' not found");
 	}
 
 	/**
 	 * 在classpath资源获取作为一个文件对象
 	 *
-	 * @param loader   - 用于获取资源的classloader
 	 * @param resource - 资源
 	 * @return 资源
 	 */
-	public static File getResourceAsFile(String resource, ClassLoader loader) {
+	public static File getResourceAsFile(String resource) throws FileNotFoundException {
 		try {
-			return new File(getResourceAsURL(resource, loader).getFile());
+			return new File(getResourceAsURL(resource).getFile());
 		} catch (IOException e) {
 			logger.warn(e);
 		}
-		return null;
-	}
-
-	/**
-	 * 在classpath资源获取作为一个文件对象
-	 *
-	 * @param resource 资源
-	 * @return 资源
-	 */
-	public static File getResourceAsFile(String resource) {
-		return getResourceAsFile(resource, null);
+		throw new FileNotFoundException("[Read File failed] file:'" + resource + "' not found");
 	}
 
 	/**
@@ -194,9 +143,14 @@ public class PathUtil {
 	 * @throws java.io.IOException 如果资源没发现或不能读
 	 */
 	public static InputStream getUrlAsInStream(String urlString) throws IOException {
-		URL url = new URL(urlString);
-		URLConnection conn = url.openConnection();
-		return conn.getInputStream();
+		try {
+			URL url = new URL(urlString);
+			URLConnection conn = url.openConnection();
+			return conn.getInputStream();
+		} catch (IOException e) {
+			logger.warn(e);
+		}
+		throw new FileNotFoundException("[Read URL failed] URL:'" + urlString + "' not found");
 	}
 
 	/**
@@ -205,46 +159,31 @@ public class PathUtil {
 	 * @param urlString - 网址
 	 * @return 从URL中的数据与属性对象
 	 */
-	public static Reader getUrlAsReader(String urlString) {
+	public static Reader getUrlAsReader(String urlString) throws FileNotFoundException {
 		try {
 			return new InputStreamReader(getUrlAsInStream(urlString), BaseConstant.DEF_ENCODE);
 		} catch (IOException e) {
 			logger.warn(e);
 		}
-		return null;
+		throw new FileNotFoundException("[Read URL failed] url:'" + urlString + "' not found");
 	}
-
-	/**
-	 * 一个URL作为一个Properties对象获取
-	 *
-	 * @param urlString - 网址
-	 * @return 从URL中的数据与属性对象
-	 */
-	public static Properties getUrlAsProperties(String urlString) {
-		try {
-			Properties props = new Properties();
-			InputStream in = getUrlAsInStream(urlString);
-			props.load(in);
-			in.close();
-			return props;
-		} catch (IOException e) {
-			logger.warn("资源没发现或不能读", e);
-		}
-		return null;
-	}
-
 
 	/**
 	 * 一个URL作为一个输入流中获取
 	 *
 	 * @param urlString - 网址
 	 * @return 从URL数据的输入流
-	 * @throws java.io.IOException 如果资源没发现或不能读
+	 * @throws java.io.FileNotFoundException 如果资源没发现或不能读
 	 */
-	public static OutputStream getUrlAsOutStream(String urlString) throws IOException {
-		URL url = new URL(urlString);
-		URLConnection conn = url.openConnection();
-		return conn.getOutputStream();
+	public static OutputStream getUrlAsOutStream(String urlString) throws FileNotFoundException {
+		try {
+			URL url = new URL(urlString);
+			URLConnection conn = url.openConnection();
+			return conn.getOutputStream();
+		} catch (IOException e) {
+			logger.warn(e);
+		}
+		throw new FileNotFoundException("[Write URL failed] url:'" + urlString + "' can't write");
 	}
 
 	/**
@@ -253,41 +192,29 @@ public class PathUtil {
 	 * @param urlString - 网址
 	 * @return 从URL中的数据与属性对象
 	 */
-	public static Writer getUrlAsWriter(String urlString) {
+	public static Writer getUrlAsWriter(String urlString) throws FileNotFoundException {
 		try {
 			return new OutputStreamWriter(getUrlAsOutStream(urlString), BaseConstant.DEF_ENCODE);
 		} catch (IOException e) {
 			logger.warn(e);
 		}
-		return null;
+		throw new FileNotFoundException("[Write URL failed] url:'" + urlString + "' can't write");
 	}
-
-	/**
-	 * 在classpath中返回一个Stream对象作为一个资源
-	 *
-	 * @param loader   用于获取资源的classloader
-	 * @param resource 资源
-	 * @return 资源
-	 * @throws java.io.IOException 如果资源没发现或不能读
-	 */
-	public static OutputStream getResourceAsOutStream(String resource, ClassLoader loader) throws IOException {
-		return new FileOutputStream(getResourceAsFile(resource, loader));
-	}
-
 
 	/**
 	 * 在classpath中返回一个Stream对象作为一个资源
 	 *
 	 * @param resource 资源
 	 * @return 资源
+	 * @throws java.io.IOException 如果资源没发现或不能读
 	 */
-	public static OutputStream getResourceAsOutStream(String resource) {
+	public static OutputStream getResourceAsOutStream(String resource) throws FileNotFoundException {
 		try {
-			return getResourceAsOutStream(resource, null);
+			return new FileOutputStream(getResourceAsFile(resource));
 		} catch (IOException e) {
 			logger.warn(e);
 		}
-		return null;
+		throw new FileNotFoundException("[Write File failed] File:'" + resource + "' can't write");
 	}
 
 	/**
@@ -296,28 +223,12 @@ public class PathUtil {
 	 * @param filePath 文件相对路径
 	 * @return 输出流
 	 */
-	public static Writer getResourceAsWriter(String filePath) {
+	public static Writer getResourceAsWriter(String filePath) throws FileNotFoundException {
 		try {
-			return new OutputStreamWriter(getResourceAsOutStream(filePath, null), BaseConstant.DEF_ENCODE);
+			return new OutputStreamWriter(getResourceAsOutStream(filePath), BaseConstant.DEF_ENCODE);
 		} catch (IOException e) {
 			logger.warn(e);
 		}
-		return null;
-	}
-
-	/**
-	 * 在classpath资源获取作为一个Reader对象
-	 *
-	 * @param loader   用于获取资源的classloader
-	 * @param resource 资源
-	 * @return 资源
-	 */
-	public static Writer getResourceAsWriter(String resource, ClassLoader loader) {
-		try {
-			return new OutputStreamWriter(getResourceAsOutStream(resource, loader), BaseConstant.DEF_ENCODE);
-		} catch (IOException e) {
-			logger.warn(e);
-		}
-		return null;
+		throw new FileNotFoundException("[Write File failed] File:'" + filePath + "' can't write");
 	}
 }

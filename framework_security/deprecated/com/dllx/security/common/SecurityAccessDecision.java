@@ -13,7 +13,7 @@ import java.util.Collection;
 
 @Component
 public class SecurityAccessDecision implements AccessDecisionManager {
-    private static RuntimeLogger logger = new RuntimeLogger(SecurityAccessDecision.class);
+    private static Log logger = LogFactory.getLog(SecurityAccessDecision.class);
 
     public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
         if (configAttributes == null) {

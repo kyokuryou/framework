@@ -12,7 +12,7 @@ import org.apache.commons.logging.LogFactory;
  * @author quliang
  * @version 1.0
  */
-public class MD5Util {
+public final class MD5Util {
 	private static Log logger = LogFactory.getLog(MD5Util.class);
 	private final static String[] strDigits = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"};
 
@@ -29,7 +29,7 @@ public class MD5Util {
 
 	// 返回形式只为数字
 	/*private static String byteToNum(byte bByte) {
-        int iRet = bByte;
+	    int iRet = bByte;
 		System.out.println("iRet1=" + iRet);
 		if (iRet < 0) {
 			iRet += 256;

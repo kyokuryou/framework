@@ -21,15 +21,15 @@
         <fileset id="web springmvc servlet context" name="MVC springmvc servlet context" removed="true">
           <file>file://$MODULE_DIR$/test/spring-web.xml</file>
         </fileset>
-        <fileset id="fileset" name="framework_web" removed="false">
-          <dependency>fileset==framework_src</dependency>
-          <file>file://$MODULE_DIR$/src/springweb-system.xml</file>
-          <file>file://$MODULE_DIR$/src/ws_system.xml</file>
-        </fileset>
         <fileset id="fileset2" name="web_test" removed="false">
-          <dependency>fileset</dependency>
           <file>file://$MODULE_DIR$/test/spring.xml</file>
           <file>file://$MODULE_DIR$/test/spring-web.xml</file>
+        </fileset>
+        <fileset id="fileset" name="framework_web" removed="false">
+          <dependency>fileset==framework_src</dependency>
+          <file>file://$MODULE_DIR$/src/mvc-system.xml</file>
+          <file>file://$MODULE_DIR$/src/ws_system.xml</file>
+          <file>file://$MODULE_DIR$/src/org/smarty/web/commons/WebConfigurer.java</file>
         </fileset>
       </configuration>
     </facet>

@@ -14,6 +14,7 @@ import org.smarty.core.support.jdbc.mapper.RowMapperHandler;
 import org.smarty.core.support.jdbc.mapper.SingleMapperHandler;
 import org.smarty.core.support.jdbc.sql.SQL;
 import org.smarty.core.support.jdbc.support.DBType;
+import org.smarty.core.utils.ObjectUtil;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -122,7 +123,7 @@ public final class SQLSession extends JdbcSupport implements InitializingBean {
 
 	public <M extends ModelSerializable> Pager executeForPager(SQL sql, Pager pager, Class<M> klass) {
 		SqlParameterSource sps = new MapSqlParameterSource(pager.getParams());
-		RowMapperHandler<?> rmh = (klass == null) ? new ModelMapperHandler<ModelMap>(ModelMap.class) : new ModelMapperHandler<M>(klass);
+		RowMapperHandler<?> rmh = (ObjectUtil.isEmpty(klass)) ? new ModelMapperHandler<ModelMap>(ModelMap.class) : new ModelMapperHandler<M>(klass);
 		SQLHolder sqlHolder = getHolder(sql);
 		// 获得总记录数
 		String countSql = sqlHolder.convertCountSQL();

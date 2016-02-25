@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 @Transactional
 public class ResourceService {
-    private static RuntimeLogger logger = new RuntimeLogger(ResourceService.class);
+    private static Log logger = LogFactory.getLog(ResourceService.class);
 
     @javax.annotation.Resource
     private IResourceDao resourceDao;

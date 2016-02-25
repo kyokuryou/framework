@@ -24,7 +24,7 @@ import java.util.*;
  */
 @Component
 public class SecurityMetadata implements FilterInvocationSecurityMetadataSource {
-    private static RuntimeLogger logger = new RuntimeLogger(SecurityMetadata.class);
+    private static Log logger = LogFactory.getLog(SecurityMetadata.class);
 
     @javax.annotation.Resource
     private ResourceService resourceService;

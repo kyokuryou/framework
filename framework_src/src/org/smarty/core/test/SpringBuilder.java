@@ -1,6 +1,7 @@
 package org.smarty.core.test;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.sql.SQLException;
 import java.util.List;
@@ -106,7 +107,7 @@ public class SpringBuilder {
 	 * @param fileName
 	 * @return
 	 */
-	private File getFile(String fileName) {
+	private File getFile(String fileName) throws FileNotFoundException {
 		return PathUtil.getResourceAsFile(outPath + fileName);
 	}
 

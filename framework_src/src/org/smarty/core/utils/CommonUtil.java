@@ -1,7 +1,6 @@
 package org.smarty.core.utils;
 
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -20,29 +19,10 @@ import org.smarty.core.common.BaseConstant;
  * @author quliang
  * @version 1.0
  */
-public class CommonUtil {
+public final class CommonUtil {
 	private static Log logger = LogFactory.getLog(CommonUtil.class);
 
 	private CommonUtil() {
-	}
-
-	/**
-	 * 将指定数组的指定范围复制到一个新数组。该范围的初始索引 (from) 必须位于 0 和 dataArray.length（包括）之间。
-	 *
-	 * @param array 将要从其复制一个范围的数组
-	 * @param from  要复制的范围的初始索引（包括）
-	 * @param to    要复制的范围的最后索引（不包括）。（此索引可能位于数组范围之外）。
-	 * @return 包含取自原数组指定范围的新数组，截取或用 false 元素填充以获得所需长度
-	 */
-	public static Object copyArray(Object array, int from, int to) {
-		int newLength = to - from;
-		if (newLength < 0)
-			throw new IllegalArgumentException(from + " > " + to);
-		int len = Array.getLength(array);
-		Class ct = array.getClass().getComponentType();
-		Object copy = Array.newInstance(ct, newLength);
-		System.arraycopy(array, from, copy, 0, Math.min(len - from, newLength));
-		return copy;
 	}
 
 	/**
@@ -92,9 +72,8 @@ public class CommonUtil {
 	 * @return 加密内容
 	 */
 	public static String md5(String text) {
-		MessageDigest md = null;
 		try {
-			md = MessageDigest.getInstance("MD5");
+			MessageDigest md = MessageDigest.getInstance("MD5");
 			md.update(text.getBytes());
 			return toHexString(md.digest());
 		} catch (NoSuchAlgorithmException e) {
@@ -132,7 +111,7 @@ public class CommonUtil {
 		List<String> list = new ArrayList<String>();
 		String[] strs = str.split(separator);
 		for (String s : strs) {
-			if (LogicUtil.isNotEmpty(s)) {
+			if (!ObjectUtil.isEmpty(s)) {
 				list.add(s);
 			}
 		}
@@ -157,26 +136,6 @@ public class CommonUtil {
 	}
 
 	/**
-	 * 将List转化为可执行的SQL in 语法
-	 *
-	 * @param list 需要处理的List.
-	 * @return 可执行的SQL in 语法
-	 */
-	public static String listToSQLString(List<?> list) {
-		StringBuilder sb = new StringBuilder();
-		for (Object str : list) {
-			if (LogicUtil.isPrimitive(str)) {
-				sb.append(",");
-				sb.append("'");
-				sb.append(str);
-				sb.append("'");
-			}
-		}
-		sb.deleteCharAt(0);
-		return sb.toString();
-	}
-
-	/**
 	 * 字符串合并
 	 *
 	 * @param src    源
@@ -185,7 +144,7 @@ public class CommonUtil {
 	 * @return string
 	 */
 	public static String stringMerger(String[] src, String[] desc, String spread) {
-		if (LogicUtil.isEmptyArray(src) || LogicUtil.isEmptyArray(desc)) {
+		if (ObjectUtil.isEmpty(src) || ObjectUtil.isEmpty(desc)) {
 			return "";
 		}
 
@@ -211,10 +170,10 @@ public class CommonUtil {
 	 * @return 文件后缀名
 	 */
 	public static String getExt(String fileName) {
-		if (LogicUtil.isNotEmpty(fileName)) {
+		if (!ObjectUtil.isEmpty(fileName)) {
 			return fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
 		}
-		return null;
+		return "";
 	}
 
 	/**
@@ -243,7 +202,7 @@ public class CommonUtil {
 	 * @return String
 	 */
 	public static String getMsgPlaceholder(String msg, Object... args) {
-		if (LogicUtil.isEmpty(msg)) {
+		if (ObjectUtil.isEmpty(msg)) {
 			return null;
 		}
 		for (int i = 0; i < args.length; i++) {
@@ -354,7 +313,7 @@ public class CommonUtil {
 	 * @return 字段名
 	 */
 	public static String toJavaField(String name) {
-		if (name == null || "".equals(name)) {
+		if (ObjectUtil.isEmpty(name)) {
 			return "";
 		}
 		String[] fnList = name.toLowerCase().split("[.]");
@@ -385,7 +344,7 @@ public class CommonUtil {
 	 * @return 字段名
 	 */
 	public static String toDBField(String name) {
-		if (name == null || "".equals(name)) {
+		if (ObjectUtil.isEmpty(name)) {
 			return "";
 		}
 		char[] cs = name.toCharArray();

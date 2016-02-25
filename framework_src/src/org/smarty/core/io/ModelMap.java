@@ -2,6 +2,7 @@ package org.smarty.core.io;
 
 import java.util.LinkedHashMap;
 import org.smarty.core.common.BaseConstant;
+import org.smarty.core.utils.ObjectUtil;
 
 /**
  * @author qul
@@ -20,7 +21,7 @@ public final class ModelMap extends LinkedHashMap<String, Object> implements Mod
 
 	public byte[] getBytes(String key) {
 		String res = getString(key);
-		if (res == null || "".equals(res)) {
+		if (ObjectUtil.isEmpty(res)) {
 			return new byte[0];
 		}
 		return res.getBytes(BaseConstant.DEF_ENCODE);
@@ -28,7 +29,7 @@ public final class ModelMap extends LinkedHashMap<String, Object> implements Mod
 
 	public char[] getChars(String key) {
 		String res = getString(key);
-		if (res == null || "".equals(res)) {
+		if (ObjectUtil.isEmpty(res)) {
 			return new char[0];
 		}
 		return res.toCharArray();

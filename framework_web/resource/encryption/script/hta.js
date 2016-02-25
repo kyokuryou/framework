@@ -1,9 +1,7 @@
 (function ($) {
     var init = false;
     var __data = {
-        width: 430,
-        height: 320,
-        cns: {
+        width: 430, height: 320, cns: {
             scope: ".encryption_scope",
             path: ".encryption_path",
             builder: ".encryption_builder",
@@ -14,22 +12,13 @@
         }
     };
     var __driver = {
-        folder: "driver",
-        code: {
+        folder: "driver", code: {
             base: {
-                file: "base.js",
-                enMethod: "packerBase",
-                deMethod: ""
-            },
-            base64: {
-                file: "base64.js",
-                enMethod: "enbase64",
-                deMethod: "debase64"
-            },
-            md5: {
-                file: "md5.js",
-                enMethod: "hex_md5",
-                deMethod: ""
+                file: "base.js", enMethod: "packerBase", deMethod: ""
+            }, base64: {
+                file: "base64.js", enMethod: "enbase64", deMethod: "debase64"
+            }, md5: {
+                file: "md5.js", enMethod: "hex_md5", deMethod: ""
             }
 
         }
@@ -51,8 +40,7 @@
             var $span = create.span({color: ['#000', 'red'][c || 0]}, node);
             $console.append($span).append("<br/>");
             $console.scrollTop($console[0].scrollHeight);
-        },
-        clear: function () {
+        }, clear: function () {
             $(__data.cns.console).empty();
         }
     };
@@ -60,19 +48,12 @@
         script: function (jsF, callSuccess) {
             var url = __driver["folder"] + "/" + jsF;
             $.ajax({
-                url: url,
-                type: "GET",
-                async: false,
-                cache: true,
-                dataType: "script",
-                beforeSend: function () {
+                url: url, type: "GET", async: false, cache: true, dataType: "script", beforeSend: function () {
                     console.info("正在加载加密驱动。。。");
-                },
-                success: function () {
+                }, success: function () {
                     console.info("加密驱动成功载入。");
                     callSuccess();
-                },
-                error: function () {
+                }, error: function () {
                     console.info("加密驱动载入失败！", 1);
                 }
             });
@@ -81,14 +62,11 @@
     var logic = {
         isEmpty: function (val) {
             return val == null || val == "";
-        },
-        isNotEmpty: function (val) {
+        }, isNotEmpty: function (val) {
             return val != null && val != "";
-        },
-        isNumber: function (val) {
+        }, isNumber: function (val) {
             return val != null && !isNaN(val);
-        },
-        isFunction: function (fun) {
+        }, isFunction: function (fun) {
             return $.isFunction(fun);
         }
     };
@@ -107,8 +85,7 @@
             } else {
                 run.enfile(enm, file, cb);
             }
-        },
-        enfile: function (enm, file, callback) {
+        }, enfile: function (enm, file, callback) {
             var fv = format.removeComments(io.read(file));
             alert(fv);
             console.info('正在加密中，请稍后。');
@@ -119,8 +96,7 @@
             } else {
                 console.info('加密失败！', 1);
             }
-        },
-        decode: function (type, file, cb) {
+        }, decode: function (type, file, cb) {
             var jsf = __driver.code[type]["file"];
             var dem = __driver.code[type]["deMethod"];
             if (logic.isEmpty(jsf) || logic.isEmpty(dem)) {
@@ -134,8 +110,7 @@
             } else {
                 run.defile(dem, file, cb);
             }
-        },
-        defile: function (dem, file, callback) {
+        }, defile: function (dem, file, callback) {
             var fv = io.read(file);
             console.info('正在解密中，请稍后。');
             var dev = eval(dem).call(this, fv);
@@ -156,32 +131,28 @@
                 return false;
             }
             return true;
-        },
-        path: function ($path) {
+        }, path: function ($path) {
             var pv = $path.val();
             if (logic.isEmpty(pv)) {
                 console.info("请选择正确的文件路径！", 1);
                 return false;
             }
             return true;
-        },
-        builder: function ($builder) {
+        }, builder: function ($builder) {
             var bv = $builder.val();
             if (logic.isEmpty(bv)) {
                 console.info("请填写生成目录名！", 1);
                 return false;
             }
             return true;
-        },
-        type: function ($type) {
+        }, type: function ($type) {
             var tv = $type.val();
             if (logic.isEmpty(tv)) {
                 console.info("请选择加密类型！", 1);
                 return false;
             }
             return true;
-        },
-        all: function () {
+        }, all: function () {
             var boo = true;
             var $chk = $(__data.cns.scope);
             var $path = $(__data.cns.path);
@@ -205,17 +176,13 @@
     var io = {
         ax: function () {
             return new ActiveXObject("Scripting.FileSystemObject");
-        },
-        folder: function (folder) {
+        }, folder: function (folder) {
             return io.ax().GetFolder(folder);
-        },
-        file: function (fileName) {
+        }, file: function (fileName) {
             return io.ax().GetFile(fileName);
-        },
-        simpleFileName: function (fileName) {
+        }, simpleFileName: function (fileName) {
             return io.ax().GetBaseName(fileName) + ".js";
-        },
-        fileList: function (folder) {
+        }, fileList: function (folder) {
             var fk = new Enumerator(io.folder(folder).files);
             var fs = {};
             while (!fk.atEnd()) {
@@ -223,12 +190,10 @@
                 fk.moveNext();
             }
             return fs;
-        },
-        read: function (file) {
+        }, read: function (file) {
             var input = io.ax().OpenTextFile(file, 1, true);
             return input.Readall();
-        },
-        createFolder: function (path) {
+        }, createFolder: function (path) {
             var ax = io.ax();
             if (!ax.FolderExists(path)) {
                 if (ax.CreateFolder(path)) {
@@ -239,15 +204,13 @@
                 }
             }
             return true;
-        },
-        write: function (path, file, content) {
+        }, write: function (path, file, content) {
             if (io.createFolder(path)) {
                 var output = io.ax().CreateTextFile(path + "/" + file, true);
                 output.Write(content);
                 output.Close();
             }
-        },
-        parentFolder: function (path) {
+        }, parentFolder: function (path) {
             return io.ax().getParentFolderName(path);
         }
     };
@@ -275,8 +238,7 @@
                     });
                 }
             });
-        },
-        decode: function () {
+        }, decode: function () {
             var debtn = $(__data.cns.decode);
             debtn.click(function () {
                 var $path = $(__data.cns.path);
@@ -293,8 +255,7 @@
                     });
                 }
             });
-        },
-        clear: function () {
+        }, clear: function () {
             var $console = $(__data.cns.console);
             $console.dblclick(function () {
                 console.clear();

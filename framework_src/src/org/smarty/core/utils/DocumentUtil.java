@@ -12,6 +12,7 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -30,7 +31,7 @@ import org.xml.sax.SAXException;
  * @author quliang
  * @version 1.0
  */
-public class DocumentUtil {
+public final class DocumentUtil {
 	private static Log logger = LogFactory.getLog(DocumentUtil.class);
 	private final static String xsd = "";
 
@@ -152,18 +153,14 @@ public class DocumentUtil {
 	public static Document removeNullIdElement(Document srcDoc, String xpath) {
 		Node parentNode = srcDoc.getRootElement().selectSingleNode(xpath);
 		if (!(parentNode instanceof Element)) {
-			logger.warn("所传入的xpath不是Elementpath，删除空节点失败！");
 			return null;
 		} else {
 			Iterator<Element> it = ((Element) parentNode).elementIterator();
 			while (it.hasNext()) {
 				Element element = it.next();
-				if (element.attribute("ID") == null) {
+				Attribute attr = element.attribute("ID");
+				if (ObjectUtil.isEmpty(attr)) {
 					element.detach();
-				} else {
-					if (LogicUtil.isEmpty(element.attribute("ID").getValue())) {
-						element.detach();
-					}
 				}
 			}
 		}
@@ -212,10 +209,11 @@ public class DocumentUtil {
 			// 获取新节点的根节点（作为写入节点）
 			Element newRoot = newDocNode.getRootElement();
 			// 处理新节点的ID属性值和BS子元素的值
-			if (newRoot.attribute("ID") == null) {
+			Attribute attr = newRoot.attribute("ID");
+			if (ObjectUtil.isEmpty(attr)) {
 				newRoot.addAttribute("ID", xmlNodeId);
 			} else {
-				newRoot.attribute("ID").setValue(xmlNodeId);
+				attr.setValue(xmlNodeId);
 			}
 			// 在原文档中更新位置写入新节点
 			parentUpNode.add(newRoot);
@@ -400,11 +398,11 @@ public class DocumentUtil {
 		File schemaLocation = null;
 		Schema schema = null;
 		SchemaFactory factory = SchemaFactory.newInstance(BaseConstant.DEF_XML_SCHEMA);
-		if (LogicUtil.isNotEmpty(xsd)) {
+		if (!ObjectUtil.isEmpty(xsd)) {
 			schemaLocation = new File(xsd);
 		}
 
-		if (schemaLocation != null && schemaLocation.isFile()) {
+		if (ObjectUtil.isEmpty(schemaLocation)) {
 			schema = factory.newSchema(schemaLocation);
 		} else {
 			schema = factory.newSchema();

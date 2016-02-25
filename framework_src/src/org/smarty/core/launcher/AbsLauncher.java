@@ -9,7 +9,9 @@ import org.apache.commons.logging.LogFactory;
 import org.smarty.core.support.cache.CacheMessage;
 import org.smarty.core.utils.SpringUtil;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -20,23 +22,20 @@ import org.springframework.context.ApplicationContextAware;
  * @author quliang
  * @version 1.0
  */
-public abstract class AbsLauncher implements ApplicationContextAware, InitializingBean {
+public abstract class AbsLauncher implements ApplicationContextAware, InitializingBean, DisposableBean {
 	private static Log logger = LogFactory.getLog(AbsLauncher.class);
-	private Integer systemCatchSize;
-	private Integer temporaryCatchSize;
+	@Value("${cache.system.size}")
+	private int systemCatchSize;
+	@Value("${cache.temporary.size}")
+	private int temporaryCatchSize;
 
-	public void afterPropertiesSet() throws Exception {
-
-	}
-
+	@Override
 	public final void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		SpringUtil.setApplicationContext(applicationContext);
 	}
 
-	/**
-	 * 启动方法
-	 */
-	public final void main() {
+	@Override
+	public final void afterPropertiesSet() throws Exception {
 		// 初始化缓存容器
 		initCache();
 		// 加入classloader
@@ -47,24 +46,7 @@ public abstract class AbsLauncher implements ApplicationContextAware, Initializi
 			init();
 		} catch (Exception e) {
 			logger.warn("AbsLauncher 初始化失败");
-			exit();
 		}
-	}
-
-
-	/**
-	 * 初始化缓存容器
-	 */
-	public final void initCache() {
-		Map<String, Integer> caches = new HashMap<String, Integer>();
-		caches.put("system", systemCatchSize);
-		caches.put("temporary", temporaryCatchSize);
-		CacheMessage cm = new CacheMessage("q1w2e3r4t5");
-		cm.initCacheMap(caches);
-	}
-
-	protected Set<ClassLoader> getLauncher() {
-		return new HashSet<ClassLoader>(0);
 	}
 
 	/**
@@ -74,18 +56,23 @@ public abstract class AbsLauncher implements ApplicationContextAware, Initializi
 
 	}
 
-	/**
-	 * 销毁;如需要重新设置,重写此方法;
-	 */
-	public void exit() {
+	@Override
+	public void destroy() throws Exception {
 		System.gc();
 	}
 
-	public void setSystemCatchSize(Integer systemCatchSize) {
-		this.systemCatchSize = systemCatchSize;
+	protected Set<ClassLoader> getLauncher() {
+		return new HashSet<ClassLoader>(0);
 	}
 
-	public void setTemporaryCatchSize(Integer temporaryCatchSize) {
-		this.temporaryCatchSize = temporaryCatchSize;
+	/**
+	 * 初始化缓存容器
+	 */
+	private void initCache() {
+		Map<String, Integer> caches = new HashMap<String, Integer>();
+		caches.put("system", systemCatchSize);
+		caches.put("temporary", temporaryCatchSize);
+		CacheMessage cm = new CacheMessage("q1w2e3r4t5");
+		cm.initCacheMap(caches);
 	}
 }

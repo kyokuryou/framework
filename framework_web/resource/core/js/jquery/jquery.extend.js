@@ -3,24 +3,15 @@
  */
 (function ($) {
     $.browser = {
-        "safari": false,
-        "opera": false,
-        "msie": false,
-        "mozilla": false,
-        "version": "0"
+        "safari": false, "opera": false, "msie": false, "mozilla": false, "version": "0"
     };
     $.ua = function (ua) {
         ua = ua.toLowerCase();
 
-        var match = /(chrome)[ \/]([\w.]+)/.exec(ua) ||
-            /(webkit)[ \/]([\w.]+)/.exec(ua) ||
-            /(opera)(?:.*version|)[ \/]([\w.]+)/.exec(ua) ||
-            /(msie) ([\w.]+)/.exec(ua) ||
-            ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec(ua) ||
-            [];
+        var match = /(chrome)[ \/]([\w.]+)/.exec(ua) || /(webkit)[ \/]([\w.]+)/.exec(ua) || /(opera)(?:.*version|)[ \/]([\w.]+)/.exec(ua) || /(msie) ([\w.]+)/.exec(ua) || ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec(ua) || [];
 
-        $.browser[match[ 1 ]] = true;
-        $.browser["version"] = match[ 2 ];
+        $.browser[match[1]] = true;
+        $.browser["version"] = match[2];
     };
     /**
      * ** 1.9过渡 **
