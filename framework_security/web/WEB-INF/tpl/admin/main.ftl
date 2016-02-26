@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<#include "/WEB-INF/common/inc/head_inc.ftl">
 </head>
 <body >
 1${j_username}1

@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 <#include "/WEB-INF/common/inc/head_inc.ftl">
-    <script type="text/javascript" src="${base}/defPlan/js/admin/admin_login.js"></script>
+    <script type="text/javascript" src="${base}/res/admin/login.js"></script>
     <script type="text/javascript">
         using("messager");
     </script>

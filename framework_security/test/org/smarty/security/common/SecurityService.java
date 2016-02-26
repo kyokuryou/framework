@@ -61,12 +61,12 @@ public class SecurityService implements ISecurityService {
 	}
 
 	@Override
-	public List<ResourceSecurity> getResourceList(String url) {
+	public List<ResourceSecurity> getResourceList() {
 		List<ResourceSecurity> res = new ArrayList<ResourceSecurity>();
 
 		ResourceSecurity res1 = new ResourceSecurity();
 		res1.setId(1);
-		res1.setValue("/admin/**");
+		res1.setValue("/admin/test.do");
 		res1.setAuthorities(Arrays.asList(getAdmin()));
 
 		ResourceSecurity res2 = new ResourceSecurity();
@@ -76,15 +76,23 @@ public class SecurityService implements ISecurityService {
 
 		res.add(res2);
 		res.add(res1);
+		res.add(getComment());
 		return res;
 	}
 
-	private String getAdmin() {
-		return "ROLE_ADMIN";
+	private String[] getAdmin() {
+		return new String[]{"ROLE_ADMIN", "ROLE_RESOURCE"};
 	}
 
-	private String getAnonymous() {
+	private String[] getAnonymous() {
+		return new String[]{"ROLE_ANONYMOUS", "ROLE_RESOURCE"};
+	}
 
-		return "ROLE_ANONYMOUS";
+	private ResourceSecurity getComment() {
+		ResourceSecurity rsc = new ResourceSecurity();
+		rsc.setId(100);
+		rsc.setValue("/res/**");
+		rsc.setAuthorities(Arrays.asList("ROLE_RESOURCE"));
+		return rsc;
 	}
 }

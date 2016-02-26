@@ -22,5 +22,5 @@ public interface ISecurityService {
 
 	UserSecurity getUserSecurity(String id);
 
-	List<ResourceSecurity> getResourceList(String url);
+	List<ResourceSecurity> getResourceList();
 }

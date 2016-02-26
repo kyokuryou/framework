@@ -4,17 +4,19 @@ import com.octo.captcha.service.image.ImageCaptchaService;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.Filter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.smarty.core.utils.DateUtil;
+import org.smarty.core.utils.ObjectUtil;
 import org.smarty.core.utils.SpringUtil;
-import org.smarty.security.bean.ResourceSecurity;
 import org.smarty.security.bean.UserSecurity;
 import org.smarty.security.common.ISecurityService;
+import org.smarty.security.common.SecurityResourceProxy;
 import org.smarty.security.filter.SecurityCaptchaFilter;
 import org.smarty.web.config.WebConfigurer;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,9 +51,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.DefaultRedirectStrategy;
-import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.RedirectStrategy;
-import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AbstractAuthenticationTargetUrlRequestHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -60,10 +60,7 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
@@ -77,11 +74,11 @@ import org.springframework.util.StringUtils;
 })
 @Order(0)
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
+	private final Log logger = LogFactory.getLog(SecurityConfigurer.class);
 	public static final String SECURITY_LISTENER_NAME = "securityListener";
-	public static final String SECURITY_INTERCEPTOR_NAME = "securityInterceptor";
 	public static final String SECURITY_SERVICE_NAME = "securityService";
 	public static final String SECURITY_CAPTCHA_FILTER_NAME = "securityCaptchaFilter";
-
+	public static final String SECURITY_RESOURCE_PROXY_NAME = "securityResourceProxy";
 	@Resource(name = SECURITY_SERVICE_NAME)
 	private ISecurityService securityService;
 	@Value("${login.failure.max.count}")
@@ -118,13 +115,11 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 		return sl;
 	}
 
-	@Bean(name = SECURITY_INTERCEPTOR_NAME)
-	public FilterSecurityInterceptor getFilterSecurityInterceptor() throws Exception {
-		FilterSecurityInterceptor fsi = new FilterSecurityInterceptor();
-		fsi.setAuthenticationManager(authenticationManager());
-		fsi.setAccessDecisionManager(new AccessDecisionManagerImpl());
-		fsi.setSecurityMetadataSource(new SecurityMetadataSourceImpl());
-		return fsi;
+	@Bean(name = SECURITY_RESOURCE_PROXY_NAME)
+	public SecurityResourceProxy getSecurityResourceProxy() {
+		SecurityResourceProxy sm = new SecurityResourceProxy();
+		sm.setSecurityService(securityService);
+		return sm;
 	}
 
 	@Bean(name = SECURITY_CAPTCHA_FILTER_NAME)
@@ -138,7 +133,8 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 	}
 
 	@Override
-	public void configure(WebSecurity web) throws Exception {
+	public void configure(final WebSecurity web) throws Exception {
+		final HttpSecurity http = getHttp();
 		// 设置不拦截规则
 		String[] ignoring = {
 				loginUrl,
@@ -146,21 +142,28 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 				timeoutUrl,
 				accessDeniedUrl
 		};
-		web.ignoring().antMatchers(ignoring);
+		web.postBuildAction(new Runnable() {
+			public void run() {
+				SecurityResourceProxy resourceProxy = SpringUtil.getBean(SECURITY_RESOURCE_PROXY_NAME, SecurityResourceProxy.class);
+				ObjectUtil.assertNotEmpty(resourceProxy, SECURITY_RESOURCE_PROXY_NAME + " bean not define");
+				FilterSecurityInterceptor securityInterceptor = http.getSharedObject(FilterSecurityInterceptor.class);
+				resourceProxy.securityInterceptor(securityInterceptor);
+				web.securityInterceptor(securityInterceptor);
+			}
+		}).ignoring().antMatchers(ignoring);
 	}
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		UserDetailsService uds = new UserDetailsServiceImpl(failureLockTime);
-		auth.userDetailsService(uds).passwordEncoder(new Md5PasswordEncoder());
+		auth.userDetailsService(new UserDetailsServiceImpl())
+				.passwordEncoder(new Md5PasswordEncoder());
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		FilterSecurityInterceptor securityInterceptor = SpringUtil.getBean(SECURITY_INTERCEPTOR_NAME, FilterSecurityInterceptor.class);
-		Assert.notNull(securityInterceptor, "[Assertion failed] - securityInterceptor is required; it must not be null");
 		LoginSuccessHandlerImpl ash = new LoginSuccessHandlerImpl();
 		ash.setDefaultTargetUrl(successUrl);
+		ash.setAlwaysUseDefaultTargetUrl(true);
 
 		LoginFailureHandlerImpl afh = new LoginFailureHandlerImpl();
 		afh.setDefaultTargetUrl(loginUrl);
@@ -172,7 +175,8 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
 		http.authorizeRequests()
 				.filterSecurityInterceptorOncePerRequest(true)
-				.and().anonymous()
+				.accessDecisionManager(new AccessDecisionManagerImpl())
+				//	.and().anonymous()
 				.and().exceptionHandling()
 				.accessDeniedPage(accessDeniedUrl)
 				.and().csrf().disable().formLogin()
@@ -194,7 +198,6 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 				.maximumSessions(1).maxSessionsPreventsLogin(true)
 				.expiredUrl(loginUrl)
 				.maxSessionsPreventsLogin(false);
-		http.addFilterBefore(securityInterceptor, FilterSecurityInterceptor.class);
 	}
 
 	private class LoginFailureHandlerImpl extends AbstractAuthenticationTargetUrlRequestHandler implements AuthenticationFailureHandler {
@@ -259,43 +262,6 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 		}
 	}
 
-	private class UserDetailsServiceImpl implements UserDetailsService {
-		private int loginFailureLockTime = 0;
-
-		public UserDetailsServiceImpl(int loginFailureLockTime) {
-			this.loginFailureLockTime = loginFailureLockTime;
-		}
-
-		public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
-			String id = securityService.getLoginId(username);
-			if (id == null) {
-				throw new UsernameNotFoundException(username);
-			}
-			UserSecurity us = securityService.getUserSecurity(id);
-			if (us.isAccountNonLocked()) {
-				return us;
-			}
-			if (canUnLock(us.getLockedDate())) {
-				us.setAccountNonLocked(securityService.unlock(id));
-			}
-			return us;
-		}
-
-		/**
-		 * 解除管理员账户锁定
-		 */
-		private boolean canUnLock(Date lockedDate) {
-			if (lockedDate == null) {
-				return true;
-			}
-			if (loginFailureLockTime == 0) {
-				return true;
-			}
-			Date nlt = DateUtil.addMinute(lockedDate, loginFailureLockTime);
-			return nlt.before(new Date());
-		}
-	}
-
 	private class AccessDecisionManagerImpl implements AccessDecisionManager {
 
 		public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
@@ -326,40 +292,36 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 		}
 	}
 
-	public class SecurityMetadataSourceImpl implements FilterInvocationSecurityMetadataSource {
+	private class UserDetailsServiceImpl implements UserDetailsService {
 
-		@Override
-		public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
-			FilterInvocation fi = ((FilterInvocation) o);
-			HttpServletRequest request = fi.getHttpRequest();
-			String url = getRequestPath(request);
-			List<ResourceSecurity> resources = securityService.getResourceList(url);
-			for (ResourceSecurity resource : resources) {
-				RequestMatcher reUrl = new AntPathRequestMatcher(resource.getValue());
-				if (reUrl.matches(request)) {
-					return resource.getConfigAttributes();
-				}
+		public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
+			String id = securityService.getLoginId(username);
+			if (id == null) {
+				throw new UsernameNotFoundException(username);
 			}
-			return null;
-		}
-
-		@Override
-		public Collection<ConfigAttribute> getAllConfigAttributes() {
-			return null;
-		}
-
-		@Override
-		public boolean supports(Class<?> aClass) {
-			return true;
-		}
-
-		private String getRequestPath(HttpServletRequest request) {
-			String url = request.getServletPath();
-
-			if (request.getPathInfo() != null) {
-				url += request.getPathInfo();
+			UserSecurity us = securityService.getUserSecurity(id);
+			if (us.isAccountNonLocked()) {
+				return us;
 			}
-			return url;
+			if (canUnLock(us.getLockedDate())) {
+				us.setAccountNonLocked(securityService.unlock(id));
+			}
+			return us;
+		}
+
+		/**
+		 * 解除管理员账户锁定
+		 */
+		private boolean canUnLock(Date lockedDate) {
+			if (lockedDate == null) {
+				return true;
+			}
+			if (failureLockTime == 0) {
+				return true;
+			}
+			Date nlt = DateUtil.addMinute(lockedDate, failureLockTime);
+			return nlt.before(new Date());
 		}
 	}
+
 }
