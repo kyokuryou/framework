@@ -13,6 +13,7 @@ import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextListener;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.FrameworkServlet;
@@ -31,13 +32,39 @@ public abstract class WebInitializer<T extends WebBuilder> extends AbsContextIni
 		super.onInitialize();
 	}
 
-	protected abstract WebApplicationContext createServletApplicationContext();
-
-	protected String[] getDispatcherServletMapping() {
-		return new String[]{"*.do"};
+	@Override
+	protected WebApplicationContext createApplicationContext() {
+		AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
+		applicationContext.register(WebConfigurer.class);
+		String cl = getConfigLocation();
+		if (!ObjectUtil.isEmpty(cl)) {
+			applicationContext.setConfigLocation(cl);
+		}
+		return applicationContext;
 	}
 
-	protected String getEncodingMapping() {
+	protected final WebApplicationContext createServletApplicationContext() {
+		AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
+		String cl = getServletConfigLocation();
+		if (!ObjectUtil.isEmpty(cl)) {
+			applicationContext.setConfigLocation(cl);
+		}
+		return applicationContext;
+	}
+
+	protected String getConfigLocation() {
+		return null;
+	}
+
+	protected String getServletConfigLocation() {
+		return null;
+	}
+
+	protected String[] getDispatcherServletMapping() {
+		return new String[]{"/"};
+	}
+
+	protected String getUrlMapping() {
 		return "/*";
 	}
 
@@ -87,12 +114,12 @@ public abstract class WebInitializer<T extends WebBuilder> extends AbsContextIni
 	}
 
 	private FilterStatement getCharacterEncodingFilter() {
-		String em = getEncodingMapping();
-		Assert.hasText(em, "[Assertion failed] - getEncodingMapping() is required; it must not be null, empty, or blank");
+		String um = getUrlMapping();
+		Assert.hasText(um, "[Assertion failed] - getUrlMapping() is required; it must not be null, empty, or blank");
 
 		CharacterEncodingFilter cef = new CharacterEncodingFilter();
 		cef.setEncoding(WebBaseConstant.STR_CHARSET);
 		cef.setForceEncoding(true);
-		return new FilterStatement(ENCODING_FILTER_NAME, cef, em);
+		return new FilterStatement(ENCODING_FILTER_NAME, cef, um);
 	}
 }

@@ -15,12 +15,12 @@ import org.springframework.context.MessageSource;
  * @version 1.0
  */
 public final class SpringWebUtil {
-    private final static Log logger = LogFactory.getLog(SpringWebUtil.class);
-    private static ServletContext servletContext;
-    private static MessageSource messageSource;
+	private final static Log logger = LogFactory.getLog(SpringWebUtil.class);
+	private static ServletContext servletContext;
+	private static MessageSource messageSource;
 
-    private SpringWebUtil() {
-    }
+	private SpringWebUtil() {
+	}
 
     public static void setServletContext(ServletContext servletContext) {
         if (SpringWebUtil.servletContext != null) {
@@ -45,11 +45,11 @@ public final class SpringWebUtil {
         return servletContext;
     }
 
-    public static String getMessage(String key, Object... values) {
-        return messageSource.getMessage(key, values, BaseConstant.DEF_LOCALE);
-    }
+	public static String getMessage(String key, Object... values) {
+		return messageSource.getMessage(key, values, BaseConstant.DEF_LOCALE);
+	}
 
-    public static String getMessage(Locale locale, String key, Object... values) {
-        return messageSource.getMessage(key, values, locale == null ? BaseConstant.DEF_LOCALE : locale);
-    }
+	public static String getMessage(Locale locale, String key, Object... values) {
+		return messageSource.getMessage(key, values, locale == null ? BaseConstant.DEF_LOCALE : locale);
+	}
 }

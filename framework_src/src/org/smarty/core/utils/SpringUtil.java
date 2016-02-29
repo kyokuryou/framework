@@ -56,8 +56,8 @@ public class SpringUtil {
 			return getApplicationContext().getBean(name);
 		} catch (BeansException e) {
 			logger.warn(e);
+			throw e;
 		}
-		return null;
 	}
 
 	/**
@@ -74,8 +74,8 @@ public class SpringUtil {
 			return getApplicationContext().getBean(name, requiredType);
 		} catch (BeansException e) {
 			logger.warn(e);
+			throw e;
 		}
-		return null;
 	}
 
 	/**
@@ -116,8 +116,8 @@ public class SpringUtil {
 			return getApplicationContext().getType(name);
 		} catch (NoSuchBeanDefinitionException e) {
 			logger.warn("给定名字相应的bean定义没有被找到", e);
+			throw e;
 		}
-		return null;
 	}
 
 	/**
@@ -132,8 +132,8 @@ public class SpringUtil {
 			return getApplicationContext().getAliases(name);
 		} catch (NoSuchBeanDefinitionException e) {
 			logger.warn("给定名字相应的bean定义没有被找到", e);
+			throw e;
 		}
-		return null;
 	}
 
 	/**
@@ -148,6 +148,7 @@ public class SpringUtil {
 			SpringUtil.applicationContext = new ClassPathXmlApplicationContext(file);
 		} catch (BeansException e) {
 			logger.warn(e);
+			throw e;
 		}
 	}
 }

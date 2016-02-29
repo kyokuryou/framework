@@ -1,9 +1,12 @@
 package org.smarty.security.config;
 
 import com.octo.captcha.service.image.ImageCaptchaService;
+import edu.emory.mathcs.backport.java.util.Arrays;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.Filter;
 import javax.servlet.ServletException;
@@ -107,6 +110,8 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 	private String captchaParameter;
 	@Value("${remember.me.key}")
 	private String rememberMeKey;
+	@Value("${ignoring.urls}")
+	private String[] ignoringUrls;
 
 	@Bean(name = SECURITY_LISTENER_NAME)
 	public ApplicationListener getApplicationListener() {
@@ -136,12 +141,12 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 	public void configure(final WebSecurity web) throws Exception {
 		final HttpSecurity http = getHttp();
 		// 设置不拦截规则
-		String[] ignoring = {
-				loginUrl,
-				logoutUrl,
-				timeoutUrl,
-				accessDeniedUrl
-		};
+		List<String> ignoring = new ArrayList<String>();
+		ignoring.addAll(Arrays.asList(ignoringUrls));
+		ignoring.add(loginUrl);
+		ignoring.add(logoutUrl);
+		ignoring.add(timeoutUrl);
+		ignoring.add(accessDeniedUrl);
 		web.postBuildAction(new Runnable() {
 			public void run() {
 				SecurityResourceProxy resourceProxy = SpringUtil.getBean(SECURITY_RESOURCE_PROXY_NAME, SecurityResourceProxy.class);
@@ -150,7 +155,9 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 				resourceProxy.securityInterceptor(securityInterceptor);
 				web.securityInterceptor(securityInterceptor);
 			}
-		}).ignoring().antMatchers(ignoring);
+		})
+				.ignoring().regexMatchers("^\\S+\\.(png|jpg|css|js|gif)$")
+				.antMatchers(ignoring.toArray(new String[ignoring.size()]));
 	}
 
 	@Override
@@ -192,6 +199,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 				.invalidateHttpSession(true)
 				.logoutUrl(logoutProcessingUrl)
 				.logoutSuccessHandler(lsh)
+				.invalidateHttpSession(true)
 				.and().sessionManagement()
 				.sessionFixation().changeSessionId()
 				.invalidSessionUrl(timeoutUrl)

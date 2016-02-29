@@ -7,7 +7,7 @@ import javax.servlet.Servlet;
  */
 public class ServletStatement extends WebStatement<Servlet> {
 	private String[] mapping;
-	private int onStartup = 0;
+	private int onStartup = 1;
 
 	public ServletStatement(String targetName, Servlet servlet, String[] mapping) {
 		super(targetName, servlet);

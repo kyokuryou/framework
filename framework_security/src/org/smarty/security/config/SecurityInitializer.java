@@ -1,10 +1,14 @@
 package org.smarty.security.config;
 
+import org.smarty.core.utils.ObjectUtil;
 import org.smarty.security.config.statement.SecurityFilterStatement;
+import org.smarty.web.config.WebConfigurer;
 import org.smarty.web.config.WebInitializer;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 /**
  * Security Initializer
@@ -16,8 +20,19 @@ public abstract class SecurityInitializer<T extends SecurityBuilder> extends Web
 		super.onInitialize();
 	}
 
+	@Override
+	protected WebApplicationContext createApplicationContext() {
+		AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
+		applicationContext.register(SecurityConfigurer.class);
+		String cl = getConfigLocation();
+		if (!ObjectUtil.isEmpty(cl)) {
+			applicationContext.setConfigLocation(cl);
+		}
+		return applicationContext;
+	}
+
 	protected String getSecurityChainMapping() {
-		return "/*";
+		return "/admin/*";
 	}
 
 	protected String getSecurityCaptchaMapping() {
