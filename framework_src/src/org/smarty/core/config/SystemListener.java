@@ -9,7 +9,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 /**
  * SystemListener
  */
-public abstract class SystemListener implements ApplicationListener {
+public abstract class SystemListener implements ApplicationListener<ApplicationEvent> {
 	@Override
 	public final void onApplicationEvent(ApplicationEvent event) {
 		onEvent(event);

@@ -18,6 +18,7 @@ final class CacheMemory {
 
 	CacheMemory(final Integer size) {
 		cacheMap = new LinkedHashMap<String, Cache>(size, 0.75f, true) {
+			private static final long serialVersionUID = 3801124242820219132L;
 			// 容器映射增加缓存大小时,删除旧条目
 			protected boolean removeEldestEntry(Map.Entry<String, Cache> eldest) {
 				return size() > size;

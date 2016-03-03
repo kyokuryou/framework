@@ -1,51 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project basedir="." default="sec_all" name="framework_security">
-	<!--系统环境变量-->
+    <!--系统环境变量-->
 
     <import file="./build_property.xml"/>
 
-	<!--编译的类路径设定-->
-    <path id="sec_compile.classpath" refid="jar.files"/>
+    <record name="${target.log.file}" append="false" loglevel="info"/>
+
+    <!--编译的类路径设定-->
+    <path id="sec_compile.classpath">
+        <path refid="jar.files"/>
+        <file file="${src.build.dirPath}/${src.jar.name}.jar"/>
+        <file file="${web.build.dirPath}/${web.jar.name}.jar"/>
+    </path>
 
     <!-- 文件过滤器 -->
     <patternset id="files_filter">
         <patternset refid="ignored.files"/>
         <patternset refid="resource.files"/>
     </patternset>
-	<!-- resources用于实现对资源文件和配置文件的部署 -->
-	<target name="sec_resources">
-		<copy todir="${sec.build.dirPath}" overwrite="true">
-			<fileset dir="${sec.dirPath}">
-				<patternset refid="files_filter"/>
-			</fileset>
-		</copy>
-	</target>
-
-	<!--compile编译所有java文件-->
-	<target name="sec_compile" depends="sec_prepare,sec_resources">
-        <mkdir dir="${sec.build.dirPath}"/>
-		<javac fork="true" srcdir="${sec.dirPath}" executable="${target.java.home}/bin/javac"
-               target="${target.java.version}" destdir="${sec.build.dirPath}"
-               debug="true" debuglevel="source,lines,vars" >
-			<compilerarg line="-encoding ${target.encode}"/>
-			<compilerarg value="-Xlint:unchecked"/>
-			<compilerarg value="-Xlint:deprecation"/>
-			<classpath refid="sec_compile.classpath"/>
-		</javac>
-	</target>
-
-    <target name="sec_prepare">
-        <tstamp />
+    <!-- resources用于实现对资源文件和配置文件的部署 -->
+    <target name="sec_resources">
+        <copy todir="${sec.build.dirPath}" overwrite="true">
+            <fileset dir="${sec.dirPath}">
+                <patternset refid="files_filter"/>
+            </fileset>
+        </copy>
     </target>
 
-	<!--clean清除已经编译的目标文件和已经部署的文件-->
-	<target name="sec_clean" description="Prepare for clean build">
-		<delete dir="${sec.build.dirPath}"/>
-		<delete dir="${war.web.dirPath}/WEB-INF/lib/${sec.jar.name}.jar"/>
-	</target>
+    <!--compile编译所有java文件-->
+    <target name="sec_compile" depends="sec_prepare,sec_resources">
+        <mkdir dir="${sec.build.dirPath}"/>
+        <javac fork="true" includeAntRuntime="false" srcdir="${sec.dirPath}" destdir="${sec.build.dirPath}"
+               executable="${target.java.home}/bin/javac" target="${target.java.version}"
+               debug="true" debuglevel="source,lines,vars">
+            <compilerarg value="-Xlint:all"/>
+            <compilerarg line="-encoding ${target.encode}"/>
+            <classpath refid="sec_compile.classpath"/>
+        </javac>
+    </target>
 
-	<!--dist完成项目部署-->
-	<target name="sec_dist" description="Create binary distribution">
+    <target name="sec_prepare">
+        <tstamp/>
+    </target>
+
+    <!--clean清除已经编译的目标文件和已经部署的文件-->
+    <target name="sec_clean" description="Prepare for clean build">
+        <delete quiet="true">
+            <fileset dir="${sec.build.dirPath}">
+                <include name="**"/>
+            </fileset>
+            <fileset dir="${war.web.dirPath}/WEB-INF/lib">
+                <include name="${src.jar.name}.jar"/>
+                <include name="${web.jar.name}.jar"/>
+                <include name="${sec.jar.name}.jar"/>
+            </fileset>
+        </delete>
+    </target>
+
+    <!--dist完成项目部署-->
+    <target name="sec_dist" description="Create binary distribution">
         <jar jarfile="${sec.build.dirPath}/${sec.jar.name}.jar" basedir="${sec.build.dirPath}">
             <exclude name="**/*.jar"/>
             <exclude name="**/*.zip"/>
@@ -61,7 +74,7 @@
                 <attribute name="X-Compile-Source-JDK" value="${target.java.version}"/>
             </manifest>
         </jar>
-	</target>
+    </target>
     <!-- 制作源码包 -->
     <target name="sec_zip_dist" description="Create Source distribution">
         <zip destfile="${sec.build.dirPath}/${sec.jar.name}.zip">
@@ -74,29 +87,21 @@
     </target>
 
     <target name="sec_copy">
-        <copy todir="${war.web.dirPath}/WEB-INF/lib" overwrite="true">
-            <fileset dir="${sec.build.dirPath}">
-                <include name="${sec.jar.name}.jar"/>
-            </fileset>
-        </copy>
-
         <copy todir="${war.web.dirPath}/WEB-INF" overwrite="true">
             <fileset dir="${sec.dirPath}">
                 <include name="security.tld"/>
             </fileset>
         </copy>
-
-        <copy todir="${war.src.dirPath}" overwrite="true">
-            <fileset dir="${sec.dirPath}">
-                <include name="security.sql"/>
-            </fileset>
-            <fileset dir="${sec.meta.dirPath}/config">
-                <include name="spring-security.xml"/>
+        <copy todir="${war.web.dirPath}/WEB-INF/lib" overwrite="true">
+            <file file="${src.build.dirPath}/${src.jar.name}.jar"/>
+            <file file="${web.build.dirPath}/${web.jar.name}.jar"/>
+            <fileset dir="${sec.build.dirPath}">
+                <include name="${sec.jar.name}.jar"/>
             </fileset>
         </copy>
     </target>
 
     <target name="sec_project" depends="sec_clean,sec_prepare,sec_compile"/>
-	<!--all重新编译和部署整个应用-->
-	<target name="sec_all" depends="sec_project,sec_dist,sec_zip_dist,sec_copy"/>
+    <!--all重新编译和部署整个应用-->
+    <target name="sec_all" depends="sec_project,sec_dist,sec_zip_dist,sec_copy"/>
 </project>

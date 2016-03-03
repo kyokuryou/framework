@@ -33,31 +33,18 @@ public abstract class WebInitializer<T extends WebBuilder> extends AbsContextIni
 	}
 
 	@Override
-	protected WebApplicationContext createApplicationContext() {
+	protected final WebApplicationContext createApplicationContext() {
 		AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
-		applicationContext.register(WebConfigurer.class);
-		String cl = getConfigLocation();
-		if (!ObjectUtil.isEmpty(cl)) {
-			applicationContext.setConfigLocation(cl);
-		}
+		applicationContext.register(getAnnotatedClasses());
 		return applicationContext;
 	}
 
 	protected final WebApplicationContext createServletApplicationContext() {
-		AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
-		String cl = getServletConfigLocation();
-		if (!ObjectUtil.isEmpty(cl)) {
-			applicationContext.setConfigLocation(cl);
-		}
-		return applicationContext;
+		return new AnnotationConfigWebApplicationContext();
 	}
 
-	protected String getConfigLocation() {
-		return null;
-	}
-
-	protected String getServletConfigLocation() {
-		return null;
+	protected Class<?> getAnnotatedClasses() {
+		return WebConfigurer.class;
 	}
 
 	protected String[] getDispatcherServletMapping() {

@@ -1,21 +1,34 @@
 package org.smarty.security.http;
 
+import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import org.smarty.core.utils.ObjectUtil;
 import org.smarty.security.bean.UserSecurity;
 import org.smarty.web.http.AbsServlet;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.DefaultRedirectStrategy;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 /**
  * spring Security 控制器
  */
-public class SecurityServlet extends AbsServlet {
+public abstract class SecurityServlet extends AbsServlet {
+	private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
 	@Override
 	public void setInstanceState(HttpServletRequest request) {
 
+	}
+
+	@Override
+	public void sendRedirect(String url) throws IOException {
+		redirectStrategy.sendRedirect(request, response, url);
+	}
+
+	protected final String getSessionId() {
+		return null;
 	}
 
 	protected WebAuthenticationDetails getDetails() {

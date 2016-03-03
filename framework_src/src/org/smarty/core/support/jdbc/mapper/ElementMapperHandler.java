@@ -23,9 +23,9 @@ import org.springframework.jdbc.support.JdbcUtils;
  */
 public class ElementMapperHandler extends RowMapperHandler<Element> {
 	private static Log logger = LogFactory.getLog(ElementMapperHandler.class);
-	private Class superClass;
+	private Class<?> superClass;
 
-	public ElementMapperHandler(Class superClass) {
+	public ElementMapperHandler(Class<?> superClass) {
 		this.superClass = superClass;
 	}
 
@@ -51,7 +51,7 @@ public class ElementMapperHandler extends RowMapperHandler<Element> {
 	private void setObject(ResultSet rs, String cn, int index, Element bean) throws SQLException {
 		String key = CommonUtil.toJavaField(cn);
 		try {
-			Class keyType = BeanUtil.getFieldClass(superClass, key);
+			Class<?> keyType = BeanUtil.getFieldClass(superClass, key);
 			Object value = JdbcUtils.getResultSetValue(rs, index);
 			if (value == null)
 				return;
@@ -69,7 +69,7 @@ public class ElementMapperHandler extends RowMapperHandler<Element> {
 	 *
 	 * @return
 	 */
-	private Element getBeanElement(Class klass, int code) {
+	private Element getBeanElement(Class<?> klass, int code) {
 		String name = klass.getSimpleName();
 		Element bean = DocumentHelper.createElement("bean");
 		bean.addAttribute("id", CommonUtil.firstLower(name + code));
@@ -82,8 +82,8 @@ public class ElementMapperHandler extends RowMapperHandler<Element> {
 	 *
 	 * @return
 	 */
-	private Element getBeanProperty(String name, Object value, Class valueType) {
-		Class klass = value.getClass();
+	private Element getBeanProperty(String name, Object value, Class<?> valueType) {
+		Class<?> klass = value.getClass();
 		Element properties = DocumentHelper.createElement("property");
 		properties.addAttribute("name", name);
 

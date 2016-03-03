@@ -8,6 +8,8 @@ package org.smarty.core.exception;
  * @version 1.0
  */
 public class NoSuchReflectException extends Exception {
+	private static final long serialVersionUID = -3387516993124229947L;
+
 	public NoSuchReflectException() {
 		super();
 	}

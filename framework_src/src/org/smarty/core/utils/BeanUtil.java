@@ -33,7 +33,7 @@ public final class BeanUtil {
 	 * @param className 所需类的完全限定名。
 	 * @return Class对象。
 	 */
-	public static Class getClassForName(String className) throws InstanceClassException {
+	public static Class<?> getClassForName(String className) throws InstanceClassException {
 		try {
 			return Class.forName(className);
 		} catch (ClassNotFoundException e) {
@@ -101,7 +101,7 @@ public final class BeanUtil {
 	 * @return Class对象
 	 * @throws InvokeFieldException 未发现字段表示的字符串
 	 */
-	public static Class getFieldClass(Class<?> clazz, String name) throws InvokeFieldException {
+	public static Class<?> getFieldClass(Class<?> clazz, String name) throws InvokeFieldException {
 		try {
 			return clazz.getDeclaredField(name).getType();
 		} catch (NoSuchFieldException e) {
@@ -128,7 +128,7 @@ public final class BeanUtil {
 		Class<?>[] cls = null;
 
 		if (params != null) {
-			cls = new Class[params.length];
+			cls = new Class<?>[params.length];
 			for (int i = 0; i < cls.length; ++i) {
 				if (params[i] == null) {
 					cls[i] = null;
@@ -236,7 +236,7 @@ public final class BeanUtil {
 	 * @throws InstanceClassException 创建失败
 	 */
 	public static <T> T instanceClass(Class<T> clazz, Object... params) throws InstanceClassException, InvokeMethodException {
-		Class<?>[] cls = new Class[params.length];
+		Class<?>[] cls = new Class<?>[params.length];
 		for (int i = 0; i < cls.length; ++i) {
 			cls[i] = params[i].getClass();
 		}
@@ -267,7 +267,7 @@ public final class BeanUtil {
 	public static Class<?>[] allInterfaces(String clzssName) {
 		List<Class<?>> inters = new ArrayList<Class<?>>();
 		try {
-			Class clazz = Class.forName(clzssName);
+			Class<?> clazz = Class.forName(clzssName);
 			do {
 				Class<?>[] cls = clazz.getInterfaces();
 				Collections.addAll(inters, cls);
@@ -407,12 +407,11 @@ public final class BeanUtil {
 	 * @param value 值
 	 * @return 转换后的值
 	 */
-	@SuppressWarnings("unchecked")
 	public static Object toCase(Field field, String value) {
 		ObjectUtil.assertNotEmpty(field, "this field is required; it must not be null");
 		ObjectUtil.assertNotEmpty(value, "this value is required; it must not be null");
 
-		Class fieldType = field.getType();
+		Class<?> fieldType = field.getType();
 		if (fieldType.isAssignableFrom(boolean.class) || fieldType.isAssignableFrom(Boolean.class)) {
 			return Boolean.valueOf(value);
 		} else if (fieldType.isAssignableFrom(byte.class) || fieldType.isAssignableFrom(Byte.class)) {
@@ -445,8 +444,7 @@ public final class BeanUtil {
 	 * @param klass 基本类型Class
 	 * @return 引用类型Class字符串
 	 */
-	@SuppressWarnings("unchecked")
-	public static String getClassName(Class klass) {
+	public static String getClassName(Class<?> klass) {
 		ObjectUtil.assertNotEmpty(klass, "this class is required; it must not be null");
 		// 判断是否是数组,如果是递归调用
 		if (klass.isArray()) {
@@ -472,42 +470,5 @@ public final class BeanUtil {
 			return Short.class.getName();
 		}
 		return klass.getName();
-	}
-
-	/**
-	 * 将value转换成type类型
-	 *
-	 * @param value 值
-	 * @param type  类型
-	 * @return type类型值
-	 */
-	@SuppressWarnings("unchecked")
-	public static Object valueToType(Object value, Class type) {
-		ObjectUtil.assertNotEmpty(value, "this value is required; it must not be null");
-		if (type == null) {
-			return value;
-		}
-		if (value.getClass().isAssignableFrom(type)) {
-			return type.cast(value);
-		}
-
-		if (String.class.equals(type)) {
-			return type.cast(value);
-		} else if (Boolean.class.isAssignableFrom(type) || boolean.class.isAssignableFrom(type)) {
-			if (value instanceof Boolean) {
-				return value;
-			} else if (value instanceof String) {
-				return type.cast(Boolean.valueOf(value.toString()));
-			} else if (value instanceof Integer) {
-				return type.cast(Integer.valueOf(value.toString()) != 0);
-			} else {
-				logger.warn("Value [" + value + "] is of type [" + value.getClass().getName() + "] and cannot be converted to required type [" + type.getName() + "]");
-			}
-		} else if (type.isEnum()) {
-			return Enum.valueOf(type, value.toString());
-		} else {
-			logger.warn("Value [" + value + "] is of type [" + value.getClass().getName() + "] and cannot be converted to required type [" + type.getName() + "]");
-		}
-		return null;
 	}
 }

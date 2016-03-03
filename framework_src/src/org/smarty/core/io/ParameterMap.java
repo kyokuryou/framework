@@ -14,6 +14,7 @@ import org.smarty.core.utils.ObjectUtil;
  * @since LVGG1.1
  */
 public class ParameterMap extends HashMap<String, Object> implements ParameterSerializable {
+	private static final long serialVersionUID = 362498820763181266L;
 
 	public String getString(String key) {
 		return convertString(super.get(key));

@@ -111,7 +111,7 @@ public class SpringUtil {
 	 * @return Class 注册对象的类型
 	 * @throws org.springframework.beans.factory.NoSuchBeanDefinitionException
 	 */
-	public static Class getType(String name) {
+	public static Class<?> getType(String name) {
 		try {
 			return getApplicationContext().getType(name);
 		} catch (NoSuchBeanDefinitionException e) {

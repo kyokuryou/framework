@@ -38,6 +38,7 @@ import org.smarty.core.utils.ObjectUtil;
 public class $ins extends LineFunction {
 	private static final Log logger = LogFactory.getLog($ins.class);
 
+	@SuppressWarnings("rawtypes")
 	public void execute(Context context, Writer writer, Object[] objects) throws Exception {
 		List value = (List) objects[0];
 		String itemName = "";

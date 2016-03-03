@@ -38,11 +38,11 @@ public final class SQLSession extends JdbcSupport implements InitializingBean {
 
 	//	-----------------
 	public Object executeForSingle(SQL sql) {
-		return executeForSingle(sql, null, new SingleMapperHandler());
+		return executeForSingle(sql, null, new SingleMapperHandler<Object>());
 	}
 
 	public <P extends ParameterSerializable> Object executeForSingle(SQL sql, P params) {
-		return executeForSingle(sql, params, new SingleMapperHandler());
+		return executeForSingle(sql, params, new SingleMapperHandler<Object>());
 	}
 
 	public <T> T executeForSingle(SQL sql, Class<T> klass) {
@@ -54,12 +54,12 @@ public final class SQLSession extends JdbcSupport implements InitializingBean {
 	}
 
 	//	-----------------
-	public List<?> executeForSingleList(SQL sql) {
-		return executeForMulti(sql, null, new SingleMapperHandler());
+	public List<Object> executeForSingleList(SQL sql) {
+		return executeForMulti(sql, null, new SingleMapperHandler<Object>());
 	}
 
-	public <P extends ParameterSerializable> List<?> executeForSingleList(SQL sql, P params) {
-		return executeForMulti(sql, params, new SingleMapperHandler());
+	public <P extends ParameterSerializable> List<Object> executeForSingleList(SQL sql, P params) {
+		return executeForMulti(sql, params, new SingleMapperHandler<Object>());
 	}
 
 	public <T> List<T> executeForSingleList(SQL sql, Class<T> klass) {

@@ -25,6 +25,7 @@ public class SingleMapperHandler<T> extends RowMapperHandler<T> {
 		this.requiredType = superClass;
 	}
 
+	@SuppressWarnings("unchecked")
 	public T rowMapper(ResultSet rs) throws SQLException {
 		try {
 			Object val = JdbcUtils.getResultSetValue(rs, 1);

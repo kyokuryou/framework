@@ -221,7 +221,7 @@ public abstract class AbsRest {
 		}
 
 		List<Object> fsrs = new ArrayList<Object>();
-		Class fc = file.getClass();
+		Class<?> fc = file.getClass();
 		if (!fc.isArray()) {
 			fsrs.add(new FileSystemResource((File) file));
 		} else {

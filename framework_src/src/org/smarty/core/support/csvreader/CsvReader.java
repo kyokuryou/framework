@@ -36,6 +36,7 @@ import org.smarty.core.common.BaseConstant;
  * A stream based parser for parsing delimited text data from a file or a
  * stream.
  */
+@SuppressWarnings({"unchecked","rawtypes"})
 public class CsvReader {
 	private Reader inputStream = null;
 

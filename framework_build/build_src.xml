@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project basedir="." default="src_all" name="framework_src">
     <!--系统环境变量-->
-
     <import file="./build_property.xml"/>
+
+    <record name="${target.log.file}" append="false" loglevel="info"/>
 
     <!--编译的类路径设定-->
     <path id="src_compile.classpath" refid="jar.files"/>
@@ -24,12 +25,11 @@
     <!--compile编译所有java文件-->
     <target name="src_compile" depends="src_prepare,src_resources">
         <mkdir dir="${src.build.dirPath}"/>
-        <javac fork="true" includeAntRuntime="false" srcdir="${src.dirPath}" executable="${target.java.home}/bin/javac"
-               target="${target.java.version}" destdir="${src.build.dirPath}"
+        <javac fork="true" includeAntRuntime="false" srcdir="${src.dirPath}" destdir="${src.build.dirPath}"
+               executable="${target.java.home}/bin/javac" target="${target.java.version}"
                debug="true" debuglevel="source,lines,vars">
+            <compilerarg value="-Xlint:all"/>
             <compilerarg line="-encoding ${target.encode}"/>
-            <compilerarg value="-Xlint:unchecked"/>
-            <compilerarg value="-Xlint:deprecation"/>
             <classpath refid="src_compile.classpath"/>
         </javac>
     </target>
@@ -40,8 +40,17 @@
 
     <!--clean清除已经编译的目标文件和已经部署的文件-->
     <target name="src_clean" description="Prepare for clean build">
-        <delete dir="${src.build.dirPath}"/>
-        <delete dir="${war.web.dirPath}/WEB-INF/lib/${src.jar.name}.jar"/>
+        <delete quiet="true">
+            <fileset dir="${src.build.dirPath}">
+                <include name="**"/>
+            </fileset>
+        </delete>
+        <delete>
+            <fileset dir="${war.src.dirPath}">
+                <include name="log4j.properties"/>
+            </fileset>
+        </delete>
+
     </target>
 
     <!--dist完成项目部署-->
@@ -49,7 +58,7 @@
         <jar jarfile="${src.build.dirPath}/${src.jar.name}.jar" basedir="${src.build.dirPath}">
             <exclude name="**/*.jar"/>
             <exclude name="**/*.zip"/>
-            <exclude name="**/*.local.properties"/>
+            <exclude name="**/*.properties"/>
             <manifest>
                 <attribute name="Specification-Title" value="${component.name}"/>
                 <attribute name="Specification-Version" value="${component.Version}"/>
@@ -73,21 +82,9 @@
     </target>
 
     <target name="src_copy">
-        <copy todir="${war.web.dirPath}/WEB-INF/lib" overwrite="true">
-            <fileset dir="${src.build.dirPath}">
-                <include name="${src.jar.name}.jar"/>
-            </fileset>
-        </copy>
-
         <copy todir="${war.src.dirPath}" overwrite="true">
-            <fileset dir="${src.mata.dirPath}/config">
-                <include name="config.local.properties"/>
-                <!--<include name="freemarker.properties"/>-->
+            <fileset dir="${src.meta.dirPath}">
                 <include name="log4j.properties"/>
-                <!--<include name="spring_ws.xml"/>-->
-                <!--<include name="struts.xml"/>-->
-                <include name="spring.xml"/>
-                <include name="system-config.xml"/>
             </fileset>
         </copy>
     </target>

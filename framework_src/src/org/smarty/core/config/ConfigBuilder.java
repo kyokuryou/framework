@@ -14,23 +14,23 @@ import org.springframework.util.Assert;
 public class ConfigBuilder {
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	private final Set<ConfigStatement> registrations = new LinkedHashSet<ConfigStatement>();
+	private final Set<ConfigStatement<?>> registrations = new LinkedHashSet<ConfigStatement<?>>();
 
 	protected ConfigBuilder() {
 	}
 
-	public final void addStatement(ConfigStatement statement) {
+	public final void addStatement(ConfigStatement<?> statement) {
 		Assert.notNull(statement, "[Assertion failed] - context statement is required; it must not be null");
 		this.registrations.add(statement);
 	}
 
 	public final void apply() {
-		for (ConfigStatement reg : registrations) {
+		for (ConfigStatement<?> reg : registrations) {
 			build(reg);
 		}
 	}
 
-	protected void build(ConfigStatement contextStatement) {
+	protected void build(ConfigStatement<?> contextStatement) {
 
 	}
 }

@@ -28,24 +28,26 @@
     <property name="component.Version" value="v1.5.2"/>
     <property name="component.Vendor" value="K"/>
     <!-- 编译环境 -->
-    <property name="target.java.home" value="D:/opt/lib/Java/jdk1.6.0_45"/>
+    <property name="target.log.file" value="error.log"/>
+    <property name="target.java.home" value="D:/opt/lib/Java/jdk1.8.0_40"/>
     <property name="target.java.locales" value="en_US"/>
     <property name="target.encode" value="UTF-8"/>
     <property name="target.java.version" value="1.6"/>
     <!-- 源码路径-->
     <property name="src.dirPath" value="${project.src.dirPath}/src"/>
+    <property name="src.meta.dirPath" value="${project.src.dirPath}/META-INF"/>
     <property name="src.build.dirPath" value="${project.src.dirPath}/build"/>
-    <property name="src.mata.dirPath" value="${project.src.dirPath}/META-INF"/>
 
     <!-- web路径-->
     <property name="web.dirPath" value="${project.web.dirPath}/src"/>
-    <property name="web.web.dirPath" value="${project.web.dirPath}/web"/>
     <property name="web.meta.dirPath" value="${project.web.dirPath}/META-INF"/>
     <property name="web.build.dirPath" value="${project.web.dirPath}/build"/>
     <!-- security路径-->
     <property name="sec.dirPath" value="${project.security.dirPath}/src"/>
     <property name="sec.meta.dirPath" value="${project.security.dirPath}/META-INF"/>
     <property name="sec.build.dirPath" value="${project.security.dirPath}/build"/>
+
+    <property name="lib.build.dirPath" value="${project.lib.dirPath}/build"/>
     <!-- bank路径-->
     <property name="bank.dirPath" value="${project.bank.dirPath}/src"/>
     <property name="bank.build.dirPath" value="${project.bank.dirPath}/build"/>

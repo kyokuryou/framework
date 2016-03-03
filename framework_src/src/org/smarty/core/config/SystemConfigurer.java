@@ -44,6 +44,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.convert.converter.ConverterRegistry;
 import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.format.support.DefaultFormattingConversionService;
@@ -74,6 +75,7 @@ import org.springframework.transaction.annotation.TransactionManagementConfigure
 @ComponentScan(useDefaultFilters = false, basePackages = "org.smarty.core", includeFilters = {
 		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = Component.class)
 })
+@Order(0)
 public class SystemConfigurer implements TransactionManagementConfigurer, AsyncConfigurer, CachingConfigurer, ApplicationContextAware {
 	public static final String SCHEDULER_NAME = "scheduler";
 	public static final String DATA_SOURCE_NAME = "dataSource";

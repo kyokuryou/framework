@@ -12,7 +12,6 @@ import javax.annotation.Resource;
 import javax.servlet.Filter;
 import javax.servlet.ServletContext;
 import org.smarty.core.config.SystemConfigurer;
-import org.smarty.core.utils.ObjectUtil;
 import org.smarty.web.commons.CaptchaEngine;
 import org.smarty.web.commons.FreemarkerManager;
 import org.smarty.web.commons.GenerateHtml;
@@ -31,6 +30,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -45,7 +45,6 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -63,6 +62,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 @ComponentScan(useDefaultFilters = false, basePackages = "org.smarty.web", includeFilters = {
 		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = Component.class)
 })
+@Order(0)
 public class WebConfigurer extends WebMvcConfigurerAdapter implements ServletContextAware, MessageSourceAware {
 	public static final String MULTIPART_RESOLVER_NAME = DispatcherServlet.MULTIPART_RESOLVER_BEAN_NAME;
 	public static final String CAPTCHA_SERVICE_NAME = "captchaService";
@@ -97,20 +97,6 @@ public class WebConfigurer extends WebMvcConfigurerAdapter implements ServletCon
 	private String themeSourceNames;
 	@Value("${upload.maxSize:1048576}")
 	private long uploadMaxSize;
-
-	@Value("${mappings.js:/js/**}")
-	private String[] jsMappings;
-	@Value("${mappings.css:/css/**}")
-	private String[] cssMappings;
-	@Value("${mappings.image:/image/**}")
-	private String[] imageMappings;
-
-	@Value("${locations.js}")
-	private String[] jsLocations;
-	@Value("${locations.css}")
-	private String[] cssLocations;
-	@Value("${locations.image}")
-	private String[] imageLocations;
 
 	@Bean(name = MESSAGE_SOURCE_NAME)
 	public MessageSource getMessageSource() {
@@ -263,19 +249,6 @@ public class WebConfigurer extends WebMvcConfigurerAdapter implements ServletCon
 	@Override
 	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
 		configurer.enable();
-	}
-
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		if (!ObjectUtil.isEmpty(jsLocations)) {
-			registry.addResourceHandler(jsMappings).addResourceLocations(jsLocations);
-		}
-		if (!ObjectUtil.isEmpty(cssLocations)) {
-			registry.addResourceHandler(cssMappings).addResourceLocations(cssLocations);
-		}
-		if (!ObjectUtil.isEmpty(imageLocations)) {
-			registry.addResourceHandler(imageMappings).addResourceLocations(imageLocations);
-		}
 	}
 
 	@Override

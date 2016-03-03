@@ -82,7 +82,7 @@ public class SpringBuilder {
 	 * @param file     文件名
 	 * @param beanList 集合(不支持非标准JavaBean和JavaBean内部集合)
 	 */
-	public void doRun(File file, List<Element> beanList, Class klass) {
+	public void doRun(File file, List<Element> beanList, Class<?> klass) {
 		Document document = DocumentHelper.createDocument();
 		Element rootElement = getRootElement();
 		for (Element bean : beanList) {
@@ -129,7 +129,7 @@ public class SpringBuilder {
 	 *
 	 * @return
 	 */
-	private Element getBeanElement(Class klass, Integer code) {
+	private Element getBeanElement(Class<?> klass, Integer code) {
 		String name = klass.getSimpleName();
 		Element bean = DocumentHelper.createElement("bean");
 		bean.addAttribute("id", firstDown(name + code));
@@ -149,7 +149,7 @@ public class SpringBuilder {
 	 * @param elements
 	 * @return
 	 */
-	private Element getLinkedList(Class klass, Element... elements) {
+	private Element getLinkedList(Class<?> klass, Element... elements) {
 		Element beanEl = DocumentHelper.createElement("bean");
 		beanEl.addAttribute("id", firstDown(klass.getSimpleName()) + "List");
 		beanEl.addAttribute("class", "java.util.LinkedList");

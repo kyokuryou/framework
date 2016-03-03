@@ -7,7 +7,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import java.io.Serializable;
 import java.io.StringWriter;
-import java.io.Writer;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -50,22 +49,15 @@ public final class JsonUtil {
 	}
 
 	public static String encode(Map<String, ?> src) {
-		StringWriter sw = new StringWriter();
-		toJsonWriter(src, sw);
-		String json = sw.toString();
-		logger.warn(json);
-		return json;
+		return getJsonString(src);
 	}
 
 	public static String encode(Serializable src) {
-		StringWriter sw = new StringWriter();
-		toJsonWriter(src, sw);
-		String json = sw.toString();
-		logger.warn(json);
-		return json;
+		return getJsonString(src);
 	}
 
-	public static Map decode(String json) {
+	@SuppressWarnings("unchecked")
+	public static Map<String, ?> decode(String json) {
 		JsonParser parser = new JsonParser();
 		JsonElement element = parser.parse(json);
 		logger.warn(json);
@@ -111,7 +103,7 @@ public final class JsonUtil {
 		return gson.fromJson(element, getListType(element, clzss));
 	}
 
-	private static Type getListType(JsonElement element, Class clzss) {
+	private static Type getListType(JsonElement element, Class<?> clzss) {
 		JsonArray arr = element.getAsJsonArray();
 		JsonElement ele = arr.get(0);
 		ListToken token = new ListToken();
@@ -123,9 +115,13 @@ public final class JsonUtil {
 		return token;
 	}
 
-	private static void toJsonWriter(Object src, Writer writer) {
+	private static String getJsonString(Object src) {
+		StringWriter sw = new StringWriter();
 		Gson gson = getGson();
-		gson.toJson(src, writer);
+		gson.toJson(src, sw);
+		String json = sw.toString();
+		logger.warn(json);
+		return json;
 	}
 
 	private static final class ListToken implements ParameterizedType {

@@ -8,6 +8,8 @@ package org.smarty.core.exception;
  * @version 1.0
  */
 public class MemoryNotFindException extends Exception {
+	private static final long serialVersionUID = -3387516993124229946L;
+
 	public MemoryNotFindException() {
 		super();
 	}

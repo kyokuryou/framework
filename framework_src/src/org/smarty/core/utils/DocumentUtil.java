@@ -149,15 +149,14 @@ public final class DocumentUtil {
 	 * @param xpath  要删除空节点的所在父节点的xpath
 	 * @return 删除空节点后的xml文档
 	 */
-	@SuppressWarnings("unchecked")
 	public static Document removeNullIdElement(Document srcDoc, String xpath) {
 		Node parentNode = srcDoc.getRootElement().selectSingleNode(xpath);
 		if (!(parentNode instanceof Element)) {
 			return null;
 		} else {
-			Iterator<Element> it = ((Element) parentNode).elementIterator();
+			Iterator<?> it = ((Element) parentNode).elementIterator();
 			while (it.hasNext()) {
-				Element element = it.next();
+				Element element = (Element) it.next();
 				Attribute attr = element.attribute("ID");
 				if (ObjectUtil.isEmpty(attr)) {
 					element.detach();

@@ -83,13 +83,6 @@ public final class ObjectUtil {
 		}
 	}
 
-	public static void main(String[] args) {
-		Integer a = null;
-		Integer b = null;
-		assertEmpty("1231", "a and b1");
-		assertNotEmpty(null, "a and b2");
-	}
-
 	/**
 	 * 将指定数组的指定范围复制到一个新数组。该范围的初始索引 (from) 必须位于 0 和 dataArray.length（包括）之间。
 	 *
@@ -103,7 +96,7 @@ public final class ObjectUtil {
 		if (newLength < 0)
 			throw new IllegalArgumentException(from + " > " + to);
 		int len = Array.getLength(array);
-		Class ct = array.getClass().getComponentType();
+		Class<?> ct = array.getClass().getComponentType();
 		Object copy = Array.newInstance(ct, newLength);
 		System.arraycopy(array, from, copy, 0, Math.min(len - from, newLength));
 		return copy;

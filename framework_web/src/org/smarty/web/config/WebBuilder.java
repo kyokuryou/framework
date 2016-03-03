@@ -32,7 +32,7 @@ public class WebBuilder extends ConfigBuilder {
 		addStatement(statement);
 	}
 
-	protected void build(ConfigStatement contextStatement) {
+	protected void build(ConfigStatement<?> contextStatement) {
 		super.build(contextStatement);
 		if (contextStatement instanceof ListenerStatement) {
 			ListenerStatement statement = (ListenerStatement) contextStatement;
