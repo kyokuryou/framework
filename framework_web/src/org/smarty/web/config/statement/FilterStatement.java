@@ -1,39 +1,48 @@
 package org.smarty.web.config.statement;
 
 import javax.servlet.Filter;
-import org.springframework.util.Assert;
+import org.smarty.core.utils.ObjectUtil;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
 /**
  * FilterStatement
  */
 public class FilterStatement extends WebStatement<Filter> {
-	private String urlPattern;
+	private String[] servletName;
+	private String[] urlPattern;
 	private boolean beforeFilter = false;
 
-	public FilterStatement(Filter object, String urlPattern) {
-		super(object);
-		this.urlPattern = urlPattern;
+	public FilterStatement(Filter filter) {
+		super(filter);
 	}
 
-	public FilterStatement(String targetName, String urlPattern) {
+	public FilterStatement(String targetName) {
 		super(targetName);
-		this.urlPattern = urlPattern;
 	}
 
-	public FilterStatement(String targetName, Filter filter, String urlPattern) {
+	public FilterStatement(String targetName, Filter filter) {
 		super(targetName, filter);
-		Assert.hasText(urlPattern);
-		this.urlPattern = urlPattern;
+		ObjectUtil.assertNotEmpty(urlPattern, "urlPattern must not be null or empty");
 	}
 
 	public void setBeforeFilter(boolean beforeFilter) {
 		this.beforeFilter = beforeFilter;
 	}
 
+	public void setServletName(String... servletName) {
+		this.servletName = servletName;
+	}
 
-	public String getUrlPattern() {
+	public void setUrlPattern(String... urlPattern) {
+		this.urlPattern = urlPattern;
+	}
+
+	public String[] getUrlPattern() {
 		return urlPattern;
+	}
+
+	public String[] getServletName() {
+		return servletName;
 	}
 
 	public boolean isBeforeFilter() {

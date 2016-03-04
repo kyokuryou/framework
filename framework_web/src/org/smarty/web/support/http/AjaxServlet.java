@@ -1,4 +1,4 @@
-package org.smarty.web.http;
+package org.smarty.web.support.http;
 
 import java.io.PrintWriter;
 import java.util.HashMap;

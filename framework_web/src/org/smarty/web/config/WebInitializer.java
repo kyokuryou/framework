@@ -3,11 +3,13 @@ package org.smarty.web.config;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import org.smarty.core.common.AbsContextInitializer;
-import org.smarty.core.utils.ObjectUtil;
 import org.smarty.web.commons.WebBaseConstant;
 import org.smarty.web.config.statement.FilterStatement;
 import org.smarty.web.config.statement.ListenerStatement;
 import org.smarty.web.config.statement.ServletStatement;
+import org.smarty.web.support.filter.CaptchaBuilderFilter;
+import org.smarty.web.support.filter.JSLocaleFilter;
+import org.smarty.web.support.filter.MultiRequestFilter;
 import org.springframework.util.Assert;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
@@ -51,16 +53,9 @@ public abstract class WebInitializer<T extends WebBuilder> extends AbsContextIni
 		return new String[]{"/"};
 	}
 
-	protected String getUrlMapping() {
-		return "/*";
-	}
-
-	protected String getCaptchaMapping() {
-		return "/captcha.jpg";
-	}
-
-	protected String getJsLocaleMapping() {
-		return "/";
+	protected void configRequestFilter(MultiRequestFilter multiRequestFilter) {
+		multiRequestFilter.addRequestFilter(CaptchaBuilderFilter.class);
+		multiRequestFilter.addRequestFilter(JSLocaleFilter.class);
 	}
 
 	@Override
@@ -74,21 +69,13 @@ public abstract class WebInitializer<T extends WebBuilder> extends AbsContextIni
 		contextBuilder.addServletListener(new ListenerStatement(new IntrospectorCleanupListener()));
 		contextBuilder.addServletListener(new ListenerStatement(new RequestContextListener()));
 		contextBuilder.addServlet(getDispatcherServlet());
-		contextBuilder.addFilter(getCharacterEncodingFilter());
-
+		contextBuilder.addFilter(createRequestFilter());
 		customizeBuilder(contextBuilder);
 		contextBuilder.apply();
 	}
 
 	protected void customizeBuilder(T contextBuilder) {
-		String cm = getCaptchaMapping();
-		if (!ObjectUtil.isEmpty(cm)) {
-			contextBuilder.addFilter(new FilterStatement(WebConfigurer.CAPTCHA_BUILDER_FILTER_NAME, cm));
-		}
-		String jslm = getJsLocaleMapping();
-		if (!ObjectUtil.isEmpty(jslm)) {
-			contextBuilder.addFilter(new FilterStatement(WebConfigurer.JS_LOCALE_FILTER_NAME, jslm));
-		}
+
 	}
 
 	private ServletStatement getDispatcherServlet() {
@@ -97,16 +84,21 @@ public abstract class WebInitializer<T extends WebBuilder> extends AbsContextIni
 		String[] dsm = getDispatcherServletMapping();
 		Assert.notEmpty(dsm, "[Assertion failed] - getDispatcherServletMapping() is required; it must not be null");
 		FrameworkServlet dispatcherServlet = new DispatcherServlet(servletAppContext);
-		return new ServletStatement(DISPATCHER_SERVLET_NAME, dispatcherServlet, dsm);
+		ServletStatement dsss = new ServletStatement(DISPATCHER_SERVLET_NAME, dispatcherServlet);
+		dsss.setMapping(dsm);
+		return dsss;
 	}
 
-	private FilterStatement getCharacterEncodingFilter() {
-		String um = getUrlMapping();
-		Assert.hasText(um, "[Assertion failed] - getUrlMapping() is required; it must not be null, empty, or blank");
-
+	private FilterStatement createRequestFilter() {
+		MultiRequestFilter mrf = new MultiRequestFilter();
 		CharacterEncodingFilter cef = new CharacterEncodingFilter();
 		cef.setEncoding(WebBaseConstant.STR_CHARSET);
 		cef.setForceEncoding(true);
-		return new FilterStatement(ENCODING_FILTER_NAME, cef, um);
+		mrf.addFilter(cef);
+		configRequestFilter(mrf);
+
+		FilterStatement mrfs = new FilterStatement(mrf);
+		mrfs.setServletName(DISPATCHER_SERVLET_NAME);
+		return mrfs;
 	}
 }

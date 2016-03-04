@@ -1,4 +1,4 @@
-package org.smarty.web.rest;
+package org.smarty.web.support.rest;
 
 /**
  * RestHandler

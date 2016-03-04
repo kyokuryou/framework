@@ -5,6 +5,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 import org.smarty.core.config.ConfigBuilder;
 import org.smarty.core.config.statement.ConfigStatement;
+import org.smarty.core.utils.ObjectUtil;
 import org.smarty.web.config.statement.FilterStatement;
 import org.smarty.web.config.statement.ListenerStatement;
 import org.smarty.web.config.statement.ServletStatement;
@@ -50,7 +51,15 @@ public class WebBuilder extends ConfigBuilder {
 			FilterStatement statement = (FilterStatement) contextStatement;
 			FilterRegistration.Dynamic fd = servletContext.addFilter(statement.getTargetName(), statement.getTarget());
 			fd.setAsyncSupported(statement.isAsyncSupported());
-			fd.addMappingForUrlPatterns(statement.getDispatcherTypes(), statement.isBeforeFilter(), statement.getUrlPattern());
+			String[] url = statement.getUrlPattern();
+			String[] sn = statement.getServletName();
+			if (!ObjectUtil.isEmpty(url)) {
+				fd.addMappingForUrlPatterns(statement.getDispatcherTypes(), statement.isBeforeFilter(), url);
+			} else if (!ObjectUtil.isEmpty(sn)) {
+				fd.addMappingForServletNames(statement.getDispatcherTypes(), statement.isBeforeFilter(), sn);
+			} else {
+				ObjectUtil.assertExpression(false, "UrlPattern or ServletName between must null or empty");
+			}
 		}
 	}
 }

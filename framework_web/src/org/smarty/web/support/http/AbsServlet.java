@@ -1,4 +1,4 @@
-package org.smarty.web.http;
+package org.smarty.web.support.http;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -15,7 +15,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.support.RequestContext;
 
 /**

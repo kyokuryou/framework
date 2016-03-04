@@ -9,13 +9,16 @@ public class ServletStatement extends WebStatement<Servlet> {
 	private String[] mapping;
 	private int onStartup = 1;
 
-	public ServletStatement(String targetName, Servlet servlet, String[] mapping) {
+	public ServletStatement(String targetName, Servlet servlet) {
 		super(targetName, servlet);
-		this.mapping = mapping;
 	}
 
 	public void setOnStartup(int onStartup) {
 		this.onStartup = onStartup;
+	}
+
+	public void setMapping(String... mapping) {
+		this.mapping = mapping;
 	}
 
 	public String[] getMapping() {

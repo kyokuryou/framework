@@ -9,16 +9,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import javax.annotation.Resource;
-import javax.servlet.Filter;
 import javax.servlet.ServletContext;
 import org.smarty.core.config.SystemConfigurer;
 import org.smarty.web.commons.CaptchaEngine;
 import org.smarty.web.commons.FreemarkerManager;
 import org.smarty.web.commons.GenerateHtml;
 import org.smarty.web.commons.WebBaseConstant;
-import org.smarty.web.filter.CaptchaBuilderFilter;
-import org.smarty.web.filter.JSLocaleFilter;
-import org.smarty.web.rest.RestTask;
+import org.smarty.web.support.rest.RestTask;
 import org.smarty.web.utils.SpringWebUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -184,23 +181,6 @@ public class WebConfigurer extends WebMvcConfigurerAdapter implements ServletCon
 		RestTask rt = new RestTask();
 		rt.setTaskExecutor(taskExecutor);
 		return rt;
-	}
-
-	@Bean(name = CAPTCHA_BUILDER_FILTER_NAME)
-	@Lazy
-	public Filter getCaptchaBuilderFilter(ImageCaptchaService imageCaptchaService) {
-		CaptchaBuilderFilter cf = new CaptchaBuilderFilter();
-		cf.setImageCaptchaService(imageCaptchaService);
-		return cf;
-	}
-
-	@Bean(name = JS_LOCALE_FILTER_NAME)
-	@Lazy
-	public Filter getJsLocaleFilter(FreemarkerManager freemarkerManager) {
-		JSLocaleFilter jslf = new JSLocaleFilter();
-		jslf.setFreemarkerManager(freemarkerManager);
-		jslf.setIncPath(jsIncPath);
-		return jslf;
 	}
 
 	@Override

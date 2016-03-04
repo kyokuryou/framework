@@ -1,19 +1,20 @@
-package org.smarty.web.filter;
+package org.smarty.web.support.filter;
 
 import java.io.IOException;
 import java.util.Date;
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.smarty.core.utils.DateUtil;
+import org.smarty.core.utils.ObjectUtil;
 import org.smarty.web.commons.FreemarkerManager;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * Created Date 2015/04/09
@@ -21,21 +22,31 @@ import org.smarty.web.commons.FreemarkerManager;
  * @author kyokuryou
  * @version 1.0
  */
-public class JSLocaleFilter implements Filter {
+public final class JSLocaleFilter extends SingleRequestFilter implements InitializingBean {
 	private static Log logger = LogFactory.getLog(JSLocaleFilter.class);
+	@Autowired
 	private FreemarkerManager freemarkerManager;
-	private String incPath;
+	@Value("${js.locale.url:/js/}")
+	private String jsLocale;
+	@Value("${resources.js.template}")
+	private String jsTemplate;
 
-	public void setIncPath(String incPath) {
-		this.incPath = incPath;
+	@Override
+	protected String getFilterProcessesUrl() {
+		return jsLocale;
 	}
 
 	@Override
-	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-		HttpServletResponse response = (HttpServletResponse) servletResponse;
+	public void afterPropertiesSet() throws Exception {
+		ObjectUtil.assertNotEmpty(jsTemplate, "property[resources.js.template] must not be null or empty");
+		ObjectUtil.assertNotEmpty(freemarkerManager, "freemarkerManager must not be null or empty");
+	}
+
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 		ServletOutputStream osw = getHttpHeader(response);
 		try {
-			freemarkerManager.outputTemplate(incPath, null, osw);
+			freemarkerManager.outputTemplate(jsTemplate, null, osw);
 		} catch (IOException e) {
 			logger.warn(e);
 		} finally {
@@ -55,17 +66,8 @@ public class JSLocaleFilter implements Filter {
 		return response.getOutputStream();
 	}
 
-	public void setFreemarkerManager(FreemarkerManager freemarkerManager) {
-		this.freemarkerManager = freemarkerManager;
-	}
-
 	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
-
-	}
-
-	@Override
-	public void destroy() {
-
+	public int getOrder() {
+		return 1;
 	}
 }

@@ -1,4 +1,4 @@
-package org.smarty.web.rest;
+package org.smarty.web.support.rest;
 
 import java.net.URI;
 import java.util.Iterator;

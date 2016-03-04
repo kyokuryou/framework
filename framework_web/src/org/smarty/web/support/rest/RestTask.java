@@ -1,10 +1,9 @@
-package org.smarty.web.rest;
+package org.smarty.web.support.rest;
 
 import java.io.File;
 import java.util.Map;
 import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.http.HttpMethod;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 /**
  * REST FULL

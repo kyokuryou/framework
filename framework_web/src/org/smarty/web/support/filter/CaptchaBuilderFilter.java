@@ -1,21 +1,21 @@
-package org.smarty.web.filter;
+package org.smarty.web.support.filter;
 
 import com.octo.captcha.service.CaptchaServiceException;
 import com.octo.captcha.service.image.ImageCaptchaService;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.smarty.core.utils.ObjectUtil;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * Created Date 2015/04/09
@@ -23,18 +23,25 @@ import org.apache.commons.logging.LogFactory;
  * @author kyokuryou
  * @version 1.0
  */
-public class CaptchaBuilderFilter implements Filter {
+public final class CaptchaBuilderFilter extends SingleRequestFilter implements InitializingBean {
 	private static Log logger = LogFactory.getLog(CaptchaBuilderFilter.class);
+	@Autowired
 	private ImageCaptchaService imageCaptchaService;
+	@Value("${captcha.url:/captcha.jpg}")
+	private String captchaMapping;
 
-	public void setImageCaptchaService(ImageCaptchaService imageCaptchaService) {
-		this.imageCaptchaService = imageCaptchaService;
+	@Override
+	protected String getFilterProcessesUrl() {
+		return captchaMapping;
 	}
 
 	@Override
-	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
-		HttpServletRequest request = (HttpServletRequest) servletRequest;
-		HttpServletResponse response = (HttpServletResponse) servletResponse;
+	public void afterPropertiesSet() throws Exception {
+		ObjectUtil.assertNotEmpty(imageCaptchaService, "imageCaptchaService must not be null or empty");
+	}
+
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 		ServletOutputStream out = getHttpHeader(response);
 		try {
 			String captchaId = request.getSession(true).getId();
@@ -57,12 +64,7 @@ public class CaptchaBuilderFilter implements Filter {
 	}
 
 	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
-
-	}
-
-	@Override
-	public void destroy() {
-
+	public int getOrder() {
+		return Integer.MIN_VALUE;
 	}
 }

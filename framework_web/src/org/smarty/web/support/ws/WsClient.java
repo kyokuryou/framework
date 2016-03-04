@@ -1,4 +1,4 @@
-package org.smarty.web.ws;
+package org.smarty.web.support.ws;
 
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
