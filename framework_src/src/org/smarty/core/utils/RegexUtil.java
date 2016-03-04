@@ -56,6 +56,7 @@ public class RegexUtil {
 	private final static String regStyle = "<[\\s]*?style[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?style[\\s]*?>";
 
 	private final static String suffixName = "^(.*)(\\.)(.*)$";
+	private final static String absoluteUrl = "\\A[a-z0-9.+-]+://.*";
 
 	private RegexUtil() {
 	}
@@ -159,6 +160,11 @@ public class RegexUtil {
 		Matcher m = p.matcher(str);
 		return m.matches();
 
+	}
+
+	public static boolean isAbsoluteUrl(String url) {
+		Pattern p = Pattern.compile(absoluteUrl, Pattern.CASE_INSENSITIVE);
+		return p.matcher(url).matches();
 	}
 
 	/**

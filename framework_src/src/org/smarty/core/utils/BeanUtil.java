@@ -1,5 +1,6 @@
 package org.smarty.core.utils;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -470,5 +471,28 @@ public final class BeanUtil {
 			return Short.class.getName();
 		}
 		return klass.getName();
+	}
+
+	public static String toString(Object object) {
+		if (ObjectUtil.isEmpty(object)) {
+			return null;
+		}
+		Class<?> klass = object.getClass();
+		if (klass.isEnum()) {
+			return object.toString();
+		}
+		if (klass.isArray()) {
+			int len = Array.getLength(object);
+			StringBuilder str = new StringBuilder();
+			for (int i = 0; i < len; i++) {
+				Object val = Array.get(object, i);
+				str.append(val);
+				if (i < len - 1) {
+					str.append(",");
+				}
+			}
+			return str.toString();
+		}
+		return String.valueOf(object);
 	}
 }

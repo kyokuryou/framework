@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -42,6 +43,29 @@ public class SpringUtil {
 			throw new IllegalStateException("'applicationContext' property is null,ApplicationContextHolder not yet init.");
 		}
 		return applicationContext;
+	}
+
+	public static AutowireCapableBeanFactory getAutowireCapableBeanFactory() {
+		return applicationContext.getAutowireCapableBeanFactory();
+	}
+
+	public static <T> T createBean(Class<T> beanClass) {
+		AutowireCapableBeanFactory bf = getAutowireCapableBeanFactory();
+		return bf.createBean(beanClass);
+	}
+
+	public static Object initializeBean(String name, Object object) {
+		AutowireCapableBeanFactory bf = getAutowireCapableBeanFactory();
+		return bf.initializeBean(object, name);
+	}
+
+	public static <T> T getBean(Class<T> requiredType) {
+		try {
+			return getApplicationContext().getBean(requiredType);
+		} catch (BeansException e) {
+			logger.warn(e);
+			throw e;
+		}
 	}
 
 	/**
