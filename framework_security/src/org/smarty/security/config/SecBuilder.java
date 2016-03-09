@@ -5,5 +5,5 @@ import org.smarty.web.config.WebBuilder;
 /**
  * Created by Administrator on 2016/2/23.
  */
-public class SecurityBuilder extends WebBuilder {
+public class SecBuilder extends WebBuilder {
 }

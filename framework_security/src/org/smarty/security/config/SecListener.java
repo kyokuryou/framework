@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 /**
  * 监听器 - 后台登录成功、登录失败处理
  */
-public class SecurityListener extends WebListener implements BeanFactoryAware {
+public class SecListener extends WebListener implements BeanFactoryAware {
 	private ISecurityService securityService;
 	private int loginFailureMaxCount = -1;
 

@@ -8,17 +8,18 @@ import org.smarty.web.config.statement.FilterStatement;
 /**
  * Created by Administrator on 2016/2/23.
  */
-public class SecurityFilterStatement extends FilterStatement {
-	public SecurityFilterStatement(Filter filter, String urlPattern) {
-		super(filter, urlPattern);
+public class SecFilterStatement extends FilterStatement {
+
+	public SecFilterStatement(Filter filter) {
+		super(filter);
 	}
 
-	public SecurityFilterStatement(String targetName, String urlPattern) {
-		super(targetName, urlPattern);
+	public SecFilterStatement(String targetName) {
+		super(targetName);
 	}
 
-	public SecurityFilterStatement(String name, Filter filter, String urlPattern) {
-		super(name, filter, urlPattern);
+	public SecFilterStatement(String targetName, Filter filter) {
+		super(targetName, filter);
 	}
 
 	public EnumSet<DispatcherType> getDispatcherTypes() {
