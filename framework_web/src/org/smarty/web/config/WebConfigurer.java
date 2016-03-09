@@ -17,6 +17,7 @@ import org.smarty.web.commons.GenerateHtml;
 import org.smarty.web.commons.WebBaseConstant;
 import org.smarty.web.support.rest.RestTask;
 import org.smarty.web.utils.SpringWebUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
@@ -42,6 +43,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -71,6 +73,7 @@ public class WebConfigurer extends WebMvcConfigurerAdapter implements ServletCon
 	public static final String FREEMARKER_CONFIGURER_NAME = "freemarkerConfigurer";
 	public static final String CAPTCHA_BUILDER_FILTER_NAME = "captchaBuilderFilter";
 	public static final String JS_LOCALE_FILTER_NAME = "jsLocaleFilter";
+	private WebConfigurerAdapter configurerAdapter = new DefaultConfigurerAdapter();
 
 	@Resource(name = SystemConfigurer.ASYNC_EXECUTOR_NAME)
 	private AsyncTaskExecutor taskExecutor;
@@ -94,6 +97,11 @@ public class WebConfigurer extends WebMvcConfigurerAdapter implements ServletCon
 	private String themeSourceNames;
 	@Value("${upload.maxSize:1048576}")
 	private long uploadMaxSize;
+
+	@Autowired(required = false)
+	public void setConfigurerAdapter(WebConfigurerAdapter configurerAdapter) {
+		this.configurerAdapter = configurerAdapter;
+	}
 
 	@Bean(name = MESSAGE_SOURCE_NAME)
 	public MessageSource getMessageSource() {
@@ -184,6 +192,11 @@ public class WebConfigurer extends WebMvcConfigurerAdapter implements ServletCon
 	}
 
 	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		configurerAdapter.addInterceptors(registry);
+	}
+
+	@Override
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
 		StringHttpMessageConverter shmc = new StringHttpMessageConverter();
 
@@ -192,6 +205,7 @@ public class WebConfigurer extends WebMvcConfigurerAdapter implements ServletCon
 		mts.add(new MediaType("text", "html", WebBaseConstant.DEF_ENCODE));
 
 		shmc.setSupportedMediaTypes(mts);
+		configurerAdapter.configure(converters);
 	}
 
 	@Override
@@ -218,17 +232,20 @@ public class WebConfigurer extends WebMvcConfigurerAdapter implements ServletCon
 
 		registry.viewResolver(fmvr);
 		registry.viewResolver(irvr);
+		configurerAdapter.configure(registry);
 	}
 
 	@Override
 	public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
 		configurer.setTaskExecutor(taskExecutor);
 		configurer.setDefaultTimeout(30000);
+		configurerAdapter.configure(configurer);
 	}
 
 	@Override
 	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
 		configurer.enable();
+		configurerAdapter.configure(configurer);
 	}
 
 	@Override
@@ -239,5 +256,9 @@ public class WebConfigurer extends WebMvcConfigurerAdapter implements ServletCon
 	@Override
 	public void setMessageSource(MessageSource messageSource) {
 		SpringWebUtil.setMessageSource(messageSource);
+	}
+
+	public class DefaultConfigurerAdapter extends WebConfigurerAdapter {
+
 	}
 }

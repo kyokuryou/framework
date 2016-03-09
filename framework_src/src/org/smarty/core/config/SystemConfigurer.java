@@ -3,11 +3,12 @@ package org.smarty.core.config;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.mchange.v2.c3p0.PooledDataSource;
 import java.beans.PropertyVetoException;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 import javax.sql.DataSource;
-import org.quartz.spi.TriggerFiredBundle;
+import org.smarty.core.bean.JobProperty;
 import org.smarty.core.common.BaseConstant;
 import org.smarty.core.config.condition.JdbcDataSource;
 import org.smarty.core.config.condition.JndiDataSource;
@@ -15,10 +16,11 @@ import org.smarty.core.support.jdbc.SQLSession;
 import org.smarty.core.support.jdbc.support.DBType;
 import org.smarty.core.support.jdbc.support.DataSourceType;
 import org.smarty.core.support.net.SocketServer;
+import org.smarty.core.support.schedule.SchedulerProxy;
 import org.smarty.core.utils.SpringUtil;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
-import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
@@ -26,12 +28,10 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
+import org.springframework.cache.interceptor.AbstractCacheResolver;
 import org.springframework.cache.interceptor.CacheErrorHandler;
 import org.springframework.cache.interceptor.CacheResolver;
 import org.springframework.cache.interceptor.KeyGenerator;
-import org.springframework.cache.interceptor.SimpleCacheErrorHandler;
-import org.springframework.cache.interceptor.SimpleCacheResolver;
-import org.springframework.cache.interceptor.SimpleKeyGenerator;
 import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -47,7 +47,6 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.convert.converter.ConverterRegistry;
 import org.springframework.core.task.AsyncTaskExecutor;
-import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jndi.JndiObjectFactoryBean;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -55,9 +54,6 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.scheduling.quartz.AdaptableJobFactory;
-import org.springframework.scheduling.quartz.SchedulerAccessor;
-import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -78,6 +74,7 @@ import org.springframework.transaction.annotation.TransactionManagementConfigure
 @Order(0)
 public class SystemConfigurer implements TransactionManagementConfigurer, AsyncConfigurer, CachingConfigurer, ApplicationContextAware {
 	public static final String SCHEDULER_NAME = "scheduler";
+	public static final String SCHEDULER_PROXY_NAME = "schedulerProxy";
 	public static final String DATA_SOURCE_NAME = "dataSource";
 	public static final String SQL_SESSION_NAME = "sqlSession";
 	public static final String MAIL_SENDER_NAME = "mailSender";
@@ -85,6 +82,7 @@ public class SystemConfigurer implements TransactionManagementConfigurer, AsyncC
 	public static final String CONVERTER_REGISTRY_NAME = "converterRegistry";
 	public static final String ASYNC_EXECUTOR_NAME = "asyncExecutor";
 	public static final String CACHE_MANAGER_NAME = "cacheManager";
+	private SystemConfigurerAdapter configurerAdapter = new DefaultConfigurerAdapter();
 	private AutowireCapableBeanFactory autowireBeanFactory;
 	@Value("${default.db}")
 	private DBType dbType;
@@ -125,6 +123,11 @@ public class SystemConfigurer implements TransactionManagementConfigurer, AsyncC
 	@Value("${jndi.name}")
 	private String jndiName;
 
+	@Autowired(required = false)
+	public void setConfigurerAdapter(SystemConfigurerAdapter configurerAdapter) {
+		this.configurerAdapter = configurerAdapter;
+	}
+
 	@Bean(name = SQL_SESSION_NAME)
 	public SQLSession getSQLSession(DataSource dataSource) {
 		SQLSession ss = new SQLSession();
@@ -159,21 +162,22 @@ public class SystemConfigurer implements TransactionManagementConfigurer, AsyncC
 		return (DataSource) jofb.getObject();
 	}
 
-	@Bean(name = SCHEDULER_NAME)
-	public SchedulerAccessor getSchedulerAccessor(AsyncTaskExecutor taskExecutor) {
-		SchedulerFactoryBean sfb = new SchedulerFactoryBean();
-		sfb.setAutoStartup(true);
-		sfb.setTaskExecutor(taskExecutor);
-		sfb.setJobFactory(new AutowireJobFactory());
-		return sfb;
+	@Bean(name = SCHEDULER_PROXY_NAME)
+	public SchedulerProxy getSchedulerProxy(AsyncTaskExecutor taskExecutor) {
+		SchedulerProxy sp = new SchedulerProxy();
+		sp.setAutoStartup(true);
+		sp.setTaskExecutor(taskExecutor);
+		sp.setJobFactory(configurerAdapter.adaptableJobFactory());
+
+		List<JobProperty> jobs = new ArrayList<JobProperty>();
+		configurerAdapter.addJobs(jobs);
+		sp.addJobProperty(jobs);
+		return sp;
 	}
 
 	@Bean(name = CONVERTER_REGISTRY_NAME)
 	public ConverterRegistry getConverterRegistry() {
-		DefaultFormattingConversionService fcs = new DefaultFormattingConversionService();
-		// add Conversion
-		// fcs.addConverter();
-		return fcs;
+		return configurerAdapter.converterRegistry();
 	}
 
 	@Bean
@@ -214,35 +218,39 @@ public class SystemConfigurer implements TransactionManagementConfigurer, AsyncC
 		return tpte;
 	}
 
-	//	@Bean(name = CACHE_MANAGER_NAME)
-	//	@Lazy
-	//	public CacheManager getCacheManager() {
-	//		SimpleCacheManager cm = new SimpleCacheManager();
-	//		cm.setCaches(Collections.singletonList(new ConcurrentMapCache("default")));
-	//		return cm;
-	//	}
+	@Bean(name = CACHE_MANAGER_NAME)
+	@Lazy
+	public CacheManager getCacheManager() {
+		SimpleCacheManager cm = new SimpleCacheManager();
+		List<ConcurrentMapCache> caches = new ArrayList<ConcurrentMapCache>();
+		caches.add(new ConcurrentMapCache("default"));
+		configurerAdapter.addCaches(caches);
+		cm.setCaches(caches);
+		return cm;
+	}
 
 	// implements
 	@Override
 	public CacheResolver cacheResolver() {
-		return new SimpleCacheResolver(cacheManager());
+		CacheManager cm = autowireBeanFactory.getBean(CACHE_MANAGER_NAME, CacheManager.class);
+		AbstractCacheResolver cr = configurerAdapter.cacheResolver();
+		cr.setCacheManager(cm);
+		return cr;
 	}
 
 	@Override
 	public KeyGenerator keyGenerator() {
-		return new SimpleKeyGenerator();
+		return configurerAdapter.keyGenerator();
 	}
 
 	@Override
 	public CacheErrorHandler errorHandler() {
-		return new SimpleCacheErrorHandler();
+		return configurerAdapter.cacheErrorHandler();
 	}
 
 	@Override
 	public CacheManager cacheManager() {
-		SimpleCacheManager cm = new SimpleCacheManager();
-		cm.setCaches(Collections.singletonList(new ConcurrentMapCache("default")));
-		return cm;
+		return autowireBeanFactory.getBean(CACHE_MANAGER_NAME, CacheManager.class);
 	}
 
 	@Override
@@ -252,7 +260,7 @@ public class SystemConfigurer implements TransactionManagementConfigurer, AsyncC
 
 	@Override
 	public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-		return new SimpleAsyncUncaughtExceptionHandler();
+		return configurerAdapter.asyncUncaughtExceptionHandler();
 	}
 
 	@Override
@@ -260,6 +268,7 @@ public class SystemConfigurer implements TransactionManagementConfigurer, AsyncC
 		DataSource ds = autowireBeanFactory.getBean(DATA_SOURCE_NAME, DataSource.class);
 		DataSourceTransactionManager tm = new DataSourceTransactionManager();
 		tm.setDataSource(ds);
+		configurerAdapter.configure(tm);
 		return tm;
 	}
 
@@ -269,12 +278,6 @@ public class SystemConfigurer implements TransactionManagementConfigurer, AsyncC
 		this.autowireBeanFactory = applicationContext.getAutowireCapableBeanFactory();
 	}
 
-	public final class AutowireJobFactory extends AdaptableJobFactory {
-		@Override
-		protected Object createJobInstance(TriggerFiredBundle bundle) throws Exception {
-			Object job = super.createJobInstance(bundle);
-			autowireBeanFactory.autowireBean(job);
-			return job;
-		}
+	public class DefaultConfigurerAdapter extends SystemConfigurerAdapter {
 	}
 }

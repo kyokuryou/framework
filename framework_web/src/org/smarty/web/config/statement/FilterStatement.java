@@ -22,7 +22,6 @@ public class FilterStatement extends WebStatement<Filter> {
 
 	public FilterStatement(String targetName, Filter filter) {
 		super(targetName, filter);
-		ObjectUtil.assertNotEmpty(urlPattern, "urlPattern must not be null or empty");
 	}
 
 	public void setBeforeFilter(boolean beforeFilter) {

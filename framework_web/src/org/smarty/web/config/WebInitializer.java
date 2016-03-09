@@ -14,9 +14,9 @@ import org.springframework.util.Assert;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.RequestContextFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.FrameworkServlet;
 import org.springframework.web.util.IntrospectorCleanupListener;
@@ -28,6 +28,7 @@ public abstract class WebInitializer<T extends WebBuilder> extends AbsContextIni
 
 	public static final String DISPATCHER_SERVLET_NAME = "dispatcher";
 	public static final String ENCODING_FILTER_NAME = "encodingFilter";
+	public static final String CONTEXT_FILTER_NAME = "contextFilter";
 
 	@Override
 	public void onInitialize() throws Exception {
@@ -53,9 +54,13 @@ public abstract class WebInitializer<T extends WebBuilder> extends AbsContextIni
 		return new String[]{"/"};
 	}
 
-	protected void configRequestFilter(MultiRequestFilter multiRequestFilter) {
+	protected void configCharacterEncoding(MultiRequestFilter multiRequestFilter) {
 		multiRequestFilter.addRequestFilter(CaptchaBuilderFilter.class);
 		multiRequestFilter.addRequestFilter(JSLocaleFilter.class);
+	}
+
+	protected void configRequestContext(MultiRequestFilter multiRequestFilter) {
+
 	}
 
 	@Override
@@ -67,9 +72,9 @@ public abstract class WebInitializer<T extends WebBuilder> extends AbsContextIni
 
 		contextBuilder.addServletListener(new ListenerStatement(listener));
 		contextBuilder.addServletListener(new ListenerStatement(new IntrospectorCleanupListener()));
-		contextBuilder.addServletListener(new ListenerStatement(new RequestContextListener()));
 		contextBuilder.addServlet(getDispatcherServlet());
-		contextBuilder.addFilter(createRequestFilter());
+		contextBuilder.addFilter(getCharacterEncoding());
+		contextBuilder.addFilter(getRequestContext());
 		customizeBuilder(contextBuilder);
 		contextBuilder.apply();
 	}
@@ -89,15 +94,32 @@ public abstract class WebInitializer<T extends WebBuilder> extends AbsContextIni
 		return dsss;
 	}
 
-	private FilterStatement createRequestFilter() {
-		MultiRequestFilter mrf = new MultiRequestFilter();
+	private FilterStatement getCharacterEncoding() {
+		// CharacterEncodingFilter
 		CharacterEncodingFilter cef = new CharacterEncodingFilter();
 		cef.setEncoding(WebBaseConstant.STR_CHARSET);
 		cef.setForceEncoding(true);
+		// default filter
+		MultiRequestFilter mrf = new MultiRequestFilter();
 		mrf.addFilter(cef);
-		configRequestFilter(mrf);
+		// config
+		configCharacterEncoding(mrf);
+		// filter creator
+		FilterStatement mrfs = new FilterStatement(ENCODING_FILTER_NAME, mrf);
+		mrfs.setServletName(DISPATCHER_SERVLET_NAME);
+		return mrfs;
+	}
 
-		FilterStatement mrfs = new FilterStatement(mrf);
+	private FilterStatement getRequestContext() {
+		// RequestContextFilter
+		RequestContextFilter rcf = new RequestContextFilter();
+		// default filter
+		MultiRequestFilter mrf = new MultiRequestFilter();
+		mrf.addFilter(rcf);
+		// config
+		configRequestContext(mrf);
+		// filter creator
+		FilterStatement mrfs = new FilterStatement(CONTEXT_FILTER_NAME, mrf);
 		mrfs.setServletName(DISPATCHER_SERVLET_NAME);
 		return mrfs;
 	}

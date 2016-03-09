@@ -1,16 +1,9 @@
 package org.test.commons;
 
-import java.util.Locale;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.smarty.web.http.AbsInterceptor;
+import org.smarty.web.support.interceptor.AbsInterceptor;
 import org.springframework.stereotype.Component;
-import org.springframework.ui.context.Theme;
-import org.springframework.util.StringUtils;
-import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 /**
  * @author qul

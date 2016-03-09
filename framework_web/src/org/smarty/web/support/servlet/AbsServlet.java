@@ -5,7 +5,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import javax.servlet.http.HttpServletRequest;
@@ -89,27 +88,6 @@ public abstract class AbsServlet {
 		HttpURLConnection con = getConnection(url);
 		con.setRequestMethod("GET");
 		return urlStream(con, null);
-	}
-
-	protected PrintWriter getPrintWrite(String type) {
-		setResponseNoCache();
-		response.setContentType(type + ";charset=UTF-8");
-		try {
-			return response.getWriter();
-		} catch (IOException e) {
-			logger.warn(e);
-		}
-		return null;
-	}
-
-	/**
-	 * 设置页面不缓存
-	 */
-	protected void setResponseNoCache() {
-		response.setHeader("progma", "no-cache");
-		response.setHeader("Cache-Control", "no-cache");
-		response.setHeader("Cache-Control", "no-store");
-		response.setDateHeader("Expires", 0);
 	}
 
 	protected byte[] urlStream(HttpURLConnection con, byte[] data) throws IOException {

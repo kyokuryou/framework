@@ -1,6 +1,6 @@
 package org.test.controller;
 
-import org.smarty.web.http.AbsServlet;
+import org.smarty.web.support.servlet.AbsServlet;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
