@@ -85,8 +85,6 @@ public class WebConfigurer extends WebMvcConfigurerAdapter implements ServletCon
 	private String jspPath;
 	@Value("${resources.html}")
 	private String htmlPath;
-	@Value("${resources.jsInc}")
-	private String jsIncPath;
 	@Value("${content.type}")
 	private String contentType;
 	@Value("${context.attribute}")
