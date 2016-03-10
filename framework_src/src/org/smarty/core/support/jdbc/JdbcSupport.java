@@ -40,7 +40,7 @@ abstract class JdbcSupport extends AbstractJdbc {
 		}
 	}
 
-	protected <P extends ParameterSerializable> boolean execute(SQL sql, P params) {
+	public <P extends ParameterSerializable> boolean execute(SQL sql, P params) {
 		StatementType type = sql.getStatementType();
 		SQLHolder holder = getHolder(sql);
 		String hsql = holder.getSQLString(params);

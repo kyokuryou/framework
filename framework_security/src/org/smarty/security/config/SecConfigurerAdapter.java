@@ -23,9 +23,6 @@ public abstract class SecConfigurerAdapter extends WebConfigurerAdapter {
 
 	}
 
-	public final void afterPropertiesSet() {
-	}
-
 	protected void configure(WebSecurity web) throws Exception {
 
 	}

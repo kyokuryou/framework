@@ -99,7 +99,6 @@ public class SecConfigurer extends WebSecurityConfigurerAdapter {
 		ObjectUtil.assertNotEmpty(securityService, "securityService must not null");
 		this.securityService = securityService;
 		this.configurerAdapter = configurerAdapter;
-		this.configurerAdapter.afterPropertiesSet();
 	}
 
 	@Bean(name = SECURITY_LISTENER_NAME)

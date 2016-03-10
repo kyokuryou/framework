@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 import javax.sql.DataSource;
+import org.quartz.Scheduler;
 import org.smarty.core.bean.JobProperty;
 import org.smarty.core.common.BaseConstant;
 import org.smarty.core.config.condition.JdbcDataSource;
@@ -54,6 +55,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -162,19 +164,6 @@ public class SystemConfigurer implements TransactionManagementConfigurer, AsyncC
 		return (DataSource) jofb.getObject();
 	}
 
-	@Bean(name = SCHEDULER_PROXY_NAME)
-	public SchedulerProxy getSchedulerProxy(AsyncTaskExecutor taskExecutor) {
-		SchedulerProxy sp = new SchedulerProxy();
-		sp.setAutoStartup(true);
-		sp.setTaskExecutor(taskExecutor);
-		sp.setJobFactory(configurerAdapter.adaptableJobFactory());
-
-		List<JobProperty> jobs = new ArrayList<JobProperty>();
-		configurerAdapter.addJobs(jobs);
-		sp.addJobProperty(jobs);
-		return sp;
-	}
-
 	@Bean(name = CONVERTER_REGISTRY_NAME)
 	public ConverterRegistry getConverterRegistry() {
 		return configurerAdapter.converterRegistry();
@@ -183,6 +172,29 @@ public class SystemConfigurer implements TransactionManagementConfigurer, AsyncC
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer placeHolderConfigurer() {
 		return new PropertySourcesPlaceholderConfigurer();
+	}
+
+	@Bean(name = SCHEDULER_PROXY_NAME)
+	@Lazy
+	public SchedulerProxy getSchedulerProxy(Scheduler scheduler) {
+		SchedulerProxy sp = new SchedulerProxy(scheduler);
+		List<JobProperty> jobs = new ArrayList<JobProperty>();
+		configurerAdapter.addJobs(jobs);
+		for (JobProperty job : jobs) {
+			sp.addJobProperty(job);
+		}
+		return sp;
+	}
+
+	@Bean(name = SCHEDULER_NAME)
+	@Lazy
+	public SchedulerFactoryBean getScheduler(AsyncTaskExecutor taskExecutor) {
+		SchedulerFactoryBean sfb = new SchedulerFactoryBean();
+		sfb.setAutoStartup(true);
+		sfb.setTaskExecutor(taskExecutor);
+		sfb.setWaitForJobsToCompleteOnShutdown(true);
+		sfb.setJobFactory(configurerAdapter.adaptableJobFactory());
+		return sfb;
 	}
 
 	@Bean(name = MAIL_SENDER_NAME)

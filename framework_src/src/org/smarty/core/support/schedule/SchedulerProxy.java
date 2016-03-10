@@ -7,24 +7,24 @@ import java.util.List;
 import java.util.Map;
 import org.quartz.JobDataMap;
 import org.quartz.JobKey;
+import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.JobDetailImpl;
 import org.quartz.impl.triggers.SimpleTriggerImpl;
 import org.smarty.core.bean.JobProperty;
 import org.smarty.core.utils.MD5Util;
 import org.smarty.core.utils.ObjectUtil;
-import org.springframework.scheduling.quartz.SchedulerFactoryBean;
+import org.springframework.scheduling.quartz.SchedulerAccessor;
 
 /**
  * SchedulerProxy
  */
-public final class SchedulerProxy extends SchedulerFactoryBean {
+public final class SchedulerProxy extends SchedulerAccessor {
 	private final Map<String, JobProperty> jobMap = new HashMap<String, JobProperty>();
+	private final Scheduler scheduler;
 
-	public void addJobProperty(List<JobProperty> jobs) {
-		for (JobProperty job : jobs) {
-			addJobProperty(job);
-		}
+	public SchedulerProxy(Scheduler scheduler) {
+		this.scheduler = scheduler;
 	}
 
 	public void addJobProperty(JobProperty jobProperty) {
@@ -55,6 +55,11 @@ public final class SchedulerProxy extends SchedulerFactoryBean {
 		} catch (SchedulerException e) {
 			logger.error(e);
 		}
+	}
+
+	@Override
+	protected Scheduler getScheduler() {
+		return scheduler;
 	}
 
 	private JobProperty getJobProperty(String groupName) {
