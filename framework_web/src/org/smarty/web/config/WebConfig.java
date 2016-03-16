@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import javax.annotation.Resource;
 import javax.servlet.ServletContext;
+import org.smarty.core.config.AdapterProcess;
 import org.smarty.core.config.SystemConfig;
 import org.smarty.web.commons.CaptchaEngine;
 import org.smarty.web.commons.FreemarkerManager;
@@ -71,12 +71,9 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ServletContext
 	public static final String GENERATE_HTML_NAME = "generateHtml";
 	public static final String FREEMARKER_MANAGER_NAME = "freemarkerManager";
 	public static final String FREEMARKER_CONFIGURER_NAME = "freemarkerConfigurer";
-	public static final String CAPTCHA_BUILDER_FILTER_NAME = "captchaBuilderFilter";
-	public static final String JS_LOCALE_FILTER_NAME = "jsLocaleFilter";
 	private WebConfigAdapter configAdapter = new DefaultConfigAdapter();
-
-	@Resource(name = SystemConfig.ASYNC_EXECUTOR_NAME)
-	private AsyncTaskExecutor taskExecutor;
+	@Autowired
+	private AdapterProcess adapterProcess;
 	@Value("${debug:false}")
 	private boolean debug;
 	@Value("${resources.ftl}")
@@ -95,6 +92,10 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ServletContext
 	private String themeSourceNames;
 	@Value("${upload.maxSize:1048576}")
 	private long uploadMaxSize;
+	@Value("${async.timeout:30000}")
+	private long asyncTimeout;
+	@Value("${captcha.storage.delay:600}")
+	private int captchaStorageDelay;
 
 	@Autowired(required = false)
 	public void setConfigAdapter(WebConfigAdapter configAdapter) {
@@ -177,7 +178,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ServletContext
 	public ImageCaptchaService getImageCaptchaService() {
 		DefaultManageableImageCaptchaService ics = new DefaultManageableImageCaptchaService();
 		ics.setCaptchaEngine(new CaptchaEngine());
-		ics.setMinGuarantedStorageDelayInSeconds(600);
+		ics.setMinGuarantedStorageDelayInSeconds(captchaStorageDelay);
 		return ics;
 	}
 
@@ -185,7 +186,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ServletContext
 	@Lazy
 	public RestTask getRestTask() {
 		RestTask rt = new RestTask();
-		rt.setTaskExecutor(taskExecutor);
+		rt.setTaskExecutor(adapterProcess.getShareObject(AsyncTaskExecutor.class));
 		return rt;
 	}
 
@@ -235,15 +236,13 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ServletContext
 
 	@Override
 	public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
-		configurer.setTaskExecutor(taskExecutor);
-		configurer.setDefaultTimeout(30000);
-		configAdapter.configure(configurer);
+		configurer.setTaskExecutor(adapterProcess.getShareObject(AsyncTaskExecutor.class));
+		configurer.setDefaultTimeout(asyncTimeout);
 	}
 
 	@Override
 	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
 		configurer.enable();
-		configAdapter.configure(configurer);
 	}
 
 	@Override

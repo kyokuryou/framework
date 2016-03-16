@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.smarty.core.utils.ObjectUtil;
 import org.smarty.security.exception.CaptchaException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
@@ -16,11 +15,16 @@ import org.springframework.security.core.AuthenticationException;
  */
 public abstract class CaptchaAuthFilter extends AbsAuthFilter {
 	private String captchaParameter = "j_captcha";
-	@Autowired
 	private ImageCaptchaService imageCaptchaService;
+
+	public abstract Authentication tryAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException;
 
 	public final void setCaptchaParameter(String captchaParameter) {
 		this.captchaParameter = captchaParameter;
+	}
+
+	public final void setImageCaptchaService(ImageCaptchaService imageCaptchaService) {
+		this.imageCaptchaService = imageCaptchaService;
 	}
 
 	@Override
@@ -36,9 +40,6 @@ public abstract class CaptchaAuthFilter extends AbsAuthFilter {
 		}
 		return tryAuthentication(request, response);
 	}
-
-	public abstract Authentication tryAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException;
-
 
 	/**
 	 * 校验验证码.

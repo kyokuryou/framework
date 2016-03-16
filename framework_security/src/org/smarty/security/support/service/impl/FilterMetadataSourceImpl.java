@@ -13,7 +13,6 @@ import org.smarty.security.support.service.FilterMetadataSource;
 import org.smarty.security.support.service.SecurityService;
 import org.smarty.security.utils.SecurityUtil;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
@@ -24,17 +23,17 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
  * MetadataSourceImpl
  */
 public class FilterMetadataSourceImpl implements FilterMetadataSource, InitializingBean {
-	@Autowired
 	private SecurityService securityService;
 	private final Map<String, Collection<ConfigAttribute>> configAttributes = new HashMap<String, Collection<ConfigAttribute>>();
 
-	public FilterMetadataSourceImpl() {
-		loadMetadataSource();
+	public void setSecurityService(SecurityService securityService) {
+		this.securityService = securityService;
 	}
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		ObjectUtil.assertNotEmpty(securityService, "securityService must not null");
+		loadMetadataSource();
 	}
 
 	@Override

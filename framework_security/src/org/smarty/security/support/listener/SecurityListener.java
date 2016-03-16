@@ -16,10 +16,16 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
  * 监听器 - 后台登录成功、登录失败处理
  */
 public class SecurityListener extends WebListener {
-	@Autowired
 	private SecurityService securityService;
-	@Value("${login.failure.max.count:0}")
 	private int failureMaxCount;
+
+	public void setFailureMaxCount(int failureMaxCount) {
+		this.failureMaxCount = failureMaxCount;
+	}
+
+	public void setSecurityService(SecurityService securityService) {
+		this.securityService = securityService;
+	}
 
 	@Override
 	public void onEvent(ApplicationEvent event) {

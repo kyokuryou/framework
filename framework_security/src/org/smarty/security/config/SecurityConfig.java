@@ -2,10 +2,12 @@ package org.smarty.security.config;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.smarty.core.config.AdapterProcess;
 import org.smarty.security.config.configurers.CustomLoginConfigurer;
 import org.smarty.security.config.configurers.CustomSessionConfigurer;
 import org.smarty.security.support.listener.SecurityListener;
 import org.smarty.security.support.service.FilterMetadataSource;
+import org.smarty.security.support.service.SecurityService;
 import org.smarty.security.support.service.impl.AccessDecisionManagerImpl;
 import org.smarty.security.support.service.impl.FilterMetadataSourceImpl;
 import org.smarty.security.support.service.impl.UserDetailsServiceImpl;
@@ -21,7 +23,6 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.access.AccessDecisionManager;
-import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -57,9 +58,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private final Log logger = LogFactory.getLog(SecurityConfig.class);
 	public static final String SECURITY_LISTENER_NAME = "securityListener";
 	@Autowired
-	private ObjectPostProcessor<Object> objectPostProcessor;
+	private AdapterProcess adapterProcess;
+	private SecurityService securityService;
 	private SecurityConfigAdapter configAdapter = new DefaultConfigAdapter();
-
+	@Value("${debug:false}")
+	private boolean debug;
+	@Value("${login.failure.max.count:0}")
+	private int failureMaxCount;
+	@Value("${login.failure.lock.time:0}")
+	private int failureLockTime;
 	@Value("${login.url:/login.do}")
 	private String loginUrl;
 	@Value("${login.processing.url:/loginProcessing}")
@@ -83,14 +90,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		this.configAdapter = configAdapter;
 	}
 
+	@Autowired(required = false)
+	public void setSecurityService(SecurityService securityService) {
+		this.securityService = securityService;
+	}
+
 	@Bean(name = SECURITY_LISTENER_NAME)
 	public ApplicationListener<ApplicationEvent> getApplicationListener() {
-		return new SecurityListener();
+		SecurityListener sl = new SecurityListener();
+		sl.setFailureMaxCount(failureMaxCount);
+		sl.setSecurityService(securityService);
+		return sl;
 	}
 
 	@Override
 	public void init(final WebSecurity web) throws Exception {
 		final HttpSecurity http = getHttp();
+		web.addSecurityFilterChainBuilder(http);
 		web.postBuildAction(new Runnable() {
 			public void run() {
 				FilterSecurityInterceptor securityInterceptor = http.getSharedObject(FilterSecurityInterceptor.class);
@@ -139,9 +155,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.logout()
 				.invalidateHttpSession(true)
 				.logoutUrl(logoutProcessingUrl);
-		// apply:customLogin,customSession
-		http.apply(customLogin());
-		http.apply(customSession());
+		// apply:customLogin
+		http.apply(customLogin())
+				.loginProcessingUrl(loginProcessingUrl)
+				.loginPage(loginUrl)
+				.permitAll();
+		// customSession
+		http.apply(customSession())
+				// session management
+				.sessionManagement()
+				.sessionFixation()
+				.changeSessionId()
+				// Single Session
+				.maximumSessions(maximumSessions)
+				.maxSessionsPreventsLogin(maximumExceeded);
 		// filter:WebAsyncManagerIntegrationFilter
 		http.addFilter(new WebAsyncManagerIntegrationFilter());
 		// configure
@@ -158,14 +185,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	private CustomSessionConfigurer<HttpSecurity> customSession() throws Exception {
-		CustomSessionConfigurer<HttpSecurity> scsc = new CustomSessionConfigurer<HttpSecurity>();
-		// session management
-		scsc.sessionManagement()
-				.sessionFixation().changeSessionId();
-		// Single Session
-		scsc.maximumSessions(maximumSessions)
-				.maxSessionsPreventsLogin(maximumExceeded);
-		return scsc;
+		return new CustomSessionConfigurer<HttpSecurity>();
 	}
 
 	private CustomLoginConfigurer<HttpSecurity> customLogin() throws Exception {
@@ -173,19 +193,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		if (filter == null) {
 			filter = new UsernamePasswordAuthenticationFilter();
 		}
-		CustomLoginConfigurer<HttpSecurity> cfb = new CustomLoginConfigurer<HttpSecurity>(filter);
-		cfb.loginProcessingUrl(loginProcessingUrl);
-		cfb.loginPage(loginUrl);
-		cfb.permitAll();
-		return cfb;
+		return new CustomLoginConfigurer<HttpSecurity>(filter);
 	}
 
 	protected UserDetailsService userDetailsService() {
 		UserDetailsService uds = configAdapter.userDetailsService();
 		if (uds == null) {
-			uds = new UserDetailsServiceImpl();
+			UserDetailsServiceImpl impl = new UserDetailsServiceImpl();
+			impl.setFailureLockTime(failureLockTime);
+			impl.setSecurityService(securityService);
+			uds = impl;
 		}
-		return objectPostProcessor.postProcess(uds);
+		return adapterProcess.postProcess(uds);
 	}
 
 	private AccessDecisionManager accessDecisionManager() {
@@ -193,15 +212,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		if (adm == null) {
 			adm = new AccessDecisionManagerImpl();
 		}
-		return objectPostProcessor.postProcess(adm);
+		return adapterProcess.postProcess(adm);
 	}
 
 	private FilterMetadataSource filterMetadataSource() {
 		FilterMetadataSource fms = configAdapter.filterMetadataSource();
 		if (fms == null) {
-			fms = new FilterMetadataSourceImpl();
+			FilterMetadataSourceImpl impl = new FilterMetadataSourceImpl();
+			impl.setSecurityService(securityService);
+			fms = impl;
 		}
-		return objectPostProcessor.postProcess(fms);
+		return adapterProcess.postProcess(fms);
 	}
 
 	private class DefaultConfigAdapter extends SecurityConfigAdapter {

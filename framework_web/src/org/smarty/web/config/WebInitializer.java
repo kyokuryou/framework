@@ -40,7 +40,6 @@ public abstract class WebInitializer<T extends WebBuilder> extends SystemInitial
 	protected final WebApplicationContext createApplicationContext() {
 		AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
 		applicationContext.register(getAnnotatedClasses());
-		postProcessBeanFactory(applicationContext.getBeanFactory());
 		return applicationContext;
 	}
 

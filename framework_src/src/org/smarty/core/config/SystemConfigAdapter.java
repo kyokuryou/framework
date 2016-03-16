@@ -1,54 +1,43 @@
 package org.smarty.core.config;
 
 import java.util.List;
-import org.quartz.spi.TriggerFiredBundle;
 import org.smarty.core.bean.JobProperty;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
-import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.cache.interceptor.AbstractCacheResolver;
 import org.springframework.cache.interceptor.CacheErrorHandler;
 import org.springframework.cache.interceptor.KeyGenerator;
-import org.springframework.cache.interceptor.SimpleCacheErrorHandler;
-import org.springframework.cache.interceptor.SimpleCacheResolver;
-import org.springframework.cache.interceptor.SimpleKeyGenerator;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.convert.converter.ConverterRegistry;
-import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.scheduling.quartz.AdaptableJobFactory;
 
 /**
  * SystemConfigurerAdapter
  */
-public abstract class SystemConfigAdapter implements ApplicationContextAware {
-	private AutowireCapableBeanFactory autowireBeanFactory;
+public abstract class SystemConfigAdapter {
 
 	protected void configure(DataSourceTransactionManager transactionManager) {
 
 	}
 
 	protected AdaptableJobFactory adaptableJobFactory() {
-		return new AutowireJobFactory();
+		return null;
 	}
 
 	protected ConverterRegistry converterRegistry() {
-		return new DefaultFormattingConversionService();
+		return null;
 	}
 
 	protected AbstractCacheResolver cacheResolver() {
-		return new SimpleCacheResolver();
+		return null;
 	}
 
 	protected KeyGenerator keyGenerator() {
-		return new SimpleKeyGenerator();
+		return null;
 	}
 
 	protected CacheErrorHandler cacheErrorHandler() {
-		return new SimpleCacheErrorHandler();
+		return null;
 	}
 
 	protected void addCaches(List<ConcurrentMapCache> cacheList) {
@@ -60,24 +49,6 @@ public abstract class SystemConfigAdapter implements ApplicationContextAware {
 	}
 
 	protected AsyncUncaughtExceptionHandler asyncUncaughtExceptionHandler() {
-		return new SimpleAsyncUncaughtExceptionHandler();
-	}
-
-	protected final <T> T initializeBean(T t) {
-		return (T) autowireBeanFactory.initializeBean(t, t.getClass().getName());
-	}
-
-	@Override
-	public final void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.autowireBeanFactory = applicationContext.getAutowireCapableBeanFactory();
-	}
-
-	protected final class AutowireJobFactory extends AdaptableJobFactory {
-		@Override
-		protected Object createJobInstance(TriggerFiredBundle bundle) throws Exception {
-			Object job = super.createJobInstance(bundle);
-			autowireBeanFactory.autowireBean(job);
-			return job;
-		}
+		return null;
 	}
 }
