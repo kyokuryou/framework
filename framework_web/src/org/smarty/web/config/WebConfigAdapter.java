@@ -1,7 +1,7 @@
 package org.smarty.web.config;
 
 import java.util.List;
-import org.smarty.core.config.SystemConfigurerAdapter;
+import org.smarty.core.config.SystemConfigAdapter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -9,9 +9,9 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 
 /**
- * WebConfigurerAdapter
+ * WebConfigAdapter
  */
-public abstract class WebConfigurerAdapter extends SystemConfigurerAdapter {
+public abstract class WebConfigAdapter extends SystemConfigAdapter {
 	protected void configure(ViewResolverRegistry registry) {
 
 	}

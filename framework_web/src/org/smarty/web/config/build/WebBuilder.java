@@ -1,9 +1,9 @@
-package org.smarty.web.config;
+package org.smarty.web.config.build;
 
 import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
-import org.smarty.core.config.ConfigBuilder;
+import org.smarty.core.config.build.SystemBuilder;
 import org.smarty.core.config.statement.ConfigStatement;
 import org.smarty.core.utils.ObjectUtil;
 import org.smarty.web.config.statement.FilterStatement;
@@ -14,7 +14,7 @@ import org.springframework.util.Assert;
 /**
  * FilterStatement
  */
-public class WebBuilder extends ConfigBuilder {
+public class WebBuilder extends SystemBuilder {
 	private ServletContext servletContext;
 
 	public void setServletContext(ServletContext servletContext) {

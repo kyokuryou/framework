@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Properties;
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
-import org.smarty.core.config.SystemConfigurer;
+import org.smarty.core.config.SystemConfig;
 import org.smarty.web.commons.CaptchaEngine;
 import org.smarty.web.commons.FreemarkerManager;
 import org.smarty.web.commons.GenerateHtml;
@@ -57,12 +57,12 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
  */
 @Configuration(value = "web_system")
 @EnableWebMvc
-@Import(value = {SystemConfigurer.class})
+@Import(value = {SystemConfig.class})
 @ComponentScan(useDefaultFilters = false, basePackages = "org.smarty.web", includeFilters = {
 		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = Component.class)
 })
 @Order(0)
-public class WebConfigurer extends WebMvcConfigurerAdapter implements ServletContextAware, MessageSourceAware {
+public class WebConfig extends WebMvcConfigurerAdapter implements ServletContextAware, MessageSourceAware {
 	public static final String MULTIPART_RESOLVER_NAME = DispatcherServlet.MULTIPART_RESOLVER_BEAN_NAME;
 	public static final String CAPTCHA_SERVICE_NAME = "captchaService";
 	public static final String REST_TASK_NAME = "restTask";
@@ -73,9 +73,9 @@ public class WebConfigurer extends WebMvcConfigurerAdapter implements ServletCon
 	public static final String FREEMARKER_CONFIGURER_NAME = "freemarkerConfigurer";
 	public static final String CAPTCHA_BUILDER_FILTER_NAME = "captchaBuilderFilter";
 	public static final String JS_LOCALE_FILTER_NAME = "jsLocaleFilter";
-	private WebConfigurerAdapter configurerAdapter = new DefaultConfigurerAdapter();
+	private WebConfigAdapter configAdapter = new DefaultConfigAdapter();
 
-	@Resource(name = SystemConfigurer.ASYNC_EXECUTOR_NAME)
+	@Resource(name = SystemConfig.ASYNC_EXECUTOR_NAME)
 	private AsyncTaskExecutor taskExecutor;
 	@Value("${debug:false}")
 	private boolean debug;
@@ -97,8 +97,8 @@ public class WebConfigurer extends WebMvcConfigurerAdapter implements ServletCon
 	private long uploadMaxSize;
 
 	@Autowired(required = false)
-	public void setConfigurerAdapter(WebConfigurerAdapter configurerAdapter) {
-		this.configurerAdapter = configurerAdapter;
+	public void setConfigAdapter(WebConfigAdapter configAdapter) {
+		this.configAdapter = configAdapter;
 	}
 
 	@Bean(name = MESSAGE_SOURCE_NAME)
@@ -191,7 +191,7 @@ public class WebConfigurer extends WebMvcConfigurerAdapter implements ServletCon
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		configurerAdapter.addInterceptors(registry);
+		configAdapter.addInterceptors(registry);
 	}
 
 	@Override
@@ -203,7 +203,7 @@ public class WebConfigurer extends WebMvcConfigurerAdapter implements ServletCon
 		mts.add(new MediaType("text", "html", WebBaseConstant.DEF_ENCODE));
 
 		shmc.setSupportedMediaTypes(mts);
-		configurerAdapter.configure(converters);
+		configAdapter.configure(converters);
 	}
 
 	@Override
@@ -230,20 +230,20 @@ public class WebConfigurer extends WebMvcConfigurerAdapter implements ServletCon
 
 		registry.viewResolver(fmvr);
 		registry.viewResolver(irvr);
-		configurerAdapter.configure(registry);
+		configAdapter.configure(registry);
 	}
 
 	@Override
 	public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
 		configurer.setTaskExecutor(taskExecutor);
 		configurer.setDefaultTimeout(30000);
-		configurerAdapter.configure(configurer);
+		configAdapter.configure(configurer);
 	}
 
 	@Override
 	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
 		configurer.enable();
-		configurerAdapter.configure(configurer);
+		configAdapter.configure(configurer);
 	}
 
 	@Override
@@ -256,7 +256,7 @@ public class WebConfigurer extends WebMvcConfigurerAdapter implements ServletCon
 		SpringWebUtil.setMessageSource(messageSource);
 	}
 
-	public class DefaultConfigurerAdapter extends WebConfigurerAdapter {
+	public class DefaultConfigAdapter extends WebConfigAdapter {
 
 	}
 }

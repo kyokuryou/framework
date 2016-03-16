@@ -2,8 +2,9 @@ package org.smarty.web.config;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import org.smarty.core.common.AbsContextInitializer;
+import org.smarty.core.config.SystemInitializer;
 import org.smarty.web.commons.WebBaseConstant;
+import org.smarty.web.config.build.WebBuilder;
 import org.smarty.web.config.statement.FilterStatement;
 import org.smarty.web.config.statement.ListenerStatement;
 import org.smarty.web.config.statement.ServletStatement;
@@ -24,7 +25,7 @@ import org.springframework.web.util.IntrospectorCleanupListener;
 /**
  * Web Initializer
  */
-public abstract class WebInitializer<T extends WebBuilder> extends AbsContextInitializer<WebApplicationContext, T> implements WebApplicationInitializer {
+public abstract class WebInitializer<T extends WebBuilder> extends SystemInitializer<WebApplicationContext, T> implements WebApplicationInitializer {
 
 	public static final String DISPATCHER_SERVLET_NAME = "dispatcher";
 	public static final String ENCODING_FILTER_NAME = "encodingFilter";
@@ -39,6 +40,7 @@ public abstract class WebInitializer<T extends WebBuilder> extends AbsContextIni
 	protected final WebApplicationContext createApplicationContext() {
 		AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
 		applicationContext.register(getAnnotatedClasses());
+		postProcessBeanFactory(applicationContext.getBeanFactory());
 		return applicationContext;
 	}
 
@@ -47,7 +49,7 @@ public abstract class WebInitializer<T extends WebBuilder> extends AbsContextIni
 	}
 
 	protected Class<?> getAnnotatedClasses() {
-		return WebConfigurer.class;
+		return WebConfig.class;
 	}
 
 	protected String[] getDispatcherServletMapping() {
