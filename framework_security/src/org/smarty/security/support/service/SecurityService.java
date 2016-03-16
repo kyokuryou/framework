@@ -1,4 +1,4 @@
-package org.smarty.security.common;
+package org.smarty.security.support.service;
 
 import java.util.List;
 import org.smarty.security.bean.ResourceSecurity;
@@ -7,7 +7,7 @@ import org.smarty.security.bean.UserSecurity;
 /**
  * 接口
  */
-public interface ISecurityService {
+public interface SecurityService {
 	String getLoginId(String username);
 
 	int getLoginFailureCount(String id);

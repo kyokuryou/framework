@@ -14,7 +14,7 @@ import org.springframework.security.core.AuthenticationException;
 /**
  * 过滤器 - 后台登录验证码
  */
-public abstract class SecCaptchaAuthFilter extends AbsAuthFilter {
+public abstract class CaptchaAuthFilter extends AbsAuthFilter {
 	private String captchaParameter = "j_captcha";
 	@Autowired
 	private ImageCaptchaService imageCaptchaService;

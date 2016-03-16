@@ -1,4 +1,4 @@
-package org.smarty.security.config;
+package org.smarty.security.config.configurers;
 
 import java.lang.reflect.Method;
 import javax.servlet.Filter;
@@ -13,12 +13,11 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 /**
  * SecCustomLoginConfigurer
  */
-public class SecCustomLoginConfigurer<H extends HttpSecurityBuilder<H>> extends AbstractAuthenticationFilterConfigurer<H, SecCustomLoginConfigurer<H>, AbstractAuthenticationProcessingFilter> {
+public class CustomLoginConfigurer<H extends HttpSecurityBuilder<H>> extends AbstractAuthenticationFilterConfigurer<H, CustomLoginConfigurer<H>, AbstractAuthenticationProcessingFilter> {
 
-	public SecCustomLoginConfigurer(AbstractAuthenticationProcessingFilter authenticationFilter, String defaultLoginProcessingUrl) {
-		super(authenticationFilter, defaultLoginProcessingUrl);
+	public CustomLoginConfigurer(AbstractAuthenticationProcessingFilter authenticationFilter) {
+		super(authenticationFilter, null);
 	}
-
 
 	@Override
 	protected RequestMatcher createLoginProcessingUrlMatcher(String loginProcessingUrl) {
@@ -26,7 +25,7 @@ public class SecCustomLoginConfigurer<H extends HttpSecurityBuilder<H>> extends 
 	}
 
 	@Override
-	public SecCustomLoginConfigurer<H> loginPage(String loginPage) {
+	public CustomLoginConfigurer<H> loginPage(String loginPage) {
 		return super.loginPage(loginPage);
 	}
 

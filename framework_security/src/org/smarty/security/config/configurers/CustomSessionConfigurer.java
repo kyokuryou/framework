@@ -1,4 +1,4 @@
-package org.smarty.security.config;
+package org.smarty.security.config.configurers;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -29,7 +29,7 @@ import org.springframework.web.filter.GenericFilterBean;
 /**
  * SecCustomLoginConfigurer
  */
-public class SecCustomSessionConfigurer<H extends HttpSecurityBuilder<H>> extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, H> {
+public class CustomSessionConfigurer<H extends HttpSecurityBuilder<H>> extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, H> {
 	private final SessionManagementConfigurer<H> sessionManagementConfigurer = new SessionManagementConfigurer<H>();
 	private final SessionRegistry sessionRegistry = new SessionRegistryImpl();
 	private InvalidSessionStrategy invalidSessionStrategy;

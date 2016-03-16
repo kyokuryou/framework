@@ -6,19 +6,19 @@ import javax.servlet.Filter;
 import org.smarty.web.config.statement.FilterStatement;
 
 /**
- * Created by Administrator on 2016/2/23.
+ * SecurityFilterStatement
  */
-public class SecFilterStatement extends FilterStatement {
+public class SecurityFilterStatement extends FilterStatement {
 
-	public SecFilterStatement(Filter filter) {
+	public SecurityFilterStatement(Filter filter) {
 		super(filter);
 	}
 
-	public SecFilterStatement(String targetName) {
+	public SecurityFilterStatement(String targetName) {
 		super(targetName);
 	}
 
-	public SecFilterStatement(String targetName, Filter filter) {
+	public SecurityFilterStatement(String targetName, Filter filter) {
 		super(targetName, filter);
 	}
 

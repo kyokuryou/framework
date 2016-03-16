@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 /**
  * spring Security 控制器
  */
-public abstract class SecServlet extends AbsServlet {
+public abstract class SecurityServlet extends AbsServlet {
 	private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
 	@Override

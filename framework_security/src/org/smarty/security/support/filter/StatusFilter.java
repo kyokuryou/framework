@@ -6,7 +6,7 @@ import org.smarty.security.common.SecurityStatus;
 import org.smarty.web.support.filter.SingleRequestFilter;
 import org.springframework.beans.factory.annotation.Value;
 
-public abstract class SecStatusFilter extends SingleRequestFilter {
+public abstract class StatusFilter extends SingleRequestFilter {
 	@Value("${status.parameter:j_status}")
 	private String statusParameter;
 	@Value("${login.status.url:/status.do}")

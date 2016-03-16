@@ -5,9 +5,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.smarty.web.support.interceptor.AbsInterceptor;
 
 /**
- * Created by Administrator on 2016/3/3.
+ * SecInterceptor
  */
-public class SecInterceptor extends AbsInterceptor {
+public class SecurityInterceptor extends AbsInterceptor {
 
 	@Override
 	public boolean preInterceptor(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
