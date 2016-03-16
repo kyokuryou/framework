@@ -74,7 +74,7 @@ import org.springframework.transaction.annotation.TransactionManagementConfigure
 		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = Component.class)
 })
 @Order(0)
-public class SystemConfigurer implements TransactionManagementConfigurer, AsyncConfigurer, CachingConfigurer, ApplicationContextAware {
+public class SystemConfig implements TransactionManagementConfigurer, AsyncConfigurer, CachingConfigurer, ApplicationContextAware {
 	public static final String SCHEDULER_NAME = "scheduler";
 	public static final String SCHEDULER_PROXY_NAME = "schedulerProxy";
 	public static final String DATA_SOURCE_NAME = "dataSource";
@@ -84,7 +84,7 @@ public class SystemConfigurer implements TransactionManagementConfigurer, AsyncC
 	public static final String CONVERTER_REGISTRY_NAME = "converterRegistry";
 	public static final String ASYNC_EXECUTOR_NAME = "asyncExecutor";
 	public static final String CACHE_MANAGER_NAME = "cacheManager";
-	private SystemConfigurerAdapter configurerAdapter = new DefaultConfigurerAdapter();
+	private SystemConfigAdapter configAdapter = new DefaultConfigAdapter();
 	private AutowireCapableBeanFactory autowireBeanFactory;
 	@Value("${default.db}")
 	private DBType dbType;
@@ -126,8 +126,8 @@ public class SystemConfigurer implements TransactionManagementConfigurer, AsyncC
 	private String jndiName;
 
 	@Autowired(required = false)
-	public void setConfigurerAdapter(SystemConfigurerAdapter configurerAdapter) {
-		this.configurerAdapter = configurerAdapter;
+	public void setConfigAdapter(SystemConfigAdapter configAdapter) {
+		this.configAdapter = configAdapter;
 	}
 
 	@Bean(name = SQL_SESSION_NAME)
@@ -166,7 +166,7 @@ public class SystemConfigurer implements TransactionManagementConfigurer, AsyncC
 
 	@Bean(name = CONVERTER_REGISTRY_NAME)
 	public ConverterRegistry getConverterRegistry() {
-		return configurerAdapter.converterRegistry();
+		return configAdapter.converterRegistry();
 	}
 
 	@Bean
@@ -179,7 +179,7 @@ public class SystemConfigurer implements TransactionManagementConfigurer, AsyncC
 	public SchedulerProxy getSchedulerProxy(Scheduler scheduler) {
 		SchedulerProxy sp = new SchedulerProxy(scheduler);
 		List<JobProperty> jobs = new ArrayList<JobProperty>();
-		configurerAdapter.addJobs(jobs);
+		configAdapter.addJobs(jobs);
 		for (JobProperty job : jobs) {
 			sp.addJobProperty(job);
 		}
@@ -193,7 +193,7 @@ public class SystemConfigurer implements TransactionManagementConfigurer, AsyncC
 		sfb.setAutoStartup(true);
 		sfb.setTaskExecutor(taskExecutor);
 		sfb.setWaitForJobsToCompleteOnShutdown(true);
-		sfb.setJobFactory(configurerAdapter.adaptableJobFactory());
+		sfb.setJobFactory(configAdapter.adaptableJobFactory());
 		return sfb;
 	}
 
@@ -236,7 +236,7 @@ public class SystemConfigurer implements TransactionManagementConfigurer, AsyncC
 		SimpleCacheManager cm = new SimpleCacheManager();
 		List<ConcurrentMapCache> caches = new ArrayList<ConcurrentMapCache>();
 		caches.add(new ConcurrentMapCache("default"));
-		configurerAdapter.addCaches(caches);
+		configAdapter.addCaches(caches);
 		cm.setCaches(caches);
 		return cm;
 	}
@@ -245,19 +245,19 @@ public class SystemConfigurer implements TransactionManagementConfigurer, AsyncC
 	@Override
 	public CacheResolver cacheResolver() {
 		CacheManager cm = autowireBeanFactory.getBean(CACHE_MANAGER_NAME, CacheManager.class);
-		AbstractCacheResolver cr = configurerAdapter.cacheResolver();
+		AbstractCacheResolver cr = configAdapter.cacheResolver();
 		cr.setCacheManager(cm);
 		return cr;
 	}
 
 	@Override
 	public KeyGenerator keyGenerator() {
-		return configurerAdapter.keyGenerator();
+		return configAdapter.keyGenerator();
 	}
 
 	@Override
 	public CacheErrorHandler errorHandler() {
-		return configurerAdapter.cacheErrorHandler();
+		return configAdapter.cacheErrorHandler();
 	}
 
 	@Override
@@ -272,7 +272,7 @@ public class SystemConfigurer implements TransactionManagementConfigurer, AsyncC
 
 	@Override
 	public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-		return configurerAdapter.asyncUncaughtExceptionHandler();
+		return configAdapter.asyncUncaughtExceptionHandler();
 	}
 
 	@Override
@@ -280,7 +280,7 @@ public class SystemConfigurer implements TransactionManagementConfigurer, AsyncC
 		DataSource ds = autowireBeanFactory.getBean(DATA_SOURCE_NAME, DataSource.class);
 		DataSourceTransactionManager tm = new DataSourceTransactionManager();
 		tm.setDataSource(ds);
-		configurerAdapter.configure(tm);
+		configAdapter.configure(tm);
 		return tm;
 	}
 
@@ -290,6 +290,6 @@ public class SystemConfigurer implements TransactionManagementConfigurer, AsyncC
 		this.autowireBeanFactory = applicationContext.getAutowireCapableBeanFactory();
 	}
 
-	public class DefaultConfigurerAdapter extends SystemConfigurerAdapter {
+	public class DefaultConfigAdapter extends SystemConfigAdapter {
 	}
 }

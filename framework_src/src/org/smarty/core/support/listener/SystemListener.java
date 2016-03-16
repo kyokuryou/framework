@@ -1,4 +1,4 @@
-package org.smarty.core.config;
+package org.smarty.core.support.listener;
 
 import org.smarty.core.utils.SpringUtil;
 import org.springframework.context.ApplicationContext;

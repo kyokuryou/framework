@@ -1,6 +1,6 @@
 package org.smarty.core.bean;
 
-import org.smarty.core.support.schedule.JobRunnable;
+import org.quartz.Job;
 
 /**
  * JobData
@@ -8,12 +8,19 @@ import org.smarty.core.support.schedule.JobRunnable;
 public class JobProperty {
 	private String groupName;
 	private long startDelay;
-	private Class<? extends JobRunnable> jobRunnable;
+	private long repeatInterval = 1;
+	private int repeatCount = 1;
+
+	private Class<? extends Job> jobClass;
 	private String description;
 
-	public JobProperty(String groupName, Class<? extends JobRunnable> jobRunnable) {
+	public JobProperty(String groupName, Class<? extends Job> jobClass) {
 		this.groupName = groupName;
-		this.jobRunnable = jobRunnable;
+		this.jobClass = jobClass;
+	}
+
+	public Class<? extends Job> getJobClass() {
+		return jobClass;
 	}
 
 	public String getGroupName() {
@@ -28,8 +35,20 @@ public class JobProperty {
 		this.startDelay = startDelay;
 	}
 
-	public Class<? extends JobRunnable> getJobRunnable() {
-		return jobRunnable;
+	public long getRepeatInterval() {
+		return repeatInterval;
+	}
+
+	public void setRepeatInterval(long repeatInterval) {
+		this.repeatInterval = repeatInterval;
+	}
+
+	public int getRepeatCount() {
+		return repeatCount;
+	}
+
+	public void setRepeatCount(int repeatCount) {
+		this.repeatCount = repeatCount;
 	}
 
 	public String getDescription() {

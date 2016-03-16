@@ -24,7 +24,7 @@ import org.springframework.scheduling.quartz.AdaptableJobFactory;
 /**
  * SystemConfigurerAdapter
  */
-public abstract class SystemConfigurerAdapter implements ApplicationContextAware {
+public abstract class SystemConfigAdapter implements ApplicationContextAware {
 	private AutowireCapableBeanFactory autowireBeanFactory;
 
 	protected void configure(DataSourceTransactionManager transactionManager) {

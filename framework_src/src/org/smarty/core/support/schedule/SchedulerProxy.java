@@ -3,7 +3,6 @@ package org.smarty.core.support.schedule;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.quartz.JobDataMap;
 import org.quartz.JobKey;
@@ -29,6 +28,10 @@ public final class SchedulerProxy extends SchedulerAccessor {
 
 	public void addJobProperty(JobProperty jobProperty) {
 		ObjectUtil.assertNotEmpty(jobProperty, "jobProperty must not be null");
+		long ri = jobProperty.getRepeatInterval();
+		int rc = jobProperty.getRepeatCount();
+		ObjectUtil.assertExpression(ri > 0, "repeat interval must gt zero");
+		ObjectUtil.assertExpression(rc > 0 || rc == -1, "repeat count must gt zero or eq -1");
 		jobMap.put(jobProperty.getGroupName(), jobProperty);
 	}
 
@@ -113,8 +116,10 @@ public final class SchedulerProxy extends SchedulerAccessor {
 		trigger.setGroup(jobKey.getGroup());
 		trigger.setJobKey(jobKey);
 		trigger.setStartTime(new Date(st));
-		trigger.setRepeatInterval(1);
-		trigger.setRepeatCount(0);
+		// 每次间隔
+		trigger.setRepeatInterval(jobProperty.getRepeatInterval());
+		// 循环次数
+		trigger.setRepeatCount(jobProperty.getRepeatCount());
 		trigger.setPriority(0);
 		trigger.setMisfireInstruction(0);
 		trigger.setDescription(description);
@@ -125,7 +130,7 @@ public final class SchedulerProxy extends SchedulerAccessor {
 	private JobDetailImpl getJobDetail(JobKey jobKey, JobProperty jobProperty) {
 		JobDetailImpl jdi = new JobDetailImpl();
 		jdi.setKey(jobKey);
-		jdi.setJobClass(jobProperty.getJobRunnable());
+		jdi.setJobClass(jobProperty.getJobClass());
 		jdi.setDurability(true);
 		return jdi;
 	}

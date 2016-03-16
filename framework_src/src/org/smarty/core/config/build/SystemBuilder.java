@@ -1,4 +1,4 @@
-package org.smarty.core.config;
+package org.smarty.core.config.build;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -11,12 +11,12 @@ import org.springframework.util.Assert;
 /**
  * App Context Builder
  */
-public class ConfigBuilder {
+public class SystemBuilder {
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	private final Set<ConfigStatement<?>> registrations = new LinkedHashSet<ConfigStatement<?>>();
 
-	protected ConfigBuilder() {
+	protected SystemBuilder() {
 	}
 
 	public final void addStatement(ConfigStatement<?> statement) {

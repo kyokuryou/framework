@@ -3,6 +3,7 @@ package org.smarty.core.utils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
@@ -54,9 +55,20 @@ public class SpringUtil {
 		return bf.createBean(beanClass);
 	}
 
-	public static Object initializeBean(String name, Object object) {
+	public static <T> T initializeBean(String name, T object) {
+		if (object == null) {
+			return null;
+		}
 		AutowireCapableBeanFactory bf = getAutowireCapableBeanFactory();
-		return bf.initializeBean(object, name);
+		return (T) bf.initializeBean(object, name);
+	}
+
+	public static <T extends DisposableBean> void destroyBean(T object) {
+		try {
+			object.destroy();
+		} catch (Exception e) {
+			logger.error(e);
+		}
 	}
 
 	public static <T> T getBean(Class<T> requiredType) {

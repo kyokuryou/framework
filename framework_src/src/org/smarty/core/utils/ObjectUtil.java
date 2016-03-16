@@ -12,7 +12,9 @@ import java.lang.reflect.Field;
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dom4j.Attribute;
@@ -205,7 +207,6 @@ public final class ObjectUtil {
 		return cs;
 	}
 
-
 	/**
 	 * 将value转换成字符串
 	 *
@@ -213,9 +214,55 @@ public final class ObjectUtil {
 	 * @return 转换的字符串
 	 */
 	public static String toString(Object value) {
-		if (value instanceof Date) {
+		Class<?> klass = value.getClass();
+		if (klass.isArray()) {
+			StringBuilder cvs = new StringBuilder();
+			int len = Array.getLength(value);
+			for (int i = 0; i < len; i++) {
+				Object val = Array.get(value, i);
+				cvs.append(toString(val));
+				if (i < len - 1) {
+					cvs.append(",");
+				}
+			}
+			return cvs.toString();
+		} else if (value instanceof Date) {
 			return DateUtil.format((Date) value);
+		} else if (value instanceof Collection) {
+			StringBuilder cvs = new StringBuilder();
+			int len = ((Collection) value).size();
+			Iterator<?> tt = ((Collection) value).iterator();
+			for (int i = 0; tt.hasNext(); i++) {
+				Object ott = tt.next();
+				cvs.append(toString(ott));
+				if (i < len - 1) {
+					cvs.append(",");
+				}
+			}
+			return cvs.toString();
+		} else if (value instanceof Map) {
+			StringBuilder cvs = new StringBuilder();
+			int len = ((Map) value).size();
+			Set<Map.Entry<String, ?>> mes = ((Map) value).entrySet();
+			Iterator<Map.Entry<String, ?>> tt = mes.iterator();
+			for (int i = 0; tt.hasNext(); i++) {
+				Map.Entry<String, ?> ott = tt.next();
+				cvs.append(ott.getKey()).append("=");
+				cvs.append(toString(ott.getValue()));
+				if (i < len - 1) {
+					cvs.append(",");
+				}
+			}
+			return cvs.toString();
 		}
 		return String.valueOf(value);
+	}
+
+	public static void main(String[] args) {
+		String[] arr = new String[]{
+				"1", "2", "3"
+		};
+
+		System.out.println(toString(arr));
 	}
 }
