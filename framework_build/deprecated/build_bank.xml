@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project basedir="." default="bank_all" name="framework_bank">
+<project basedir="../" default="bank_all" name="framework_bank">
 	<!--系统环境变量-->
 
-    <import file="./build_property.xml"/>
+    <import file="../property.xml"/>
 
 	<!--编译的类路径设定-->
 	<path id="bank_compile.classpath">
@@ -106,13 +106,8 @@
             <exclude name="**/*.ftl"/>
             <exclude name="**/*.sql"/>
             <manifest>
-                <attribute name="Specification-Title" value="${component.name}"/>
-                <attribute name="Specification-Version" value="${component.Version}"/>
-                <attribute name="Specification-Vendor" value="${component.Vendor}"/>
-                <attribute name="Implementation-Title" value="${component.name}"/>
-                <attribute name="Implementation-Version" value="${component.Version}"/>
-                <attribute name="X-Compile-Target-JDK" value="${target.java.version}"/>
-                <attribute name="X-Compile-Source-JDK" value="${target.java.version}"/>
+                <attribute name="Implementation-Title" value="${bank.jar.name}"/>
+                <attribute name="Implementation-Version" value="${component.version}"/>
             </manifest>
         </jar>
 	</target>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project basedir="." default="config_all" name="framework_config">
+<project basedir="../" default="config_all" name="framework_config">
     <!--系统环境变量-->
-    <import file="./build_property.xml"/>
+    <import file="../property.xml"/>
     <!--编译的类路径设定-->
     <patternset id="config_compile.classpath">
         <include name="${war.web.dirPath}/WEB-INF/lib/*.jar"/>

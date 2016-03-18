@@ -137,51 +137,51 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.filterSecurityInterceptorOncePerRequest(true)
 				.accessDecisionManager(accessDecisionManager());
 		// resource access denied
-		http.exceptionHandling();
+		ExceptionHandlingConfigurer<HttpSecurity> exceptionHandling = http.exceptionHandling();
 		// headers
-		http.headers();
+		HeadersConfigurer<HttpSecurity> headers = http.headers();
 		// sessionManagement disable
 		// securityContext
-		http.securityContext();
+		SecurityContextConfigurer<HttpSecurity> securityContext = http.securityContext();
 		// requestCache
-		http.requestCache();
+		RequestCacheConfigurer<HttpSecurity> requestCache = http.requestCache();
 		// anonymous
-		http.anonymous();
+		AnonymousConfigurer<HttpSecurity> anonymous = http.anonymous();
 		// servletApi
-		http.servletApi();
+		ServletApiConfigurer<HttpSecurity> servletApi = http.servletApi();
 		// rememberMe
-		http.rememberMe().key(rememberMeKey);
+		RememberMeConfigurer<HttpSecurity> rememberMe = http.rememberMe().key(rememberMeKey);
 		// logout
-		http.logout()
+		LogoutConfigurer<HttpSecurity> logout = http.logout()
 				.invalidateHttpSession(true)
 				.logoutUrl(logoutProcessingUrl);
 		// apply:customLogin
-		http.apply(customLogin())
+		CustomLoginConfigurer<HttpSecurity> customLogin = http.apply(customLogin())
 				.loginProcessingUrl(loginProcessingUrl)
 				.loginPage(loginUrl)
 				.permitAll();
 		// customSession
-		http.apply(customSession())
-				// session management
-				.sessionManagement()
+		CustomSessionConfigurer<HttpSecurity> customSession = http.apply(customSession());
+		// session management
+		customSession.sessionManagement()
 				.sessionFixation()
-				.changeSessionId()
-				// Single Session
-				.maximumSessions(maximumSessions)
+				.changeSessionId();
+		// single Session
+		customSession.maximumSessions(maximumSessions)
 				.maxSessionsPreventsLogin(maximumExceeded);
 		// filter:WebAsyncManagerIntegrationFilter
 		http.addFilter(new WebAsyncManagerIntegrationFilter());
 		// configure
-		configAdapter.configure(http.getConfigurer(ExceptionHandlingConfigurer.class));
-		configAdapter.configure(http.getConfigurer(HeadersConfigurer.class));
-		configAdapter.configure(http.getConfigurer(SecurityContextConfigurer.class));
-		configAdapter.configure(http.getConfigurer(RequestCacheConfigurer.class));
-		configAdapter.configure(http.getConfigurer(AnonymousConfigurer.class));
-		configAdapter.configure(http.getConfigurer(ServletApiConfigurer.class));
-		configAdapter.configure(http.getConfigurer(RememberMeConfigurer.class));
-		configAdapter.configure(http.getConfigurer(LogoutConfigurer.class));
-		configAdapter.configure(http.getConfigurer(CustomLoginConfigurer.class));
-		configAdapter.configure(http.getConfigurer(CustomSessionConfigurer.class));
+		configAdapter.configure(exceptionHandling);
+		configAdapter.configure(headers);
+		configAdapter.configure(securityContext);
+		configAdapter.configure(requestCache);
+		configAdapter.configure(anonymous);
+		configAdapter.configure(servletApi);
+		configAdapter.configure(rememberMe);
+		configAdapter.configure(logout);
+		configAdapter.configure(customLogin);
+		configAdapter.configure(customSession);
 	}
 
 	private CustomSessionConfigurer<HttpSecurity> customSession() throws Exception {

@@ -55,6 +55,7 @@ public class SpringUtil {
 		return bf.createBean(beanClass);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <T> T initializeBean(String name, T object) {
 		if (object == null) {
 			return null;

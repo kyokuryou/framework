@@ -1,22 +1,232 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project basedir="." default="lib_all" name="framework_lib">
-
-    <import file="./build_property.xml"/>
-
+    <import file="property.xml"/>
     <target name="lib_clean" description="Prepare for clean build">
         <mkdir dir="${war.web.dirPath}/WEB-INF/lib"/>
+        <delete quiet="true" dir="${lib.build.dirPath}"/>
         <delete quiet="true">
             <fileset dir="${war.web.dirPath}/WEB-INF/lib">
-                <exclude name="${src.jar.name}.jar"/>
-                <exclude name="${web.jar.name}.jar"/>
-                <exclude name="${sec.jar.name}.jar"/>
                 <patternset refid="ignored.files"/>
-            </fileset>
-            <fileset dir="${lib.build.dirPath}">
-                <include name="**"/>
             </fileset>
         </delete>
     </target>
+    <patternset id="spring.merge.file">
+        <include name="META-INF/spring.factories"/>
+        <include name="META-INF/spring.handlers"/>
+        <include name="META-INF/spring.schemas"/>
+        <include name="META-INF/spring.tooling"/>
+    </patternset>
+
+    <patternset id="ignored.merge.file">
+        <exclude name="META-INF/MANIFEST.MF"/>
+    </patternset>
+    <patternset id="ignored.jar.file">
+        <exclude name="**/*.jar"/>
+        <exclude name="**/*.zip"/>
+        <exclude name="**/*.java"/>
+    </patternset>
+    <patternset id="ignored.smarty.jar.file">
+        <exclude name="**/*.jar"/>
+        <exclude name="**/*.zip"/>
+        <exclude name="**/*.java"/>
+        <exclude name="**/*.tld"/>
+        <exclude name="**/*.sql"/>
+        <exclude name="**/*.properties"/>
+    </patternset>
+
+    <target name="lib_must">
+        <!-- 必须 -->
+        <mergeJar dest="${lib.build.dirPath}/primary" overwrite="false" description="主要(必须)">
+            <fileset dir="${lib.dirPath}">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            <patternset refid="ignored.merge.file"/>
+            <jar jarfile="${war.web.dirPath}/WEB-INF/lib/primary.jar" basedir="${lib.build.dirPath}/primary">
+                <patternset refid="ignored.jar.file"/>
+                <manifest>
+                    <attribute name="Implementation-Title" value="primary"/>
+                    <attribute name="Implementation-Version" value="${component.version}"/>
+                </manifest>
+            </jar>
+        </mergeJar>
+        <mergeJar dest="${lib.build.dirPath}/commons" overwrite="false" description="commons(必须)">
+            <fileset dir="${lib.extend.commons.dirPath}">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            <fileset dir="${lib.extend.commons.web.dirPath}">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            <patternset refid="ignored.merge.file"/>
+            <jar jarfile="${war.web.dirPath}/WEB-INF/lib/commons.jar" basedir="${lib.build.dirPath}/commons">
+                <patternset refid="ignored.jar.file"/>
+                <manifest>
+                    <attribute name="Implementation-Title" value="commons"/>
+                    <attribute name="Implementation-Version" value="${component.version}"/>
+                </manifest>
+            </jar>
+        </mergeJar>
+        <mergeJar dest="${lib.build.dirPath}/spring" overwrite="false" description="spring(必须)">
+            <fileset dir="${lib.extend.spring.dirPath}">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            <patternset refid="ignored.merge.file"/>
+            <fileMapping refid="spring.merge.file"/>
+            <jar jarfile="${war.web.dirPath}/WEB-INF/lib/spring.jar" basedir="${lib.build.dirPath}/spring">
+                <patternset refid="ignored.jar.file"/>
+                <manifest>
+                    <attribute name="Implementation-Title" value="spring"/>
+                    <attribute name="Implementation-Version" value="${component.version}"/>
+                </manifest>
+            </jar>
+        </mergeJar>
+        <!-- 数据库 -->
+        <copy todir="${war.web.dirPath}/WEB-INF/lib" overwrite="true" includeemptydirs="no" description="数据库">
+            <fileset dir="${lib.database.dirPath}" description="数据库连接池(必须,非JDBC可选)">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            <fileset dir="${lib.database.mysql.dirPath}" description="mysql数据库驱动">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            <!--
+            <fileset dir="${lib.database.db2.dirPath}" description="DB2数据库驱动">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            -->
+        </copy>
+        <jar jarfile="${war.web.dirPath}/WEB-INF/lib/${smarty.jar.name}.jar">
+            <fileset dir="${src.build.dirPath}">
+                <patternset refid="ignored.smarty.jar.file"/>
+            </fileset>
+            <fileset dir="${web.build.dirPath}">
+                <patternset refid="ignored.smarty.jar.file"/>
+            </fileset>
+            <fileset dir="${sec.build.dirPath}">
+                <patternset refid="ignored.smarty.jar.file"/>
+            </fileset>
+            <manifest>
+                <attribute name="Implementation-Title" value="spring-security"/>
+                <attribute name="Implementation-Version" value="${component.version}"/>
+            </manifest>
+        </jar>
+
+    </target>
+    <target name="lib_security">
+        <mergeJar dest="${lib.build.dirPath}/spring-security" overwrite="false"
+                  description="spring security(必须,非安全验证可选)">
+            <fileset dir="${lib.extend.security.dirPath}">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            <patternset refid="ignored.merge.file"/>
+            <fileMapping refid="spring.merge.file"/>
+            <jar jarfile="${war.web.dirPath}/WEB-INF/lib/spring-security.jar"
+                 basedir="${lib.build.dirPath}/spring-security">
+                <patternset refid="ignored.jar.file"/>
+                <manifest>
+                    <attribute name="Implementation-Title" value="spring-security"/>
+                    <attribute name="Implementation-Version" value="${component.version}"/>
+                </manifest>
+            </jar>
+        </mergeJar>
+    </target>
+    <target name="lib_web">
+        <mergeJar dest="${lib.build.dirPath}/spring-mvc" overwrite="false" description="spring mvc(必须,非Web可选)">
+            <fileset dir="${lib.extend.springmvc.dirPath}">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            <patternset refid="ignored.merge.file"/>
+            <fileMapping refid="spring.merge.file"/>
+            <jar jarfile="${war.web.dirPath}/WEB-INF/lib/spring-mvc.jar" basedir="${lib.build.dirPath}/spring-mvc">
+                <patternset refid="ignored.jar.file"/>
+                <manifest>
+                    <attribute name="Implementation-Title" value="spring-mvc"/>
+                    <attribute name="Implementation-Version" value="${component.version}"/>
+                </manifest>
+            </jar>
+        </mergeJar>
+    </target>
+
+    <target name="lib_compressor">
+        <mergeJar dest="${lib.build.dirPath}/compressor" overwrite="false" description="html,xml,js压缩(可选)">
+            <fileset dir="${lib.extend.compressor.dirPath}">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            <patternset refid="ignored.merge.file"/>
+            <jar jarfile="${war.web.dirPath}/WEB-INF/lib/compressor.jar" basedir="${lib.build.dirPath}/compressor">
+                <patternset refid="ignored.jar.file"/>
+                <manifest>
+                    <attribute name="Implementation-Title" value="compressor"/>
+                    <attribute name="Implementation-Version" value="${component.version}"/>
+                </manifest>
+            </jar>
+        </mergeJar>
+    </target>
+    <target name="lib_flex">
+        <mergeJar dest="${lib.build.dirPath}/flex" overwrite="false" description="flex(可选)">
+            <fileset dir="${lib.extend.flex.dirPath}">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            <patternset refid="ignored.merge.file"/>
+            <jar jarfile="${war.web.dirPath}/WEB-INF/lib/flex.jar" basedir="${lib.build.dirPath}/flex">
+                <patternset refid="ignored.jar.file"/>
+                <manifest>
+                    <attribute name="Implementation-Title" value="flex"/>
+                    <attribute name="Implementation-Version" value="${component.version}"/>
+                </manifest>
+            </jar>
+        </mergeJar>
+    </target>
+    <target name="lib_jcaptcha">
+        <copy todir="${war.web.dirPath}/WEB-INF/lib" overwrite="true" includeemptydirs="no" description="jcaptcha(可选)">
+            <fileset dir="${lib.extend.jcaptcha.dirPath}">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="lib_poi">
+        <mergeJar dest="${lib.build.dirPath}/poi" overwrite="false" description="poi(可选)">
+            <fileset dir="${lib.extend.poi.dirPath}">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            <patternset refid="ignored.merge.file"/>
+            <jar jarfile="${war.web.dirPath}/WEB-INF/lib/poi.jar" basedir="${lib.build.dirPath}/poi">
+                <patternset refid="ignored.jar.file"/>
+                <manifest>
+                    <attribute name="Implementation-Title" value="poi"/>
+                    <attribute name="Implementation-Version" value="${component.version}"/>
+                </manifest>
+            </jar>
+        </mergeJar>
+    </target>
+    <target name="lib_xfire">
+        <mergeJar dest="${lib.build.dirPath}/xfire" overwrite="false" description="xfire(可选)">
+            <fileset dir="${lib.extend.xfire.dirPath}">
+                <include name="*.jar"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            <patternset refid="ignored.merge.file"/>
+            <jar jarfile="${war.web.dirPath}/WEB-INF/lib/xfire.jar" basedir="${lib.build.dirPath}/xfire">
+                <patternset refid="ignored.jar.file"/>
+                <manifest>
+                    <attribute name="Implementation-Title" value="xfire"/>
+                    <attribute name="Implementation-Version" value="${component.version}"/>
+                </manifest>
+            </jar>
+        </mergeJar>
+    </target>
+
     <target name="lib_conf">
         <tempfile destdir="${lib.build.dirPath}/conf" property="system" suffix=".properties" description="make file"/>
 
@@ -32,87 +242,34 @@
         </concat>
     </target>
 
-    <target name="lib_dist" description="Create binary distribution">
+    <!--<target name="lib_dist" depends="lib_must,lib_security,lib_web,lib_compressor,lib_flex,lib_jcaptcha,lib_poi,lib_xfire"/>-->
+
+    <target name="lib_dist" depends="lib_conf,lib_must,lib_security,lib_web,lib_compressor,lib_jcaptcha,lib_poi"
+            description="Create binary distribution">
         <copy todir="${war.src.dirPath}/conf" overwrite="true">
             <file file="${lib.build.dirPath}/conf/system.properties"/>
         </copy>
-
-        <copy todir="${war.web.dirPath}/WEB-INF/lib" overwrite="true" includeEmptyDirs="no">
-            <!-- 主要 -->
-            <fileset dir="${lib.dirPath}">
-                <include name="*.jar"/>
-                <patternset refid="ignored.files"/>
-            </fileset>
-            <!-- 数据库连接池 -->
-            <fileset dir="${lib.database.dirPath}">
-                <include name="*.jar"/>
-                <patternset refid="ignored.files"/>
-            </fileset>
-            <!-- DB2数据库驱动包 -->
-            <!--
-            <fileset dir="${lib.database.db2.dirPath}">
-                <include name="*.jar"/>
-                <patternset refid="ignored.files"/>
-            </fileset>
-            -->
-            <!-- mysql数据库驱动包 -->
-            <fileset dir="${lib.database.mysql.dirPath}">
-                <include name="*.jar"/>
-                <patternset refid="ignored.files"/>
-            </fileset>
-            <!-- 主要(commons)-->
-            <fileset dir="${lib.extend.commons.dirPath}">
-                <include name="*.jar"/>
-                <patternset refid="ignored.files"/>
-            </fileset>
-
-            <!-- html,xml,js压缩依赖包 -->
-            <fileset dir="${lib.extend.compressor.dirPath}">
-                <include name="*.jar"/>
-                <patternset refid="ignored.files"/>
-            </fileset>
-
-            <!-- flex依赖包 -->
-            <!--
-            <fileset dir="${lib.extend.flex.dirPath}">
-                <include name="*.jar"/>
-                <patternset refid="ignored.files"/>
-            </fileset>
-            -->
-            <!-- jcaptcha依赖 -->
-            <fileset dir="${lib.extend.jcaptcha.dirPath}">
-                <include name="*.jar"/>
-                <patternset refid="ignored.files"/>
-            </fileset>
-            <!-- poi依赖包 -->
-            <fileset dir="${lib.extend.poi.dirPath}">
-                <include name="*.jar"/>
-                <patternset refid="ignored.files"/>
-            </fileset>
-
-            <!-- spring权限-->
-            <fileset dir="${lib.extend.security.dirPath}">
-                <include name="*.jar"/>
-                <patternset refid="ignored.files"/>
-            </fileset>
-            <!-- spring(主要)-->
-            <fileset dir="${lib.extend.spring.dirPath}">
-                <include name="*.jar"/>
-                <patternset refid="ignored.files"/>
-            </fileset>
-            <!-- springmvc-->
-            <fileset dir="${lib.extend.springmvc.dirPath}">
-                <include name="*.jar"/>
-                <patternset refid="ignored.files"/>
-            </fileset>
-            <!-- xfire依赖包-->
-            <!--
-            <fileset dir="${lib.extend.xfire.dirPath}">
-                <include name="*.jar"/>
-                <patternset refid="ignored.files"/>
-            </fileset>
-            -->
-        </copy>
     </target>
-    <target name="lib_all" depends="lib_clean,lib_conf,lib_dist"/>
+    <target name="src_zip_dist" description="Create Source distribution">
+        <zip destfile="${lib.build.dirPath}/${smarty.jar.name}.zip">
+            <fileset dir="${src.dirPath}">
+                <include name="**/*.java"/>
+                <patternset refid="resource.files"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            <fileset dir="${web.dirPath}">
+                <include name="**/*.java"/>
+                <patternset refid="resource.files"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+            <fileset dir="${sec.dirPath}">
+                <include name="**/*.java"/>
+                <patternset refid="resource.files"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+        </zip>
+    </target>
+
+    <target name="lib_all" depends="lib_clean,lib_dist,src_zip_dist"/>
+    <!--<target name="lib_all" depends="lib_test"/>-->
 </project>

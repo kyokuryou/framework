@@ -7,6 +7,7 @@ import org.smarty.web.config.WebConfigAdapter;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity.IgnoredRequestConfigurer;
 import org.springframework.security.config.annotation.web.configurers.AnonymousConfigurer;
 import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer;
@@ -28,44 +29,44 @@ public abstract class SecurityConfigAdapter extends WebConfigAdapter {
 
 	}
 
-	protected void configure(ExceptionHandlingConfigurer exceptionHandling) {
+	protected void configure(ExceptionHandlingConfigurer<HttpSecurity> exceptionHandling) {
 
 	}
 
-	protected void configure(HeadersConfigurer headers) {
+	protected void configure(HeadersConfigurer<HttpSecurity> headers) {
 
 	}
 
-	protected void configure(SecurityContextConfigurer securityContext) {
+	protected void configure(SecurityContextConfigurer<HttpSecurity> securityContext) {
 
 	}
 
-	protected void configure(RequestCacheConfigurer requestCache) {
+	protected void configure(RequestCacheConfigurer<HttpSecurity> requestCache) {
 
 	}
 
-	protected void configure(AnonymousConfigurer anonymous) {
+	protected void configure(AnonymousConfigurer<HttpSecurity> anonymous) {
 
 	}
 
-	protected void configure(ServletApiConfigurer servletApi) {
+	protected void configure(ServletApiConfigurer<HttpSecurity> servletApi) {
 
 	}
 
-	protected void configure(RememberMeConfigurer rememberMe) {
+	protected void configure(RememberMeConfigurer<HttpSecurity> rememberMe) {
 
 	}
 
-	protected void configure(LogoutConfigurer logout) {
+	protected void configure(LogoutConfigurer<HttpSecurity> logout) {
 
 	}
 
-	protected void configure(CustomLoginConfigurer customLogin) {
+	protected void configure(CustomLoginConfigurer<HttpSecurity> customLogin) {
 
 	}
 
 
-	protected void configure(CustomSessionConfigurer customSession) {
+	protected void configure(CustomSessionConfigurer<HttpSecurity> customSession) {
 
 	}
 

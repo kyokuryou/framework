@@ -213,6 +213,7 @@ public final class ObjectUtil {
 	 * @param value 值
 	 * @return 转换的字符串
 	 */
+	@SuppressWarnings({"unchecked","rawtypes"})
 	public static String toString(Object value) {
 		Class<?> klass = value.getClass();
 		if (klass.isArray()) {
@@ -231,7 +232,7 @@ public final class ObjectUtil {
 		} else if (value instanceof Collection) {
 			StringBuilder cvs = new StringBuilder();
 			int len = ((Collection) value).size();
-			Iterator<?> tt = ((Collection) value).iterator();
+			Iterator tt = ((Collection) value).iterator();
 			for (int i = 0; tt.hasNext(); i++) {
 				Object ott = tt.next();
 				cvs.append(toString(ott));
@@ -243,10 +244,10 @@ public final class ObjectUtil {
 		} else if (value instanceof Map) {
 			StringBuilder cvs = new StringBuilder();
 			int len = ((Map) value).size();
-			Set<Map.Entry<String, ?>> mes = ((Map) value).entrySet();
-			Iterator<Map.Entry<String, ?>> tt = mes.iterator();
+			Set<Map.Entry> mes = ((Map) value).entrySet();
+			Iterator<Map.Entry> tt = mes.iterator();
 			for (int i = 0; tt.hasNext(); i++) {
-				Map.Entry<String, ?> ott = tt.next();
+				Map.Entry ott = tt.next();
 				cvs.append(ott.getKey()).append("=");
 				cvs.append(toString(ott.getValue()));
 				if (i < len - 1) {
@@ -256,13 +257,5 @@ public final class ObjectUtil {
 			return cvs.toString();
 		}
 		return String.valueOf(value);
-	}
-
-	public static void main(String[] args) {
-		String[] arr = new String[]{
-				"1", "2", "3"
-		};
-
-		System.out.println(toString(arr));
 	}
 }

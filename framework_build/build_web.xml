@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project basedir="." default="web_all" name="framework_web">
 
-    <import file="./build_property.xml"/>
-
-    <record name="${target.log.file}" append="false" loglevel="info"/>
-
+    <import file="property.xml"/>
     <path id="web_compile.classpath">
         <path refid="jar.files"/>
-        <file file="${src.build.dirPath}/${src.jar.name}.jar"/>
+        <path location="${src.build.dirPath}"/>
     </path>
     <patternset id="files_filter">
         <patternset refid="ignored.files"/>
@@ -38,71 +35,27 @@
     </target>
 
     <target name="web_clean" description="Prepare for clean build">
+        <delete quiet="true" dir="${web.build.dirPath}"/>
         <delete quiet="true">
-            <fileset dir="${web.build.dirPath}">
-                <include name="**"/>
-            </fileset>
             <fileset dir="${war.web.dirPath}">
                 <include name="res/common/easyui/**"/>
                 <include name="res/common/lib/**"/>
             </fileset>
+        </delete>
+        <delete quiet="true">
             <fileset dir="${war.web.dirPath}/WEB-INF">
                 <include name="web.xml"/>
             </fileset>
-            <fileset dir="${war.web.dirPath}/WEB-INF/lib">
-                <include name="${src.jar.name}.jar"/>
-                <include name="${web.jar.name}.jar"/>
-            </fileset>
         </delete>
     </target>
-    <target name="web_dist" description="Create binary distribution">
-        <jar jarfile="${web.build.dirPath}/${web.jar.name}.jar" basedir="${web.build.dirPath}">
-            <exclude name="**/*.jar"/>
-            <exclude name="**/*.zip"/>
-            <exclude name="**/*.properties"/>
-            <manifest>
-                <attribute name="Specification-Title" value="${component.name}"/>
-                <attribute name="Specification-Version" value="${component.Version}"/>
-                <attribute name="Specification-Vendor" value="${component.Vendor}"/>
-                <attribute name="Implementation-Title" value="${component.name}"/>
-                <attribute name="Implementation-Version" value="${component.Version}"/>
-                <attribute name="X-Compile-Target-JDK" value="${target.java.version}"/>
-                <attribute name="X-Compile-Source-JDK" value="${target.java.version}"/>
-            </manifest>
-        </jar>
-    </target>
-    <target name="web_zip_dist" description="Create Source distribution">
-        <zip destfile="${web.build.dirPath}/${web.jar.name}.zip">
-            <fileset dir="${web.dirPath}">
-                <include name="**/*.java"/>
-                <patternset refid="resource.files"/>
-                <patternset refid="ignored.files"/>
-            </fileset>
-        </zip>
-    </target>
-
     <target name="web_copy">
         <!-- web基础 -->
-        <mkdir dir="${war.web.dirPath}/res"/>
         <mkdir dir="${war.web.dirPath}/WEB-INF"/>
         <mkdir dir="${war.web.dirPath}/WEB-INF/lib"/>
 
-        <copy todir="${war.web.dirPath}/res" overwrite="true" includeEmptyDirs="no">
-            <fileset dir="${web.meta.dirPath}/web/res">
-                <include name="common/**"/>
-                <patternset refid="ignored.files"/>
-            </fileset>
-        </copy>
         <copy todir="${war.web.dirPath}/WEB-INF" overwrite="true">
             <fileset dir="${web.meta.dirPath}/web/WEB-INF">
                 <include name="web.xml"/>
-            </fileset>
-        </copy>
-
-        <copy todir="${war.web.dirPath}/WEB-INF/lib" overwrite="true">
-            <file file="${src.build.dirPath}/${src.jar.name}.jar"/>
-            <fileset dir="${web.build.dirPath}">
-                <include name="${web.jar.name}.jar"/>
             </fileset>
         </copy>
         <!-- Flex支持 -->
@@ -115,8 +68,17 @@
         </copy>
         -->
     </target>
+    <target name="web_copy_res">
+        <mkdir dir="${war.web.dirPath}/res"/>
+        <copy todir="${war.web.dirPath}/res" overwrite="true" includeEmptyDirs="no">
+            <fileset dir="${web.meta.dirPath}/web/res">
+                <include name="common/**"/>
+                <patternset refid="ignored.files"/>
+            </fileset>
+        </copy>
+    </target>
 
     <target name="web_project" depends="web_clean,web_prepare,web_compile"/>
 
-    <target name="web_all" depends="web_project,web_dist,web_zip_dist,web_copy"/>
+    <target name="web_all" depends="web_project,web_copy"/>
 </project>

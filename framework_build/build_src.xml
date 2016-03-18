@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project basedir="." default="src_all" name="framework_src">
     <!--系统环境变量-->
-    <import file="./build_property.xml"/>
-
-    <record name="${target.log.file}" append="false" loglevel="info"/>
-
+    <import file="property.xml"/>
     <!--编译的类路径设定-->
     <path id="src_compile.classpath" refid="jar.files"/>
-
     <!-- 文件过滤器 -->
     <patternset id="files_filter">
         <patternset refid="ignored.files"/>
@@ -21,7 +17,6 @@
             </fileset>
         </copy>
     </target>
-
     <!--compile编译所有java文件-->
     <target name="src_compile" depends="src_prepare,src_resources">
         <mkdir dir="${src.build.dirPath}"/>
@@ -33,54 +28,19 @@
             <classpath refid="src_compile.classpath"/>
         </javac>
     </target>
-
     <target name="src_prepare">
         <tstamp/>
     </target>
-
     <!--clean清除已经编译的目标文件和已经部署的文件-->
     <target name="src_clean" description="Prepare for clean build">
+        <delete quiet="true" dir="${src.build.dirPath}"/>
         <delete quiet="true">
-            <fileset dir="${src.build.dirPath}">
-                <include name="**"/>
-            </fileset>
-        </delete>
-        <delete>
             <fileset dir="${war.src.dirPath}">
                 <include name="log4j.properties"/>
             </fileset>
         </delete>
-
     </target>
-
     <!--dist完成项目部署-->
-    <target name="src_dist" description="Create binary distribution">
-        <jar jarfile="${src.build.dirPath}/${src.jar.name}.jar" basedir="${src.build.dirPath}">
-            <exclude name="**/*.jar"/>
-            <exclude name="**/*.zip"/>
-            <exclude name="**/*.properties"/>
-            <manifest>
-                <attribute name="Specification-Title" value="${component.name}"/>
-                <attribute name="Specification-Version" value="${component.Version}"/>
-                <attribute name="Specification-Vendor" value="${component.Vendor}"/>
-                <attribute name="Implementation-Title" value="${component.name}"/>
-                <attribute name="Implementation-Version" value="${component.Version}"/>
-                <attribute name="X-Compile-Target-JDK" value="${target.java.version}"/>
-                <attribute name="X-Compile-Source-JDK" value="${target.java.version}"/>
-            </manifest>
-        </jar>
-    </target>
-    <!-- 制作源码包 -->
-    <target name="src_zip_dist" description="Create Source distribution">
-        <zip destfile="${src.build.dirPath}/${src.jar.name}.zip">
-            <fileset dir="${src.dirPath}">
-                <include name="**/*.java"/>
-                <patternset refid="resource.files"/>
-                <patternset refid="ignored.files"/>
-            </fileset>
-        </zip>
-    </target>
-
     <target name="src_copy">
         <copy todir="${war.src.dirPath}" overwrite="true">
             <fileset dir="${src.meta.dirPath}">
@@ -91,5 +51,5 @@
 
     <target name="src_project" depends="src_clean,src_prepare,src_compile"/>
     <!--all重新编译和部署整个应用-->
-    <target name="src_all" depends="src_project,src_dist,src_zip_dist,src_copy"/>
+    <target name="src_all" depends="src_project,src_copy"/>
 </project>

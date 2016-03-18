@@ -1,59 +1,96 @@
 
-src_clean:
-   [delete] Deleting directory D:\iwork\java\framework\framework_src\build
+lib_clean:
+   [delete] Deleting directory D:\iwork\java\framework\framework_lib\build
 
-src_prepare:
+lib_conf:
 
-src_resources:
-     [copy] Copying 2 files to D:\iwork\java\framework\framework_src\build
+lib_must:
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\lib\asm.jar into D:\iwork\java\framework\framework_lib\build\primary
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\lib\aspectjweaver.jar into D:\iwork\java\framework\framework_lib\build\primary
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\lib\dom4j-1.6.1.jar into D:\iwork\java\framework\framework_lib\build\primary
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\lib\ehcache-2.10.1.jar into D:\iwork\java\framework\framework_lib\build\primary
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\lib\gson-2.4.jar into D:\iwork\java\framework\framework_lib\build\primary
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\lib\jaxen-1.1-beta-6.jar into D:\iwork\java\framework\framework_lib\build\primary
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\lib\mail.jar into D:\iwork\java\framework\framework_lib\build\primary
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\lib\quartz-2.2.2.jar into D:\iwork\java\framework\framework_lib\build\primary
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\lib\slf4j-api-1.7.7.jar into D:\iwork\java\framework\framework_lib\build\primary
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\lib\slf4j-log4j12-1.7.7.jar into D:\iwork\java\framework\framework_lib\build\primary
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\lib\smarty4j-1.0.0-jdk5.jar into D:\iwork\java\framework\framework_lib\build\primary
+      [jar] Building jar: D:\iwork\java\framework\framework_test\web\WEB-INF\lib\primary.jar
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\commons\commons-beanutils-1.9.2.jar into D:\iwork\java\framework\framework_lib\build\commons
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\commons\commons-codec-1.6.jar into D:\iwork\java\framework\framework_lib\build\commons
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\commons\commons-collections-3.2.1.jar into D:\iwork\java\framework\framework_lib\build\commons
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\commons\commons-io-2.2.jar into D:\iwork\java\framework\framework_lib\build\commons
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\commons\commons-logging-1.1.3.jar into D:\iwork\java\framework\framework_lib\build\commons
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\commons\log4j-1.2.16.jar into D:\iwork\java\framework\framework_lib\build\commons
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\commons\web\commons-fileupload-1.3.jar into D:\iwork\java\framework\framework_lib\build\commons
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\commons\web\commons-httpclient-3.1.jar into D:\iwork\java\framework\framework_lib\build\commons
+      [jar] Building jar: D:\iwork\java\framework\framework_test\web\WEB-INF\lib\commons.jar
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\spring\aopalliance.jar into D:\iwork\java\framework\framework_lib\build\spring
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\spring\spring-aop-4.2.4.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\spring\spring-aspects-4.2.4.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\spring\spring-beans-4.2.4.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\spring\spring-context-4.2.4.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\spring\spring-context-support-4.2.4.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\spring\spring-core-4.2.4.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\spring\spring-expression-4.2.4.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\spring\spring-instrument-4.2.4.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\spring\spring-instrument-tomcat-4.2.4.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\spring\spring-jdbc-4.2.4.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\spring\spring-jms-4.2.4.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\spring\spring-messaging-4.2.4.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\spring\spring-orm-4.2.4.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\spring\spring-oxm-4.2.4.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\spring\spring-test-4.2.4.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\spring\spring-tx-4.2.4.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring
+      [jar] Building jar: D:\iwork\java\framework\framework_test\web\WEB-INF\lib\spring.jar
+     [copy] Copying 2 files to D:\iwork\java\framework\framework_test\web\WEB-INF\lib
+      [jar] Building jar: D:\iwork\java\framework\framework_test\web\WEB-INF\lib\smarty.jar
 
-src_compile:
-    [javac] Compiling 84 source files to D:\iwork\java\framework\framework_src\build
-    [javac] D:\iwork\java\framework\framework_src\src\org\smarty\core\support\csvreader\CsvReader.java:422: ���棺[unchecked] ����Ϊ��ͨ���� java.util.HashMap �ĳ�Ա�� put(K,V) �ĵ���δ�����
-    [javac]             headersHolder.IndexByName.put(headers[i], new Integer(i));
-    [javac]                                          ^
-    [javac] D:\iwork\java\framework\framework_src\src\org\smarty\core\support\csvreader\CsvReader.java:1145: ���棺[unchecked] ����Ϊ��ͨ���� java.util.HashMap �ĳ�Ա�� put(K,V) �ĵ���δ�����
-    [javac]             headersHolder.IndexByName.put(columnValue, new Integer(i));
-    [javac]                                          ^
-    [javac] D:\iwork\java\framework\framework_src\src\org\smarty\core\support\json\JSONArray.java:90: ���棺[unchecked] ����Ϊ��ͨ���� java.util.ArrayList �ĳ�Ա�� add(E) �ĵ���δ�����
-    [javac]                     this.myArrayList.add(JSONObject.NULL);
-    [javac]                                         ^
-    [javac] D:\iwork\java\framework\framework_src\src\org\smarty\core\support\json\JSONArray.java:93: ���棺[unchecked] ����Ϊ��ͨ���� java.util.ArrayList �ĳ�Ա�� add(E) �ĵ���δ�����
-    [javac]                     this.myArrayList.add(x.nextValue());
-    [javac]                                         ^
-    [javac] D:\iwork\java\framework\framework_src\src\org\smarty\core\support\json\JSONArray.java:136: ���棺[unchecked] ����Ϊ��ͨ���� java.util.ArrayList �ĳ�Ա�� add(E) �ĵ���δ�����
-    [javac]                 this.myArrayList.add(JSONObject.wrap(iter.next()));
-    [javac]                                     ^
-    [javac] D:\iwork\java\framework\framework_src\src\org\smarty\core\support\json\JSONArray.java:633: ���棺[unchecked] ����Ϊ��ͨ���� java.util.ArrayList �ĳ�Ա�� add(E) �ĵ���δ�����
-    [javac]         this.myArrayList.add(value);
-    [javac]                             ^
-    [javac] D:\iwork\java\framework\framework_src\src\org\smarty\core\support\json\JSONArray.java:754: ���棺[unchecked] ����Ϊ��ͨ���� java.util.ArrayList �ĳ�Ա�� set(int,E) �ĵ���δ�����
-    [javac]             this.myArrayList.set(index, value);
-    [javac]                                 ^
-    [javac] D:\iwork\java\framework\framework_src\src\org\smarty\core\support\json\JSONObject.java:247: ���棺[unchecked] ����Ϊ��ͨ���� java.util.Map �ĳ�Ա�� put(K,V) �ĵ���δ�����
-    [javac]                     this.map.put(e.getKey(), wrap(value));
-    [javac]                                 ^
-    [javac] D:\iwork\java\framework\framework_src\src\org\smarty\core\support\json\JSONObject.java:1007: ���棺[unchecked] ����Ϊ��ͨ���� java.util.Map �ĳ�Ա�� put(K,V) �ĵ���δ�����
-    [javac]                             this.map.put(key, wrap(result));
-    [javac]                                         ^
-    [javac] D:\iwork\java\framework\framework_src\src\org\smarty\core\support\json\JSONObject.java:1121: ���棺[unchecked] ����Ϊ��ͨ���� java.util.Map �ĳ�Ա�� put(K,V) �ĵ���δ�����
-    [javac]             this.map.put(key, value);
-    [javac]                         ^
-    [javac] 10 ����
+lib_security:
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\security\spring-security-acl-3.2.5.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring-security
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\security\spring-security-aspects-3.2.5.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring-security
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\security\spring-security-config-3.2.5.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring-security
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\security\spring-security-core-3.2.5.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring-security
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\security\spring-security-crypto-3.2.5.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring-security
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\security\spring-security-remoting-3.2.5.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring-security
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\security\spring-security-taglibs-3.2.5.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring-security
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\security\spring-security-web-3.2.5.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring-security
+      [jar] Building jar: D:\iwork\java\framework\framework_test\web\WEB-INF\lib\spring-security.jar
 
-src_project:
+lib_web:
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\springmvc\freemarker-2.3.19.jar into D:\iwork\java\framework\framework_lib\build\spring-mvc
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\springmvc\jstl.jar into D:\iwork\java\framework\framework_lib\build\spring-mvc
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\springmvc\spring-web-4.2.4.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring-mvc
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\springmvc\spring-webmvc-4.2.4.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring-mvc
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\springmvc\spring-webmvc-portlet-4.2.4.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring-mvc
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\springmvc\spring-websocket-4.2.4.RELEASE.jar into D:\iwork\java\framework\framework_lib\build\spring-mvc
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\springmvc\standard.jar into D:\iwork\java\framework\framework_lib\build\spring-mvc
+      [jar] Building jar: D:\iwork\java\framework\framework_test\web\WEB-INF\lib\spring-mvc.jar
 
-src_dist:
-      [jar] Building jar: D:\iwork\java\framework\framework_src\build\org.jar
+lib_compressor:
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\compressor\compiler.jar into D:\iwork\java\framework\framework_lib\build\compressor
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\compressor\htmlcompressor-1.5.3.jar into D:\iwork\java\framework\framework_lib\build\compressor
+      [jar] Building jar: D:\iwork\java\framework\framework_test\web\WEB-INF\lib\compressor.jar
+
+lib_jcaptcha:
+     [copy] Copying 1 file to D:\iwork\java\framework\framework_test\web\WEB-INF\lib
+
+lib_poi:
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\poi\poi-3.9-20121203.jar into D:\iwork\java\framework\framework_lib\build\poi
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\poi\poi-excelant-3.9-20121203.jar into D:\iwork\java\framework\framework_lib\build\poi
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\poi\poi-ooxml-3.9-20121203.jar into D:\iwork\java\framework\framework_lib\build\poi
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\poi\poi-ooxml-schemas-3.9-20121203.jar into D:\iwork\java\framework\framework_lib\build\poi
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\poi\poi-scratchpad-3.9-20121203.jar into D:\iwork\java\framework\framework_lib\build\poi
+ [mergeJar] Expanding: D:\iwork\java\framework\framework_lib\extend\poi\xmlbeans-2.3.0.jar into D:\iwork\java\framework\framework_lib\build\poi
+      [jar] Building jar: D:\iwork\java\framework\framework_test\web\WEB-INF\lib\poi.jar
+
+lib_dist:
+     [copy] Copying 1 file to D:\iwork\java\framework\framework_test\src\conf
 
 src_zip_dist:
-      [zip] Building zip: D:\iwork\java\framework\framework_src\build\org.zip
+      [zip] Building zip: D:\iwork\java\framework\framework_lib\build\smarty.zip
 
-src_copy:
-     [copy] Copying 1 file to D:\iwork\java\framework\out_build\web\WEB-INF\lib
-     [copy] Copying 4 files to D:\iwork\java\framework\out_build\src
-
-src_all:
+lib_all:
 
 BUILD SUCCESSFUL
-Total time: 2 seconds

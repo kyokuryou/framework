@@ -1,43 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="framework">
     <!--发布路径-->
-    <property name="war.dirPath" value="D:/iwork/java/framework/out_build"/>
-    <property name="war.src.dirPath" value="D:/iwork/java/framework/out_build/src"/>
-    <property name="war.web.dirPath" value="D:/iwork/java/framework/out_build/web"/>
+    <property name="war.dirPath" value="D:/iwork/java/framework/framework_test"/>
+    <property name="war.src.dirPath" value="${war.dirPath}/src"/>
+    <property name="war.web.dirPath" value="${war.dirPath}/web"/>
 
     <!--工程路径 -->
+    <property name="project.build.dirPath" value="D:/iwork/java/framework/framework_build"/>
     <property name="project.src.dirPath" value="D:/iwork/java/framework/framework_src"/>
     <property name="project.lib.dirPath" value="D:/iwork/java/framework/framework_lib"/>
     <property name="project.web.dirPath" value="D:/iwork/java/framework/framework_web"/>
-    <property name="project.flex.dirPath" value="D:/iwork/java/framework/framework_flex"/>
     <property name="project.security.dirPath" value="D:/iwork/java/framework/framework_security"/>
-    <property name="project.bank.dirPath" value="D:/iwork/java/framework/framework_bank"/>
-    <!--<property name="project.war.dirPath" value="D:/iwork/java/framework/framework_war"/>-->
+
     <!--ant文件-->
     <property name="src.ant.filePath" value="./build_src.xml"/>
     <property name="lib.ant.filePath" value="./build_lib.xml"/>
     <property name="web.ant.filePath" value="./build_web.xml"/>
     <property name="sec.ant.filePath" value="./build_security.xml"/>
-    <property name="config.ant.filePath" value="./build_config.xml"/>
     <!-- 打包信息 -->
-    <property name="src.jar.name" value="org"/>
-    <property name="web.jar.name" value="org_web"/>
-    <property name="sec.jar.name" value="org_sec"/>
-    <property name="bank.jar.name" value="org_bank"/>
-    <property name="component.name" value="Framework Core"/>
-    <property name="component.Version" value="v1.5.2"/>
-    <property name="component.Vendor" value="K"/>
+    <property name="smarty.jar.name" value="smarty"/>
+    <property name="component.version" value="v1.5.2"/>
     <!-- 编译环境 -->
-    <property name="target.log.file" value="error.log"/>
     <property name="target.java.home" value="D:/opt/lib/Java/jdk1.8.0_40"/>
     <property name="target.java.locales" value="en_US"/>
     <property name="target.encode" value="UTF-8"/>
     <property name="target.java.version" value="1.6"/>
+    <property name="target.log.file" value="error.log"/>
     <!-- 源码路径-->
+    <property name="build.build.dirPath" value="${project.build.dirPath}/build"/>
     <property name="src.dirPath" value="${project.src.dirPath}/src"/>
     <property name="src.meta.dirPath" value="${project.src.dirPath}/META-INF"/>
     <property name="src.build.dirPath" value="${project.src.dirPath}/build"/>
-
     <!-- web路径-->
     <property name="web.dirPath" value="${project.web.dirPath}/src"/>
     <property name="web.meta.dirPath" value="${project.web.dirPath}/META-INF"/>
@@ -48,9 +41,6 @@
     <property name="sec.build.dirPath" value="${project.security.dirPath}/build"/>
 
     <property name="lib.build.dirPath" value="${project.lib.dirPath}/build"/>
-    <!-- bank路径-->
-    <property name="bank.dirPath" value="${project.bank.dirPath}/src"/>
-    <property name="bank.build.dirPath" value="${project.bank.dirPath}/build"/>
 
     <!-- 依赖jar包路径-->
     <property name="lib.dirPath" value="${project.lib.dirPath}/lib"/>
@@ -59,18 +49,29 @@
     <property name="lib.database.mysql.dirPath" value="${project.lib.dirPath}/database/mysql"/>
     <property name="lib.extend.dirPath" value="${project.lib.dirPath}/extend"/>
     <property name="lib.extend.commons.dirPath" value="${lib.extend.dirPath}/commons"/>
+    <property name="lib.extend.commons.web.dirPath" value="${lib.extend.dirPath}/commons/web"/>
     <property name="lib.extend.compressor.dirPath" value="${lib.extend.dirPath}/compressor"/>
     <property name="lib.extend.flex.dirPath" value="${lib.extend.dirPath}/flex"/>
-    <!--<property name="lib.extend.image.dirPath" value="${lib.extend.dirPath}/image"/>-->
     <property name="lib.extend.jcaptcha.dirPath" value="${lib.extend.dirPath}/jcaptcha"/>
     <property name="lib.extend.poi.dirPath" value="${lib.extend.dirPath}/poi"/>
     <property name="lib.extend.security.dirPath" value="${lib.extend.dirPath}/security"/>
+    <property name="lib.extend.security.openid.dirPath" value="${lib.extend.dirPath}/security/openid"/>
+    <property name="lib.extend.security.ldap.dirPath" value="${lib.extend.dirPath}/security/ldap"/>
+    <property name="lib.extend.security.cas.dirPath" value="${lib.extend.dirPath}/security/cas"/>
     <property name="lib.extend.spring.dirPath" value="${lib.extend.dirPath}/spring"/>
     <property name="lib.extend.springmvc.dirPath" value="${lib.extend.dirPath}/springmvc"/>
-    <!--<property name="lib.extend.struts2.dirPath" value="${lib.extend.dirPath}/struts2"/>-->
     <property name="lib.extend.xfire.dirPath" value="${lib.extend.dirPath}/xfire"/>
     <property name="lib.global.j2ee.dirPath" value="${project.lib.dirPath}/global/J2EE6"/>
     <property name="lib.global.junit.dirPath" value="${project.lib.dirPath}/global/JUNIT"/>
+
+    <record name="${target.log.file}" append="false" loglevel="info"/>
+
+    <taskdef name="mergeJar" classname="org.smarty.build.task.MergeJar">
+        <classpath location="${build.build.dirPath}/smarty_build.jar"/>
+    </taskdef>
+    <typedef name="fileMapping" classname="org.smarty.build.FileMapping">
+        <classpath location="${build.build.dirPath}/smarty_build.jar"/>
+    </typedef>
 
     <!-- 忽略文件列表 -->
     <patternset id="ignored.files">
@@ -147,13 +148,14 @@
         <fileset dir="${lib.database.db2.dirPath}">
             <include name="*.jar"/>
         </fileset>
-        <!--  mail,el依赖(可选) -->
-        <fileset dir="${lib.extend.dirPath}">
+        <fileset dir="${lib.database.mysql.dirPath}">
             <include name="*.jar"/>
         </fileset>
-
         <!-- 主要(commons)-->
         <fileset dir="${lib.extend.commons.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${lib.extend.commons.web.dirPath}">
             <include name="*.jar"/>
         </fileset>
         <!-- html,xml,js压缩依赖(可选) -->
@@ -164,11 +166,6 @@
         <fileset dir="${lib.extend.flex.dirPath}">
             <include name="*.jar"/>
         </fileset>
-        <!-- image依赖(可选)
-        <fileset dir="${lib.extend.image.dirPath}">
-            <include name="*.jar"/>
-        </fileset>
-        -->
         <!-- 验证码(可选) -->
         <fileset dir="${lib.extend.jcaptcha.dirPath}">
             <include name="*.jar"/>
@@ -180,7 +177,15 @@
         <fileset dir="${lib.extend.security.dirPath}">
             <include name="*.jar"/>
         </fileset>
-
+        <fileset dir="${lib.extend.security.openid.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${lib.extend.security.cas.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${lib.extend.security.ldap.dirPath}">
+            <include name="*.jar"/>
+        </fileset>
         <fileset dir="${lib.extend.spring.dirPath}">
             <include name="*.jar"/>
         </fileset>
